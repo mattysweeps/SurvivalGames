@@ -29,6 +29,11 @@ public class SetReadySurvivalGameCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
+        if (!plugin.getSurvivalGameMap().containsKey(id.get())) {
+            plugin.getLogger().error("No Survival Game has specified ID \"" + id.get() + "\".");
+            return CommandResult.empty();
+        }
+
         if (!plugin.getSurvivalGameMap().get(id.get()).getGameState().equals(SurvivalGameState.STOPPED)) {
             plugin.getLogger().error("Survival Game \"" + id.get() + "\" must be STOPPED before it can be set to READY.");
             return CommandResult.empty();
