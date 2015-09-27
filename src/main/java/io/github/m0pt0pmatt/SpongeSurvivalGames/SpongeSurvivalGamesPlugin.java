@@ -1,8 +1,6 @@
 package io.github.m0pt0pmatt.SpongeSurvivalGames;
 
-import io.github.m0pt0pmatt.SpongeSurvivalGames.Commands.CreateSurvivalGameCommand;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.Commands.DeleteSurvivalGameCommand;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.Commands.ListSurvivalGameCommand;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.Commands.*;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -39,6 +37,7 @@ public class SpongeSurvivalGamesPlugin {
     }
 
     private void registerCommands() {
+
         CommandSpec createSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.survivalgame.create")
@@ -61,6 +60,30 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new ListSurvivalGameCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, listSurvivalGamesCommand, "ssg-list");
+
+        CommandSpec setReadySurvivalGamesCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.setready")
+                .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
+                .executor(new SetReadySurvivalGameCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, setReadySurvivalGamesCommand, "ssg-setready");
+
+        CommandSpec startSurvivalGamesCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.start")
+                .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
+                .executor(new StartSurvivalGameCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, startSurvivalGamesCommand, "ssg-start");
+
+        CommandSpec stopSurvivalGamesCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.stop")
+                .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
+                .executor(new StopSurvivalGameCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, stopSurvivalGamesCommand, "ssg-stop");
     }
 
     public Logger getLogger() {

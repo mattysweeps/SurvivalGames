@@ -25,4 +25,16 @@ public class SurvivalGame {
     public SurvivalGameState getGameState() {
         return gameState;
     }
+
+    public void setReady() {
+        gameState = SurvivalGameState.READY;
+    }
+
+    public void setRunning() {
+        gameState = SurvivalGameState.RUNNING;
+    }
+
+    public void setStopped() {
+        gameState = SurvivalGameState.STOPPED;
+    }
 }
