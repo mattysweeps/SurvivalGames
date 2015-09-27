@@ -18,7 +18,7 @@ public class ListSurvivalGameCommand implements CommandExecutor {
 
     private final SpongeSurvivalGamesPlugin plugin;
 
-    public ListSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin){
+    public ListSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -26,7 +26,7 @@ public class ListSurvivalGameCommand implements CommandExecutor {
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
         plugin.getLogger().info("There are " + plugin.getSurvivalGameMap().size() + " Survival Games:");
-        for (Map.Entry<String, SurvivalGame> entry: plugin.getSurvivalGameMap().entrySet()){
+        for (Map.Entry<String, SurvivalGame> entry : plugin.getSurvivalGameMap().entrySet()) {
             plugin.getLogger().info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getGameState());
         }
 

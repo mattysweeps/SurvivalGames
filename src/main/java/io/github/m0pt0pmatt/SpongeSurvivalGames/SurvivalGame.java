@@ -17,12 +17,12 @@ public class SurvivalGame {
     private final List<Player> playerList = new LinkedList<Player>();
     private Optional<World> worldOptional = Optional.absent();
 
-    public SurvivalGame(SpongeSurvivalGamesPlugin plugin){
+    public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
         gameState = SurvivalGameState.STOPPED;
     }
 
-    public SurvivalGameState getGameState(){
+    public SurvivalGameState getGameState() {
         return gameState;
     }
 }

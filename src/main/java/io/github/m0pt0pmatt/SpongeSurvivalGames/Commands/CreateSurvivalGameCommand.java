@@ -16,7 +16,7 @@ public class CreateSurvivalGameCommand implements CommandExecutor {
 
     private final SpongeSurvivalGamesPlugin plugin;
 
-    public CreateSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin){
+    public CreateSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -24,12 +24,12 @@ public class CreateSurvivalGameCommand implements CommandExecutor {
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
         Optional<String> id = args.getOne("id");
-        if (!id.isPresent()){
+        if (!id.isPresent()) {
             plugin.getLogger().error("Survival Game ID is not present.");
             return CommandResult.empty();
         }
 
-        if (plugin.getSurvivalGameMap().containsKey(id.get())){
+        if (plugin.getSurvivalGameMap().containsKey(id.get())) {
             plugin.getLogger().error("Survival Game ID already exists.");
             return CommandResult.empty();
         }
