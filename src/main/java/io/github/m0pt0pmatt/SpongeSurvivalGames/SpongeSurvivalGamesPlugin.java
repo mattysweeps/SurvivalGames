@@ -69,21 +69,37 @@ public class SpongeSurvivalGamesPlugin {
                 .build();
         game.getCommandDispatcher().register(this, setReadySurvivalGamesCommand, "ssg-setready");
 
-        CommandSpec startSurvivalGamesCommand = CommandSpec.builder()
+        CommandSpec startSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.survivalgame.start")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
                 .executor(new StartSurvivalGameCommand(this))
                 .build();
-        game.getCommandDispatcher().register(this, startSurvivalGamesCommand, "ssg-start");
+        game.getCommandDispatcher().register(this, startSurvivalGameCommand, "ssg-start");
 
-        CommandSpec stopSurvivalGamesCommand = CommandSpec.builder()
+        CommandSpec stopSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.survivalgame.stop")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
                 .executor(new StopSurvivalGameCommand(this))
                 .build();
-        game.getCommandDispatcher().register(this, stopSurvivalGamesCommand, "ssg-stop");
+        game.getCommandDispatcher().register(this, stopSurvivalGameCommand, "ssg-stop");
+
+        CommandSpec addPlayerToSurvivalGameCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <playerName>"))
+                .permission("spongesurvivalgames.survivalgame.addplayer")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
+                .executor(new AddPlayerToSurvivalGame(this))
+                .build();
+        game.getCommandDispatcher().register(this, addPlayerToSurvivalGameCommand, "ssg-add-player");
+
+        CommandSpec removePlayerFromSurvivalGameCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <playerName>"))
+                .permission("spongesurvivalgames.survivalgame.removeplayer")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
+                .executor(new RemovePlayerFromSurvivalGameCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, removePlayerFromSurvivalGameCommand, "ssg-remove-player");
     }
 
     public Logger getLogger() {
@@ -92,5 +108,9 @@ public class SpongeSurvivalGamesPlugin {
 
     public Map<String, SurvivalGame> getSurvivalGameMap() {
         return survivalGameMap;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }
