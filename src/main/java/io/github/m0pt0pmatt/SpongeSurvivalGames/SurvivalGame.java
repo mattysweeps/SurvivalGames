@@ -2,6 +2,7 @@ package io.github.m0pt0pmatt.SpongeSurvivalGames;
 
 import com.google.common.base.Optional;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.HashSet;
@@ -16,7 +17,9 @@ public class SurvivalGame {
     private final SpongeSurvivalGamesPlugin plugin;
     private SurvivalGameState gameState;
     private final Set<UUID> playerSet = new HashSet<UUID>();
-    private Optional<World> worldOptional = Optional.absent();
+    private Optional<World> world = Optional.absent();
+    private Optional<Location<World>> centerLocation = Optional.absent();
+    private Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -47,4 +50,17 @@ public class SurvivalGame {
     public void removePlayer(UUID player){
         playerSet.remove(player);
     }
+
+    public void setCenterLocation(Location<World> location){
+        centerLocation = Optional.of(location);
+    }
+
+    public void addSpawnLocation(Location<World> location){
+        spawnLocations.add(location);
+    }
+
+    public void clearSpawnLocations(){
+        spawnLocations.clear();
+    }
+
 }

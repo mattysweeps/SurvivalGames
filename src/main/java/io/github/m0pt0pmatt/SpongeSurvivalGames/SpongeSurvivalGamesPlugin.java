@@ -1,6 +1,12 @@
 package io.github.m0pt0pmatt.SpongeSurvivalGames;
 
-import io.github.m0pt0pmatt.SpongeSurvivalGames.Commands.*;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.*;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready.AddPlayerToSurvivalGame;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready.RemovePlayerFromSurvivalGameCommand;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready.StartSurvivalGameCommand;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready.StopSurvivalGameCommand;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.stopped.DeleteSurvivalGameCommand;
+import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.stopped.SetReadySurvivalGameCommand;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
