@@ -1,6 +1,5 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.Commands;
+package io.github.m0pt0pmatt.SpongeSurvivalGames.commands;
 
-import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.SpongeSurvivalGames.SurvivalGame;
 import org.spongepowered.api.util.command.CommandException;

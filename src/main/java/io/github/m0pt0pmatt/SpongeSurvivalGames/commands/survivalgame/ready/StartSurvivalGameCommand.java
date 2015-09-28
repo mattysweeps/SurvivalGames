@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.Commands;
+package io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
@@ -7,17 +7,14 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public class StartSurvivalGameCommand implements CommandExecutor {
-
-    private final SpongeSurvivalGamesPlugin plugin;
+public class StartSurvivalGameCommand extends ReadyCommand {
 
     public StartSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
