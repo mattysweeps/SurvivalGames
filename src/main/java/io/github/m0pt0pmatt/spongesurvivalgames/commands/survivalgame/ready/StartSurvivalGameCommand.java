@@ -1,8 +1,8 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready;
 
 import com.google.common.base.Optional;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;

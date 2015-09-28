@@ -1,8 +1,8 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
 
-import io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.SurvivalGameCommand;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.SurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class ReadyCommand extends SurvivalGameCommand {
+public class StoppedCommand extends SurvivalGameCommand {
 
-    public ReadyCommand(SpongeSurvivalGamesPlugin plugin) {
+    public StoppedCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -24,8 +24,8 @@ public class ReadyCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)){
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
+        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)){
+            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
             return CommandResult.empty();
         }
 

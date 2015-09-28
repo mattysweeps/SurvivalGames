@@ -1,8 +1,7 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
 
 import com.google.common.base.Optional;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -12,30 +11,30 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 /**
  * Created by matthew on 9/27/15.
  */
-public class CreateSurvivalGameCommand implements CommandExecutor {
+public class SurvivalGameCommand implements CommandExecutor {
 
-    private final SpongeSurvivalGamesPlugin plugin;
+    protected final SpongeSurvivalGamesPlugin plugin;
+    protected String id;
 
-    public CreateSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public SurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        Optional<String> id = args.getOne("id");
-        if (!id.isPresent()) {
+        Optional<String> idOptional = args.getOne("id");
+        if (!idOptional.isPresent()) {
             plugin.getLogger().error("Survival Game ID is not present.");
             return CommandResult.empty();
         }
 
-        if (plugin.getSurvivalGameMap().containsKey(id.get())) {
-            plugin.getLogger().error("Survival Game ID already exists.");
+        id = idOptional.get();
+
+        if (!plugin.getSurvivalGameMap().containsKey(id)) {
+            plugin.getLogger().error("No Survival Game has specified ID \"" + id + "\".");
             return CommandResult.empty();
         }
-
-        plugin.getSurvivalGameMap().put(id.get(), new SurvivalGame(plugin));
-        plugin.getLogger().info("Survival Game \"" + id.get() + "\" created.");
 
         return CommandResult.success();
     }

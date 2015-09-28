@@ -1,7 +1,7 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames.commands.survivalgame.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready;
 
 import com.google.common.base.Optional;
-import io.github.m0pt0pmatt.SpongeSurvivalGames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class AddPlayerToSurvivalGame extends ReadyCommand {
+public class RemovePlayerFromSurvivalGameCommand extends ReadyCommand {
 
-    public AddPlayerToSurvivalGame(SpongeSurvivalGamesPlugin plugin) {
+    public RemovePlayerFromSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -36,8 +36,8 @@ public class AddPlayerToSurvivalGame extends ReadyCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).addPlayer(player.get().getUniqueId());
-        plugin.getLogger().info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
+        plugin.getSurvivalGameMap().get(id).removePlayer(player.get().getUniqueId());
+        plugin.getLogger().info("Player \"" + playerName.get() + "\" removed from survival game \"" + id + "\".");
 
         return CommandResult.success();
     }

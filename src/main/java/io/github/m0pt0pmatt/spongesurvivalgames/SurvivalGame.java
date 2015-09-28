@@ -1,7 +1,6 @@
-package io.github.m0pt0pmatt.SpongeSurvivalGames;
+package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import com.google.common.base.Optional;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
