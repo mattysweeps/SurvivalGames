@@ -20,7 +20,7 @@ public class RemovePlayerFromSurvivalGameCommand extends ReadyCommand {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
 
@@ -31,7 +31,7 @@ public class RemovePlayerFromSurvivalGameCommand extends ReadyCommand {
         }
 
         Optional<Player> player = plugin.getGame().getServer().getPlayer(playerName.get());
-        if (!player.isPresent()){
+        if (!player.isPresent()) {
             plugin.getLogger().error("No such player \"" + playerName.get() + "\".");
             return CommandResult.empty();
         }

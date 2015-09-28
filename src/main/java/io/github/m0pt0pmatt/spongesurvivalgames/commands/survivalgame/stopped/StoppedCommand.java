@@ -20,11 +20,11 @@ public abstract class StoppedCommand extends SurvivalGameCommand {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)){
+        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)) {
             plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
             return CommandResult.empty();
         }

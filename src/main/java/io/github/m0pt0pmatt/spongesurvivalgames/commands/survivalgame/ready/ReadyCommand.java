@@ -20,11 +20,11 @@ public abstract class ReadyCommand extends SurvivalGameCommand {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)){
+        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)) {
             plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
             return CommandResult.empty();
         }

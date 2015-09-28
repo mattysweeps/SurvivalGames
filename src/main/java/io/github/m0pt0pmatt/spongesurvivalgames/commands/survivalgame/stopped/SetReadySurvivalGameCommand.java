@@ -9,19 +9,19 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class SetReadySurvivalGameCommand extends StoppedCommand{
+public class SetReadySurvivalGameCommand extends StoppedCommand {
 
-    public SetReadySurvivalGameCommand(SpongeSurvivalGamesPlugin plugin){
+    public SetReadySurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
-        
+
         plugin.getSurvivalGameMap().get(id).setReady();
         plugin.getLogger().error("Survival Game \"" + id + "\" is now set to READY.");
 

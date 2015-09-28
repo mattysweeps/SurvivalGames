@@ -11,14 +11,14 @@ import org.spongepowered.api.util.command.args.CommandContext;
  */
 public class ForceStopSurvivalGameCommand extends RunningCommand {
 
-    public ForceStopSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin){
+    public ForceStopSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
 

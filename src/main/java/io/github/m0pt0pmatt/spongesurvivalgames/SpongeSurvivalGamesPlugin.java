@@ -121,8 +121,8 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id> <worldName>"))
                 .permission("spongesurvivalgames.survivalgame.set.center")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
-                        .executor(new SetCenterLocationCommand(this))
-                        .build();
+                .executor(new SetCenterLocationCommand(this))
+                .build();
         game.getCommandDispatcher().register(this, setCenterLocationCommand, "ssg-set-center");
 
         CommandSpec addSpawnLocationCommand = CommandSpec.builder()
@@ -147,7 +147,7 @@ public class SpongeSurvivalGamesPlugin {
                 .arguments(GenericArguments.string(Texts.of("id")))
                 .executor(new PrintWorldCommand(this))
                 .build();
-        game.getCommandDispatcher().register(this, printWorldCommand, "ssg-clear-print-world");
+        game.getCommandDispatcher().register(this, printWorldCommand, "ssg-print-world");
 
         CommandSpec printCenterLocationCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))

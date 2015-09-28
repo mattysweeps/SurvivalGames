@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Created by matthew on 9/27/15.
  */
-public class PrintSpawnLocationsCommand extends SurvivalGameCommand{
+public class PrintSpawnLocationsCommand extends SurvivalGameCommand {
 
     public PrintSpawnLocationsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
@@ -28,7 +28,7 @@ public class PrintSpawnLocationsCommand extends SurvivalGameCommand{
 
         Set<Location<World>> spawnLocations = plugin.getSurvivalGameMap().get(id).getSpawnLocations();
         plugin.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Location<World> spawnLocation: spawnLocations){
+        for (Location<World> spawnLocation : spawnLocations) {
             plugin.getLogger().info(spawnLocation.toString());
         }
 

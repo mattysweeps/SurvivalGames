@@ -42,23 +42,23 @@ public class SurvivalGame {
         playerSet.clear();
     }
 
-    public void addPlayer(UUID player){
+    public void addPlayer(UUID player) {
         playerSet.add(player);
     }
 
-    public void removePlayer(UUID player){
+    public void removePlayer(UUID player) {
         playerSet.remove(player);
     }
 
-    public void setCenterLocation(Location<World> location){
+    public void setCenterLocation(Location<World> location) {
         centerLocation = Optional.of(location);
     }
 
-    public void addSpawnLocation(Location<World> location){
+    public void addSpawnLocation(Location<World> location) {
         spawnLocations.add(location);
     }
 
-    public void clearSpawnLocations(){
+    public void clearSpawnLocations() {
         spawnLocations.clear();
     }
 

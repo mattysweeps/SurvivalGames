@@ -24,10 +24,9 @@ public class PrintWorldCommand extends SurvivalGameCommand {
         }
 
         Optional<String> worldName = plugin.getSurvivalGameMap().get(id).getWorldName();
-        if (worldName.isPresent()){
+        if (worldName.isPresent()) {
             plugin.getLogger().info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
-        }
-        else{
+        } else {
             plugin.getLogger().info("Game: \"" + id + "\", No World.");
         }
 

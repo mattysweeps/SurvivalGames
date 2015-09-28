@@ -26,10 +26,9 @@ public class PrintCenterLocationCommand extends SurvivalGameCommand {
         }
 
         Optional<Location<World>> centerLocation = plugin.getSurvivalGameMap().get(id).getCenterLocation();
-        if (centerLocation.isPresent()){
+        if (centerLocation.isPresent()) {
             plugin.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
-        }
-        else{
+        } else {
             plugin.getLogger().info("Game: \"" + id + "\", No Center Location.");
         }
 

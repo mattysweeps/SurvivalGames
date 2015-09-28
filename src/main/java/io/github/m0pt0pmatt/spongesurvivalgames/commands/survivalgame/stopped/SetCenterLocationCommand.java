@@ -21,26 +21,26 @@ public class SetCenterLocationCommand extends StoppedCommand {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        if (!super.execute(src, args).equals(CommandResult.success())){
+        if (!super.execute(src, args).equals(CommandResult.success())) {
             return CommandResult.empty();
         }
 
         Optional<String> worldName = args.getOne("worldName");
-        if (!worldName.isPresent()){
+        if (!worldName.isPresent()) {
             plugin.getLogger().error("World name was not present.");
             return CommandResult.empty();
         }
 
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName.get());
-        if (!world.isPresent()){
+        if (!world.isPresent()) {
             plugin.getLogger().error("World \"" + worldName.get() + "\" does not exist.");
             return CommandResult.empty();
         }
 
         Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("x");
-        Optional<Integer> z = args.getOne("x");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()){
+        Optional<Integer> y = args.getOne("y");
+        Optional<Integer> z = args.getOne("z");
+        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
             plugin.getLogger().error("Missing one or more axis for coordinates.");
             return CommandResult.empty();
         }
