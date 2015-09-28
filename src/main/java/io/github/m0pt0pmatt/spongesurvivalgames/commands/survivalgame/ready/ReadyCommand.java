@@ -11,7 +11,7 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class ReadyCommand extends SurvivalGameCommand {
+public abstract class ReadyCommand extends SurvivalGameCommand {
 
     public ReadyCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);

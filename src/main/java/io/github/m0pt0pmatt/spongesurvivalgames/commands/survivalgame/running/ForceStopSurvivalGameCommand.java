@@ -1,8 +1,6 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.running;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.SurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -11,9 +9,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public abstract class StoppedCommand extends SurvivalGameCommand {
+public class ForceStopSurvivalGameCommand extends RunningCommand {
 
-    public StoppedCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ForceStopSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin){
         super(plugin);
     }
 
@@ -24,10 +22,8 @@ public abstract class StoppedCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)){
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
-            return CommandResult.empty();
-        }
+        plugin.getSurvivalGameMap().get(id).setStopped();
+        plugin.getLogger().error("Survival Game \"" + id + "\" is now STOPPED.");
 
         return CommandResult.success();
     }

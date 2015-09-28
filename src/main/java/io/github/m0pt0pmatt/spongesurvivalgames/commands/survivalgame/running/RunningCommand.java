@@ -11,7 +11,7 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class RunningCommand extends SurvivalGameCommand {
+public abstract class RunningCommand extends SurvivalGameCommand {
 
     public RunningCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);

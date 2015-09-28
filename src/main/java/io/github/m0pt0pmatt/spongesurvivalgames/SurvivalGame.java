@@ -16,7 +16,7 @@ public class SurvivalGame {
     private final SpongeSurvivalGamesPlugin plugin;
     private SurvivalGameState gameState;
     private final Set<UUID> playerSet = new HashSet<UUID>();
-    private Optional<World> world = Optional.absent();
+    private Optional<String> worldName = Optional.absent();
     private Optional<Location<World>> centerLocation = Optional.absent();
     private Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
 
@@ -62,4 +62,19 @@ public class SurvivalGame {
         spawnLocations.clear();
     }
 
+    public void setWorld(String worldName) {
+        this.worldName = Optional.of(worldName);
+    }
+
+    public Optional<String> getWorldName() {
+        return worldName;
+    }
+
+    public Optional<Location<World>> getCenterLocation() {
+        return centerLocation;
+    }
+
+    public Set<Location<World>> getSpawnLocations() {
+        return spawnLocations;
+    }
 }

@@ -1,19 +1,20 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.SurvivalGameCommand;
+import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public abstract class StoppedCommand extends SurvivalGameCommand {
+public class ClearSpawnLocationsCommand extends StoppedCommand {
 
-    public StoppedCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ClearSpawnLocationsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -24,10 +25,8 @@ public abstract class StoppedCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)){
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
-            return CommandResult.empty();
-        }
+        plugin.getSurvivalGameMap().get(id).clearSpawnLocations();
+        plugin.getLogger().info("Spawn locations cleared for game \"" + id + "\".");
 
         return CommandResult.success();
     }

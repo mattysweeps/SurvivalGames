@@ -11,7 +11,7 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 /**
  * Created by matthew on 9/27/15.
  */
-public class SurvivalGameCommand implements CommandExecutor {
+public abstract class SurvivalGameCommand implements CommandExecutor {
 
     protected final SpongeSurvivalGamesPlugin plugin;
     protected String id;

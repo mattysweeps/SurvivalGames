@@ -1,12 +1,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintCenterLocationCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintSpawnLocationsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintWorldCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready.AddPlayerToSurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready.RemovePlayerFromSurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready.StartSurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready.StopSurvivalGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped.DeleteSurvivalGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped.SetReadySurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped.*;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -69,7 +71,7 @@ public class SpongeSurvivalGamesPlugin {
 
         CommandSpec setReadySurvivalGamesCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
-                .permission("spongesurvivalgames.survivalgame.setready")
+                .permission("spongesurvivalgames.survivalgame.set.ready")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
                 .executor(new SetReadySurvivalGameCommand(this))
                 .build();
@@ -93,7 +95,7 @@ public class SpongeSurvivalGamesPlugin {
 
         CommandSpec addPlayerToSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <playerName>"))
-                .permission("spongesurvivalgames.survivalgame.addplayer")
+                .permission("spongesurvivalgames.survivalgame.add.player")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
                 .executor(new AddPlayerToSurvivalGame(this))
                 .build();
@@ -101,11 +103,67 @@ public class SpongeSurvivalGamesPlugin {
 
         CommandSpec removePlayerFromSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <playerName>"))
-                .permission("spongesurvivalgames.survivalgame.removeplayer")
+                .permission("spongesurvivalgames.survivalgame.remove.player")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
                 .executor(new RemovePlayerFromSurvivalGameCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, removePlayerFromSurvivalGameCommand, "ssg-remove-player");
+
+        CommandSpec setWorldCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <worldName>"))
+                .permission("spongesurvivalgames.survivalgame.set.world")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")))
+                .executor(new SetWorldCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, setWorldCommand, "ssg-set-world");
+
+        CommandSpec setCenterLocationCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <worldName>"))
+                .permission("spongesurvivalgames.survivalgame.set.center")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
+                        .executor(new SetCenterLocationCommand(this))
+                        .build();
+        game.getCommandDispatcher().register(this, setCenterLocationCommand, "ssg-set-center");
+
+        CommandSpec addSpawnLocationCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <worldName>"))
+                .permission("spongesurvivalgames.survivalgame.add.spawnpoint")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
+                .executor(new AddSpawnLocationCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, addSpawnLocationCommand, "ssg-add-spawnpoint");
+
+        CommandSpec clearSpawnLocationsCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.clear.spawnpoints")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new ClearSpawnLocationsCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, clearSpawnLocationsCommand, "ssg-clear-spawnpoints");
+
+        CommandSpec printWorldCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.print.world")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintWorldCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, printWorldCommand, "ssg-clear-print-world");
+
+        CommandSpec printCenterLocationCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.print.center")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintCenterLocationCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, printCenterLocationCommand, "ssg-print-center");
+
+        CommandSpec printSpawnLocationsCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.print.spawnpoints")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintSpawnLocationsCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, printSpawnLocationsCommand, "ssg-print-spawnpoints");
     }
 
     public Logger getLogger() {
