@@ -28,6 +28,7 @@ public class SurvivalGame {
     private Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
     private Optional<Location<World>> exitLocation = Optional.absent();
     private int playerLimit = 25; //Default player limit
+    private Optional<World> world = Optional.absent();
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -48,7 +49,7 @@ public class SurvivalGame {
             throw new NoWorldNameException();
         }
 
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldName.get());
+        world = plugin.getGame().getServer().getWorld(worldName.get());
         if (!world.isPresent()) {
             throw new NoWorldException();
         }
@@ -73,7 +74,6 @@ public class SurvivalGame {
         Set<UUID> missingPlayers = new HashSet<UUID>();
         Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
         spawnLocations.addAll(this.spawnLocations);
-        World world = plugin.getGame().getServer().getWorld(worldName.get()).get();
 
         Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
         for (UUID playerUUID : playerSet) {
@@ -94,10 +94,21 @@ public class SurvivalGame {
 
         }
 
+        playerSet.removeAll(missingPlayers);
+
     }
 
     public void setStopped() {
         gameState = SurvivalGameState.STOPPED;
+
+        // Spawn players to the exit location
+        for (UUID playerUUID: playerSet){
+            Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
+            if (player.isPresent()) {
+                ((Entity) player).setLocation(exitLocation.get());
+            }
+        }
+
         playerSet.clear();
     }
 
