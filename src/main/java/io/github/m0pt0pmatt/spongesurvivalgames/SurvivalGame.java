@@ -1,11 +1,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.service.scheduler.SchedulerService;
+import org.spongepowered.api.service.scheduler.TaskBuilder;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -55,9 +61,40 @@ public class SurvivalGame {
             throw new NoExitLocationException();
         }
 
-        //Spawn players, facing them towards center if it exists, holding them in place till match starts
+        startGame();
 
         gameState = SurvivalGameState.RUNNING;
+    }
+
+    private void startGame() {
+
+        //Spawn players
+
+        Set<UUID> missingPlayers = new HashSet<UUID>();
+        Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
+        spawnLocations.addAll(this.spawnLocations);
+        World world = plugin.getGame().getServer().getWorld(worldName.get()).get();
+
+        Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
+        for (UUID playerUUID: playerSet){
+            Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
+            if (!player.isPresent()){
+                missingPlayers.add(playerUUID);
+            }
+            else{
+                Location<World> spawnPoint = spawnIterator.next();
+
+                //Teleport player
+                ((Entity)player).setLocation(spawnPoint);
+
+                //Postion player to look at center
+                if (centerLocation.isPresent()){
+                    ((Entity)player).setRotation(new Vector3d(0, 0, 0)); //TODO: compute real rotation
+                }
+            }
+
+        }
+
     }
 
     public void setStopped() {
