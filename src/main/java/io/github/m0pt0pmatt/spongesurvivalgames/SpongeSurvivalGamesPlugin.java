@@ -2,6 +2,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintCenterLocationCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintPlayerLimitCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintSpawnLocationsCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.PrintWorldCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready.AddPlayerToSurvivalGame;
@@ -164,6 +165,22 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new PrintSpawnLocationsCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, printSpawnLocationsCommand, "ssg-print-spawnpoints");
+
+        CommandSpec setPlayerLimitCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <playerLimit>"))
+                .permission("spongesurvivalgames.survivalgame.set.playerlimit")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("playerLimit")))
+                .executor(new SetPlayerLimitCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, setPlayerLimitCommand, "ssg-set-playerlimit");
+
+        CommandSpec printPlayerLimitCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.survivalgame.print.playerLimit")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintPlayerLimitCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, printPlayerLimitCommand, "ssg-print-playerlimit");
     }
 
     public Logger getLogger() {

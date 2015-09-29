@@ -2,6 +2,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -36,9 +37,14 @@ public class AddPlayerToSurvivalGame extends ReadyCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).addPlayer(player.get().getUniqueId());
-        plugin.getLogger().info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
+        try {
+            plugin.getSurvivalGameMap().get(id).addPlayer(player.get().getUniqueId());
+        } catch (PlayerLimitReachedException e) {
+            plugin.getLogger().error("Player limit reached for game \"" + id + "\".");
+            return CommandResult.empty();
+        }
 
+        plugin.getLogger().info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
         return CommandResult.success();
     }
 }

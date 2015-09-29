@@ -1,10 +1,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import com.google.common.base.Optional;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -24,6 +21,7 @@ public class SurvivalGame {
     private Optional<Location<World>> centerLocation = Optional.absent();
     private Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
     private Optional<Location<World>> exitLocation = Optional.absent();
+    private int playerLimit = 25; //Default player limit
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -67,7 +65,10 @@ public class SurvivalGame {
         playerSet.clear();
     }
 
-    public void addPlayer(UUID player) {
+    public void addPlayer(UUID player) throws PlayerLimitReachedException {
+        if (playerSet.size() >= playerLimit){
+            throw new PlayerLimitReachedException();
+        }
         playerSet.add(player);
     }
 
@@ -105,5 +106,13 @@ public class SurvivalGame {
 
     public Set<Location<World>> getSpawnLocations() {
         return spawnLocations;
+    }
+
+    public void setPlayerLimit(Integer playerLimit) {
+        this.playerLimit = playerLimit;
+    }
+
+    public int getPlayerLimit() {
+        return playerLimit;
     }
 }
