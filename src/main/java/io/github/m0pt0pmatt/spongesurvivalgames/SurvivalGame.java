@@ -44,20 +44,20 @@ public class SurvivalGame {
 
     public void setRunning() throws NoWorldNameException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
 
-        if (!worldName.isPresent()){
+        if (!worldName.isPresent()) {
             throw new NoWorldNameException();
         }
 
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName.get());
-        if (!world.isPresent()){
+        if (!world.isPresent()) {
             throw new NoWorldException();
         }
 
-        if (playerSet.size() > spawnLocations.size()){
+        if (playerSet.size() > spawnLocations.size()) {
             throw new NotEnoughSpawnPointsException();
         }
 
-        if (!exitLocation.isPresent()){
+        if (!exitLocation.isPresent()) {
             throw new NoExitLocationException();
         }
 
@@ -76,20 +76,19 @@ public class SurvivalGame {
         World world = plugin.getGame().getServer().getWorld(worldName.get()).get();
 
         Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
-        for (UUID playerUUID: playerSet){
+        for (UUID playerUUID : playerSet) {
             Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-            if (!player.isPresent()){
+            if (!player.isPresent()) {
                 missingPlayers.add(playerUUID);
-            }
-            else{
+            } else {
                 Location<World> spawnPoint = spawnIterator.next();
 
                 //Teleport player
-                ((Entity)player).setLocation(spawnPoint);
+                ((Entity) player).setLocation(spawnPoint);
 
                 //Postion player to look at center
-                if (centerLocation.isPresent()){
-                    ((Entity)player).setRotation(new Vector3d(0, 0, 0)); //TODO: compute real rotation
+                if (centerLocation.isPresent()) {
+                    ((Entity) player).setRotation(new Vector3d(0, 0, 0)); //TODO: compute real rotation
                 }
             }
 
@@ -103,7 +102,7 @@ public class SurvivalGame {
     }
 
     public void addPlayer(UUID player) throws PlayerLimitReachedException {
-        if (playerSet.size() >= playerLimit){
+        if (playerSet.size() >= playerLimit) {
             throw new PlayerLimitReachedException();
         }
         playerSet.add(player);
@@ -129,7 +128,7 @@ public class SurvivalGame {
         this.worldName = Optional.of(worldName);
     }
 
-    public void setExitLocation(Location<World> exitLocation){
+    public void setExitLocation(Location<World> exitLocation) {
         this.exitLocation = Optional.of(exitLocation);
     }
 
