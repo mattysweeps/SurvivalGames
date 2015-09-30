@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
@@ -6,15 +6,13 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public class PrintCenterLocationCommand extends SurvivalGameCommand {
+public class PrintWorldCommand extends GameCommand {
 
-    public PrintCenterLocationCommand(SpongeSurvivalGamesPlugin plugin) {
+    public PrintWorldCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -25,11 +23,11 @@ public class PrintCenterLocationCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        Optional<Location<World>> centerLocation = plugin.getSurvivalGameMap().get(id).getCenterLocation();
-        if (centerLocation.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
+        Optional<String> worldName = plugin.getSurvivalGameMap().get(id).getWorldName();
+        if (worldName.isPresent()) {
+            plugin.getLogger().info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
         } else {
-            plugin.getLogger().info("Game: \"" + id + "\", No Center Location.");
+            plugin.getLogger().info("Game: \"" + id + "\", No World.");
         }
 
         return CommandResult.success();

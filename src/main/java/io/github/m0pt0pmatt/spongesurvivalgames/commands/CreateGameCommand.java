@@ -12,11 +12,11 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 /**
  * Created by matthew on 9/27/15.
  */
-public class CreateSurvivalGameCommand implements CommandExecutor {
+public class CreateGameCommand implements CommandExecutor {
 
     private final SpongeSurvivalGamesPlugin plugin;
 
-    public CreateSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public CreateGameCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
@@ -9,9 +9,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class SetReadySurvivalGameCommand extends StoppedCommand {
+public class ClearSpawnLocationsCommand extends StoppedCommand {
 
-    public SetReadySurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ClearSpawnLocationsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -22,8 +22,8 @@ public class SetReadySurvivalGameCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setReady();
-        plugin.getLogger().error("Survival Game \"" + id + "\" is now set to READY.");
+        plugin.getSurvivalGameMap().get(id).clearSpawnLocations();
+        plugin.getLogger().info("Spawn locations cleared for game \"" + id + "\".");
 
         return CommandResult.success();
     }

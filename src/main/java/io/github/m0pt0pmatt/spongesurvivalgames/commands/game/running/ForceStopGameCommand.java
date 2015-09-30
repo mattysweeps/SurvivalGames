@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
@@ -7,11 +7,11 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/28/15.
+ * Created by matthew on 9/27/15.
  */
-public class PrintPlayerLimitCommand extends SurvivalGameCommand {
+public class ForceStopGameCommand extends RunningCommand {
 
-    public PrintPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ForceStopGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -22,7 +22,9 @@ public class PrintPlayerLimitCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + plugin.getSurvivalGameMap().get(id).getPlayerLimit() + "\".");
+        plugin.getSurvivalGameMap().get(id).setStopped();
+        plugin.getLogger().error("Survival Game \"" + id + "\" is now STOPPED.");
+
         return CommandResult.success();
     }
 }

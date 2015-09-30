@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
@@ -8,11 +8,11 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * Created by matthew on 9/28/15.
  */
-public class PrintWorldCommand extends SurvivalGameCommand {
+public class SetPlayerLimitCommand extends StoppedCommand {
 
-    public PrintWorldCommand(SpongeSurvivalGamesPlugin plugin) {
+    public SetPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -23,13 +23,14 @@ public class PrintWorldCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        Optional<String> worldName = plugin.getSurvivalGameMap().get(id).getWorldName();
-        if (worldName.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
-        } else {
-            plugin.getLogger().info("Game: \"" + id + "\", No World.");
+        Optional<Integer> playerLimit = args.getOne("playerLimit");
+        if (!playerLimit.isPresent()) {
+            plugin.getLogger().error("Player limit was not present.");
+            return CommandResult.empty();
         }
 
+        plugin.getSurvivalGameMap().get(id).setPlayerLimit(playerLimit.get());
+        plugin.getLogger().info("Player limit for game \"" + id + "\" set to " + playerLimit.get() + ".");
         return CommandResult.success();
     }
 }

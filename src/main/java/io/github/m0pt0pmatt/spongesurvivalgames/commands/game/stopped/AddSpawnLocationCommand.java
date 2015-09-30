@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
@@ -12,9 +12,9 @@ import org.spongepowered.api.world.World;
 /**
  * Created by matthew on 9/27/15.
  */
-public class SetCenterLocationCommand extends StoppedCommand {
+public class AddSpawnLocationCommand extends StoppedCommand {
 
-    public SetCenterLocationCommand(SpongeSurvivalGamesPlugin plugin) {
+    public AddSpawnLocationCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -46,8 +46,8 @@ public class SetCenterLocationCommand extends StoppedCommand {
         }
 
         Location<World> location = new Location<World>(world.get(), x.get(), y.get(), z.get());
-        plugin.getSurvivalGameMap().get(id).setCenterLocation(location);
-        plugin.getLogger().info("Center location for game \"" + id + "\" set to " + location.toString() + ".");
+        plugin.getSurvivalGameMap().get(id).addSpawnLocation(location);
+        plugin.getLogger().info("Spawn location " + location.toString() + " added for game \"" + id + "\".");
 
         return CommandResult.success();
     }

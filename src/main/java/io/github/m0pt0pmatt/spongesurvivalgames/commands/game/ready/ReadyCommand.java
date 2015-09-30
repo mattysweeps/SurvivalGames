@@ -1,6 +1,6 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.running;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.SurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public abstract class RunningCommand extends SurvivalGameCommand {
+public abstract class ReadyCommand extends GameCommand {
 
-    public RunningCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ReadyCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -24,8 +24,8 @@ public abstract class RunningCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.RUNNING)) {
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
+        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)) {
+            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
             return CommandResult.empty();
         }
 

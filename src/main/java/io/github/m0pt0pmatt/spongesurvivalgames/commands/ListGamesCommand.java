@@ -13,11 +13,11 @@ import java.util.Map;
 /**
  * Created by matthew on 9/27/15.
  */
-public class ListSurvivalGameCommand implements CommandExecutor {
+public class ListGamesCommand implements CommandExecutor {
 
     private final SpongeSurvivalGamesPlugin plugin;
 
-    public ListSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ListGamesCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 

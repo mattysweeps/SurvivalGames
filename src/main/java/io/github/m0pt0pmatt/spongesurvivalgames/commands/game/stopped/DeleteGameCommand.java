@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
@@ -9,9 +9,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class DeleteSurvivalGameCommand extends StoppedCommand {
+public class DeleteGameCommand extends StoppedCommand {
 
-    public DeleteSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public DeleteGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 

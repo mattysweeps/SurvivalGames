@@ -5,8 +5,6 @@ import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.service.scheduler.SchedulerService;
-import org.spongepowered.api.service.scheduler.TaskBuilder;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -22,10 +20,10 @@ public class SurvivalGame {
 
     private final SpongeSurvivalGamesPlugin plugin;
     private SurvivalGameState gameState;
-    private final Set<UUID> playerSet = new HashSet<UUID>();
+    private final Set<UUID> playerSet = new HashSet<>();
     private Optional<String> worldName = Optional.absent();
     private Optional<Location<World>> centerLocation = Optional.absent();
-    private Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
+    private Set<Location<World>> spawnLocations = new HashSet<>();
     private Optional<Location<World>> exitLocation = Optional.absent();
     private int playerLimit = 25; //Default player limit
     private Optional<World> world = Optional.absent();
@@ -71,8 +69,8 @@ public class SurvivalGame {
 
         //Spawn players
 
-        Set<UUID> missingPlayers = new HashSet<UUID>();
-        Set<Location<World>> spawnLocations = new HashSet<Location<World>>();
+        Set<UUID> missingPlayers = new HashSet<>();
+        Set<Location<World>> spawnLocations = new HashSet<>();
         spawnLocations.addAll(this.spawnLocations);
 
         Iterator<Location<World>> spawnIterator = spawnLocations.iterator();

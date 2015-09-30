@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
@@ -9,9 +9,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 /**
  * Created by matthew on 9/27/15.
  */
-public class StopSurvivalGameCommand extends ReadyCommand {
+public class StopGameCommand extends ReadyCommand {
 
-    public StopSurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public StopGameCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 

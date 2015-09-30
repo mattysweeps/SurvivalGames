@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
@@ -6,14 +6,15 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public class SetWorldCommand extends StoppedCommand {
+public class SetCenterLocationCommand extends StoppedCommand {
 
-    public SetWorldCommand(SpongeSurvivalGamesPlugin plugin) {
+    public SetCenterLocationCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -36,8 +37,17 @@ public class SetWorldCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setWorld(worldName.get());
-        plugin.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
+        Optional<Integer> x = args.getOne("x");
+        Optional<Integer> y = args.getOne("y");
+        Optional<Integer> z = args.getOne("z");
+        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
+            plugin.getLogger().error("Missing one or more axis for coordinates.");
+            return CommandResult.empty();
+        }
+
+        Location<World> location = new Location<World>(world.get(), x.get(), y.get(), z.get());
+        plugin.getSurvivalGameMap().get(id).setCenterLocation(location);
+        plugin.getLogger().info("Center location for game \"" + id + "\" set to " + location.toString() + ".");
 
         return CommandResult.success();
     }

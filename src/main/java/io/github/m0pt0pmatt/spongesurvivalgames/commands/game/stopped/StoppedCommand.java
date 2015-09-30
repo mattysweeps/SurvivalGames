@@ -1,21 +1,19 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
-
-import java.util.Set;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public class PrintSpawnLocationsCommand extends SurvivalGameCommand {
+public abstract class StoppedCommand extends GameCommand {
 
-    public PrintSpawnLocationsCommand(SpongeSurvivalGamesPlugin plugin) {
+    public StoppedCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -26,10 +24,9 @@ public class PrintSpawnLocationsCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        Set<Location<World>> spawnLocations = plugin.getSurvivalGameMap().get(id).getSpawnLocations();
-        plugin.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Location<World> spawnLocation : spawnLocations) {
-            plugin.getLogger().info(spawnLocation.toString());
+        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)) {
+            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
+            return CommandResult.empty();
         }
 
         return CommandResult.success();

@@ -1,19 +1,21 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame.SurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
+
+import java.util.Set;
 
 /**
  * Created by matthew on 9/27/15.
  */
-public abstract class ReadyCommand extends SurvivalGameCommand {
+public class PrintSpawnLocationsCommand extends GameCommand {
 
-    public ReadyCommand(SpongeSurvivalGamesPlugin plugin) {
+    public PrintSpawnLocationsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -24,9 +26,10 @@ public abstract class ReadyCommand extends SurvivalGameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)) {
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
-            return CommandResult.empty();
+        Set<Location<World>> spawnLocations = plugin.getSurvivalGameMap().get(id).getSpawnLocations();
+        plugin.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
+        for (Location<World> spawnLocation : spawnLocations) {
+            plugin.getLogger().info(spawnLocation.toString());
         }
 
         return CommandResult.success();

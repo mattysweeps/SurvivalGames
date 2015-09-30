@@ -1,4 +1,4 @@
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.survivalgame;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
@@ -11,12 +11,12 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 /**
  * Created by matthew on 9/27/15.
  */
-public abstract class SurvivalGameCommand implements CommandExecutor {
+public abstract class GameCommand implements CommandExecutor {
 
     protected final SpongeSurvivalGamesPlugin plugin;
     protected String id;
 
-    public SurvivalGameCommand(SpongeSurvivalGamesPlugin plugin) {
+    public GameCommand(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
     }
 
