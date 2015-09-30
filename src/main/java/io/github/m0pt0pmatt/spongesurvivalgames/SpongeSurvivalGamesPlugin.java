@@ -119,7 +119,7 @@ public class SpongeSurvivalGamesPlugin {
         game.getCommandDispatcher().register(this, setWorldCommand, "ssg-set-world");
 
         CommandSpec setCenterLocationCommand = CommandSpec.builder()
-                .description(Texts.of("<id> <worldName>"))
+                .description(Texts.of("<id> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.set.center")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
                 .executor(new SetCenterLocationCommand(this))
@@ -127,9 +127,9 @@ public class SpongeSurvivalGamesPlugin {
         game.getCommandDispatcher().register(this, setCenterLocationCommand, "ssg-set-center");
 
         CommandSpec addSpawnLocationCommand = CommandSpec.builder()
-                .description(Texts.of("<id> <worldName>"))
+                .description(Texts.of("<id> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.add.spawnpoint")
-                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
                 .executor(new AddSpawnLocationCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, addSpawnLocationCommand, "ssg-add-spawnpoint");
@@ -181,6 +181,14 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new PrintPlayerLimitCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, printPlayerLimitCommand, "ssg-print-playerlimit");
+
+        CommandSpec setExitLocationCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <worldName> <x> <y> <z>"))
+                .permission("spongesurvivalgames.game.set.exitlocation")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
+                .executor(new SetExitLocationCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, setExitLocationCommand, "ssg-set-exitlocation");
     }
 
     public Logger getLogger() {

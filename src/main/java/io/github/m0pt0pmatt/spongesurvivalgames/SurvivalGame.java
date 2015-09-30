@@ -121,12 +121,22 @@ public class SurvivalGame {
         playerSet.remove(player);
     }
 
-    public void setCenterLocation(Location<World> location) {
-        centerLocation = Optional.of(location);
+    public void setCenterLocation(int x, int y, int z) throws NoWorldException {
+
+        if (!world.isPresent()){
+            throw new NoWorldException();
+        }
+
+        centerLocation = Optional.of(new Location<World>(world.get(), x, y, z));
     }
 
-    public void addSpawnLocation(Location<World> location) {
-        spawnLocations.add(location);
+    public void addSpawnLocation(int x, int y, int z) throws NoWorldException {
+
+        if (!world.isPresent()){
+            throw new NoWorldException();
+        }
+
+        spawnLocations.add(new Location<World>(world.get(), x, y, z));
     }
 
     public void clearSpawnLocations() {
@@ -137,8 +147,13 @@ public class SurvivalGame {
         this.worldName = Optional.of(worldName);
     }
 
-    public void setExitLocation(Location<World> exitLocation) {
-        this.exitLocation = Optional.of(exitLocation);
+    public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
+        Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
+        if (!world.isPresent()){
+            throw new NoWorldException();
+        }
+
+        this.exitLocation = Optional.of(new Location<World>(world.get(), x, y, z));
     }
 
     public Optional<String> getWorldName() {

@@ -2,6 +2,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -31,12 +32,6 @@ public class SetCenterLocationCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldName.get());
-        if (!world.isPresent()) {
-            plugin.getLogger().error("World \"" + worldName.get() + "\" does not exist.");
-            return CommandResult.empty();
-        }
-
         Optional<Integer> x = args.getOne("x");
         Optional<Integer> y = args.getOne("y");
         Optional<Integer> z = args.getOne("z");
@@ -45,10 +40,14 @@ public class SetCenterLocationCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        Location<World> location = new Location<World>(world.get(), x.get(), y.get(), z.get());
-        plugin.getSurvivalGameMap().get(id).setCenterLocation(location);
-        plugin.getLogger().info("Center location for game \"" + id + "\" set to " + location.toString() + ".");
+        try{
+            plugin.getSurvivalGameMap().get(id).setCenterLocation(x.get(), y.get(), z.get());
+        } catch (NoWorldException e){
+            plugin.getLogger().error("No world assigned. Assign the world first.");
+            return CommandResult.empty();
+        }
 
+        plugin.getLogger().info("Center location for game \"" + id + "\" set.");
         return CommandResult.success();
     }
 }
