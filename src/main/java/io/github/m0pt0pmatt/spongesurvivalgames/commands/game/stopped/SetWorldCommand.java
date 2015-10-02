@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import com.google.common.base.Optional;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -55,15 +56,14 @@ public class SetWorldCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldName.get());
-        if (!world.isPresent()) {
+        try {
+            plugin.getSurvivalGameMap().get(id).setWorld(worldName.get());
+        } catch (NoWorldException e) {
             plugin.getLogger().error("World \"" + worldName.get() + "\" does not exist.");
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setWorld(worldName.get());
         plugin.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
-
         return CommandResult.success();
     }
 }

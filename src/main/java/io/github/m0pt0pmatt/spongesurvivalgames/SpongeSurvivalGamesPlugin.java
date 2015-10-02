@@ -34,6 +34,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerToG
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerFromGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Listener;
@@ -118,6 +119,14 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new StopGameCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, stopSurvivalGameCommand, "ssg-stop");
+
+        CommandSpec forceStopSurvivalGameCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.game.forcestop")
+                .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
+                .executor(new ForceStopGameCommand(this))
+                .build();
+        game.getCommandDispatcher().register(this, forceStopSurvivalGameCommand, "ssg-forcestop");
 
         CommandSpec addPlayerToSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <playerName>"))

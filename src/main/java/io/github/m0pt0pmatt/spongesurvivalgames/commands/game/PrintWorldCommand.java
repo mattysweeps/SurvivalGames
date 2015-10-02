@@ -31,6 +31,7 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
+import org.spongepowered.api.world.World;
 
 /**
  * Created by matthew on 9/27/15.
@@ -48,9 +49,9 @@ public class PrintWorldCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<String> worldName = plugin.getSurvivalGameMap().get(id).getWorldName();
-        if (worldName.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
+        Optional<World> world = plugin.getSurvivalGameMap().get(id).getWorld();
+        if (world.isPresent()) {
+            plugin.getLogger().info("Game: \"" + id + "\", World: \"" + world.get().getName() + "\".");
         } else {
             plugin.getLogger().info("Game: \"" + id + "\", No World.");
         }
