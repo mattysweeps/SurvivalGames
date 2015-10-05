@@ -25,7 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -35,7 +36,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to print the center location of a game if it exists
  */
 public class PrintCenterLocationCommand extends GameCommand {
 

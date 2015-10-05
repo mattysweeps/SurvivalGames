@@ -36,7 +36,7 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 import java.util.Map;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to list all games
  */
 public class ListGamesCommand implements CommandExecutor {
 

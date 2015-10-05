@@ -25,7 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -33,8 +34,10 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.world.World;
 
+import java.util.UUID;
+
 /**
- * Created by matthew on 9/27/15.
+ * Command to print the name of a game's assigned world
  */
 public class PrintWorldCommand extends GameCommand {
 
@@ -49,12 +52,14 @@ public class PrintWorldCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<World> world = plugin.getSurvivalGameMap().get(id).getWorld();
-        if (world.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", World: \"" + world.get().getName() + "\".");
-        } else {
-            plugin.getLogger().info("Game: \"" + id + "\", No World.");
+        Optional<UUID> worldUUID = plugin.getSurvivalGameMap().get(id).getWorldUUID();
+        if (!worldUUID.isPresent()) {
+            plugin.getLogger().error("Game: \"" + id + "\", No World set.");
+            return CommandResult.empty();
         }
+
+        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
+        plugin.getLogger().info("Game: \"" + id + "\", World: \"" + world.get().getName() + "\".");
 
         return CommandResult.success();
     }

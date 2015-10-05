@@ -34,7 +34,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * ReadyCommands can only be executed if the game is in the READY state
  */
 public abstract class ReadyCommand extends GameCommand {
 

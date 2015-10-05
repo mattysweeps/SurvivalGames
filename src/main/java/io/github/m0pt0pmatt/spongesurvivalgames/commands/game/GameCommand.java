@@ -25,7 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -34,7 +35,8 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 /**
- * Created by matthew on 9/27/15.
+ * GameCommands require the name of the game as the first argument
+ * The unique name of the game is stored for the use of child commands
  */
 public abstract class GameCommand implements CommandExecutor {
 

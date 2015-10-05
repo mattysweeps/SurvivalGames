@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 /**
- * Created by matthew on 9/28/15.
+ * Exception thrown when there were not enough spawn points for a game
  */
 public class NotEnoughSpawnPointsException extends SurvivalGameException {
 }

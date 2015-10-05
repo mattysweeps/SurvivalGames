@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 /**
- * Created by matthew on 9/28/15.
+ * Exception thrown when the player limit for a game was reached
  */
 public class PlayerLimitReachedException extends Exception {
 }

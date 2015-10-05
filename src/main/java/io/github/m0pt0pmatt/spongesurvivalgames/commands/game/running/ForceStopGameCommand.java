@@ -32,7 +32,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to stop a game when it is in the RUNNING state
  */
 public class ForceStopGameCommand extends RunningCommand {
 

@@ -34,7 +34,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * StoppedCommands can only be executed if the game is in the STOPPED state
  */
 public abstract class StoppedCommand extends GameCommand {
 

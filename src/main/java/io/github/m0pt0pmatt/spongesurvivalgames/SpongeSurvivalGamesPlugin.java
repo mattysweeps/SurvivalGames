@@ -49,6 +49,9 @@ import org.spongepowered.api.util.command.spec.CommandSpec;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * SpongeSurvivalGames Sponge Plugin
+ */
 @Plugin(id = "spongesurvivalgames", name = "Sponge Survival Games", version = "1.0")
 public class SpongeSurvivalGamesPlugin {
 
@@ -155,7 +158,7 @@ public class SpongeSurvivalGamesPlugin {
         CommandSpec setCenterLocationCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.set.center")
-                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
                 .executor(new SetCenterLocationCommand(this))
                 .build();
         game.getCommandDispatcher().register(this, setCenterLocationCommand, "ssg-set-center");

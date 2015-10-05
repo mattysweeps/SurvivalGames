@@ -32,7 +32,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/28/15.
+ * Command to print the player limit of a game
  */
 public class PrintPlayerLimitCommand extends GameCommand {
 

@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 /**
- * Created by matthew on 9/28/15.
+ * Exception thrown when the exit location for a game was needed
  */
 public class NoExitLocationException extends SurvivalGameException {
 }

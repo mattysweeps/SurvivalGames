@@ -25,18 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
 
 /**
- * Created by matthew on 9/29/15.
+ * Command to set the exit location for a game
+ * The exit location is where players go when they leave the game (by quitting, dying, or winning)
  */
 public class SetExitLocationCommand extends StoppedCommand {
 
@@ -65,9 +65,9 @@ public class SetExitLocationCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        try{
+        try {
             plugin.getSurvivalGameMap().get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
-        } catch (NoWorldException e){
+        } catch (NoWorldException e) {
             plugin.getLogger().error("No such world \"" + worldName.get() + "\".");
             return CommandResult.empty();
         }

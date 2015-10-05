@@ -25,17 +25,17 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.World;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to set the world where the game will be played
  */
 public class SetWorldCommand extends StoppedCommand {
 

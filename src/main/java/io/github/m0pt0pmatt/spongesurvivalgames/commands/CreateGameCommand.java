@@ -25,7 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.spongepowered.api.util.command.CommandException;
@@ -35,7 +36,7 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to create a new game
  */
 public class CreateGameCommand implements CommandExecutor {
 

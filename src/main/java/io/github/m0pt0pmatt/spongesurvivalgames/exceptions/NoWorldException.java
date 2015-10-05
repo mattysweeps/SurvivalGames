@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 /**
- * Created by matthew on 9/28/15.
+ * Exception thrown when the specified world did not exist
  */
 public class NoWorldException extends SurvivalGameException {
 }

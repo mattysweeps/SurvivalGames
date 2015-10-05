@@ -34,7 +34,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * RunningCommands can only be executed if the game is in the RUNNING state
  */
 public abstract class RunningCommand extends GameCommand {
 

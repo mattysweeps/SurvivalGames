@@ -25,20 +25,21 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to set a game to the RUNNING state (start the game)
  */
 public class StartGameCommand extends ReadyCommand {
 
@@ -73,11 +74,11 @@ public class StartGameCommand extends ReadyCommand {
         } catch (NoExitLocationException e) {
             plugin.getLogger().error("Survival Game \"" + id.get() + "\" does not have an exit location.");
             return CommandResult.empty();
-        } catch (NoWorldException e) {
+        } catch (WorldNotSetException e) {
             plugin.getLogger().error("Survival Game \"" + id.get() + "\" does not have a world assigned to it.");
             return CommandResult.empty();
-        } catch (NoWorldNameException e) {
-            plugin.getLogger().error("Survival Game \"" + id.get() + "\" does not have a world assigned to it.");
+        } catch (NoWorldException e) {
+            plugin.getLogger().error("World does not exist.");
             return CommandResult.empty();
         }
 

@@ -25,7 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.spongepowered.api.entity.living.player.Player;
@@ -35,7 +36,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to add a player to a game
  */
 public class AddPlayerToGame extends ReadyCommand {
 

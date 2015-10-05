@@ -36,7 +36,7 @@ import org.spongepowered.api.world.World;
 import java.util.Set;
 
 /**
- * Created by matthew on 9/27/15.
+ * Command to print the spawn locations of a game
  */
 public class PrintSpawnLocationsCommand extends GameCommand {
 
