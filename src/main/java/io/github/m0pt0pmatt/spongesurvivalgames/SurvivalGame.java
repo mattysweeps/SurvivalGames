@@ -163,7 +163,7 @@ public class SurvivalGame {
             location.add(0, -1, 0).setBlockType(BlockTypes.BARRIER);
 
             plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(10, TimeUnit.SECONDS)
+                    .delay(countdownTime, TimeUnit.SECONDS)
                     .execute(new Runnable() {
                         @Override
                         public void run() {
