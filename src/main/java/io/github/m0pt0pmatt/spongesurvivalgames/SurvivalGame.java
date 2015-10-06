@@ -28,15 +28,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 import java.util.Optional;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CountdownTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.MessagePlayerTask;
 import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.mutable.entity.GameModeData;
-import org.spongepowered.api.data.value.mutable.MutableBoundedValue;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.gamemode.GameMode;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -59,6 +55,7 @@ public class SurvivalGame {
     private Optional<Location<World>> centerLocation = Optional.empty();
     private final Set<UUID> playerSet = new HashSet<>();
     private int playerLimit = 25; //Default player limit
+    private int countdownTime = 10; //Default countdown time
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -154,71 +151,16 @@ public class SurvivalGame {
             snapshots.add(location.add(0, 2, 0).createSnapshot());
             snapshots.add(location.add(0, -1, 0).createSnapshot());
 
-            location.add(1, 0, 0).setBlockType(BlockTypes.GLASS);
-            location.add(1, 1, 0).setBlockType(BlockTypes.GLASS);
-            location.add(-1, 0, 0).setBlockType(BlockTypes.GLASS);
-            location.add(-1, 1, 0).setBlockType(BlockTypes.GLASS);
-            location.add(0, 0, 1).setBlockType(BlockTypes.GLASS);
-            location.add(0, 1, 1).setBlockType(BlockTypes.GLASS);
-            location.add(0, 0, -1).setBlockType(BlockTypes.GLASS);
-            location.add(0, 1, -1).setBlockType(BlockTypes.GLASS);
-            location.add(0, 2, 0).setBlockType(BlockTypes.GLASS);
-            location.add(0, -1, 0).setBlockType(BlockTypes.GLASS);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(0, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(10, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(1, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(9, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(2, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(8, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(3, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(7, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(4, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(6, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(5, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(5, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(6, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(4, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(7, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(3, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(8, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(2, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(9, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(1, players))
-                    .submit(plugin);
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(10, TimeUnit.SECONDS)
-                    .execute(new CountdownTask(0, players))
-                    .submit(plugin);
+            location.add(1, 0, 0).setBlockType(BlockTypes.BARRIER);
+            location.add(1, 1, 0).setBlockType(BlockTypes.BARRIER);
+            location.add(-1, 0, 0).setBlockType(BlockTypes.BARRIER);
+            location.add(-1, 1, 0).setBlockType(BlockTypes.BARRIER);
+            location.add(0, 0, 1).setBlockType(BlockTypes.BARRIER);
+            location.add(0, 1, 1).setBlockType(BlockTypes.BARRIER);
+            location.add(0, 0, -1).setBlockType(BlockTypes.BARRIER);
+            location.add(0, 1, -1).setBlockType(BlockTypes.BARRIER);
+            location.add(0, 2, 0).setBlockType(BlockTypes.BARRIER);
+            location.add(0, -1, 0).setBlockType(BlockTypes.BARRIER);
 
             plugin.getGame().getScheduler().createTaskBuilder()
                     .delay(10, TimeUnit.SECONDS)
@@ -230,6 +172,18 @@ public class SurvivalGame {
                     })
                     .submit(plugin);
         }
+
+        for (int i = countdownTime; i > 0; i--){
+            plugin.getGame().getScheduler().createTaskBuilder()
+                    .delay(countdownTime - i, TimeUnit.SECONDS)
+                    .execute(new MessagePlayerTask(Integer.toString(i), players))
+                    .submit(plugin);
+        }
+
+        plugin.getGame().getScheduler().createTaskBuilder()
+                .delay(countdownTime, TimeUnit.SECONDS)
+                .execute(new MessagePlayerTask("Go!", players))
+                .submit(plugin);
 
     }
 
