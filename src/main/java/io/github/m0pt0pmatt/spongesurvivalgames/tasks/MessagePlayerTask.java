@@ -30,18 +30,18 @@ import org.spongepowered.api.text.Texts;
 
 import java.util.Set;
 
-public class CountdownTask implements Runnable {
+public class MessagePlayerTask implements Runnable {
 
     private Set<Player> playerSet;
-    private int time;
+    private String message;
 
-    public CountdownTask(int time, Set<Player> playerSet){
-        this.time = time;
+    public MessagePlayerTask(String message, Set<Player> playerSet){
+        this.message = message;
         this.playerSet = playerSet;
     }
 
     @Override
     public void run() {
-        for (Player player: playerSet) player.sendMessage(Texts.of(time));
+        for (Player player: playerSet) player.sendMessage(Texts.of(message));
     }
 }
