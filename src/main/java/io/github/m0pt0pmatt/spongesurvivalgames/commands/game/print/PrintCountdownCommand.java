@@ -23,20 +23,18 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
-/**
- * Command to print the player limit of a game
- */
-public class PrintPlayerLimitCommand extends GameCommand {
+public class PrintCountdownCommand extends GameCommand {
 
-    public PrintPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
+    public PrintCountdownCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -47,7 +45,7 @@ public class PrintPlayerLimitCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + plugin.getSurvivalGameMap().get(id).getPlayerLimit() + "\".");
+        plugin.getLogger().info("Game: \"" + id + "\", Countdown Time: \"" + plugin.getSurvivalGameMap().get(id).getCountdownTime() + "\".");
         return CommandResult.success();
     }
 }

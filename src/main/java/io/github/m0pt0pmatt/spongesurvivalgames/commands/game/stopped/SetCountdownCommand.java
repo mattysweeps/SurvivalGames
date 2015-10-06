@@ -26,17 +26,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
-/**
- * Command to set a game to the READY state
- */
-public class SetReadyGameCommand extends StoppedCommand {
+import java.util.Optional;
 
-    public SetReadyGameCommand(SpongeSurvivalGamesPlugin plugin) {
+public class SetCountdownCommand extends StoppedCommand {
+
+    public SetCountdownCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -47,9 +47,20 @@ public class SetReadyGameCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setReady();
-        plugin.getLogger().error("Survival Game \"" + id + "\" is now set to READY.");
+        Optional<Integer> countdownTime = args.getOne("countdown");
+        if (!countdownTime.isPresent()){
+            plugin.getLogger().error("No Countdown time specified");
+            return CommandResult.empty();
+        }
 
+        try {
+            plugin.getSurvivalGameMap().get(id).setCountdownTime(countdownTime.get());
+        } catch (NegativeCountdownTimeException e) {
+            plugin.getLogger().error("Negative countdown times are not valid");
+            return CommandResult.empty();
+        }
+
+        plugin.getLogger().info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
         return CommandResult.success();
     }
 }

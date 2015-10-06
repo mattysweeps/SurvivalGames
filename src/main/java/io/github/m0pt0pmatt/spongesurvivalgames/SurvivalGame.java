@@ -48,26 +48,26 @@ import java.util.concurrent.TimeUnit;
 public class SurvivalGame {
 
     private final SpongeSurvivalGamesPlugin plugin;
-    private SurvivalGameState gameState;
+    private SurvivalGameState state;
     private Optional<UUID> worldUUID = Optional.empty();
-    private Set<Location<World>> spawnLocations = new HashSet<>();
-    private Optional<Location<World>> exitLocation = Optional.empty();
-    private Optional<Location<World>> centerLocation = Optional.empty();
+    private Set<Location<World>> spawns = new HashSet<>();
+    private Optional<Location<World>> exit = Optional.empty();
+    private Optional<Location<World>> center = Optional.empty();
     private final Set<UUID> playerSet = new HashSet<>();
     private int playerLimit = 25; //Default player limit
     private int countdownTime = 10; //Default countdown time
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
-        gameState = SurvivalGameState.STOPPED;
+        state = SurvivalGameState.STOPPED;
     }
 
-    public SurvivalGameState getGameState() {
-        return gameState;
+    public SurvivalGameState getState() {
+        return state;
     }
 
     public void setReady() {
-        gameState = SurvivalGameState.READY;
+        state = SurvivalGameState.READY;
     }
 
     public void setRunning() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
@@ -81,17 +81,17 @@ public class SurvivalGame {
             throw new NoWorldException();
         }
 
-        if (playerSet.size() > spawnLocations.size()) {
+        if (playerSet.size() > spawns.size()) {
             throw new NotEnoughSpawnPointsException();
         }
 
-        if (!exitLocation.isPresent()) {
+        if (!exit.isPresent()) {
             throw new NoExitLocationException();
         }
 
         startGame();
 
-        gameState = SurvivalGameState.RUNNING;
+        state = SurvivalGameState.RUNNING;
     }
 
     private void startGame() throws NoWorldException {
@@ -106,7 +106,7 @@ public class SurvivalGame {
         Set<UUID> missingPlayers = new HashSet<>();
         Set<Player> players = new HashSet<>();
         Set<Location<World>> spawnLocations = new HashSet<>();
-        spawnLocations.addAll(this.spawnLocations);
+        spawnLocations.addAll(this.spawns);
 
         Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
         for (UUID playerUUID : playerSet) {
@@ -129,8 +129,8 @@ public class SurvivalGame {
             player.setLocation(spawnPoint.add(0.5, 0, 0.5));
 
             //Postion player to look at center
-            if (centerLocation.isPresent()) {
-                player.setRotation(player.getRotation().add(centerLocation.get().getPosition())); //TODO: compute real rotation
+            if (center.isPresent()) {
+                player.setRotation(player.getRotation().add(center.get().getPosition())); //TODO: compute real rotation
             }
 
             player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
@@ -188,13 +188,13 @@ public class SurvivalGame {
     }
 
     public void setStopped() {
-        gameState = SurvivalGameState.STOPPED;
+        state = SurvivalGameState.STOPPED;
 
         // Spawn players to the exit location
         for (UUID playerUUID : playerSet) {
             Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-            if (player.isPresent() && exitLocation.isPresent()) {
-                player.get().setLocation(exitLocation.get());
+            if (player.isPresent() && exit.isPresent()) {
+                player.get().setLocation(exit.get());
             }
         }
 
@@ -223,7 +223,7 @@ public class SurvivalGame {
             throw new NoWorldException();
         }
 
-        centerLocation = Optional.of(new Location<>(world.get(), x, y, z));
+        center = Optional.of(new Location<>(world.get(), x, y, z));
     }
 
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
@@ -237,11 +237,11 @@ public class SurvivalGame {
             throw new NoWorldException();
         }
 
-        spawnLocations.add(new Location<>(world.get(), x, y, z));
+        spawns.add(new Location<>(world.get(), x, y, z));
     }
 
     public void clearSpawnLocations() {
-        spawnLocations.clear();
+        spawns.clear();
     }
 
     public void setWorld(String worldName) throws NoWorldException {
@@ -260,15 +260,15 @@ public class SurvivalGame {
             throw new NoWorldException();
         }
 
-        this.exitLocation = Optional.of(new Location<>(world.get(), x, y, z));
+        this.exit = Optional.of(new Location<>(world.get(), x, y, z));
     }
 
-    public Optional<Location<World>> getCenterLocation() {
-        return centerLocation;
+    public Optional<Location<World>> getCenter() {
+        return center;
     }
 
-    public Set<Location<World>> getSpawnLocations() {
-        return spawnLocations;
+    public Set<Location<World>> getSpawns() {
+        return spawns;
     }
 
     public void setPlayerLimit(Integer playerLimit) {
@@ -281,5 +281,22 @@ public class SurvivalGame {
 
     public Optional<UUID> getWorldUUID() {
         return worldUUID;
+    }
+
+    public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
+
+        if (countdownTime < 0){
+            throw new NegativeCountdownTimeException();
+        }
+
+        this.countdownTime = countdownTime;
+    }
+
+    public Optional<Location<World>> getExit() {
+        return exit;
+    }
+
+    public int getCountdownTime() {
+        return countdownTime;
     }
 }

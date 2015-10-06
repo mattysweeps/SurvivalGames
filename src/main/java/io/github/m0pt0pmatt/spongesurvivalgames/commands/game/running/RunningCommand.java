@@ -49,7 +49,7 @@ public abstract class RunningCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.RUNNING)) {
+        if (!plugin.getSurvivalGameMap().get(id).getState().equals(SurvivalGameState.RUNNING)) {
             plugin.getLogger().error("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
             return CommandResult.empty();
         }

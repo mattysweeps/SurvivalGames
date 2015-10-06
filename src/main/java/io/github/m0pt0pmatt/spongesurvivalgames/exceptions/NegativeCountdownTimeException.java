@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 /**
- * Exception thrown when the world was not set for a game
+ * Exception thrown when the countdown timer was to be set to a negative value
  */
-public class WorldNotSetException extends SurvivalGameException {
+public class NegativeCountdownTimeException extends SurvivalGameException {
 }

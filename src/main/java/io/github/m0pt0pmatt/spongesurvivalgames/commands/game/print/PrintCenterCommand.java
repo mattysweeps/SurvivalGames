@@ -23,37 +23,42 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
+
+import java.util.Optional;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
-
-import java.util.Map;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 /**
- * Command to list all games
+ * Command to print the center location of a game if it exists
  */
-public class ListGamesCommand implements CommandExecutor {
+public class PrintCenterCommand extends GameCommand {
 
-    private final SpongeSurvivalGamesPlugin plugin;
-
-    public ListGamesCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
+    public PrintCenterCommand(SpongeSurvivalGamesPlugin plugin) {
+        super(plugin);
     }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        plugin.getLogger().info("There are " + plugin.getSurvivalGameMap().size() + " Survival Games:");
-        for (Map.Entry<String, SurvivalGame> entry : plugin.getSurvivalGameMap().entrySet()) {
-            plugin.getLogger().info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
+        if (!super.execute(src, args).equals(CommandResult.success())) {
+            return CommandResult.empty();
         }
 
+        Optional<Location<World>> centerLocation = plugin.getSurvivalGameMap().get(id).getCenter();
+        if (!centerLocation.isPresent()) {
+            plugin.getLogger().info("Game: \"" + id + "\", No Center Location.");
+            return CommandResult.empty();
+        }
+
+        plugin.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
         return CommandResult.success();
     }
 }

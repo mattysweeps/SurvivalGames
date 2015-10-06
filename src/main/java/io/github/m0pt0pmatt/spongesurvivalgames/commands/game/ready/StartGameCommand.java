@@ -61,7 +61,7 @@ public class StartGameCommand extends ReadyCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id.get()).getGameState().equals(SurvivalGameState.READY)) {
+        if (!plugin.getSurvivalGameMap().get(id.get()).getState().equals(SurvivalGameState.READY)) {
             plugin.getLogger().error("Survival Game \"" + id.get() + "\" must be READY before it can be set to RUNNING.");
             return CommandResult.empty();
         }

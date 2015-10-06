@@ -23,24 +23,21 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
-
-import java.util.Optional;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Command to set the exit location for a game
- * The exit location is where players go when they leave the game (by quitting, dying, or winning)
+ * Command to print the player limit of a game
  */
-public class SetExitLocationCommand extends StoppedCommand {
+public class PrintPlayerLimitCommand extends GameCommand {
 
-    public SetExitLocationCommand(SpongeSurvivalGamesPlugin plugin) {
+    public PrintPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -51,28 +48,7 @@ public class SetExitLocationCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        Optional<String> worldName = args.getOne("worldName");
-        if (!worldName.isPresent()) {
-            plugin.getLogger().error("World name was not present.");
-            return CommandResult.empty();
-        }
-
-        Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("y");
-        Optional<Integer> z = args.getOne("z");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            plugin.getLogger().error("Missing one or more axis for coordinates.");
-            return CommandResult.empty();
-        }
-
-        try {
-            plugin.getSurvivalGameMap().get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
-        } catch (NoWorldException e) {
-            plugin.getLogger().error("No such world \"" + worldName.get() + "\".");
-            return CommandResult.empty();
-        }
-
-        plugin.getLogger().info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x.get() + "," + y.get() + "," + z.get() + ").");
+        plugin.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + plugin.getSurvivalGameMap().get(id).getPlayerLimit() + "\".");
         return CommandResult.success();
     }
 }

@@ -23,10 +23,33 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import org.spongepowered.api.util.command.CommandException;
+import org.spongepowered.api.util.command.CommandResult;
+import org.spongepowered.api.util.command.CommandSource;
+import org.spongepowered.api.util.command.args.CommandContext;
 
 /**
- * Exception thrown when the world was not set for a game
+ * Command to set a game to the READY state
  */
-public class WorldNotSetException extends SurvivalGameException {
+public class ReadyGameCommand extends StoppedCommand {
+
+    public ReadyGameCommand(SpongeSurvivalGamesPlugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+
+        if (!super.execute(src, args).equals(CommandResult.success())) {
+            return CommandResult.empty();
+        }
+
+        plugin.getSurvivalGameMap().get(id).setReady();
+        plugin.getLogger().error("Survival Game \"" + id + "\" is now set to READY.");
+
+        return CommandResult.success();
+    }
 }

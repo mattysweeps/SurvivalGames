@@ -49,7 +49,7 @@ public abstract class StoppedCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.STOPPED)) {
+        if (!plugin.getSurvivalGameMap().get(id).getState().equals(SurvivalGameState.STOPPED)) {
             plugin.getLogger().error("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
             return CommandResult.empty();
         }

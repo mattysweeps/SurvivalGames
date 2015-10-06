@@ -49,7 +49,7 @@ public abstract class ReadyCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getGameState().equals(SurvivalGameState.READY)) {
+        if (!plugin.getSurvivalGameMap().get(id).getState().equals(SurvivalGameState.READY)) {
             plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
             return CommandResult.empty();
         }

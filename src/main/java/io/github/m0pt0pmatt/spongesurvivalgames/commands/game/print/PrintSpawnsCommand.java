@@ -23,11 +23,10 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
-
-import java.util.Optional;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -35,12 +34,14 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-/**
- * Command to print the center location of a game if it exists
- */
-public class PrintCenterLocationCommand extends GameCommand {
+import java.util.Set;
 
-    public PrintCenterLocationCommand(SpongeSurvivalGamesPlugin plugin) {
+/**
+ * Command to print the spawn locations of a game
+ */
+public class PrintSpawnsCommand extends GameCommand {
+
+    public PrintSpawnsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -51,11 +52,10 @@ public class PrintCenterLocationCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<Location<World>> centerLocation = plugin.getSurvivalGameMap().get(id).getCenterLocation();
-        if (centerLocation.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
-        } else {
-            plugin.getLogger().info("Game: \"" + id + "\", No Center Location.");
+        Set<Location<World>> spawnLocations = plugin.getSurvivalGameMap().get(id).getSpawns();
+        plugin.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
+        for (Location<World> spawnLocation : spawnLocations) {
+            plugin.getLogger().info(spawnLocation.toString());
         }
 
         return CommandResult.success();
