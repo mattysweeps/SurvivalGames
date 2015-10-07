@@ -28,11 +28,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 import java.util.Optional;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.MessagePlayerTask;
 import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -164,25 +164,27 @@ public class SurvivalGame {
 
             plugin.getGame().getScheduler().createTaskBuilder()
                     .delay(countdownTime, TimeUnit.SECONDS)
-                    .execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (BlockSnapshot snapshot : snapshots) snapshot.restore(true, false);
-                        }
+                    .execute(() -> {
+                        for (BlockSnapshot snapshot : snapshots) snapshot.restore(true, false);
                     })
                     .submit(plugin);
         }
 
         for (int i = countdownTime; i > 0; i--){
+            final int j = i;
             plugin.getGame().getScheduler().createTaskBuilder()
                     .delay(countdownTime - i, TimeUnit.SECONDS)
-                    .execute(new MessagePlayerTask(Integer.toString(i), players))
+                    .execute( () -> {
+                        for (Player player: players) player.sendMessage(Texts.of(j));
+                    })
                     .submit(plugin);
         }
 
         plugin.getGame().getScheduler().createTaskBuilder()
                 .delay(countdownTime, TimeUnit.SECONDS)
-                .execute(new MessagePlayerTask("Go!", players))
+                .execute(() -> {
+                    for (Player player : players) player.sendMessage(Texts.of("Go!"));
+                })
                 .submit(plugin);
 
     }
