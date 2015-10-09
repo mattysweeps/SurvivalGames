@@ -67,7 +67,7 @@ public class StartGameCommand extends ReadyCommand {
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id.get()).setRunning();
+            plugin.getSurvivalGameMap().get(id.get()).start();
         } catch (NotEnoughSpawnPointsException e) {
             plugin.getLogger().error("Survival Game \"" + id.get() + "\" does not have enough spawn points.");
             return CommandResult.empty();

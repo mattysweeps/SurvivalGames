@@ -47,7 +47,7 @@ public class ReadyGameCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setReady();
+        plugin.getSurvivalGameMap().get(id).ready();
         plugin.getLogger().error("Survival Game \"" + id + "\" is now set to READY.");
 
         return CommandResult.success();

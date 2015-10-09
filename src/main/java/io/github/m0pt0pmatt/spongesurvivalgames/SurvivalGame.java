@@ -25,21 +25,19 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import java.util.Optional;
+import java.util.*;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+import org.spongepowered.api.item.inventory.Inventory;
+import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -50,12 +48,13 @@ public class SurvivalGame {
     private final SpongeSurvivalGamesPlugin plugin;
     private SurvivalGameState state;
     private Optional<UUID> worldUUID = Optional.empty();
-    private Set<Location<World>> spawns = new HashSet<>();
+    private final Set<Location<World>> spawns = new HashSet<>();
     private Optional<Location<World>> exit = Optional.empty();
     private Optional<Location<World>> center = Optional.empty();
     private final Set<UUID> playerSet = new HashSet<>();
     private int playerLimit = 25; //Default player limit
     private int countdownTime = 10; //Default countdown time
+    private final Map<UUID, List<Object>> playerInventories = new HashMap<>();
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -66,11 +65,11 @@ public class SurvivalGame {
         return state;
     }
 
-    public void setReady() {
+    public void ready() {
         state = SurvivalGameState.READY;
     }
 
-    public void setRunning() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
 
         if (!worldUUID.isPresent()) {
             throw new WorldNotSetException();
@@ -89,17 +88,7 @@ public class SurvivalGame {
             throw new NoExitLocationException();
         }
 
-        startGame();
-
         state = SurvivalGameState.RUNNING;
-    }
-
-    private void startGame() throws NoWorldException {
-
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
 
         //Spawn players
 
@@ -187,18 +176,39 @@ public class SurvivalGame {
                 })
                 .submit(plugin);
 
+        for (Player player: players){
+
+            List<Object> list = new LinkedList<>();
+            Iterable<?> slots = player.getInventory().slots();
+            for (Object t: slots){
+                list.add(t);
+            }
+            playerInventories.put(player.getUniqueId(), list);
+
+            player.getInventory().clear();
+        }
     }
 
-    public void setStopped() {
-        state = SurvivalGameState.STOPPED;
+    public void stop() {
+        if (state.equals(SurvivalGameState.RUNNING)){
+            // Spawn players to the exit location
+            for (UUID playerUUID : playerSet) {
+                Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
+                if (player.isPresent()){
+                    if (exit.isPresent()) {
+                        player.get().setLocation(exit.get());
+                    }
 
-        // Spawn players to the exit location
-        for (UUID playerUUID : playerSet) {
-            Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-            if (player.isPresent() && exit.isPresent()) {
-                player.get().setLocation(exit.get());
+                    player.get().getInventory().clear();
+                    Inventory inv = player.get().getInventory();
+                    inv.clear();
+
+                    //TODO: add player items back
+                }
             }
         }
+
+        state = SurvivalGameState.STOPPED;
 
         playerSet.clear();
     }
