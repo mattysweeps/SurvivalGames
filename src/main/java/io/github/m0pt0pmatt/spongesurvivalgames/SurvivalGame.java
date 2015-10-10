@@ -29,16 +29,10 @@ import java.util.*;
 
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import org.spongepowered.api.block.*;
-import org.spongepowered.api.data.key.Keys;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * represents a Survival Game.
@@ -46,14 +40,8 @@ import java.util.stream.Collectors;
 public class SurvivalGame {
 
     private final SpongeSurvivalGamesPlugin plugin;
-    private SurvivalGameState state;
-    private Optional<UUID> worldUUID = Optional.empty();
     private final Set<Location<World>> spawns = new HashSet<>();
-    private Optional<Location<World>> exit = Optional.empty();
-    private Optional<Location<World>> center = Optional.empty();
-    private final Set<UUID> playerSet = new HashSet<>();
-    private int playerLimit = 25; //Default player limit
-    private int countdownTime = 10; //Default countdown time
+    private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector3d> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector3d(1, 0, 0),
             new Vector3d(1, 1, 0),
@@ -66,6 +54,19 @@ public class SurvivalGame {
             new Vector3d(0, 2, 0),
             new Vector3d(0, -1, 0)
     ));
+    private final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+            new SpawnPlayersTask(),
+            new RotatePlayersTask(),
+            new SetGameModeTask(),
+            new CreateCageSnapshotsTask(),
+            new CreateCountdownTask()
+    ));
+    private SurvivalGameState state;
+    private Optional<UUID> worldUUID = Optional.empty();
+    private Optional<Location<World>> exit = Optional.empty();
+    private Optional<Location<World>> center = Optional.empty();
+    private int playerLimit = 25; //Default player limit
+    private int countdownTime = 10; //Default countdown time
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -80,76 +81,38 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException {
 
         // Check all prerequisites for starting the game
         if (!worldUUID.isPresent()) throw new WorldNotSetException();
         Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
         if (!world.isPresent()) throw new NoWorldException();
-        if (playerSet.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
+        if (playerUUIDs.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
         if (!exit.isPresent()) throw new NoExitLocationException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
 
-        //Spawn players
-        Set<UUID> missingPlayers = new HashSet<>();
-        Set<Player> players = new HashSet<>();
-        Set<Location<World>> spawnLocations = new HashSet<>();
-        spawnLocations.addAll(this.spawns);
-        Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
-        for (UUID playerUUID : playerSet) {
-            Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-            if (!player.isPresent()) {
-                missingPlayers.add(playerUUID);
-            } else {
-                players.add(player.get());
-            }
-        }
-        playerSet.removeAll(missingPlayers);
-        for (Player player: players) {
-            Location<World> spawnPoint = spawnIterator.next();
-            player.setLocation(spawnPoint.add(0.5, 0, 0.5));
-
-            //Postion player to look at center
-            if (center.isPresent()) {
-                player.setRotation(player.getRotation().add(center.get().getPosition())); //TODO: compute real rotation
-            }
-
-            player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
-        }
-
-        for (Location<World> location: spawnLocations){
-            final Set<BlockSnapshot> snapshots = surroundingVectors.stream().map(vector -> location.add(vector).createSnapshot()).collect(Collectors.toSet());
-            surroundingVectors.stream().forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
-
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(countdownTime, TimeUnit.SECONDS)
-                    .execute(() -> snapshots.stream().forEach(snapshot -> snapshot.restore(true, false)))
-                    .submit(plugin);
-        }
-
-        for (int i = countdownTime; i > 0; i--){
-            final int j = i;
-            plugin.getGame().getScheduler().createTaskBuilder()
-                    .delay(countdownTime - i, TimeUnit.SECONDS)
-                    .execute(() -> players.stream().forEach(player -> player.sendMessage(Texts.of(j))))
-                    .submit(plugin);
-        }
-
-        plugin.getGame().getScheduler().createTaskBuilder()
-                .delay(countdownTime, TimeUnit.SECONDS)
-                .execute(() -> players.stream().forEach(player -> player.sendMessage(Texts.of("Go!"))))
-                .submit(plugin);
-
+        Optional<TaskException> exception = startTasks.stream()
+                .map(task -> {
+                    try {
+                        task.execute(this);
+                        return null;
+                    } catch (TaskException e) {
+                        return e;
+                    }
+                })
+                .filter(e -> e != null)
+                .findFirst();
+        if (exception.isPresent()) throw exception.get();
     }
 
     public void stop() {
-        if (state.equals(SurvivalGameState.RUNNING)){
+        if (state.equals(SurvivalGameState.RUNNING)) {
             // Spawn players to the exit location
-            for (UUID playerUUID : playerSet) {
+            for (UUID playerUUID : playerUUIDs) {
                 Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-                if (player.isPresent()){
+                if (player.isPresent()) {
                     if (exit.isPresent()) {
                         player.get().setLocation(exit.get());
                     }
@@ -159,18 +122,18 @@ public class SurvivalGame {
 
         state = SurvivalGameState.STOPPED;
 
-        playerSet.clear();
+        playerUUIDs.clear();
     }
 
     public void addPlayer(UUID player) throws PlayerLimitReachedException {
-        if (playerSet.size() >= playerLimit) {
+        if (playerUUIDs.size() >= playerLimit) {
             throw new PlayerLimitReachedException();
         }
-        playerSet.add(player);
+        playerUUIDs.add(player);
     }
 
     public void removePlayer(UUID player) {
-        playerSet.remove(player);
+        playerUUIDs.remove(player);
     }
 
     public void setCenterLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
@@ -215,22 +178,16 @@ public class SurvivalGame {
         return spawns;
     }
 
-    public void setPlayerLimit(Integer playerLimit) {
-        this.playerLimit = playerLimit;
-    }
-
     public int getPlayerLimit() {
         return playerLimit;
     }
 
-    public Optional<UUID> getWorldUUID() {
-        return worldUUID;
+    public void setPlayerLimit(Integer playerLimit) {
+        this.playerLimit = playerLimit;
     }
 
-    public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
-        if (countdownTime < 0) throw new NegativeCountdownTimeException();
-
-        this.countdownTime = countdownTime;
+    public Optional<UUID> getWorldUUID() {
+        return worldUUID;
     }
 
     public Optional<Location<World>> getExit() {
@@ -239,5 +196,23 @@ public class SurvivalGame {
 
     public int getCountdownTime() {
         return countdownTime;
+    }
+
+    public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
+        if (countdownTime < 0) throw new NegativeCountdownTimeException();
+
+        this.countdownTime = countdownTime;
+    }
+
+    public Set<UUID> getPlayerUUIDs() {
+        return playerUUIDs;
+    }
+
+    public Set<Vector3d> getSurroundingVectors() {
+        return surroundingVectors;
+    }
+
+    public SpongeSurvivalGamesPlugin getPlugin() {
+        return plugin;
     }
 }

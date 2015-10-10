@@ -34,6 +34,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -43,8 +44,8 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.GenericArguments;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * SpongeSurvivalGames Sponge Plugin
@@ -52,9 +53,8 @@ import java.util.Map;
 @Plugin(id = "spongesurvivalgames", name = "Sponge Survival Games", version = "1.0")
 public class SpongeSurvivalGamesPlugin {
 
+    private static Game game;
     private final Logger logger; // Plugin Logger
-    private Game game;
-
     private final Map<String, SurvivalGame> survivalGameMap;
 
     @Inject
@@ -63,10 +63,18 @@ public class SpongeSurvivalGamesPlugin {
         survivalGameMap = new HashMap<>();
     }
 
+    public static Set<Player> getPlayers(Set<UUID> playerUUIDs) {
+        return playerUUIDs.stream()
+                .map(uuid -> game.getServer().getPlayer(uuid))
+                .filter(player -> player.isPresent())
+                .map(player -> player.get())
+                .collect(Collectors.toSet());
+    }
+
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
         logger.info("Sponge Survival Games Plugin Enabled");
-        this.game = event.getGame();
+        game = event.getGame();
         registerCommands();
         survivalGameMap.clear();
     }

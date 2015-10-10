@@ -29,10 +29,7 @@ import java.util.Optional;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -79,6 +76,9 @@ public class StartGameCommand extends ReadyCommand {
             return CommandResult.empty();
         } catch (NoWorldException e) {
             plugin.getLogger().error("World does not exist.");
+            return CommandResult.empty();
+        } catch (TaskException e) {
+            plugin.getLogger().error(e.getMessage());
             return CommandResult.empty();
         }
 

@@ -48,7 +48,7 @@ public class SetCountdownCommand extends StoppedCommand {
         }
 
         Optional<Integer> countdownTime = args.getOne("countdown");
-        if (!countdownTime.isPresent()){
+        if (!countdownTime.isPresent()) {
             plugin.getLogger().error("No Countdown time specified");
             return CommandResult.empty();
         }
