@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.spongepowered.api.world.Location;
@@ -67,17 +68,11 @@ public class SurvivalGame {
             new ClearPlayersTask()
     ));
 
-
-    private SurvivalGameState state;
-    private Optional<UUID> worldUUID = Optional.empty();
-    private Optional<Location<World>> exit = Optional.empty();
-    private Optional<Location<World>> center = Optional.empty();
-    private int playerLimit = 25; //Default player limit
-    private int countdownTime = 10; //Default countdown time
+    private SurvivalGameState state = SurvivalGameState.STOPPED;
+    private SurvivalGameConfig config = new SurvivalGameConfig();
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
-        state = SurvivalGameState.STOPPED;
     }
 
     public SurvivalGameState getState() {
@@ -91,11 +86,11 @@ public class SurvivalGame {
     public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException {
 
         // Check all prerequisites for starting the game
-        if (!worldUUID.isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
+        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
+        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
         if (!world.isPresent()) throw new NoWorldException();
         if (playerUUIDs.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
-        if (!exit.isPresent()) throw new NoExitLocationException();
+        if (!config.getExit().isPresent()) throw new NoExitLocationException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
@@ -137,7 +132,7 @@ public class SurvivalGame {
     }
 
     public void addPlayer(UUID player) throws PlayerLimitReachedException {
-        if (playerUUIDs.size() >= playerLimit) {
+        if (playerUUIDs.size() >= config.getPlayerLimit()) {
             throw new PlayerLimitReachedException();
         }
         playerUUIDs.add(player);
@@ -148,16 +143,16 @@ public class SurvivalGame {
     }
 
     public void setCenterLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-        if (!worldUUID.isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
+        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
+        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
         if (!world.isPresent()) throw new NoWorldException();
 
-        center = Optional.of(new Location<>(world.get(), x, y, z));
+        config.setCenter(Optional.of(new Location<>(world.get(), x, y, z)));
     }
 
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-        if (!worldUUID.isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
+        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
+        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
         if (!world.isPresent()) throw new NoWorldException();
 
         spawns.add(new Location<>(world.get(), x, y, z));
@@ -171,18 +166,18 @@ public class SurvivalGame {
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
         if (!world.isPresent()) throw new NoWorldException();
 
-        worldUUID = Optional.of(world.get().getUniqueId());
+        config.setWorldUUID(Optional.of(world.get().getUniqueId()));
     }
 
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
         if (!world.isPresent()) throw new NoWorldException();
 
-        this.exit = Optional.of(new Location<>(world.get(), x, y, z));
+        config.setExit(Optional.of(new Location<>(world.get(), x, y, z)));
     }
 
     public Optional<Location<World>> getCenter() {
-        return center;
+        return config.getCenter();
     }
 
     public Set<Location<World>> getSpawns() {
@@ -190,29 +185,29 @@ public class SurvivalGame {
     }
 
     public int getPlayerLimit() {
-        return playerLimit;
+        return config.getPlayerLimit();
     }
 
     public void setPlayerLimit(Integer playerLimit) {
-        this.playerLimit = playerLimit;
+        config.setPlayerLimit(playerLimit);
     }
 
     public Optional<UUID> getWorldUUID() {
-        return worldUUID;
+        return config.getWorldUUID();
     }
 
     public Optional<Location<World>> getExit() {
-        return exit;
+        return config.getExit();
     }
 
     public int getCountdownTime() {
-        return countdownTime;
+        return config.getCountdownTime();
     }
 
     public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
         if (countdownTime < 0) throw new NegativeCountdownTimeException();
 
-        this.countdownTime = countdownTime;
+        config.setCountdownTime(countdownTime);
     }
 
     public Set<UUID> getPlayerUUIDs() {
