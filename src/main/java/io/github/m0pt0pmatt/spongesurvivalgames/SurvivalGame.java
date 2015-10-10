@@ -25,14 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import java.util.*;
-
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+
+import java.util.*;
 
 /**
  * represents a Survival Game.
@@ -61,6 +60,14 @@ public class SurvivalGame {
             new CreateCageSnapshotsTask(),
             new CreateCountdownTask()
     ));
+    private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
+            new DespawnPlayersTask()
+    ));
+    private final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
+            new ClearPlayersTask()
+    ));
+
+
     private SurvivalGameState state;
     private Optional<UUID> worldUUID = Optional.empty();
     private Optional<Location<World>> exit = Optional.empty();
@@ -93,7 +100,27 @@ public class SurvivalGame {
         // Set the state
         state = SurvivalGameState.RUNNING;
 
-        Optional<TaskException> exception = startTasks.stream()
+        //Execute each task
+        executeTasks(startTasks);
+    }
+
+    public void stop() throws TaskException {
+
+        // Execute force stop tasks if the game is RUNNING
+        if (state.equals(SurvivalGameState.RUNNING)) {
+            executeTasks(forceStopTasks);
+        }
+
+        // Execute the rest of the tasks
+        executeTasks(stopTasks);
+
+        // Set the state
+        state = SurvivalGameState.STOPPED;
+    }
+
+    private void executeTasks(List<SurvivalGameTask> tasks) throws TaskException {
+        //Execute each task
+        Optional<TaskException> exception = tasks.stream()
                 .map(task -> {
                     try {
                         task.execute(this);
@@ -104,25 +131,9 @@ public class SurvivalGame {
                 })
                 .filter(e -> e != null)
                 .findFirst();
+
+        //Throw the first caught exception
         if (exception.isPresent()) throw exception.get();
-    }
-
-    public void stop() {
-        if (state.equals(SurvivalGameState.RUNNING)) {
-            // Spawn players to the exit location
-            for (UUID playerUUID : playerUUIDs) {
-                Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
-                if (player.isPresent()) {
-                    if (exit.isPresent()) {
-                        player.get().setLocation(exit.get());
-                    }
-                }
-            }
-        }
-
-        state = SurvivalGameState.STOPPED;
-
-        playerUUIDs.clear();
     }
 
     public void addPlayer(UUID player) throws PlayerLimitReachedException {

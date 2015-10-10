@@ -23,46 +23,18 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
-import java.util.Optional;
-
-/**
- * GameCommands require the name of the game as the first argument
- * The unique name of the game is stored for the use of child commands
- */
-public abstract class GameCommand implements CommandExecutor {
-
-    protected final SpongeSurvivalGamesPlugin plugin;
-    protected String id;
-
-    public GameCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
-    }
-
+public class DespawnPlayersTask implements SurvivalGameTask {
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-
-        Optional<String> idOptional = args.getOne("id");
-        if (!idOptional.isPresent()) {
-            plugin.getLogger().error("Survival Game ID is not present.");
-            return CommandResult.empty();
+    public void execute(SurvivalGame game) throws TaskException {
+        if (game.getExit().isPresent()) {
+            SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+                    .forEach(player -> player.setLocation(game.getExit().get()));
         }
-
-        id = idOptional.get();
-
-        if (!plugin.getSurvivalGameMap().containsKey(id)) {
-            plugin.getLogger().error("No Survival Game has specified ID \"" + id + "\".");
-            return CommandResult.empty();
-        }
-
-        return CommandResult.success();
     }
 }

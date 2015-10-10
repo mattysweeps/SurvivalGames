@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -47,9 +48,14 @@ public class ForceStopGameCommand extends RunningCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).stop();
-        plugin.getLogger().error("Survival Game \"" + id + "\" is now STOPPED.");
+        try {
+            plugin.getSurvivalGameMap().get(id).stop();
+        } catch (TaskException e) {
+            plugin.getLogger().error(e.getMessage());
+            return CommandResult.empty();
+        }
 
+        plugin.getLogger().error("Survival Game \"" + id + "\" is now STOPPED.");
         return CommandResult.success();
     }
 }

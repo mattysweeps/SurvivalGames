@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Optional;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
@@ -34,6 +32,8 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
+
+import java.util.Optional;
 
 /**
  * Command to add a spawn location to a game

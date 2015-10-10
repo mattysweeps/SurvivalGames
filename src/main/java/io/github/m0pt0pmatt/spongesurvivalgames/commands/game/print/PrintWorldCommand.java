@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import java.util.Optional;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.spongepowered.api.util.command.CommandException;
@@ -35,6 +33,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.world.World;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**

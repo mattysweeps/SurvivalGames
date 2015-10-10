@@ -25,14 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
-public class RotatePlayersTask implements SurvivalGameTask {
+public class ClearPlayersTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) {
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
-            //TODO: compute real rotation
-        });
+    public void execute(SurvivalGame game) throws TaskException {
+        game.getPlayerUUIDs().clear();
     }
 }

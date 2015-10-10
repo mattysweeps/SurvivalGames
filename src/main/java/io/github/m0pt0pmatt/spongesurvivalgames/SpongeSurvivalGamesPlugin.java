@@ -25,7 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
+import com.google.inject.Inject;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerToGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerFromGameCommand;
@@ -33,13 +35,12 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCom
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
+import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-import com.google.inject.Inject;
-import org.slf4j.Logger;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.GenericArguments;
 import org.spongepowered.api.util.command.spec.CommandSpec;
@@ -66,8 +67,8 @@ public class SpongeSurvivalGamesPlugin {
     public static Set<Player> getPlayers(Set<UUID> playerUUIDs) {
         return playerUUIDs.stream()
                 .map(uuid -> game.getServer().getPlayer(uuid))
-                .filter(player -> player.isPresent())
-                .map(player -> player.get())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toSet());
     }
 
