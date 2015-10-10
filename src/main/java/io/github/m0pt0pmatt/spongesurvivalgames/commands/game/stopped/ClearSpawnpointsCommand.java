@@ -26,21 +26,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
-import java.util.Optional;
-
 /**
- * Command to add a spawn location to a game
+ * Command to clear all spawn locations from a game
  */
-public class AddSpawnLocationCommand extends StoppedCommand {
+public class ClearSpawnpointsCommand extends StoppedCommand {
 
-    public AddSpawnLocationCommand(SpongeSurvivalGamesPlugin plugin) {
+    public ClearSpawnpointsCommand(SpongeSurvivalGamesPlugin plugin) {
         super(plugin);
     }
 
@@ -51,24 +47,8 @@ public class AddSpawnLocationCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("y");
-        Optional<Integer> z = args.getOne("z");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            plugin.getLogger().error("Missing one or more axis for coordinates.");
-            return CommandResult.empty();
-        }
-
-        try {
-            plugin.getSurvivalGameMap().get(id).addSpawnLocation(x.get(), y.get(), z.get());
-        } catch (WorldNotSetException e) {
-            plugin.getLogger().error("No world set. Assign the world first.");
-            return CommandResult.empty();
-        } catch (NoWorldException e) {
-            plugin.getLogger().error("World does not exist.");
-            return CommandResult.empty();
-        }
-        plugin.getLogger().info("Spawn location added for game \"" + id + "\".");
+        plugin.getSurvivalGameMap().get(id).clearSpawnLocations();
+        plugin.getLogger().info("Spawn locations cleared for game \"" + id + "\".");
 
         return CommandResult.success();
     }

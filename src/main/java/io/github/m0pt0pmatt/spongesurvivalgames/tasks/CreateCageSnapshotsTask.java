@@ -40,12 +40,17 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
         for (Location<World> location : game.getSpawns()) {
-            final Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream().map(vector -> location.add(vector).createSnapshot()).collect(Collectors.toSet());
-            game.getSurroundingVectors().stream().forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
+            Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream()
+                    .map(vector -> location.add(vector).createSnapshot())
+                    .collect(Collectors.toSet());
+
+            game.getSurroundingVectors().stream()
+                    .forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
 
             game.getPlugin().getGame().getScheduler().createTaskBuilder()
                     .delay(game.getCountdownTime(), TimeUnit.SECONDS)
-                    .execute(() -> snapshots.stream().forEach(snapshot -> snapshot.restore(true, false)))
+                    .execute(() -> snapshots.stream()
+                            .forEach(snapshot -> snapshot.restore(true, false)))
                     .submit(game.getPlugin());
         }
     }
