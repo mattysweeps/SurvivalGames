@@ -27,18 +27,18 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import java.util.*;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * represents a Survival Game.
@@ -54,7 +54,18 @@ public class SurvivalGame {
     private final Set<UUID> playerSet = new HashSet<>();
     private int playerLimit = 25; //Default player limit
     private int countdownTime = 10; //Default countdown time
-    private final Map<UUID, List<Object>> playerInventories = new HashMap<>();
+    private final Set<Vector3d> surroundingVectors = new HashSet<>(Arrays.asList(
+            new Vector3d(1, 0, 0),
+            new Vector3d(1, 1, 0),
+            new Vector3d(-1, 0, 0),
+            new Vector3d(-1, 1, 0),
+            new Vector3d(0, 0, 1),
+            new Vector3d(0, 1, 1),
+            new Vector3d(0, 0, -1),
+            new Vector3d(0, 1, -1),
+            new Vector3d(0, 2, 0),
+            new Vector3d(0, -1, 0)
+    ));
 
     public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
         this.plugin = plugin;
@@ -71,32 +82,21 @@ public class SurvivalGame {
 
     public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException {
 
-        if (!worldUUID.isPresent()) {
-            throw new WorldNotSetException();
-        }
-
+        // Check all prerequisites for starting the game
+        if (!worldUUID.isPresent()) throw new WorldNotSetException();
         Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
+        if (!world.isPresent()) throw new NoWorldException();
+        if (playerSet.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
+        if (!exit.isPresent()) throw new NoExitLocationException();
 
-        if (playerSet.size() > spawns.size()) {
-            throw new NotEnoughSpawnPointsException();
-        }
-
-        if (!exit.isPresent()) {
-            throw new NoExitLocationException();
-        }
-
+        // Set the state
         state = SurvivalGameState.RUNNING;
 
         //Spawn players
-
         Set<UUID> missingPlayers = new HashSet<>();
         Set<Player> players = new HashSet<>();
         Set<Location<World>> spawnLocations = new HashSet<>();
         spawnLocations.addAll(this.spawns);
-
         Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
         for (UUID playerUUID : playerSet) {
             Optional<Player> player = plugin.getGame().getServer().getPlayer(playerUUID);
@@ -105,16 +105,10 @@ public class SurvivalGame {
             } else {
                 players.add(player.get());
             }
-
         }
-
         playerSet.removeAll(missingPlayers);
-
         for (Player player: players) {
-
             Location<World> spawnPoint = spawnIterator.next();
-
-            //Teleport player
             player.setLocation(spawnPoint.add(0.5, 0, 0.5));
 
             //Postion player to look at center
@@ -123,39 +117,15 @@ public class SurvivalGame {
             }
 
             player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
-
-
         }
 
         for (Location<World> location: spawnLocations){
-            final Set<BlockSnapshot> snapshots = new HashSet<>();
-            snapshots.add(location.add(1, 0, 0).createSnapshot());
-            snapshots.add(location.add(1, 1, 0).createSnapshot());
-            snapshots.add(location.add(-1, 0, 0).createSnapshot());
-            snapshots.add(location.add(-1, 1, 0).createSnapshot());
-            snapshots.add(location.add(0, 0, 1).createSnapshot());
-            snapshots.add(location.add(0, 1, 1).createSnapshot());
-            snapshots.add(location.add(0, 0, -1).createSnapshot());
-            snapshots.add(location.add(0, 1, -1).createSnapshot());
-            snapshots.add(location.add(0, 2, 0).createSnapshot());
-            snapshots.add(location.add(0, -1, 0).createSnapshot());
-
-            location.add(1, 0, 0).setBlockType(BlockTypes.BARRIER);
-            location.add(1, 1, 0).setBlockType(BlockTypes.BARRIER);
-            location.add(-1, 0, 0).setBlockType(BlockTypes.BARRIER);
-            location.add(-1, 1, 0).setBlockType(BlockTypes.BARRIER);
-            location.add(0, 0, 1).setBlockType(BlockTypes.BARRIER);
-            location.add(0, 1, 1).setBlockType(BlockTypes.BARRIER);
-            location.add(0, 0, -1).setBlockType(BlockTypes.BARRIER);
-            location.add(0, 1, -1).setBlockType(BlockTypes.BARRIER);
-            location.add(0, 2, 0).setBlockType(BlockTypes.BARRIER);
-            location.add(0, -1, 0).setBlockType(BlockTypes.BARRIER);
+            final Set<BlockSnapshot> snapshots = surroundingVectors.stream().map(vector -> location.add(vector).createSnapshot()).collect(Collectors.toSet());
+            surroundingVectors.stream().forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
 
             plugin.getGame().getScheduler().createTaskBuilder()
                     .delay(countdownTime, TimeUnit.SECONDS)
-                    .execute(() -> {
-                        for (BlockSnapshot snapshot : snapshots) snapshot.restore(true, false);
-                    })
+                    .execute(() -> snapshots.stream().forEach(snapshot -> snapshot.restore(true, false)))
                     .submit(plugin);
         }
 
@@ -163,30 +133,15 @@ public class SurvivalGame {
             final int j = i;
             plugin.getGame().getScheduler().createTaskBuilder()
                     .delay(countdownTime - i, TimeUnit.SECONDS)
-                    .execute( () -> {
-                        for (Player player: players) player.sendMessage(Texts.of(j));
-                    })
+                    .execute(() -> players.stream().forEach(player -> player.sendMessage(Texts.of(j))))
                     .submit(plugin);
         }
 
         plugin.getGame().getScheduler().createTaskBuilder()
                 .delay(countdownTime, TimeUnit.SECONDS)
-                .execute(() -> {
-                    for (Player player : players) player.sendMessage(Texts.of("Go!"));
-                })
+                .execute(() -> players.stream().forEach(player -> player.sendMessage(Texts.of("Go!"))))
                 .submit(plugin);
 
-        for (Player player: players){
-
-            List<Object> list = new LinkedList<>();
-            Iterable<?> slots = player.getInventory().slots();
-            for (Object t: slots){
-                list.add(t);
-            }
-            playerInventories.put(player.getUniqueId(), list);
-
-            player.getInventory().clear();
-        }
     }
 
     public void stop() {
@@ -198,12 +153,6 @@ public class SurvivalGame {
                     if (exit.isPresent()) {
                         player.get().setLocation(exit.get());
                     }
-
-                    player.get().getInventory().clear();
-                    Inventory inv = player.get().getInventory();
-                    inv.clear();
-
-                    //TODO: add player items back
                 }
             }
         }
@@ -225,29 +174,17 @@ public class SurvivalGame {
     }
 
     public void setCenterLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-
-        if (!worldUUID.isPresent()) {
-            throw new WorldNotSetException();
-        }
-
+        if (!worldUUID.isPresent()) throw new WorldNotSetException();
         Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
+        if (!world.isPresent()) throw new NoWorldException();
 
         center = Optional.of(new Location<>(world.get(), x, y, z));
     }
 
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-
-        if (!worldUUID.isPresent()) {
-            throw new WorldNotSetException();
-        }
-
+        if (!worldUUID.isPresent()) throw new WorldNotSetException();
         Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
+        if (!world.isPresent()) throw new NoWorldException();
 
         spawns.add(new Location<>(world.get(), x, y, z));
     }
@@ -257,20 +194,15 @@ public class SurvivalGame {
     }
 
     public void setWorld(String worldName) throws NoWorldException {
-
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
+        if (!world.isPresent()) throw new NoWorldException();
 
         worldUUID = Optional.of(world.get().getUniqueId());
     }
 
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
         Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
-        if (!world.isPresent()) {
-            throw new NoWorldException();
-        }
+        if (!world.isPresent()) throw new NoWorldException();
 
         this.exit = Optional.of(new Location<>(world.get(), x, y, z));
     }
@@ -296,10 +228,7 @@ public class SurvivalGame {
     }
 
     public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
-
-        if (countdownTime < 0){
-            throw new NegativeCountdownTimeException();
-        }
+        if (countdownTime < 0) throw new NegativeCountdownTimeException();
 
         this.countdownTime = countdownTime;
     }
