@@ -33,6 +33,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * represents a Survival Game.
@@ -79,7 +80,7 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -87,6 +88,8 @@ public class SurvivalGame {
         if (!world.isPresent()) throw new NoWorldException();
         if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException();
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
+        if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
+        if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
@@ -235,5 +238,21 @@ public class SurvivalGame {
 
     public void setConfig(SurvivalGameConfig config) {
         this.config = config;
+    }
+
+    public Optional<Double> getChestMidpoint() {
+        return config.getChestMidpoint();
+    }
+
+    public void setChestMidpoint(Double chestMidpoint) {
+        config.setChestMidpoint(chestMidpoint);
+    }
+
+    public Optional<Double> getChestRange() {
+        return config.getChestRange();
+    }
+
+    public void setChestRange(Double chestRange) {
+        config.setChestRange(chestRange);
     }
 }

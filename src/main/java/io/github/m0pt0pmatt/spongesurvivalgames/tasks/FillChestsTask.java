@@ -34,6 +34,7 @@ import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.world.World;
 
 import java.util.Collection;
+import java.util.Random;
 
 public class FillChestsTask implements SurvivalGameTask {
     @Override
@@ -43,6 +44,8 @@ public class FillChestsTask implements SurvivalGameTask {
         Collection<TileEntity> tileEntities = world.getTileEntities();
         SpongeSurvivalGamesPlugin.logger.info("There are " + tileEntities.size() + " tile entities");
         tileEntities.forEach(entity -> {
+                    final Random random = new Random();
+
                     SpongeSurvivalGamesPlugin.logger.info("We found a " + entity.getType() + "! " + entity.getLocation());
 
                     //TODO: this code doesn't use the api. Eventually it will need to be changed
@@ -50,7 +53,19 @@ public class FillChestsTask implements SurvivalGameTask {
                         SpongeSurvivalGamesPlugin.logger.info("CHHEESSST");
 
                         TileEntityChest chest = (TileEntityChest) entity;
-                        chest.setInventorySlotContents(0, new net.minecraft.item.ItemStack(Item.getItemById(1)));
+                        chest.clear();
+
+                        double itemCount = (
+                                game.getChestMidpoint().get() +
+                                (
+                                        (random.nextDouble() * (game.getChestRange().get() * 2)) *
+                                                random.nextDouble() > 0.5 ? 1 : -1
+                                )
+                        );
+                        for (int i = 0; i < itemCount; i++){
+                            chest.setInventorySlotContents(i, new net.minecraft.item.ItemStack(Item.getItemById(1)));
+                        }
+
                     }
                 }
         );
