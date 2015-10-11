@@ -73,4 +73,14 @@ public class SurvivalGameConfigBuilder {
         config.getSpawns().add(vector);
         return this;
     }
+
+    public SurvivalGameConfigBuilder chestMidpoint(Double chestMidpoint){
+        config.setChestMidpoint(chestMidpoint);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder chestRange(Double chestRange){
+        config.setChestRange(chestRange);
+        return this;
+    }
 }

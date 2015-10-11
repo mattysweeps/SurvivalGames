@@ -71,6 +71,11 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
                 spawnsNode = spawnsNode.getAppendedNode();
             }
 
+            ConfigurationNode chestNode = value.getNode("chest");
+            builder = builder
+                    .chestMidpoint(chestNode.getNode("midpoint").getDouble())
+                    .chestRange(chestNode.getNode("range").getDouble());
+
         } catch (Exception e) {
             SpongeSurvivalGamesPlugin.logger.error("Error loading config");
         }
@@ -107,5 +112,9 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
             spawnNode.getNode("Y").setValue(spawn.getY());
             spawnNode.getNode("Z").setValue(spawn.getZ());
         }
+
+        ConfigurationNode chestNode = value.getNode("chest");
+        if (obj.getChestMidpoint().isPresent()) chestNode.getNode("midpoint").setValue(obj.getChestMidpoint().get());
+        if (obj.getChestRange().isPresent()) chestNode.getNode("range").setValue(obj.getChestRange().get());
     }
 }

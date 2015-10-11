@@ -229,6 +229,20 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new PrintWorldCommand())
                 .build();
 
+        CommandSpec printChestMidpointCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.game.print.chestMidpoint")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintChestMidpointCommand())
+                .build();
+
+        CommandSpec printChestRangeCommand = CommandSpec.builder()
+                .description(Texts.of("<id>"))
+                .permission("spongesurvivalgames.game.print.chestRange")
+                .arguments(GenericArguments.string(Texts.of("id")))
+                .executor(new PrintChestRangeCommand())
+                .build();
+
         return CommandSpec.builder()
                 .permission("spongesurvivalgames.game.print")
                 .child(printCenterCommand, "center")
@@ -237,6 +251,11 @@ public class SpongeSurvivalGamesPlugin {
                 .child(printPlayerLimitCommand, "playerLimit")
                 .child(printSpawnsCommand, "spawns")
                 .child(printWorldCommand, "world")
+                .child(CommandSpec.builder()
+                                .child(printChestMidpointCommand, "midpoint")
+                                .child(printChestRangeCommand, "range")
+                                .build(), "chest"
+                )
                 .build();
     }
 
