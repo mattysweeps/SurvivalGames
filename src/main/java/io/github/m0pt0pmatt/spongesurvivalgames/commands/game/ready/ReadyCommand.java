@@ -38,10 +38,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
  */
 public abstract class ReadyCommand extends GameCommand {
 
-    public ReadyCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -49,8 +45,8 @@ public abstract class ReadyCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        if (!plugin.getSurvivalGameMap().get(id).getState().equals(SurvivalGameState.READY)) {
-            plugin.getLogger().error("Survival Game \"" + id + "\" must be in a READY state for this command.");
+        if (!SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.READY)) {
+            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" must be in a READY state for this command.");
             return CommandResult.empty();
         }
 

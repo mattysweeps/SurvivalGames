@@ -40,10 +40,6 @@ import java.util.Optional;
  */
 public class AddSpawnCommand extends StoppedCommand {
 
-    public AddSpawnCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -55,20 +51,20 @@ public class AddSpawnCommand extends StoppedCommand {
         Optional<Integer> y = args.getOne("y");
         Optional<Integer> z = args.getOne("z");
         if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            plugin.getLogger().error("Missing one or more axis for coordinates.");
+            SpongeSurvivalGamesPlugin.logger.error("Missing one or more axis for coordinates.");
             return CommandResult.empty();
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id).addSpawnLocation(x.get(), y.get(), z.get());
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x.get(), y.get(), z.get());
         } catch (WorldNotSetException e) {
-            plugin.getLogger().error("No world set. Assign the world first.");
+            SpongeSurvivalGamesPlugin.logger.error("No world set. Assign the world first.");
             return CommandResult.empty();
         } catch (NoWorldException e) {
-            plugin.getLogger().error("World does not exist.");
+            SpongeSurvivalGamesPlugin.logger.error("World does not exist.");
             return CommandResult.empty();
         }
-        plugin.getLogger().info("Spawn location added for game \"" + id + "\".");
+        SpongeSurvivalGamesPlugin.logger.info("Spawn location added for game \"" + id + "\".");
 
         return CommandResult.success();
     }

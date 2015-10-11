@@ -36,10 +36,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
  */
 public class ClearSpawnpointsCommand extends StoppedCommand {
 
-    public ClearSpawnpointsCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -47,8 +43,8 @@ public class ClearSpawnpointsCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).clearSpawnLocations();
-        plugin.getLogger().info("Spawn locations cleared for game \"" + id + "\".");
+        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).clearSpawnLocations();
+        SpongeSurvivalGamesPlugin.logger.info("Spawn locations cleared for game \"" + id + "\".");
 
         return CommandResult.success();
     }

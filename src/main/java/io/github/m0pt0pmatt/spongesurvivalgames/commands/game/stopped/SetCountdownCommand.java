@@ -36,10 +36,6 @@ import java.util.Optional;
 
 public class SetCountdownCommand extends StoppedCommand {
 
-    public SetCountdownCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -49,18 +45,18 @@ public class SetCountdownCommand extends StoppedCommand {
 
         Optional<Integer> countdownTime = args.getOne("countdown");
         if (!countdownTime.isPresent()) {
-            plugin.getLogger().error("No Countdown time specified");
+            SpongeSurvivalGamesPlugin.logger.error("No Countdown time specified");
             return CommandResult.empty();
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id).setCountdownTime(countdownTime.get());
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime.get());
         } catch (NegativeCountdownTimeException e) {
-            plugin.getLogger().error("Negative countdown times are not valid");
+            SpongeSurvivalGamesPlugin.logger.error("Negative countdown times are not valid");
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+        SpongeSurvivalGamesPlugin.logger.info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
         return CommandResult.success();
     }
 }

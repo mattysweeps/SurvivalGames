@@ -39,10 +39,6 @@ import java.util.Optional;
  */
 public class SetWorldCommand extends StoppedCommand {
 
-    public SetWorldCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -52,18 +48,18 @@ public class SetWorldCommand extends StoppedCommand {
 
         Optional<String> worldName = args.getOne("worldName");
         if (!worldName.isPresent()) {
-            plugin.getLogger().error("World name was not present.");
+            SpongeSurvivalGamesPlugin.logger.error("World name was not present.");
             return CommandResult.empty();
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id).setWorld(worldName.get());
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName.get());
         } catch (NoWorldException e) {
-            plugin.getLogger().error("World \"" + worldName.get() + "\" does not exist.");
+            SpongeSurvivalGamesPlugin.logger.error("World \"" + worldName.get() + "\" does not exist.");
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
+        SpongeSurvivalGamesPlugin.logger.info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
         return CommandResult.success();
     }
 }

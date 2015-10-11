@@ -23,21 +23,7 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.config;
+package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-
-public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
-    @Override
-    public SurvivalGameConfig deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
-        return null;
-    }
-
-    @Override
-    public void serialize(TypeToken<?> type, SurvivalGameConfig obj, ConfigurationNode value) throws ObjectMappingException {
-
-    }
+public class NoPlayerLimitException extends SurvivalGameException {
 }

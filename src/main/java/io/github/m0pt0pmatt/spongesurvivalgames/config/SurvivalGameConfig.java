@@ -25,57 +25,79 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import com.flowpowered.math.vector.Vector3d;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.UUID;
 
+@ConfigSerializable
 public class SurvivalGameConfig {
 
-    private Optional<UUID> worldUUID = Optional.empty();
-    private Optional<Location<World>> exit = Optional.empty();
-    private Optional<Location<World>> center = Optional.empty();
-    private int playerLimit = 25; //Default player limit
-    private int countdownTime = 10; //Default countdown time
+    @Setting(value = "world", comment = "World where the game takes place") @Nullable
+    private String worldName;
 
-    public Optional<UUID> getWorldUUID() {
-        return worldUUID;
+    @Setting(comment = "World for the exit location") @Nullable
+    private String exitWorld;
+
+    @Setting(value = "exitLocation", comment = "Exit location") @Nullable
+    private Vector3d exit;
+
+    @Setting(value = "centerLocation", comment = "Center Location") @Nullable
+    private Vector3d center;
+
+    @Setting(comment = "Max number of players") @Nullable
+    private Integer playerLimit;
+
+    @Setting(comment = "Number of seconds for the countdown") @Nullable
+    private Integer countdownTime;
+
+    public Optional<String> getWorldName() {
+        return worldName == null ? Optional.empty() : Optional.of(worldName);
     }
 
-    public void setWorldUUID(Optional<UUID> worldUUID) {
-        this.worldUUID = worldUUID;
+    public void setWorldName(@Nullable String worldName) {
+        this.worldName = worldName;
     }
 
-    public Optional<Location<World>> getExit() {
-        return exit;
+    public Optional<String> getExitWorld() {
+        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
     }
 
-    public void setExit(Optional<Location<World>> exit) {
+    public void setExitWorld(@Nullable String exitWorld) {
+        this.exitWorld = exitWorld;
+    }
+
+    public Optional<Vector3d> getExit() {
+        return exit == null ? Optional.empty() : Optional.of(exit);
+    }
+
+    public void setExit(@Nullable Vector3d exit) {
         this.exit = exit;
     }
 
-    public Optional<Location<World>> getCenter() {
-        return center;
+    public Optional<Vector3d> getCenter() {
+        return center == null ? Optional.empty() : Optional.of(center);
     }
 
-    public void setCenter(Optional<Location<World>> center) {
+    public void setCenter(@Nullable Vector3d center) {
         this.center = center;
     }
 
-    public int getPlayerLimit() {
-        return playerLimit;
+    public Optional<Integer> getPlayerLimit() {
+        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
     }
 
-    public void setPlayerLimit(int playerLimit) {
+    public void setPlayerLimit(@Nullable Integer playerLimit) {
         this.playerLimit = playerLimit;
     }
 
-    public int getCountdownTime() {
-        return countdownTime;
+    public Optional<Integer> getCountdownTime() {
+        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
     }
 
-    public void setCountdownTime(int countdownTime) {
+    public void setCountdownTime(@Nullable Integer countdownTime) {
         this.countdownTime = countdownTime;
     }
 }

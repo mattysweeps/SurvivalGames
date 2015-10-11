@@ -41,10 +41,6 @@ import java.util.Set;
  */
 public class PrintSpawnsCommand extends GameCommand {
 
-    public PrintSpawnsCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -52,10 +48,10 @@ public class PrintSpawnsCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Set<Location<World>> spawnLocations = plugin.getSurvivalGameMap().get(id).getSpawns();
-        plugin.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
+        Set<Location<World>> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
         for (Location<World> spawnLocation : spawnLocations) {
-            plugin.getLogger().info(spawnLocation.toString());
+            SpongeSurvivalGamesPlugin.logger.info(spawnLocation.toString());
         }
 
         return CommandResult.success();

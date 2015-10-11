@@ -41,10 +41,6 @@ import java.util.Optional;
  */
 public class PrintCenterCommand extends GameCommand {
 
-    public PrintCenterCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -52,13 +48,13 @@ public class PrintCenterCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<Location<World>> centerLocation = plugin.getSurvivalGameMap().get(id).getCenter();
+        Optional<Location<World>> centerLocation = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getCenter();
         if (!centerLocation.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", No Center Location.");
+            SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", No Center Location.");
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
         return CommandResult.success();
     }
 }

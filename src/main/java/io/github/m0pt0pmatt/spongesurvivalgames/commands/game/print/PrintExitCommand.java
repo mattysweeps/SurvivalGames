@@ -38,10 +38,6 @@ import java.util.Optional;
 
 public class PrintExitCommand extends GameCommand {
 
-    public PrintExitCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -49,13 +45,13 @@ public class PrintExitCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<Location<World>> exit = plugin.getSurvivalGameMap().get(id).getExit();
+        Optional<Location<World>> exit = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getExit();
         if (!exit.isPresent()) {
-            plugin.getLogger().info("Game: \"" + id + "\", No Exit Location.");
+            SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", No Exit Location.");
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
         return CommandResult.success();
     }
 }

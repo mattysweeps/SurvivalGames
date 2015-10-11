@@ -27,19 +27,18 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 
+import java.util.Optional;
+
 /**
  * Command to print the player limit of a game
  */
 public class PrintPlayerLimitCommand extends GameCommand {
-
-    public PrintPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -48,7 +47,13 @@ public class PrintPlayerLimitCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + plugin.getSurvivalGameMap().get(id).getPlayerLimit() + "\".");
+        Optional<Integer> playerLimit = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
+        if (!playerLimit.isPresent()){
+            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", Has no player limit set yet.");
+            return CommandResult.empty();
+        }
+
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
         return CommandResult.success();
     }
 }

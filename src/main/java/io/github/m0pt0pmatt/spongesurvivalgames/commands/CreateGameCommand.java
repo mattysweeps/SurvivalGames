@@ -40,28 +40,22 @@ import java.util.Optional;
  */
 public class CreateGameCommand implements CommandExecutor {
 
-    private final SpongeSurvivalGamesPlugin plugin;
-
-    public CreateGameCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
         Optional<String> id = args.getOne("id");
         if (!id.isPresent()) {
-            plugin.getLogger().error("Survival Game ID is not present.");
+            SpongeSurvivalGamesPlugin.logger.error("Survival Game ID is not present.");
             return CommandResult.empty();
         }
 
-        if (plugin.getSurvivalGameMap().containsKey(id.get())) {
-            plugin.getLogger().error("Survival Game ID already exists.");
+        if (SpongeSurvivalGamesPlugin.survivalGameMap.containsKey(id.get())) {
+            SpongeSurvivalGamesPlugin.logger.error("Survival Game ID already exists.");
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().put(id.get(), new SurvivalGame(plugin));
-        plugin.getLogger().info("Survival Game \"" + id.get() + "\" created.");
+        SpongeSurvivalGamesPlugin.survivalGameMap.put(id.get(), new SurvivalGame());
+        SpongeSurvivalGamesPlugin.logger.info("Survival Game \"" + id.get() + "\" created.");
 
         return CommandResult.success();
     }

@@ -37,18 +37,18 @@ public class CreateCountdownTask implements SurvivalGameTask {
     public void execute(SurvivalGame game) throws TaskException {
 
         SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
-            for (int i = game.getCountdownTime(); i > 0; i--) {
+            for (int i = game.getCountdownTime().get(); i > 0; i--) {
                 final int j = i;
-                game.getPlugin().getGame().getScheduler().createTaskBuilder()
-                        .delay(game.getCountdownTime() - i, TimeUnit.SECONDS)
+                SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                        .delay(game.getCountdownTime().get() - i, TimeUnit.SECONDS)
                         .execute(() -> player.sendMessage(Texts.of(j)))
-                        .submit(game.getPlugin());
+                        .submit(SpongeSurvivalGamesPlugin.plugin);
             }
 
-            game.getPlugin().getGame().getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime(), TimeUnit.SECONDS)
+            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
                     .execute(() -> player.sendMessage(Texts.of("Go!")))
-                    .submit(game.getPlugin());
+                    .submit(SpongeSurvivalGamesPlugin.plugin);
         });
     }
 }

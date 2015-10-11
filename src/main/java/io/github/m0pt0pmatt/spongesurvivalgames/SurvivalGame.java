@@ -39,7 +39,6 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private final SpongeSurvivalGamesPlugin plugin;
     private final Set<Location<World>> spawns = new HashSet<>();
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector3d> surroundingVectors = new HashSet<>(Arrays.asList(
@@ -71,10 +70,6 @@ public class SurvivalGame {
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
 
-    public SurvivalGame(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     public SurvivalGameState getState() {
         return state;
     }
@@ -86,8 +81,8 @@ public class SurvivalGame {
     public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException {
 
         // Check all prerequisites for starting the game
-        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
+        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
         if (playerUUIDs.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
@@ -131,10 +126,11 @@ public class SurvivalGame {
         if (exception.isPresent()) throw exception.get();
     }
 
-    public void addPlayer(UUID player) throws PlayerLimitReachedException {
-        if (playerUUIDs.size() >= config.getPlayerLimit()) {
-            throw new PlayerLimitReachedException();
-        }
+    public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
+
+        if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
+        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw new PlayerLimitReachedException();
+
         playerUUIDs.add(player);
     }
 
@@ -142,17 +138,17 @@ public class SurvivalGame {
         playerUUIDs.remove(player);
     }
 
-    public void setCenterLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
+    public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
+        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
 
-        config.setCenter(Optional.of(new Location<>(world.get(), x, y, z)));
+        config.setCenter(new Vector3d(x, y, z));
     }
 
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-        if (!config.getWorldUUID().isPresent()) throw new WorldNotSetException();
-        Optional<World> world = plugin.getGame().getServer().getWorld(config.getWorldUUID().get());
+        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
 
         spawns.add(new Location<>(world.get(), x, y, z));
@@ -163,28 +159,36 @@ public class SurvivalGame {
     }
 
     public void setWorld(String worldName) throws NoWorldException {
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(worldName);
         if (!world.isPresent()) throw new NoWorldException();
 
-        config.setWorldUUID(Optional.of(world.get().getUniqueId()));
+        config.setWorldName(world.get().getName());
     }
 
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldName);
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(worldName);
         if (!world.isPresent()) throw new NoWorldException();
 
-        config.setExit(Optional.of(new Location<>(world.get(), x, y, z)));
+        config.setExit(new Vector3d(x, y, z));
+        config.setExitWorld(worldName);
     }
 
     public Optional<Location<World>> getCenter() {
-        return config.getCenter();
+
+        Optional<Vector3d> center = config.getCenter();
+        if (!center.isPresent()) return Optional.empty();
+        if (!config.getWorldName().isPresent()) return Optional.empty();
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
+        if (!world.isPresent()) return Optional.empty();
+
+        return Optional.of(new Location<>(world.get(), center.get()));
     }
 
     public Set<Location<World>> getSpawns() {
         return spawns;
     }
 
-    public int getPlayerLimit() {
+    public Optional<Integer> getPlayerLimit() {
         return config.getPlayerLimit();
     }
 
@@ -192,21 +196,27 @@ public class SurvivalGame {
         config.setPlayerLimit(playerLimit);
     }
 
-    public Optional<UUID> getWorldUUID() {
-        return config.getWorldUUID();
+    public Optional<String> getWorldName() {
+        return config.getWorldName();
     }
 
     public Optional<Location<World>> getExit() {
-        return config.getExit();
+
+        Optional<Vector3d> exit = config.getExit();
+        if (!exit.isPresent()) return Optional.empty();
+        if (!config.getWorldName().isPresent()) return Optional.empty();
+        Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
+        if (!world.isPresent()) return Optional.empty();
+
+        return Optional.of(new Location<>(world.get(), exit.get()));
     }
 
-    public int getCountdownTime() {
+    public Optional<Integer> getCountdownTime() {
         return config.getCountdownTime();
     }
 
     public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
         if (countdownTime < 0) throw new NegativeCountdownTimeException();
-
         config.setCountdownTime(countdownTime);
     }
 
@@ -218,7 +228,4 @@ public class SurvivalGame {
         return surroundingVectors;
     }
 
-    public SpongeSurvivalGamesPlugin getPlugin() {
-        return plugin;
-    }
 }

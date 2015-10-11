@@ -41,10 +41,6 @@ import java.util.UUID;
  */
 public class PrintWorldCommand extends GameCommand {
 
-    public PrintWorldCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -52,15 +48,13 @@ public class PrintWorldCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Optional<UUID> worldUUID = plugin.getSurvivalGameMap().get(id).getWorldUUID();
-        if (!worldUUID.isPresent()) {
-            plugin.getLogger().error("Game: \"" + id + "\", No World set.");
+        Optional<String> worldName = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getWorldName();
+        if (!worldName.isPresent()) {
+            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", No World set.");
             return CommandResult.empty();
         }
 
-        Optional<World> world = plugin.getGame().getServer().getWorld(worldUUID.get());
-        plugin.getLogger().info("Game: \"" + id + "\", World: \"" + world.get().getName() + "\".");
-
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
         return CommandResult.success();
     }
 }

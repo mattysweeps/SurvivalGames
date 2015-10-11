@@ -26,6 +26,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
@@ -35,13 +37,9 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import java.util.Optional;
 
 /**
- * Command to remove a player from a game
+ * Command to add a player to a game
  */
-public class RemovePlayerFromGameCommand extends ReadyCommand {
-
-    public RemovePlayerFromGameCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
+public class AddPlayerCommand extends ReadyCommand {
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -52,19 +50,27 @@ public class RemovePlayerFromGameCommand extends ReadyCommand {
 
         Optional<String> playerName = args.getOne("playerName");
         if (!playerName.isPresent()) {
-            plugin.getLogger().error("Player name is not present.");
+            SpongeSurvivalGamesPlugin.logger.error("Player name is not present.");
             return CommandResult.empty();
         }
 
-        Optional<Player> player = plugin.getGame().getServer().getPlayer(playerName.get());
+        Optional<Player> player = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(playerName.get());
         if (!player.isPresent()) {
-            plugin.getLogger().error("No such player \"" + playerName.get() + "\".");
+            SpongeSurvivalGamesPlugin.logger.error("No such player \"" + playerName.get() + "\".");
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).removePlayer(player.get().getUniqueId());
-        plugin.getLogger().info("Player \"" + playerName.get() + "\" removed from survival game \"" + id + "\".");
+        try {
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.get().getUniqueId());
+        } catch (NoPlayerLimitException e) {
+            SpongeSurvivalGamesPlugin.logger.error("No player limit sey for game \"" + id + "\".");
+            e.printStackTrace();
+        } catch (PlayerLimitReachedException e) {
+            SpongeSurvivalGamesPlugin.logger.error("Player limit reached for game \"" + id + "\".");
+            return CommandResult.empty();
+        }
 
+        SpongeSurvivalGamesPlugin.logger.info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
         return CommandResult.success();
     }
 }

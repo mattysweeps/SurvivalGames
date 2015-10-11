@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.spongepowered.api.block.BlockSnapshot;
@@ -47,11 +48,11 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
             game.getSurroundingVectors().stream()
                     .forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
 
-            game.getPlugin().getGame().getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime(), TimeUnit.SECONDS)
+            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
                     .execute(() -> snapshots.stream()
                             .forEach(snapshot -> snapshot.restore(true, false)))
-                    .submit(game.getPlugin());
+                    .submit(SpongeSurvivalGamesPlugin.plugin);
         }
     }
 }

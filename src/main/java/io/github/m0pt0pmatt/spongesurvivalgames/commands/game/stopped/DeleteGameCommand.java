@@ -36,10 +36,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
  */
 public class DeleteGameCommand extends StoppedCommand {
 
-    public DeleteGameCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -47,8 +43,8 @@ public class DeleteGameCommand extends StoppedCommand {
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().remove(id);
-        plugin.getLogger().info("Survival Game \"" + id + "\" deleted.");
+        SpongeSurvivalGamesPlugin.survivalGameMap.remove(id);
+        SpongeSurvivalGamesPlugin.logger.info("Survival Game \"" + id + "\" deleted.");
 
         return CommandResult.success();
     }

@@ -40,26 +40,21 @@ import java.util.Optional;
  */
 public abstract class GameCommand implements CommandExecutor {
 
-    protected final SpongeSurvivalGamesPlugin plugin;
     protected String id;
-
-    public GameCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
         Optional<String> idOptional = args.getOne("id");
         if (!idOptional.isPresent()) {
-            plugin.getLogger().error("Survival Game ID is not present.");
+            SpongeSurvivalGamesPlugin.logger.error("Survival Game ID is not present.");
             return CommandResult.empty();
         }
 
         id = idOptional.get();
 
-        if (!plugin.getSurvivalGameMap().containsKey(id)) {
-            plugin.getLogger().error("No Survival Game has specified ID \"" + id + "\".");
+        if (!SpongeSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
+            SpongeSurvivalGamesPlugin.logger.error("No Survival Game has specified ID \"" + id + "\".");
             return CommandResult.empty();
         }
 

@@ -40,18 +40,12 @@ import java.util.Map;
  */
 public class ListGamesCommand implements CommandExecutor {
 
-    private final SpongeSurvivalGamesPlugin plugin;
-
-    public ListGamesCommand(SpongeSurvivalGamesPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
-        plugin.getLogger().info("There are " + plugin.getSurvivalGameMap().size() + " Survival Games:");
-        for (Map.Entry<String, SurvivalGame> entry : plugin.getSurvivalGameMap().entrySet()) {
-            plugin.getLogger().info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
+        SpongeSurvivalGamesPlugin.logger.info("There are " + SpongeSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
+        for (Map.Entry<String, SurvivalGame> entry : SpongeSurvivalGamesPlugin.survivalGameMap.entrySet()) {
+            SpongeSurvivalGamesPlugin.logger.info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
         }
 
         return CommandResult.success();

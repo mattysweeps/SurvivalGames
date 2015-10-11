@@ -38,10 +38,6 @@ import java.util.Optional;
  */
 public class SetPlayerLimitCommand extends StoppedCommand {
 
-    public SetPlayerLimitCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -51,12 +47,12 @@ public class SetPlayerLimitCommand extends StoppedCommand {
 
         Optional<Integer> playerLimit = args.getOne("playerLimit");
         if (!playerLimit.isPresent()) {
-            plugin.getLogger().error("Player limit was not present.");
+            SpongeSurvivalGamesPlugin.logger.error("Player limit was not present.");
             return CommandResult.empty();
         }
 
-        plugin.getSurvivalGameMap().get(id).setPlayerLimit(playerLimit.get());
-        plugin.getLogger().info("Player limit for game \"" + id + "\" set to " + playerLimit.get() + ".");
+        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit.get());
+        SpongeSurvivalGamesPlugin.logger.info("Player limit for game \"" + id + "\" set to " + playerLimit.get() + ".");
         return CommandResult.success();
     }
 }

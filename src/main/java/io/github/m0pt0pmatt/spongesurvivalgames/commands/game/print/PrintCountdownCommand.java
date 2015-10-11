@@ -34,10 +34,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
 
 public class PrintCountdownCommand extends GameCommand {
 
-    public PrintCountdownCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -45,7 +41,7 @@ public class PrintCountdownCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Game: \"" + id + "\", Countdown Time: \"" + plugin.getSurvivalGameMap().get(id).getCountdownTime() + "\".");
+        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Countdown Time: \"" + SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
         return CommandResult.success();
     }
 }

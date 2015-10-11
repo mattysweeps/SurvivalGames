@@ -37,10 +37,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
  */
 public class StopGameCommand extends ReadyCommand {
 
-    public StopGameCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -49,13 +45,13 @@ public class StopGameCommand extends ReadyCommand {
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id).stop();
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).stop();
         } catch (TaskException e) {
-            plugin.getLogger().error(e.getMessage());
+            SpongeSurvivalGamesPlugin.logger.error(e.getMessage());
             return CommandResult.empty();
         }
 
-        plugin.getLogger().error("Survival Game \"" + id + "\" is now STOPPED.");
+        SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" is now STOPPED.");
         return CommandResult.success();
     }
 }

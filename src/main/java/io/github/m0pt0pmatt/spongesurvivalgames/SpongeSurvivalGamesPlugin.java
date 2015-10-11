@@ -29,8 +29,8 @@ import com.google.inject.Inject;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerToGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerFromGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
@@ -54,14 +54,16 @@ import java.util.stream.Collectors;
 @Plugin(id = "spongesurvivalgames", name = "Sponge Survival Games", version = "1.0")
 public class SpongeSurvivalGamesPlugin {
 
-    private static Game game;
-    private final Logger logger; // Plugin Logger
-    private final Map<String, SurvivalGame> survivalGameMap;
+    public static Game game;
+    public static Logger logger;
+    public static Map<String, SurvivalGame> survivalGameMap;
+    public static SpongeSurvivalGamesPlugin plugin;
 
     @Inject
     public SpongeSurvivalGamesPlugin(Logger logger) {
-        this.logger = logger;
-        survivalGameMap = new HashMap<>();
+        SpongeSurvivalGamesPlugin.plugin = this;
+        SpongeSurvivalGamesPlugin.logger = logger;
+        SpongeSurvivalGamesPlugin.survivalGameMap = new HashMap<>();
     }
 
     public static Set<Player> getPlayers(Set<UUID> playerUUIDs) {
@@ -74,10 +76,10 @@ public class SpongeSurvivalGamesPlugin {
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        logger.info("Sponge Survival Games Plugin Enabled");
-        game = event.getGame();
+        SpongeSurvivalGamesPlugin.game = event.getGame();
         registerCommands();
         survivalGameMap.clear();
+        logger.info("Sponge Survival Games Plugin Enabled");
     }
 
     private void registerCommands() {
@@ -86,14 +88,14 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.create")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new CreateGameCommand(this))
+                .executor(new CreateGameCommand())
                 .build();
         game.getCommandDispatcher().register(this, createSurvivalGameCommand, "ssg-create");
 
         CommandSpec listSurvivalGamesCommand = CommandSpec.builder()
                 .description(Texts.of(""))
                 .permission("spongesurvivalgames.game.list")
-                .executor(new ListGamesCommand(this))
+                .executor(new ListGamesCommand())
                 .build();
         game.getCommandDispatcher().register(this, listSurvivalGamesCommand, "ssg-list");
 
@@ -111,42 +113,42 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.create")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new CreateGameCommand(this))
+                .executor(new CreateGameCommand())
                 .build();
 
         CommandSpec deleteCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.delete")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new DeleteGameCommand(this))
+                .executor(new DeleteGameCommand())
                 .build();
 
         CommandSpec readyCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.set.ready")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new ReadyGameCommand(this))
+                .executor(new ReadyGameCommand())
                 .build();
 
         CommandSpec startCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.start")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new StartGameCommand(this))
+                .executor(new StartGameCommand())
                 .build();
 
         CommandSpec stopCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.stop")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new StopGameCommand(this))
+                .executor(new StopGameCommand())
                 .build();
 
         CommandSpec forceStopCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.forcestop")
                 .arguments(GenericArguments.onlyOne(GenericArguments.string(Texts.of("id"))))
-                .executor(new ForceStopGameCommand(this))
+                .executor(new ForceStopGameCommand())
                 .build();
 
         CommandSpec ssgCommand = CommandSpec.builder()
@@ -171,42 +173,42 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.center")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintCenterCommand(this))
+                .executor(new PrintCenterCommand())
                 .build();
 
         CommandSpec printCountdownCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.countdown")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintCountdownCommand(this))
+                .executor(new PrintCountdownCommand())
                 .build();
 
         CommandSpec printExitCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.exit")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintExitCommand(this))
+                .executor(new PrintExitCommand())
                 .build();
 
         CommandSpec printPlayerLimitCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.playerLimit")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintPlayerLimitCommand(this))
+                .executor(new PrintPlayerLimitCommand())
                 .build();
 
         CommandSpec printSpawnsCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.spawns")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintSpawnsCommand(this))
+                .executor(new PrintSpawnsCommand())
                 .build();
 
         CommandSpec printWorldCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.print.world")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new PrintWorldCommand(this))
+                .executor(new PrintWorldCommand())
                 .build();
 
         return CommandSpec.builder()
@@ -225,14 +227,14 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.add.spawn")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
-                .executor(new AddSpawnCommand(this))
+                .executor(new AddSpawnCommand())
                 .build();
 
         CommandSpec addPlayerCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <playerName>"))
                 .permission("spongesurvivalgames.game.add.player")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
-                .executor(new AddPlayerToGame(this))
+                .executor(new AddPlayerCommand())
                 .build();
 
         return CommandSpec.builder()
@@ -247,7 +249,7 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id> <playerName>"))
                 .permission("spongesurvivalgames.game.remove.player")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("playerName")))
-                .executor(new RemovePlayerFromGameCommand(this))
+                .executor(new RemovePlayerCommand())
                 .build();
 
         return CommandSpec.builder()
@@ -261,35 +263,35 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.set.center")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
-                .executor(new SetCenterLocationCommand(this))
+                .executor(new SetCenterLocationCommand())
                 .build();
 
         CommandSpec setCountdownCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <countdown>"))
                 .permission("spongesurvivalgames.game.set.countdown")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("countdown")))
-                .executor(new SetCountdownCommand(this))
+                .executor(new SetCountdownCommand())
                 .build();
 
         CommandSpec setExitLocationCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <worldName> <x> <y> <z>"))
                 .permission("spongesurvivalgames.game.set.exit")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")), GenericArguments.integer(Texts.of("x")), GenericArguments.integer(Texts.of("y")), GenericArguments.integer(Texts.of("z")))
-                .executor(new SetExitCommand(this))
+                .executor(new SetExitCommand())
                 .build();
 
         CommandSpec setPlayerLimitCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <playerLimit>"))
                 .permission("spongesurvivalgames.game.set.playerlimit")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.integer(Texts.of("playerLimit")))
-                .executor(new SetPlayerLimitCommand(this))
+                .executor(new SetPlayerLimitCommand())
                 .build();
 
         CommandSpec setWorldCommand = CommandSpec.builder()
                 .description(Texts.of("<id> <worldName>"))
                 .permission("spongesurvivalgames.game.set.world")
                 .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("worldName")))
-                .executor(new SetWorldCommand(this))
+                .executor(new SetWorldCommand())
                 .build();
 
         return CommandSpec.builder()
@@ -307,7 +309,7 @@ public class SpongeSurvivalGamesPlugin {
                 .description(Texts.of("<id>"))
                 .permission("spongesurvivalgames.game.clear.spawns")
                 .arguments(GenericArguments.string(Texts.of("id")))
-                .executor(new ClearSpawnpointsCommand(this))
+                .executor(new ClearSpawnpointsCommand())
                 .build();
 
         return CommandSpec.builder()

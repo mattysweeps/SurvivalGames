@@ -40,10 +40,6 @@ import java.util.Optional;
  */
 public class SetExitCommand extends StoppedCommand {
 
-    public SetExitCommand(SpongeSurvivalGamesPlugin plugin) {
-        super(plugin);
-    }
-
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
@@ -53,7 +49,7 @@ public class SetExitCommand extends StoppedCommand {
 
         Optional<String> worldName = args.getOne("worldName");
         if (!worldName.isPresent()) {
-            plugin.getLogger().error("World name was not present.");
+            SpongeSurvivalGamesPlugin.logger.error("World name was not present.");
             return CommandResult.empty();
         }
 
@@ -61,18 +57,18 @@ public class SetExitCommand extends StoppedCommand {
         Optional<Integer> y = args.getOne("y");
         Optional<Integer> z = args.getOne("z");
         if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            plugin.getLogger().error("Missing one or more axis for coordinates.");
+            SpongeSurvivalGamesPlugin.logger.error("Missing one or more axis for coordinates.");
             return CommandResult.empty();
         }
 
         try {
-            plugin.getSurvivalGameMap().get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
         } catch (NoWorldException e) {
-            plugin.getLogger().error("No such world \"" + worldName.get() + "\".");
+            SpongeSurvivalGamesPlugin.logger.error("No such world \"" + worldName.get() + "\".");
             return CommandResult.empty();
         }
 
-        plugin.getLogger().info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x.get() + "," + y.get() + "," + z.get() + ").");
+        SpongeSurvivalGamesPlugin.logger.info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x.get() + "," + y.get() + "," + z.get() + ").");
         return CommandResult.success();
     }
 }
