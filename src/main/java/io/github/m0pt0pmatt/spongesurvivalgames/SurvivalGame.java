@@ -29,6 +29,7 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import org.spongepowered.api.util.Tuple;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -39,7 +40,6 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private final Set<Location<World>> spawns = new HashSet<>();
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector3d> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector3d(1, 0, 0),
@@ -84,7 +84,7 @@ public class SurvivalGame {
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
-        if (playerUUIDs.size() > spawns.size()) throw new NotEnoughSpawnPointsException();
+        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException();
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
 
         // Set the state
@@ -151,11 +151,11 @@ public class SurvivalGame {
         Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
 
-        spawns.add(new Location<>(world.get(), x, y, z));
+        config.getSpawns().add(new Tuple<>(world.get().getName(), new Vector3d(x, y, z)));
     }
 
     public void clearSpawnLocations() {
-        spawns.clear();
+        config.getSpawns().clear();
     }
 
     public void setWorld(String worldName) throws NoWorldException {
@@ -184,8 +184,8 @@ public class SurvivalGame {
         return Optional.of(new Location<>(world.get(), center.get()));
     }
 
-    public Set<Location<World>> getSpawns() {
-        return spawns;
+    public Set<Tuple<String, Vector3d>> getSpawns() {
+        return config.getSpawns();
     }
 
     public Optional<Integer> getPlayerLimit() {

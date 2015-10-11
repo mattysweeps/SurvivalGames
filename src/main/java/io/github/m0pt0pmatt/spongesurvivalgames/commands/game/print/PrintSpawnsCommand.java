@@ -25,8 +25,10 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
+import org.spongepowered.api.util.Tuple;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -48,9 +50,9 @@ public class PrintSpawnsCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Set<Location<World>> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
+        Set<Tuple<String, Vector3d>> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
         SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Location<World> spawnLocation : spawnLocations) {
+        for (Tuple<String, Vector3d> spawnLocation : spawnLocations) {
             SpongeSurvivalGamesPlugin.logger.info(spawnLocation.toString());
         }
 

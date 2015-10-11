@@ -28,9 +28,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.config;
 import com.flowpowered.math.vector.Vector3d;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.spongepowered.api.util.Tuple;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @ConfigSerializable
 public class SurvivalGameConfig {
@@ -52,6 +57,9 @@ public class SurvivalGameConfig {
 
     @Setting(comment = "Number of seconds for the countdown") @Nullable
     private Integer countdownTime;
+
+    @Setting(comment = "Spawn points")
+    private Set<Tuple<String, Vector3d>> spawns = new HashSet<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -99,5 +107,13 @@ public class SurvivalGameConfig {
 
     public void setCountdownTime(@Nullable Integer countdownTime) {
         this.countdownTime = countdownTime;
+    }
+
+    public Set<Tuple<String, Vector3d>> getSpawns() {
+        return spawns;
+    }
+
+    public void setSpawns(Set<Tuple<String, Vector3d>> spawns) {
+        this.spawns = spawns;
     }
 }

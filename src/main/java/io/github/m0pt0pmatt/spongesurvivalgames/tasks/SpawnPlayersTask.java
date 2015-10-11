@@ -25,13 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.spongepowered.api.util.Tuple;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class SpawnPlayersTask implements SurvivalGameTask {
@@ -39,13 +42,15 @@ public class SpawnPlayersTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) {
 
-        Set<Location<World>> spawnLocations = new HashSet<>();
+        Set<Tuple<String, Vector3d>> spawnLocations = new HashSet<>();
         spawnLocations.addAll(game.getSpawns());
-        Iterator<Location<World>> spawnIterator = spawnLocations.iterator();
+        Iterator<Tuple<String, Vector3d>> spawnIterator = spawnLocations.iterator();
         SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
                 .forEach(player -> {
-                    Location<World> spawnPoint = spawnIterator.next();
-                    player.setLocation(spawnPoint.add(0.5, 0, 0.5));
+                    Tuple<String, Vector3d> spawnPoint = spawnIterator.next();
+                    Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(spawnPoint.getFirst());
+                    Location<World> location = new Location<>(world.get(), spawnPoint.getSecond());
+                    player.setLocation(location.add(0.5, 0, 0.5));
                 });
     }
 }

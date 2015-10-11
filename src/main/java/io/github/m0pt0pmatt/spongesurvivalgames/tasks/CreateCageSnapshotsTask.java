@@ -25,14 +25,17 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.util.Tuple;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -40,7 +43,11 @@ import java.util.stream.Collectors;
 public class CreateCageSnapshotsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
-        for (Location<World> location : game.getSpawns()) {
+        for (Tuple<String, Vector3d> tuple : game.getSpawns()) {
+
+            Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(tuple.getFirst());
+            Location<World> location = new Location<>(world.get(), tuple.getSecond());
+
             Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream()
                     .map(vector -> location.add(vector).createSnapshot())
                     .collect(Collectors.toSet());

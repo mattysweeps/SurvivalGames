@@ -40,8 +40,12 @@ public class StartGameCommand extends ReadyCommand {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
+        if (!super.execute(src, args).equals(CommandResult.success())) {
+            return CommandResult.empty();
+        }
+
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
+           SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
         } catch (NotEnoughSpawnPointsException e) {
             SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have enough spawn points.");
             return CommandResult.empty();
