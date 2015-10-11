@@ -31,6 +31,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
+import paulscode.sound.Vector3D;
 
 public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
     @Override
@@ -40,19 +41,36 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
         try{
             builder = builder
                     .worldName(value.getNode("world").getString(""))
-                    .exitWorld(value.getNode("exitWorld").getString(""))
                     .playerLimit(value.getNode("playerLimit").getInt())
-                    .countdownTime(value.getNode("countdownTime").getInt())
+                    .countdownTime(value.getNode("countdownTime").getInt());
+
+            ConfigurationNode exitNode = value.getNode("exit");
+            builder = builder
+                    .exitWorld(exitNode.getNode("world").getString(""))
                     .exitLocation(new Vector3d(
-                            value.getNode("exitX").getDouble(),
-                            value.getNode("exitY").getDouble(),
-                            value.getNode("exitZ").getDouble()
-                    ))
-                    .centerLocation(new Vector3d(
-                            value.getNode("centerX").getDouble(),
-                            value.getNode("centerY").getDouble(),
-                            value.getNode("centerZ").getDouble()
+                            exitNode.getNode("X").getDouble(),
+                            exitNode.getNode("Y").getDouble(),
+                            exitNode.getNode("Z").getDouble()
                     ));
+
+            ConfigurationNode centerNode = value.getNode("center");
+            builder = builder
+                    .centerLocation(new Vector3d(
+                            centerNode.getNode("X").getDouble(),
+                            centerNode.getNode("Y").getDouble(),
+                            centerNode.getNode("Z").getDouble()
+                    ));
+
+            ConfigurationNode spawnsNode = value.getNode("spawns");
+            for (ConfigurationNode spawnNode: spawnsNode.getChildrenList()){
+                builder = builder
+                        .addSpawn(new Vector3d(
+                                spawnNode.getNode("X").getDouble(),
+                                spawnNode.getNode("Y").getDouble(),
+                                spawnNode.getNode("Z").getDouble()
+                        ));
+            }
+
         } catch (Exception e){
             SpongeSurvivalGamesPlugin.logger.error("Error loading config");
         }
@@ -65,15 +83,31 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
         if (obj.getWorldName().isPresent()) value.getNode("world").setValue(obj.getWorldName().get());
 
         ConfigurationNode exitNode = value.getNode("exit");
+        if (obj.getExitWorld().isPresent()) exitNode.getNode("world").setValue(obj.getExitWorld().get());
+        if (obj.getExit().isPresent()) {
+            exitNode.getNode("X").setValue(obj.getExit().get().getX());
+            exitNode.getNode("Y").setValue(obj.getExit().get().getY());
+            exitNode.getNode("Z").setValue(obj.getExit().get().getZ());
+        }
 
-        if (obj.getExitWorld().isPresent()) exitNode.getNode("World").setValue(obj.getExitWorld().get());
-        if (obj.getExit().isPresent()) exitNode.getNode("X").setValue(obj.getExit().get().getX());
-        if (obj.getExit().isPresent()) exitNode.getNode("Y").setValue(obj.getExit().get().getY());
-        if (obj.getExit().isPresent()) exitNode.getNode("Z").setValue(obj.getExit().get().getZ());
-        if (obj.getCenter().isPresent()) value.getNode("centerX").setValue(obj.getCenter().get().getX());
-        if (obj.getCenter().isPresent()) value.getNode("centerY").setValue(obj.getCenter().get().getY());
-        if (obj.getCenter().isPresent()) value.getNode("centerZ").setValue(obj.getCenter().get().getZ());
+        ConfigurationNode centerNode = value.getNode("center");
+        if (obj.getCenter().isPresent()){
+            centerNode.getNode("X").setValue(obj.getCenter().get().getX());
+            centerNode.getNode("Y").setValue(obj.getCenter().get().getY());
+            centerNode.getNode("Z").setValue(obj.getCenter().get().getZ());
+        }
+
         if (obj.getPlayerLimit().isPresent()) value.getNode("playerLimit").setValue(obj.getPlayerLimit().get());
         if (obj.getCountdownTime().isPresent()) value.getNode("countdownTime").setValue(obj.getCountdownTime().get());
+
+        ConfigurationNode spawnsNode = value.getNode("spawns");
+        int i = 0;
+        for (Vector3d spawn: obj.getSpawns()) {
+            ConfigurationNode spawnNode = spawnsNode.getNode(Integer.toString(i));
+            spawnNode.getNode("X").setValue(spawn.getX());
+            spawnNode.getNode("Y").setValue(spawn.getY());
+            spawnNode.getNode("Z").setValue(spawn.getZ());
+            i++;
+        }
     }
 }

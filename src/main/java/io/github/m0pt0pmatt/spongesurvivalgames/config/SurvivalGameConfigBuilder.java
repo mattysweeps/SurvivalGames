@@ -70,7 +70,7 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder addSpawn(String worldName, Vector3d vector){
+    public SurvivalGameConfigBuilder addSpawn(Vector3d vector){
         config.getSpawns().add(vector);
         return this;
     }
