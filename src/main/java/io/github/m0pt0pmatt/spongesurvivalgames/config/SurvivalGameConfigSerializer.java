@@ -62,13 +62,14 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
                     ));
 
             ConfigurationNode spawnsNode = value.getNode("spawns");
-            for (ConfigurationNode spawnNode: spawnsNode.getChildrenList()){
+            while (spawnsNode.hasListChildren()){
                 builder = builder
                         .addSpawn(new Vector3d(
-                                spawnNode.getNode("X").getDouble(),
-                                spawnNode.getNode("Y").getDouble(),
-                                spawnNode.getNode("Z").getDouble()
+                                spawnsNode.getNode("X").getDouble(),
+                                spawnsNode.getNode("Y").getDouble(),
+                                spawnsNode.getNode("Z").getDouble()
                         ));
+                spawnsNode = spawnsNode.getAppendedNode();
             }
 
         } catch (Exception e){
@@ -101,13 +102,11 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
         if (obj.getCountdownTime().isPresent()) value.getNode("countdownTime").setValue(obj.getCountdownTime().get());
 
         ConfigurationNode spawnsNode = value.getNode("spawns");
-        int i = 0;
         for (Vector3d spawn: obj.getSpawns()) {
-            ConfigurationNode spawnNode = spawnsNode.getNode(Integer.toString(i));
+            ConfigurationNode spawnNode = spawnsNode.getAppendedNode();
             spawnNode.getNode("X").setValue(spawn.getX());
             spawnNode.getNode("Y").setValue(spawn.getY());
             spawnNode.getNode("Z").setValue(spawn.getZ());
-            i++;
         }
     }
 }
