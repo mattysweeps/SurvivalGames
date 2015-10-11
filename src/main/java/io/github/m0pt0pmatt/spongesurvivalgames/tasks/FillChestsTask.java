@@ -46,11 +46,8 @@ public class FillChestsTask implements SurvivalGameTask {
         tileEntities.forEach(entity -> {
                     final Random random = new Random();
 
-                    SpongeSurvivalGamesPlugin.logger.info("We found a " + entity.getType() + "! " + entity.getLocation());
-
                     //TODO: this code doesn't use the api. Eventually it will need to be changed
                     if (entity.getType().getTileEntityType().equals(TileEntityChest.class)) {
-                        SpongeSurvivalGamesPlugin.logger.info("CHHEESSST");
 
                         TileEntityChest chest = (TileEntityChest) entity;
                         chest.clear();
@@ -59,7 +56,7 @@ public class FillChestsTask implements SurvivalGameTask {
                                 game.getChestMidpoint().get() +
                                 (
                                         (random.nextDouble() * (game.getChestRange().get() * 2)) *
-                                                random.nextDouble() > 0.5 ? 1 : -1
+                                                (random.nextDouble() > 0.5 ? 1 : -1)
                                 )
                         );
                         for (int i = 0; i < itemCount; i++){
