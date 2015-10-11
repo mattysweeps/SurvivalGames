@@ -228,4 +228,11 @@ public class SurvivalGame {
         return surroundingVectors;
     }
 
+    public SurvivalGameConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(SurvivalGameConfig config) {
+        this.config = config;
+    }
 }

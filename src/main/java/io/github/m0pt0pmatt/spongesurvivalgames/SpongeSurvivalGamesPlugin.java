@@ -28,6 +28,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 import com.google.inject.Inject;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
@@ -151,6 +153,20 @@ public class SpongeSurvivalGamesPlugin {
                 .executor(new ForceStopGameCommand())
                 .build();
 
+        CommandSpec loadCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <fileName>"))
+                .permission("spongesurvivalgames.game.save")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("fileName")))
+                .executor(new LoadCommand())
+                .build();
+
+        CommandSpec saveCommand = CommandSpec.builder()
+                .description(Texts.of("<id> <fileName>"))
+                .permission("spongesurvivalgames.game.load")
+                .arguments(GenericArguments.string(Texts.of("id")), GenericArguments.string(Texts.of("fileName")))
+                .executor(new SaveCommand())
+                .build();
+
         CommandSpec ssgCommand = CommandSpec.builder()
                 .permission("spongesurvivalgames")
                 .child(printCommands, "print")
@@ -164,6 +180,8 @@ public class SpongeSurvivalGamesPlugin {
                 .child(startCommand, "start")
                 .child(stopCommand, "stop")
                 .child(forceStopCommand, "forcestop")
+                .child(loadCommand, "load")
+                .child(saveCommand, "save")
                 .build();
         game.getCommandDispatcher().register(this, ssgCommand, "ssg");
     }
