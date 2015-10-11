@@ -55,8 +55,8 @@ public class FillChestsTask implements SurvivalGameTask {
                         double itemCount = (
                                 game.getChestMidpoint().get() +
                                 (
-                                        (random.nextDouble() * (game.getChestRange().get() * 2)) *
-                                                (random.nextDouble() > 0.5 ? 1 : -1)
+                                        (random.nextDouble() * game.getChestRange().get())
+                                                * (random.nextDouble() > 0.5 ? 1 : -1)
                                 )
                         );
                         for (int i = 0; i < itemCount; i++){

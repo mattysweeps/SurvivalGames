@@ -37,6 +37,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCom
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
@@ -81,6 +82,7 @@ public class SpongeSurvivalGamesPlugin {
         SpongeSurvivalGamesPlugin.game = event.getGame();
         registerCommands();
         survivalGameMap.clear();
+        game.getEventManager().registerListeners(this, new PlayerDeathEventListener());
         logger.info("Sponge Survival Games Plugin Enabled");
     }
 

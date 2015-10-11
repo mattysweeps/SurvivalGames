@@ -62,7 +62,7 @@ public class SurvivalGame {
             new FillChestsTask(),
             new CreateCountdownTask()
     ));
-    private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
+    private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
             new DespawnPlayersTask()
     ));
     private final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
