@@ -45,7 +45,7 @@ public class StartGameCommand extends ReadyCommand {
         }
 
         try {
-           SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
+            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
         } catch (NotEnoughSpawnPointsException e) {
             SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have enough spawn points.");
             return CommandResult.empty();

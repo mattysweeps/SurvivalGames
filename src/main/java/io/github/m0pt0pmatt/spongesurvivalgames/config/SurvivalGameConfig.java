@@ -28,38 +28,51 @@ package io.github.m0pt0pmatt.spongesurvivalgames.config;
 import com.flowpowered.math.vector.Vector3d;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.spongepowered.api.util.Tuple;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @ConfigSerializable
 public class SurvivalGameConfig {
 
-    @Setting(value = "world", comment = "World where the game takes place") @Nullable
+    @Setting(value = "world", comment = "World where the game takes place")
+    @Nullable
     private String worldName;
 
-    @Setting(comment = "World for the exit location") @Nullable
+    @Setting(comment = "World for the exit location")
+    @Nullable
     private String exitWorld;
 
-    @Setting(value = "exitLocation", comment = "Exit location") @Nullable
+    @Setting(value = "exitLocation", comment = "Exit location")
+    @Nullable
     private Vector3d exit;
 
-    @Setting(value = "centerLocation", comment = "Center Location") @Nullable
+    @Setting(value = "centerLocation", comment = "Center Location")
+    @Nullable
     private Vector3d center;
 
-    @Setting(comment = "Max number of players") @Nullable
+    @Setting(comment = "Max number of players")
+    @Nullable
     private Integer playerLimit;
 
-    @Setting(comment = "Number of seconds for the countdown") @Nullable
+    @Setting(comment = "Number of seconds for the countdown")
+    @Nullable
     private Integer countdownTime;
 
     @Setting(comment = "Spawn points")
     private Set<Vector3d> spawns = new HashSet<>();
+
+    @Setting(comment = "Average items to be in a chest")
+    @Nullable
+    private Double chestMidpoint;
+
+    @Setting(comment = "Range from above and below the chestMidpoint")
+    @Nullable
+    private Double chestRange;
+
+    @Setting(comment = "Loot which can appear in chests")
+    private List<ItemStackSnapshot> loot = new ArrayList<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -113,7 +126,24 @@ public class SurvivalGameConfig {
         return spawns;
     }
 
-    public void setSpawns(Set<Vector3d> spawns) {
-        this.spawns = spawns;
+    public Optional<Double> getChestMidpoint() {
+        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
     }
+
+    public void setChestMidpoint(@Nullable Double chestMidpoint) {
+        this.chestMidpoint = chestMidpoint;
+    }
+
+    public Optional<Double> getChestRange() {
+        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
+    }
+
+    public void setChestRange(@Nullable Double chestRange) {
+        this.chestRange = chestRange;
+    }
+
+    public List<ItemStackSnapshot> getLoot() {
+        return loot;
+    }
+
 }

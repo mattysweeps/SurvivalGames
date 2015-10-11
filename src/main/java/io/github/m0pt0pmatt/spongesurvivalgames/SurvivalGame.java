@@ -29,7 +29,6 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
-import org.spongepowered.api.util.Tuple;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -58,6 +57,8 @@ public class SurvivalGame {
             new RotatePlayersTask(),
             new SetGameModeTask(),
             new CreateCageSnapshotsTask(),
+            new CreateCenterChestsTask(),
+            new FillChestsTask(),
             new CreateCountdownTask()
     ));
     private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(

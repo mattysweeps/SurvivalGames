@@ -26,51 +26,50 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 import com.flowpowered.math.vector.Vector3d;
-import org.spongepowered.api.util.Tuple;
 
 public class SurvivalGameConfigBuilder {
 
     private final SurvivalGameConfig config;
 
-    public SurvivalGameConfigBuilder(){
+    public SurvivalGameConfigBuilder() {
         config = new SurvivalGameConfig();
     }
 
-    public SurvivalGameConfig build(){
+    public SurvivalGameConfig build() {
         return config;
     }
 
-    public SurvivalGameConfigBuilder worldName(String worldName){
+    public SurvivalGameConfigBuilder worldName(String worldName) {
         config.setWorldName(worldName);
         return this;
     }
 
-    public SurvivalGameConfigBuilder exitWorld(String exitWorld){
+    public SurvivalGameConfigBuilder exitWorld(String exitWorld) {
         config.setExitWorld(exitWorld);
         return this;
     }
 
-    public SurvivalGameConfigBuilder exitLocation(Vector3d exit){
+    public SurvivalGameConfigBuilder exitLocation(Vector3d exit) {
         config.setExit(exit);
         return this;
     }
 
-    public SurvivalGameConfigBuilder centerLocation(Vector3d center){
+    public SurvivalGameConfigBuilder centerLocation(Vector3d center) {
         config.setCenter(center);
         return this;
     }
 
-    public SurvivalGameConfigBuilder playerLimit(Integer playerLimit){
+    public SurvivalGameConfigBuilder playerLimit(Integer playerLimit) {
         config.setPlayerLimit(playerLimit);
         return this;
     }
 
-    public SurvivalGameConfigBuilder countdownTime(Integer countdownTime){
+    public SurvivalGameConfigBuilder countdownTime(Integer countdownTime) {
         config.setCountdownTime(countdownTime);
         return this;
     }
 
-    public SurvivalGameConfigBuilder addSpawn(Vector3d vector){
+    public SurvivalGameConfigBuilder addSpawn(Vector3d vector) {
         config.getSpawns().add(vector);
         return this;
     }

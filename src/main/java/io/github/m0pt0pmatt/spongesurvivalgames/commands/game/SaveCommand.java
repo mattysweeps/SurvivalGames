@@ -43,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-public class SaveCommand extends GameCommand{
+public class SaveCommand extends GameCommand {
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -53,7 +53,7 @@ public class SaveCommand extends GameCommand{
         }
 
         Optional<String> fileName = args.getOne("fileName");
-        if (!fileName.isPresent()){
+        if (!fileName.isPresent()) {
             SpongeSurvivalGamesPlugin.logger.error("No file name given.");
             return CommandResult.empty();
         }
@@ -70,7 +70,7 @@ public class SaveCommand extends GameCommand{
                     TypeToken.of(SurvivalGameConfig.class),
                     SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getConfig(),
                     node
-                    );
+            );
         } catch (ObjectMappingException e) {
             SpongeSurvivalGamesPlugin.logger.error("Mapping exception thrown");
             return CommandResult.empty();

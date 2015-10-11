@@ -25,40 +25,34 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.block.BlockSnapshot;
-import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.world.Location;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityChest;
+import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.world.World;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.Collection;
 
-public class CreateCageSnapshotsTask implements SurvivalGameTask {
+public class FillChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
-        for (Vector3d spawn : game.getSpawns()) {
+        String worldName = game.getWorldName().get();
+        World world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(worldName).get();
+        Collection<TileEntity> tileEntities = world.getTileEntities();
+        SpongeSurvivalGamesPlugin.logger.info("There are " + tileEntities.size() + " tile entities");
+        tileEntities.forEach(entity -> {
+                    SpongeSurvivalGamesPlugin.logger.info("We found a " + entity.getType() + "! " + entity.getLocation());
 
-            Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(game.getWorldName().get());
-            Location<World> location = new Location<>(world.get(), spawn);
+                    //TODO: this code doesn't use the api. Eventually it will need to be changed
+                    if (entity.getType().getTileEntityType().equals(TileEntityChest.class)) {
+                        SpongeSurvivalGamesPlugin.logger.info("CHHEESSST");
 
-            Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream()
-                    .map(vector -> location.add(vector).createSnapshot())
-                    .collect(Collectors.toSet());
-
-            game.getSurroundingVectors().stream()
-                    .forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
-
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
-                    .execute(() -> snapshots.stream()
-                            .forEach(snapshot -> snapshot.restore(true, false)))
-                    .submit(SpongeSurvivalGamesPlugin.plugin);
-        }
+                        TileEntityChest chest = (TileEntityChest) entity;
+                        chest.setInventorySlotContents(0, new net.minecraft.item.ItemStack(Item.getItemById(1)));
+                    }
+                }
+        );
     }
 }

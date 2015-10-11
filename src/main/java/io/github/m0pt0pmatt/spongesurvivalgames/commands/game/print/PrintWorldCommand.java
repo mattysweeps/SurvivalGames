@@ -31,10 +31,8 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.World;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Command to print the name of a game's assigned world

@@ -23,36 +23,23 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import com.flowpowered.math.vector.Vector3d;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
-import java.util.Set;
-
-/**
- * Command to print the spawn locations of a game
- */
-public class PrintSpawnsCommand extends GameCommand {
-
+public class CreateCenterChestsTask implements SurvivalGameTask {
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
-        }
-
-        Set<Vector3d> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Vector3d spawnLocation : spawnLocations) {
-            SpongeSurvivalGamesPlugin.logger.info(spawnLocation.toString());
-        }
-
-        return CommandResult.success();
+    public void execute(SurvivalGame game) throws TaskException {
+        Location<World> center = game.getCenter().get();
+        center.add(new Vector3d(1, 0, 0)).setBlockType(BlockTypes.CHEST);
+        center.add(new Vector3d(-1, 0, 0)).setBlockType(BlockTypes.CHEST);
+        center.add(new Vector3d(0, 0, 1)).setBlockType(BlockTypes.CHEST);
+        center.add(new Vector3d(0, 0, -1)).setBlockType(BlockTypes.CHEST);
+        center.add(new Vector3d(0, 1, 0)).setBlockType(BlockTypes.CHEST);
     }
 }

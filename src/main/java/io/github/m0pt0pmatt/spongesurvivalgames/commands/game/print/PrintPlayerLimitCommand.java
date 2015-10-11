@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
@@ -48,7 +47,7 @@ public class PrintPlayerLimitCommand extends GameCommand {
         }
 
         Optional<Integer> playerLimit = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
-        if (!playerLimit.isPresent()){
+        if (!playerLimit.isPresent()) {
             SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", Has no player limit set yet.");
             return CommandResult.empty();
         }

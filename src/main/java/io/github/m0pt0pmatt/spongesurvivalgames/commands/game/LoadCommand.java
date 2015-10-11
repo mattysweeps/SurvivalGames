@@ -43,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-public class LoadCommand extends GameCommand{
+public class LoadCommand extends GameCommand {
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
@@ -53,7 +53,7 @@ public class LoadCommand extends GameCommand{
         }
 
         Optional<String> fileName = args.getOne("fileName");
-        if (!fileName.isPresent()){
+        if (!fileName.isPresent()) {
             SpongeSurvivalGamesPlugin.logger.error("No file name given.");
             return CommandResult.empty();
         }
