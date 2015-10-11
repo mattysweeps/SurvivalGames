@@ -59,7 +59,7 @@ public class SurvivalGameConfig {
     private Integer countdownTime;
 
     @Setting(comment = "Spawn points")
-    private Set<Tuple<String, Vector3d>> spawns = new HashSet<>();
+    private Set<Vector3d> spawns = new HashSet<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -109,11 +109,11 @@ public class SurvivalGameConfig {
         this.countdownTime = countdownTime;
     }
 
-    public Set<Tuple<String, Vector3d>> getSpawns() {
+    public Set<Vector3d> getSpawns() {
         return spawns;
     }
 
-    public void setSpawns(Set<Tuple<String, Vector3d>> spawns) {
+    public void setSpawns(Set<Vector3d> spawns) {
         this.spawns = spawns;
     }
 }

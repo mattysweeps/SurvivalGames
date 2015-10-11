@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 import com.flowpowered.math.vector.Vector3d;
+import org.spongepowered.api.util.Tuple;
 
 public class SurvivalGameConfigBuilder {
 
@@ -66,6 +67,11 @@ public class SurvivalGameConfigBuilder {
 
     public SurvivalGameConfigBuilder countdownTime(Integer countdownTime){
         config.setCountdownTime(countdownTime);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder addSpawn(String worldName, Vector3d vector){
+        config.getSpawns().add(vector);
         return this;
     }
 }

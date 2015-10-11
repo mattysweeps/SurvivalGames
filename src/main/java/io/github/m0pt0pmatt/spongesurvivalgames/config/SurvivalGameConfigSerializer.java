@@ -63,10 +63,13 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
     @Override
     public void serialize(TypeToken<?> type, SurvivalGameConfig obj, ConfigurationNode value) throws ObjectMappingException {
         if (obj.getWorldName().isPresent()) value.getNode("world").setValue(obj.getWorldName().get());
-        if (obj.getExitWorld().isPresent()) value.getNode("exitWorld").setValue(obj.getExitWorld().get());
-        if (obj.getExit().isPresent()) value.getNode("exitX").setValue(obj.getExit().get().getX());
-        if (obj.getExit().isPresent()) value.getNode("exitY").setValue(obj.getExit().get().getY());
-        if (obj.getExit().isPresent()) value.getNode("exitZ").setValue(obj.getExit().get().getZ());
+
+        ConfigurationNode exitNode = value.getNode("exit");
+
+        if (obj.getExitWorld().isPresent()) exitNode.getNode("World").setValue(obj.getExitWorld().get());
+        if (obj.getExit().isPresent()) exitNode.getNode("X").setValue(obj.getExit().get().getX());
+        if (obj.getExit().isPresent()) exitNode.getNode("Y").setValue(obj.getExit().get().getY());
+        if (obj.getExit().isPresent()) exitNode.getNode("Z").setValue(obj.getExit().get().getZ());
         if (obj.getCenter().isPresent()) value.getNode("centerX").setValue(obj.getCenter().get().getX());
         if (obj.getCenter().isPresent()) value.getNode("centerY").setValue(obj.getCenter().get().getY());
         if (obj.getCenter().isPresent()) value.getNode("centerZ").setValue(obj.getCenter().get().getZ());

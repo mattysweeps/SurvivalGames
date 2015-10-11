@@ -50,9 +50,9 @@ public class PrintSpawnsCommand extends GameCommand {
             return CommandResult.empty();
         }
 
-        Set<Tuple<String, Vector3d>> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
+        Set<Vector3d> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
         SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Tuple<String, Vector3d> spawnLocation : spawnLocations) {
+        for (Vector3d spawnLocation : spawnLocations) {
             SpongeSurvivalGamesPlugin.logger.info(spawnLocation.toString());
         }
 

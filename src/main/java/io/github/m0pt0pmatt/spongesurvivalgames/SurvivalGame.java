@@ -151,7 +151,7 @@ public class SurvivalGame {
         Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(config.getWorldName().get());
         if (!world.isPresent()) throw new NoWorldException();
 
-        config.getSpawns().add(new Tuple<>(world.get().getName(), new Vector3d(x, y, z)));
+        config.getSpawns().add(new Vector3d(x, y, z));
     }
 
     public void clearSpawnLocations() {
@@ -184,7 +184,7 @@ public class SurvivalGame {
         return Optional.of(new Location<>(world.get(), center.get()));
     }
 
-    public Set<Tuple<String, Vector3d>> getSpawns() {
+    public Set<Vector3d> getSpawns() {
         return config.getSpawns();
     }
 

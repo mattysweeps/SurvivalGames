@@ -42,14 +42,14 @@ public class SpawnPlayersTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) {
 
-        Set<Tuple<String, Vector3d>> spawnLocations = new HashSet<>();
+        Set<Vector3d> spawnLocations = new HashSet<>();
         spawnLocations.addAll(game.getSpawns());
-        Iterator<Tuple<String, Vector3d>> spawnIterator = spawnLocations.iterator();
+        Iterator<Vector3d> spawnIterator = spawnLocations.iterator();
         SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
                 .forEach(player -> {
-                    Tuple<String, Vector3d> spawnPoint = spawnIterator.next();
-                    Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(spawnPoint.getFirst());
-                    Location<World> location = new Location<>(world.get(), spawnPoint.getSecond());
+                    Vector3d spawnPoint = spawnIterator.next();
+                    Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(game.getWorldName().get());
+                    Location<World> location = new Location<>(world.get(), spawnPoint);
                     player.setLocation(location.add(0.5, 0, 0.5));
                 });
     }

@@ -43,10 +43,10 @@ import java.util.stream.Collectors;
 public class CreateCageSnapshotsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
-        for (Tuple<String, Vector3d> tuple : game.getSpawns()) {
+        for (Vector3d spawn : game.getSpawns()) {
 
-            Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(tuple.getFirst());
-            Location<World> location = new Location<>(world.get(), tuple.getSecond());
+            Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(game.getWorldName().get());
+            Location<World> location = new Location<>(world.get(), spawn);
 
             Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream()
                     .map(vector -> location.add(vector).createSnapshot())
