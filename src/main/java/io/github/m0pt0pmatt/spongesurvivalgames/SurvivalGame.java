@@ -29,10 +29,13 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
@@ -96,6 +99,8 @@ public class SurvivalGame {
 
         //Execute each task
         executeTasks(startTasks);
+
+        checkWin();
     }
 
     public void stop() throws TaskException {
@@ -254,5 +259,53 @@ public class SurvivalGame {
 
     public void setChestRange(Double chestRange) {
         config.setChestRange(chestRange);
+    }
+
+    public void reportDeath(UUID playerUUID) {
+        if (!playerUUIDs.contains(playerUUID)){
+            //unregistered player
+            return;
+        }
+
+        playerUUIDs.remove(playerUUID);
+
+        Optional<Player> player = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(playerUUID);
+        if (player.isPresent()){
+            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                    .execute(() -> player.get().setLocation(getExit().get()))
+                    .delay(10, TimeUnit.MILLISECONDS)
+                    .submit(SpongeSurvivalGamesPlugin.plugin);
+        }
+
+        checkWin();
+    }
+
+    private void checkWin() {
+
+        if (playerUUIDs.size() > 1){
+            return;
+        }
+
+        UUID winnerUUID = playerUUIDs.stream().findFirst().get();
+        Optional<Player> winner = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(winnerUUID);
+        if (winner.isPresent()){
+            winner.get().sendMessage(Texts.of("Congratulations! You won!"));
+            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                    .execute(() -> winner.get().setLocation(getExit().get()))
+                    .delay(10, TimeUnit.SECONDS)
+                    .submit(SpongeSurvivalGamesPlugin.plugin);
+        }
+
+        SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+                .execute(() -> {
+                    try {
+                        stop();
+                    } catch (TaskException e) {
+                        e.printStackTrace();
+                    }
+                })
+                .delay(10, TimeUnit.SECONDS)
+                .submit(SpongeSurvivalGamesPlugin.plugin);
+
     }
 }
