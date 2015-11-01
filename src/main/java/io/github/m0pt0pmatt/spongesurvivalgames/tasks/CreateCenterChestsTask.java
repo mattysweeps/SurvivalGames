@@ -25,21 +25,20 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.util.Vector;
 
 public class CreateCenterChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
-        Location<World> center = game.getCenter().get();
-        center.add(new Vector3d(1, 0, 0)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(-1, 0, 0)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 0, 1)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 0, -1)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 1, 0)).setBlockType(BlockTypes.CHEST);
+        Location center = game.getCenter().get();
+        center.add(new Vector(1, 0, 0)).getBlock().setType(Material.CHEST);
+        center.add(new Vector(-1, 0, 0)).getBlock().setType(Material.CHEST);
+        center.add(new Vector(0, 0, 1)).getBlock().setType(Material.CHEST);
+        center.add(new Vector(0, 0, -1)).getBlock().setType(Material.CHEST);
+        center.add(new Vector(0, 1, 0)).getBlock().setType(Material.CHEST);
     }
 }

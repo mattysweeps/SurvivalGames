@@ -25,10 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.text.Texts;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,18 +35,18 @@ public class CreateCountdownTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
 
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
             for (int i = game.getCountdownTime().get(); i > 0; i--) {
                 final int j = i;
                 SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
                         .delay(game.getCountdownTime().get() - i, TimeUnit.SECONDS)
-                        .execute(() -> player.sendMessage(Texts.of(j)))
+                        .execute(() -> player.sendMessage(Integer.toString(j)))
                         .submit(SpongeSurvivalGamesPlugin.plugin);
             }
 
             SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
                     .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
-                    .execute(() -> player.sendMessage(Texts.of("Go!")))
+                    .execute(() -> player.sendMessage("Go!"))
                     .submit(SpongeSurvivalGamesPlugin.plugin);
         });
     }

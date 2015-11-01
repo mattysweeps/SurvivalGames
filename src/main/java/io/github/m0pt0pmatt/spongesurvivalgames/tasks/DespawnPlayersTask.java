@@ -25,7 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
@@ -33,8 +33,8 @@ public class DespawnPlayersTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
         if (game.getExit().isPresent()) {
-            SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
-                    .forEach(player -> player.setLocation(game.getExit().get()));
+            BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+                    .forEach(player -> player.teleport(game.getExit().get()));
         }
     }
 }

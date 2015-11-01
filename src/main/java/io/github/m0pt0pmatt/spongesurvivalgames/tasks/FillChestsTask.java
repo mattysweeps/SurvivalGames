@@ -25,22 +25,19 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityChest;
-import org.spongepowered.api.block.tileentity.TileEntity;
-import org.spongepowered.api.world.World;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Item;
 
-import java.util.Collection;
 import java.util.Random;
 
 public class FillChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
         String worldName = game.getWorldName().get();
-        World world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(worldName).get();
+        World world = Bukkit.getServer().getWorld(worldName);
         Collection<TileEntity> tileEntities = world.getTileEntities();
         SpongeSurvivalGamesPlugin.logger.info("There are " + tileEntities.size() + " tile entities");
         tileEntities.forEach(entity -> {
