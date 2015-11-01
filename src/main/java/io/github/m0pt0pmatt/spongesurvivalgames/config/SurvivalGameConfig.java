@@ -25,60 +25,38 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import com.flowpowered.math.vector.Vector3d;
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
-@ConfigSerializable
 public class SurvivalGameConfig {
 
-    @Setting(value = "world", comment = "World where the game takes place")
-    @Nullable
     private String worldName;
 
-    @Setting(comment = "World for the exit location")
-    @Nullable
     private String exitWorld;
 
-    @Setting(value = "exitLocation", comment = "Exit location")
-    @Nullable
-    private Vector3d exit;
+    private Vector exit;
 
-    @Setting(value = "centerLocation", comment = "Center Location")
-    @Nullable
-    private Vector3d center;
+    private Vector center;
 
-    @Setting(comment = "Max number of players")
-    @Nullable
     private Integer playerLimit;
 
-    @Setting(comment = "Number of seconds for the countdown")
-    @Nullable
     private Integer countdownTime;
 
-    @Setting(comment = "Spawn points")
-    private Set<Vector3d> spawns = new HashSet<>();
+    private Set<Vector> spawns = new HashSet<>();
 
-    @Setting(comment = "Average items to be in a chest")
-    @Nullable
     private Double chestMidpoint;
 
-    @Setting(comment = "Range from above and below the chestMidpoint")
-    @Nullable
     private Double chestRange;
 
-    @Setting(comment = "Loot which can appear in chests")
-    private List<ItemStackSnapshot> loot = new ArrayList<>();
+    private List<ItemStack> loot = new ArrayList<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
     }
 
-    public void setWorldName(@Nullable String worldName) {
+    public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
 
@@ -86,23 +64,23 @@ public class SurvivalGameConfig {
         return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
     }
 
-    public void setExitWorld(@Nullable String exitWorld) {
+    public void setExitWorld(String exitWorld) {
         this.exitWorld = exitWorld;
     }
 
-    public Optional<Vector3d> getExit() {
+    public Optional<Vector> getExit() {
         return exit == null ? Optional.empty() : Optional.of(exit);
     }
 
-    public void setExit(@Nullable Vector3d exit) {
+    public void setExit(Vector exit) {
         this.exit = exit;
     }
 
-    public Optional<Vector3d> getCenter() {
+    public Optional<Vector> getCenter() {
         return center == null ? Optional.empty() : Optional.of(center);
     }
 
-    public void setCenter(@Nullable Vector3d center) {
+    public void setCenter(Vector center) {
         this.center = center;
     }
 
@@ -110,7 +88,7 @@ public class SurvivalGameConfig {
         return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
     }
 
-    public void setPlayerLimit(@Nullable Integer playerLimit) {
+    public void setPlayerLimit(Integer playerLimit) {
         this.playerLimit = playerLimit;
     }
 
@@ -118,11 +96,11 @@ public class SurvivalGameConfig {
         return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
     }
 
-    public void setCountdownTime(@Nullable Integer countdownTime) {
+    public void setCountdownTime(Integer countdownTime) {
         this.countdownTime = countdownTime;
     }
 
-    public Set<Vector3d> getSpawns() {
+    public Set<Vector> getSpawns() {
         return spawns;
     }
 
@@ -130,7 +108,7 @@ public class SurvivalGameConfig {
         return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
     }
 
-    public void setChestMidpoint(@Nullable Double chestMidpoint) {
+    public void setChestMidpoint(Double chestMidpoint) {
         this.chestMidpoint = chestMidpoint;
     }
 
@@ -138,11 +116,11 @@ public class SurvivalGameConfig {
         return chestRange == null ? Optional.empty() : Optional.of(chestRange);
     }
 
-    public void setChestRange(@Nullable Double chestRange) {
+    public void setChestRange(Double chestRange) {
         this.chestRange = chestRange;
     }
 
-    public List<ItemStackSnapshot> getLoot() {
+    public List<ItemStack> getLoot() {
         return loot;
     }
 
