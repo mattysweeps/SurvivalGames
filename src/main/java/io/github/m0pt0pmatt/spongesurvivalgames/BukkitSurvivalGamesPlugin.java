@@ -38,24 +38,16 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
-import org.slf4j.Logger;
-import org.spongepowered.api.Game;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.args.GenericArguments;
-import org.spongepowered.api.util.command.spec.CommandSpec;
+import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * SpongeSurvivalGames Sponge Plugin
  */
-@Plugin(id = "spongesurvivalgames", name = "Sponge Survival Games", version = "1.0")
-public class SpongeSurvivalGamesPlugin {
+public class BukkitSurvivalGamesPlugin {
 
     public static Game game;
     public static Logger logger;
@@ -355,9 +347,9 @@ public class SpongeSurvivalGamesPlugin {
                 .child(setPlayerLimitCommand, "playerLimit")
                 .child(setWorldCommand, "world")
                 .child(CommandSpec.builder()
-                        .child(setChestMidpointCommand, "midpoint")
-                        .child(setChestRangeCommand, "range")
-                        .build(), "chest"
+                                .child(setChestMidpointCommand, "midpoint")
+                                .child(setChestRangeCommand, "range")
+                                .build(), "chest"
                 )
                 .build();
     }
@@ -388,3 +380,4 @@ public class SpongeSurvivalGamesPlugin {
         return game;
     }
 }
+
