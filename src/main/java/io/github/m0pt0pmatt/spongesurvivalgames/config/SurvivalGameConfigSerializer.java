@@ -25,12 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import com.flowpowered.math.vector.Vector3d;
-import com.google.common.reflect.TypeToken;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
+
+import org.bukkit.util.Vector;
 
 public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
     @Override
@@ -46,7 +42,7 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
             ConfigurationNode exitNode = value.getNode("exit");
             builder = builder
                     .exitWorld(exitNode.getNode("world").getString(""))
-                    .exitLocation(new Vector3d(
+                    .exitLocation(new Vector(
                             exitNode.getNode("X").getDouble(),
                             exitNode.getNode("Y").getDouble(),
                             exitNode.getNode("Z").getDouble()
@@ -54,7 +50,7 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
 
             ConfigurationNode centerNode = value.getNode("center");
             builder = builder
-                    .centerLocation(new Vector3d(
+                    .centerLocation(new Vector(
                             centerNode.getNode("X").getDouble(),
                             centerNode.getNode("Y").getDouble(),
                             centerNode.getNode("Z").getDouble()
@@ -63,7 +59,7 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
             ConfigurationNode spawnsNode = value.getNode("spawns");
             while (spawnsNode.hasListChildren()) {
                 builder = builder
-                        .addSpawn(new Vector3d(
+                        .addSpawn(new Vector(
                                 spawnsNode.getNode("X").getDouble(),
                                 spawnsNode.getNode("Y").getDouble(),
                                 spawnsNode.getNode("Z").getDouble()
@@ -106,7 +102,7 @@ public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGame
         if (obj.getCountdownTime().isPresent()) value.getNode("countdownTime").setValue(obj.getCountdownTime().get());
 
         ConfigurationNode spawnsNode = value.getNode("spawns");
-        for (Vector3d spawn : obj.getSpawns()) {
+        for (Vector spawn : obj.getSpawns()) {
             ConfigurationNode spawnNode = spawnsNode.getAppendedNode();
             spawnNode.getNode("X").setValue(spawn.getX());
             spawnNode.getNode("Y").setValue(spawn.getY());
