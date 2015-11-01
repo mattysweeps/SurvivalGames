@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import com.google.inject.Inject;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
@@ -38,7 +37,9 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -47,35 +48,29 @@ import java.util.stream.Collectors;
 /**
  * SpongeSurvivalGames Sponge Plugin
  */
-public class BukkitSurvivalGamesPlugin {
+public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
 
-    public static Game game;
-    public static Logger logger;
     public static Map<String, SurvivalGame> survivalGameMap;
-    public static SpongeSurvivalGamesPlugin plugin;
+    public static BukkitSurvivalGamesPlugin plugin;
 
-    @Inject
-    public SpongeSurvivalGamesPlugin(Logger logger) {
-        SpongeSurvivalGamesPlugin.plugin = this;
-        SpongeSurvivalGamesPlugin.logger = logger;
-        SpongeSurvivalGamesPlugin.survivalGameMap = new HashMap<>();
+    public BukkitSurvivalGamesPlugin() {
+        BukkitSurvivalGamesPlugin.plugin = this;
+        BukkitSurvivalGamesPlugin.survivalGameMap = new HashMap<>();
     }
 
     public static Set<Player> getPlayers(Set<UUID> playerUUIDs) {
         return playerUUIDs.stream()
-                .map(uuid -> game.getServer().getPlayer(uuid))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(uuid -> Bukkit.getServer().getPlayer(uuid))
+                .filter( (player) -> player != null)
                 .collect(Collectors.toSet());
     }
 
-    @Listener
-    public void onServerStart(GameStartedServerEvent event) {
-        SpongeSurvivalGamesPlugin.game = event.getGame();
+    @Override
+    public void onEnable() {
         registerCommands();
         survivalGameMap.clear();
         game.getEventManager().registerListeners(this, new PlayerDeathEventListener());
-        logger.info("Sponge Survival Games Plugin Enabled");
+        Bukkit.getLogger().info("Sponge Survival Games Plugin Enabled");
     }
 
     private void registerCommands() {
@@ -368,16 +363,8 @@ public class BukkitSurvivalGamesPlugin {
                 .build();
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
-
     public Map<String, SurvivalGame> getSurvivalGameMap() {
         return survivalGameMap;
-    }
-
-    public Game getGame() {
-        return game;
     }
 }
 
