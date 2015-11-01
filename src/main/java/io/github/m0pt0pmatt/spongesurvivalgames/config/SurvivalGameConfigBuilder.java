@@ -25,7 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import com.flowpowered.math.vector.Vector3d;
+import org.bukkit.util.Vector;
 
 public class SurvivalGameConfigBuilder {
 
@@ -49,12 +49,12 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder exitLocation(Vector3d exit) {
+    public SurvivalGameConfigBuilder exitLocation(Vector exit) {
         config.setExit(exit);
         return this;
     }
 
-    public SurvivalGameConfigBuilder centerLocation(Vector3d center) {
+    public SurvivalGameConfigBuilder centerLocation(Vector center) {
         config.setCenter(center);
         return this;
     }
@@ -69,7 +69,7 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder addSpawn(Vector3d vector) {
+    public SurvivalGameConfigBuilder addSpawn(Vector vector) {
         config.getSpawns().add(vector);
         return this;
     }
