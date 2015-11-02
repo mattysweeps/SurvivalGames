@@ -28,9 +28,17 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class FillChestsTask implements SurvivalGameTask {
@@ -38,29 +46,43 @@ public class FillChestsTask implements SurvivalGameTask {
     public void execute(SurvivalGame game) throws TaskException {
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
-        Collection<TileEntity> tileEntities = world.getTileEntities();
-        SpongeSurvivalGamesPlugin.logger.info("There are " + tileEntities.size() + " tile entities");
-        tileEntities.forEach(entity -> {
+
+        //TODO: Need to make these part of the config file.
+        int xmin = 0, xmax = 0;
+        int ymin = 0, ymax = 0;
+        int zmin = 0, zmax = 0;
+
+        Collection<Block> chests = new ArrayList<Block>();
+        for (int x = xmin; x < xmax; x++){
+            for (int y = ymin; y < ymax; y++){
+                for (int z = zmin; z < zmax; z++){
+                    Block block = world.getBlockAt(x, y, z);
+                    if (block.getState() instanceof Chest){
+                        chests.add(block);
+                    }
+                }
+            }
+        }
+
+        chests.forEach(block -> {
                     final Random random = new Random();
 
-                    //TODO: this code doesn't use the api. Eventually it will need to be changed
-                    if (entity.getType().getTileEntityType().equals(TileEntityChest.class)) {
+                    Chest chest = (Chest) block.getState();
+                    Inventory inventory = chest.getBlockInventory();
+                    inventory.clear();
 
-                        TileEntityChest chest = (TileEntityChest) entity;
-                        chest.clear();
-
-                        double itemCount = (
-                                game.getChestMidpoint().get() +
-                                (
-                                        (random.nextDouble() * game.getChestRange().get())
-                                                * (random.nextDouble() > 0.5 ? 1 : -1)
-                                )
-                        );
-                        for (int i = 0; i < itemCount; i++){
-                            chest.setInventorySlotContents(i, new net.minecraft.item.ItemStack(Item.getItemById(1)));
-                        }
-
+                    double itemCount = (
+                            game.getChestMidpoint().get() +
+                            (
+                                    (random.nextDouble() * game.getChestRange().get())
+                                            * (random.nextDouble() > 0.5 ? 1 : -1)
+                            )
+                    );
+                    for (int i = 0; i < itemCount; i++){
+                        inventory.addItem(new ItemStack(Material.STONE));
                     }
+
+                    chest.update();
                 }
         );
     }
