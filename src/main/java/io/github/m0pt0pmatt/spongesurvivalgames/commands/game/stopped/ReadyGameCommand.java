@@ -25,27 +25,32 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * Command to set a game to the READY state
  */
 public class ReadyGameCommand extends StoppedCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public ReadyGameCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).ready();
-        SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" is now set to READY.");
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).ready();
+        Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now set to READY.");
 
-        return CommandResult.success();
+        return true;
     }
 }

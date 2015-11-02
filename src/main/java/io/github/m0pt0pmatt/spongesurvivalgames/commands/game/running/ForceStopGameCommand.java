@@ -25,33 +25,39 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
+
 
 /**
  * Command to stop a game when it is in the RUNNING state
  */
 public class ForceStopGameCommand extends RunningCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public ForceStopGameCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).stop();
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).stop();
         } catch (TaskException e) {
-            SpongeSurvivalGamesPlugin.logger.error(e.getMessage());
-            return CommandResult.empty();
+            Bukkit.getLogger().warning(e.getMessage());
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" is now STOPPED.");
-        return CommandResult.success();
+        Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now STOPPED.");
+        return true;
     }
 }

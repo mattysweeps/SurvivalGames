@@ -25,15 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -41,20 +40,24 @@ import java.util.Optional;
  */
 public class PrintCenterCommand extends GameCommand {
 
+    public PrintCenterCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<Location<World>> centerLocation = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getCenter();
+        Optional<Location> centerLocation = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCenter();
         if (!centerLocation.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", No Center Location.");
-            return CommandResult.empty();
+            Bukkit.getLogger().info("Game: \"" + id + "\", No Center Location.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
+        return true;
     }
 }

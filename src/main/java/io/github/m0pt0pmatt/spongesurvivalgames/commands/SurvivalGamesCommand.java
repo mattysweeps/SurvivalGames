@@ -23,38 +23,29 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-/**
- * RunningCommands can only be executed if the game is in the RUNNING state
- */
-public abstract class RunningCommand extends GameCommand {
+public abstract class SurvivalGamesCommand {
 
-    public RunningCommand(Map<String, String> arguments){
-        super(arguments);
+    private final Map<String, String> arguments = new HashMap<>();
+
+    public SurvivalGamesCommand(Map<String, String> arguments){
+        this.arguments.putAll(arguments);
     }
 
-    @Override
-    public boolean execute(CommandSender sender){
-
-        if (!super.execute(sender)) {
-            return false;
+    public Optional<String> getArgument(String key){
+        if (arguments.containsKey(key)){
+            return Optional.of(arguments.get(key));
         }
-
-        if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.RUNNING)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
-            return false;
-        }
-
-        return true;
+        return Optional.empty();
     }
+
+    public abstract boolean execute(CommandSender sender);
 }

@@ -25,15 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -41,36 +41,40 @@ import java.util.Optional;
  */
 public class AddPlayerCommand extends ReadyCommand {
 
+    public AddPlayerCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<String> playerName = args.getOne("playerName");
+        Optional<String> playerName = getArgument("playerName");
         if (!playerName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Player name is not present.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Player name is not present.");
+            return false;
         }
 
-        Optional<Player> player = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(playerName.get());
-        if (!player.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No such player \"" + playerName.get() + "\".");
-            return CommandResult.empty();
+        Player player = Bukkit.getServer().getPlayer(playerName.get());
+        if (player == null) {
+            Bukkit.getLogger().warning("No such player \"" + playerName.get() + "\".");
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.get().getUniqueId());
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
         } catch (NoPlayerLimitException e) {
-            SpongeSurvivalGamesPlugin.logger.error("No player limit sey for game \"" + id + "\".");
+            Bukkit.getLogger().warning("No player limit sey for game \"" + id + "\".");
             e.printStackTrace();
         } catch (PlayerLimitReachedException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Player limit reached for game \"" + id + "\".");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Player limit reached for game \"" + id + "\".");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
+        return true;
     }
 }

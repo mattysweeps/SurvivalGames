@@ -25,23 +25,28 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 public class PrintCountdownCommand extends GameCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public PrintCountdownCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Countdown Time: \"" + SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
+        return true;
     }
 }

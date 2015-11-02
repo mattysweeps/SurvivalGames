@@ -25,51 +25,56 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * Command to set a game to the RUNNING state (start the game)
  */
 public class StartGameCommand extends ReadyCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public StartGameCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).start();
         } catch (NotEnoughSpawnPointsException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have enough spawn points.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have enough spawn points.");
+            return false;
         } catch (NoExitLocationException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have an exit location.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have an exit location.");
+            return false;
         } catch (WorldNotSetException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a world assigned to it.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a world assigned to it.");
+            return false;
         } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\"'s world does not exist.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\"'s world does not exist.");
+            return false;
         } catch (NoChestRangeException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a chest range assigned to it");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a chest range assigned to it");
+            return false;
         } catch (NoChestMidpointException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
+            return false;
         } catch (TaskException e) {
-            SpongeSurvivalGamesPlugin.logger.error(e.getMessage());
-            return CommandResult.empty();
+            Bukkit.getLogger().warning(e.getMessage());
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Survival Game \"" + id + "\" is now RUNNING.");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Survival Game \"" + id + "\" is now RUNNING.");
+        return true;
     }
 }

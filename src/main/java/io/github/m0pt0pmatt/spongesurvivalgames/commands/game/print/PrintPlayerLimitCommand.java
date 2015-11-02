@@ -25,13 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,20 +39,24 @@ import java.util.Optional;
  */
 public class PrintPlayerLimitCommand extends GameCommand {
 
+    public PrintPlayerLimitCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<Integer> playerLimit = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
+        Optional<Integer> playerLimit = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
         if (!playerLimit.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", Has no player limit set yet.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Game: \"" + id + "\", Has no player limit set yet.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
+        return true;
     }
 }

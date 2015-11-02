@@ -25,13 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -40,35 +40,44 @@ import java.util.Optional;
  */
 public class SetExitCommand extends StoppedCommand {
 
+    public SetExitCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<String> worldName = args.getOne("worldName");
+        Optional<String> worldName = getArgument("worldName");
         if (!worldName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("World name was not present.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("World name was not present.");
+            return false;
         }
 
-        Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("y");
-        Optional<Integer> z = args.getOne("z");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Missing one or more axis for coordinates.");
-            return CommandResult.empty();
+        Optional<String> xString = getArgument("x");
+        Optional<String> yString = getArgument("y");
+        Optional<String> zString = getArgument("z");
+        if (!xString.isPresent() || !yString.isPresent() || !zString.isPresent()) {
+            Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
+            return false;
         }
+
+        //TODO: Add sanity check
+        int x = Integer.parseInt(xString.get());
+        int y = Integer.parseInt(yString.get());
+        int z = Integer.parseInt(zString.get());
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName.get(), x, y, z);
         } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("No such world \"" + worldName.get() + "\".");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("No such world \"" + worldName.get() + "\".");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x.get() + "," + y.get() + "," + z.get() + ").");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
+        return true;
     }
 }

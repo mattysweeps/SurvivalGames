@@ -25,33 +25,37 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class SetChestRangeCommand extends StoppedCommand{
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public SetChestRangeCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<String> chestRange = args.getOne("chestRange");
+        Optional<String> chestRange = getArgument("chestRange");
         if (!chestRange.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Chest range was not present.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Chest range was not present.");
+            return false;
         }
 
         Double range = Double.parseDouble(chestRange.get());
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
-        SpongeSurvivalGamesPlugin.logger.info("Chest range for game \"" + id + "\" set to " + range + ".");
-        return CommandResult.success();
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
+        Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");
+        return true;
     }
 }

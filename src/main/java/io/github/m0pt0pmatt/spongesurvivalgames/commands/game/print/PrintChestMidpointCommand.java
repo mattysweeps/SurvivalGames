@@ -25,31 +25,35 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class PrintChestMidpointCommand extends GameCommand {
 
+    public PrintChestMidpointCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<Double> chestMidpoint = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getChestMidpoint();
+        Optional<Double> chestMidpoint = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getChestMidpoint();
         if (!chestMidpoint.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", No Chest Midpoint set.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Game: \"" + id + "\", No Chest Midpoint set.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
+        return true;
     }
 }

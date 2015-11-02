@@ -25,37 +25,35 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.reflect.TypeToken;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 public class LoadCommand extends GameCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public LoadCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<String> fileName = args.getOne("fileName");
+        Optional<String> fileName = getArgument("fileName");
         if (!fileName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No file name given.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("No file name given.");
+            return false;
         }
 
         File file = new File(fileName.get());
@@ -67,20 +65,20 @@ public class LoadCommand extends GameCommand {
         try {
             node = loader.load();
         } catch (IOException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Unable to load config file");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Unable to load config file");
+            return false;
         }
 
         SurvivalGameConfig config;
         try {
             config = serializer.deserialize(TypeToken.of(SurvivalGameConfig.class), node);
         } catch (ObjectMappingException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Mapping error for config file");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Mapping error for config file");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
-        SpongeSurvivalGamesPlugin.logger.info("Config file loaded");
-        return CommandResult.success();
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
+        Bukkit.getLogger().info("Config file loaded");
+        return true;
     }
 }

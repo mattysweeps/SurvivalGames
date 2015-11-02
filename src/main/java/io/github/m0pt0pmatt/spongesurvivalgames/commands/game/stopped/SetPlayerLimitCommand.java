@@ -25,12 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,21 +38,28 @@ import java.util.Optional;
  */
 public class SetPlayerLimitCommand extends StoppedCommand {
 
+    public SetPlayerLimitCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<Integer> playerLimit = args.getOne("playerLimit");
-        if (!playerLimit.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Player limit was not present.");
-            return CommandResult.empty();
+        Optional<String> playerLimitString = getArgument("playerLimit");
+        if (!playerLimitString.isPresent()) {
+            Bukkit.getLogger().warning("Player limit was not present.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit.get());
-        SpongeSurvivalGamesPlugin.logger.info("Player limit for game \"" + id + "\" set to " + playerLimit.get() + ".");
-        return CommandResult.success();
+        //TODO: Add sanity check
+        int playerLimit = Integer.parseInt(playerLimitString.get());
+
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit);
+        Bukkit.getLogger().info("Player limit for game \"" + id + "\" set to " + playerLimit + ".");
+        return true;
     }
 }

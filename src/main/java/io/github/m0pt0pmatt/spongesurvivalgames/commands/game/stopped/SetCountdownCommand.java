@@ -25,38 +25,45 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class SetCountdownCommand extends StoppedCommand {
 
+    public SetCountdownCommand(Map<String, String> arguments){
+        super(arguments);
+    }
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<Integer> countdownTime = args.getOne("countdown");
-        if (!countdownTime.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No Countdown time specified");
-            return CommandResult.empty();
+        Optional<String> countdownTimeString = getArgument("countdown");
+        if (!countdownTimeString.isPresent()) {
+            Bukkit.getLogger().warning("No Countdown time specified");
+            return false;
         }
+
+        //TODO: Add sanity check
+        int countdownTime = Integer.parseInt(countdownTimeString.get());
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime.get());
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);
         } catch (NegativeCountdownTimeException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Negative countdown times are not valid");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Negative countdown times are not valid");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
-        return CommandResult.success();
+        Bukkit.getLogger().info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+        return true;
     }
 }

@@ -25,33 +25,37 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class SetChestMidpointCommand extends StoppedCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public SetChestMidpointCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+    @Override
+    public boolean execute(CommandSender sender){
+
+        if (!super.execute(sender)) {
+            return false;
         }
 
-        Optional<String> chestMidpoint = args.getOne("chestMidpoint");
+        Optional<String> chestMidpoint = getArgument("chestMidpoint");
         if (!chestMidpoint.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Chest midpoint was not present.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Chest midpoint was not present.");
+            return false;
         }
 
         Double midpoint = Double.parseDouble(chestMidpoint.get());
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
-        SpongeSurvivalGamesPlugin.logger.info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
-        return CommandResult.success();
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
+        Bukkit.getLogger().info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
+        return true;
     }
 }

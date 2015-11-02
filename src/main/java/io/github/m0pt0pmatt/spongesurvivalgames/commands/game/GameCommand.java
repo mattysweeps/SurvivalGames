@@ -25,39 +25,42 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * GameCommands require the name of the game as the first argument
  * The unique name of the game is stored for the use of child commands
  */
-public abstract class GameCommand implements CommandExecutor {
+public abstract class GameCommand extends SurvivalGamesCommand {
+
+    public GameCommand(Map<String, String> arguments){
+        super(arguments);
+    }
 
     protected String id;
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender){
 
-        Optional<String> idOptional = args.getOne("id");
+        Optional<String> idOptional = getArgument("id");
         if (!idOptional.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game ID is not present.");
-            return CommandResult.empty();
+            Bukkit.getLogger().warning("Survival Game ID is not present.");
+            return false;
         }
 
         id = idOptional.get();
 
-        if (!SpongeSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            SpongeSurvivalGamesPlugin.logger.error("No Survival Game has specified ID \"" + id + "\".");
-            return CommandResult.empty();
+        if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
+            Bukkit.getLogger().warning("No Survival Game has specified ID \"" + id + "\".");
+            return false;
         }
 
-        return CommandResult.success();
+        return true;
     }
 }
