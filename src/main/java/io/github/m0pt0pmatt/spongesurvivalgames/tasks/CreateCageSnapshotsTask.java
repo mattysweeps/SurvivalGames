@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
@@ -48,11 +49,12 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
             game.getSurroundingVectors().stream()
                     .forEach(vector -> location.add(vector).getBlock().setType(Material.BARRIER));
 
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
-                    .execute(() -> game.getSurroundingVectors().stream()
-                            .forEach(vector -> location.add(vector).getBlock().setType(Material.AIR)))
-                            .submit(SpongeSurvivalGamesPlugin.plugin);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> game.getSurroundingVectors().stream()
+                            .forEach(vector -> location.add(vector).getBlock().setType(Material.AIR)),
+                    20L * game.getCountdownTime().get()
+            );
         }
     }
 }
