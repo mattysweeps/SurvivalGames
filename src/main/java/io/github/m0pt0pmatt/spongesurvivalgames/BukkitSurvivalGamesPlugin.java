@@ -65,11 +65,15 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
+    public Map<String, SurvivalGame> getSurvivalGameMap() {
+        return survivalGameMap;
+    }
+
     @Override
     public void onEnable() {
         registerCommands();
         survivalGameMap.clear();
-        game.getEventManager().registerListeners(this, new PlayerDeathEventListener());
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathEventListener(), this);
         Bukkit.getLogger().info("Sponge Survival Games Plugin Enabled");
     }
 
@@ -363,8 +367,6 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
                 .build();
     }
 
-    public Map<String, SurvivalGame> getSurvivalGameMap() {
-        return survivalGameMap;
-    }
+
 }
 
