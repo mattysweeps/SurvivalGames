@@ -38,7 +38,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
@@ -71,11 +70,11 @@ public class SurvivalGame {
 
 	//TODO make these fields STATIC (surroundingVectors, etc) to save some space
 	
-	private class loseTask implements Runnable {
+	private class exitTask implements Runnable {
 		
 		private Player player;
 		
-		public loseTask(Player player) {
+		public exitTask(Player player) {
 			this.player = player;
 		}
 		
@@ -86,7 +85,24 @@ public class SurvivalGame {
 			
 			player.teleport(getExit().get());
 		}
-	};
+	}
+	private class stopTask implements Runnable {
+		
+		private SurvivalGame game;
+		
+		public stopTask(SurvivalGame game) {
+			this.game = game;
+		}
+		
+		public void run() {
+			try {
+				game.stop();
+			} catch (TaskException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
@@ -317,7 +333,7 @@ public class SurvivalGame {
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null){
         	Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
-        			new loseTask(player), 20);
+        			new exitTask(player), 1);
         }
 
         checkWin();
@@ -332,24 +348,13 @@ public class SurvivalGame {
         UUID winnerUUID = playerUUIDs.stream().findFirst().get();
         Player winner = Bukkit.getServer().getPlayer(winnerUUID);
         if (winner != null){
-        	//TODO
-//            winner.sendMessage("Congratulations! You won!");
-//            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-//                    .execute(() -> winner.get().setLocation(getExit().get()))
-//                    .delay(10, TimeUnit.SECONDS)
-//                    .submit(SpongeSurvivalGamesPlugin.plugin);
+        	Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
+        			new exitTask(winner), 200);
+        	winner.sendMessage("Congratulations! You won!");
         }
 
-//        SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-//                .execute(() -> {
-//                    try {
-//                        stop();
-//                    } catch (TaskException e) {
-//                        e.printStackTrace();
-//                    }
-//                })
-//                .delay(10, TimeUnit.SECONDS)
-//                .submit(SpongeSurvivalGamesPlugin.plugin);
+        Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
+        			new stopTask(this), 200);
 
     }
 }
