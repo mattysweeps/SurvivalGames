@@ -38,12 +38,12 @@ public class PartialLookupTrie<T, C> {
         if (list == null || list.length < 1) return;
 
         Node<T, C> current = first;
-        for (int i = 0; i < list.length; i++) {
-            if (!current.children.containsKey(list[i])) {
-                current.children.put(list[i], new Node<>());
+        for (T t: list) {
+            if (!current.children.containsKey(t)) {
+                current.children.put(t, new Node<>());
             }
 
-            current = current.children.get(list[i]);
+            current = current.children.get(t);
         }
 
         current.data = data;
@@ -85,16 +85,19 @@ public class PartialLookupTrie<T, C> {
 
     public List<T> partialMatch(T[] list) {
         List<T> output = new LinkedList<>();
-        if (list == null || list.length < 1) return output;
+
+        if (list == null || list.length < 1){
+            output.addAll(first.children.keySet());
+            return output;
+        }
 
         Node<T, C> current = first;
 
-        int i;
-        for (i = 0; i < list.length; i++) {
+        for (T t: list){
 
             //True match
-            if (current.children.containsKey(list[i])) {
-                current = current.children.get(list[i]);
+            if (current.children.containsKey(t)) {
+                current = current.children.get(t);
             } else {
                 break;
             }
@@ -107,16 +110,13 @@ public class PartialLookupTrie<T, C> {
         return output;
     }
 
-    private class Node<T, C> {
-        Map<T, Node<T, C>> children = new HashMap<>();
-        C data;
+    private class Node<E, D> {
+        Map<E, Node<E, D>> children = new HashMap<>();
+        D data;
 
         public Node() {
             this.data = null;
         }
 
-        public Node(C data) {
-            this.data = data;
-        }
     }
 }

@@ -26,7 +26,9 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -66,7 +68,6 @@ public class FillChestsTask implements SurvivalGameTask {
 
         chests.forEach(block -> {
                     final Random random = new Random();
-
                     Chest chest = (Chest) block.getState();
                     Inventory inventory = chest.getBlockInventory();
                     inventory.clear();
@@ -79,7 +80,13 @@ public class FillChestsTask implements SurvivalGameTask {
                                     )
                     );
                     for (int i = 0; i < itemCount; i++) {
-                        inventory.addItem(new ItemStack(Material.STONE));
+
+                        try {
+                            Loot item = game.getLootGenerator().generate();
+                            if (item != null) inventory.addItem(item.getItem());
+                        } catch (EmptyLootGeneratorException e) {
+                            //TODO: push an exception up
+                        }
                     }
 
                     chest.update();

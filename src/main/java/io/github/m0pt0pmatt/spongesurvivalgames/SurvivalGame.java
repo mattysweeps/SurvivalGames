@@ -27,6 +27,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -59,6 +61,7 @@ public class SurvivalGame {
             new SetGameModeTask(),
             new CreateCageSnapshotsTask(),
             new CreateCenterChestsTask(),
+            new ResetLootGeneratorTask(),
             new FillChestsTask(),
             new CreateCountdownTask()
     ));
@@ -71,9 +74,14 @@ public class SurvivalGame {
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
+    private LootGenerator lootGenerator = new LootGenerator();
 
     public SurvivalGameState getState() {
         return state;
+    }
+
+    public LootGenerator getLootGenerator(){
+        return lootGenerator;
     }
 
     public void ready() {
@@ -323,4 +331,11 @@ public class SurvivalGame {
         config.setZMax(Math.max(zMin, zMax));
     }
 
+    public List<Loot> getLoot() {
+        return config.getLoot();
+    }
+
+    public void addLoot(Loot loot) {
+        if (loot != null) config.getLoot().add(loot);
+    }
 }

@@ -66,4 +66,6 @@ public class CommandKeywords {
     public static final String YMAX = "ymax";
     public static final String ZMIN = "zmin";
     public static final String ZMAX = "zmax";
+    public static final String LOOT = "loot";
+    public static final String WEIGHT = "weight";
 }
