@@ -26,16 +26,18 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 public class SurvivalGameConfigSerializer {
 
@@ -130,12 +132,12 @@ public class SurvivalGameConfigSerializer {
         builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
 
         for (Object item : config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault())) {
-            if (!(item instanceof ItemStack)) {
+            if (!(item instanceof Loot)) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
-                        + " List item not an ITEMSTACK! Skipping...");
+                        + " List item not a LOOT object! Skipping...");
                 continue;
             }
-            builder.addLoot((ItemStack) item);
+            builder.addLoot((Loot) item);
         }
 
         return builder.build();

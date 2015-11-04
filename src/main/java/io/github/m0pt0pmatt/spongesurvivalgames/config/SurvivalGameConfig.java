@@ -25,11 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.bukkit.inventory.ItemStack;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 public class SurvivalGameConfig {
 

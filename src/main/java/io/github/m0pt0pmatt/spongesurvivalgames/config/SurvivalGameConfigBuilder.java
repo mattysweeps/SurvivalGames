@@ -25,9 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 public class SurvivalGameConfigBuilder {
 
