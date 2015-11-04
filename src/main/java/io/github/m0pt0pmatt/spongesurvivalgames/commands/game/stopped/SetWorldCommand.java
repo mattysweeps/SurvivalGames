@@ -39,31 +39,28 @@ import java.util.Optional;
  */
 public class SetWorldCommand extends StoppedCommand {
 
-    public SetWorldCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> worldName = getArgument(CommandKeywords.WORLDNAME);
-        if (!worldName.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.WORLDNAME)) {
             Bukkit.getLogger().warning("World name was not present.");
             return false;
         }
 
+        String worldName = arguments.get(CommandKeywords.WORLDNAME);
+
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName.get());
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("World \"" + worldName.get() + "\" does not exist.");
+            Bukkit.getLogger().warning("World \"" + worldName + "\" does not exist.");
             return false;
         }
 
-        Bukkit.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
+        Bukkit.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName + "\".");
         return true;
     }
 }

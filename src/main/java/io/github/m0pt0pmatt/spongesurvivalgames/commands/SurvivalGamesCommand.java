@@ -33,18 +33,8 @@ import java.util.Optional;
 
 public abstract class SurvivalGamesCommand {
 
-    private final Map<String, String> arguments = new HashMap<>();
-
-    public SurvivalGamesCommand(Map<String, String> arguments) {
-        this.arguments.putAll(arguments);
+    public boolean execute(CommandSender sender, Map<String, String> arguments){
+        if (sender == null || arguments == null) return false;
+        return true;
     }
-
-    public Optional<String> getArgument(String key) {
-        if (arguments.containsKey(key)) {
-            return Optional.of(arguments.get(key));
-        }
-        return Optional.empty();
-    }
-
-    public abstract boolean execute(CommandSender sender);
 }

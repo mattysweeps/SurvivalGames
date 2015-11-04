@@ -35,24 +35,21 @@ import java.util.Optional;
 
 public class SetChestRangeCommand extends StoppedCommand {
 
-    public SetChestRangeCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> chestRange = getArgument(CommandKeywords.RANGE);
-        if (!chestRange.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.RANGE)) {
             Bukkit.getLogger().warning("Chest range was not present.");
             return false;
         }
+        String chestRange = arguments.get(CommandKeywords.RANGE);
 
-        Double range = Double.parseDouble(chestRange.get());
+        //TODO: Sanity check
+        Double range = Double.parseDouble(chestRange);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
         Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");

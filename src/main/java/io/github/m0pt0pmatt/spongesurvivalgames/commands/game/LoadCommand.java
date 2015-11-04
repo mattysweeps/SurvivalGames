@@ -41,24 +41,21 @@ import java.util.Optional;
 
 public class LoadCommand extends GameCommand {
 
-    public LoadCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> fileName = getArgument(CommandKeywords.FILENAME);
-        if (!fileName.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.FILENAME)) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
         }
+        String fileName = arguments.get(CommandKeywords.FILENAME);
 
-        File file = new File(fileName.get());
+
+        File file = new File(fileName);
 //        ConfigurationLoader<CommentedConfigurationNode> loader =
 //                HoconConfigurationLoader.builder().setFile(file).build();
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();

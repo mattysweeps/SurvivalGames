@@ -23,37 +23,57 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-/**
- * Command to create a new game
- */
-public class CreateGameCommand extends SurvivalGamesCommand {
+public class Trie<T, C> {
 
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    private Node<T, C> first = null;
 
-        if (!arguments.containsKey(CommandKeywords.ID)) {
-            Bukkit.getLogger().warning("Survival Game ID is not present.");
-            return false;
-        }
-        String id = arguments.get(CommandKeywords.ID);
+    private class Node<T, C>{
+        Map<T, Node<T, C>> children = new HashMap<>();
+        C data;
 
-        if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            Bukkit.getLogger().warning("Survival Game ID already exists.");
-            return false;
+        public Node(){
+            this.data = null;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
-        Bukkit.getLogger().info("Survival Game \"" + id + "\" created.");
+        public Node(C data){
+            this.data = data;
+        }
+    }
 
-        return true;
+    public void add(T[] list, C data){
+        if (list.length < 1) return;
+        int i = 0;
+
+
+        if (first == null){
+            first = new Node<>();
+            i++;
+        }
+
+        Node<T, C> current = first;
+        for (; i < list.length; i++){
+            if (!current.children.containsKey(list[i])){
+                current.children.put(list[i], new Node<>());
+            }
+
+            current = current.children.get(list[i]);
+        }
+
+        current.data = data;
+    }
+
+    public C match(T[] input, Map<T, T> arguments){
+
+        return null;
+    }
+
+    public List<T> partialMatch(T[] list) {
+        return null;
     }
 }

@@ -36,14 +36,10 @@ import java.util.Map;
  */
 public class ReadyGameCommand extends StoppedCommand {
 
-    public ReadyGameCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 

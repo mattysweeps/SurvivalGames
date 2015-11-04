@@ -40,40 +40,37 @@ import java.util.Optional;
  */
 public class SetExitCommand extends StoppedCommand {
 
-    public SetExitCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> worldName = getArgument(CommandKeywords.WORLDNAME);
-        if (!worldName.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.WORLDNAME)) {
             Bukkit.getLogger().warning("World name was not present.");
             return false;
         }
+        String worldName = arguments.get(CommandKeywords.WORLDNAME);
 
-        Optional<String> xString = getArgument(CommandKeywords.X);
-        Optional<String> yString = getArgument(CommandKeywords.Y);
-        Optional<String> zString = getArgument(CommandKeywords.Z);
-        if (!xString.isPresent() || !yString.isPresent() || !zString.isPresent()) {
+
+        String xString = arguments.get(CommandKeywords.X);
+        String yString = arguments.get(CommandKeywords.Y);
+        String zString = arguments.get(CommandKeywords.Z);
+        if (!arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X)) {
             Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
             return false;
         }
 
         //TODO: Add sanity check
-        int x = Integer.parseInt(xString.get());
-        int y = Integer.parseInt(yString.get());
-        int z = Integer.parseInt(zString.get());
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        int z = Integer.parseInt(zString);
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName.get(), x, y, z);
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName, x, y, z);
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("No such world \"" + worldName.get() + "\".");
+            Bukkit.getLogger().warning("No such world \"" + worldName + "\".");
             return false;
         }
 

@@ -57,4 +57,6 @@ public class CommandKeywords {
     public static final String PLAYER_LIMIT = "player-limit";
     public static final String PLAYERNAME = "playername";
     public static final String SSG = "ssg";
+    public static final String EXIT = "exit";
+    public static final String PLAYER = "player";
 }

@@ -35,24 +35,22 @@ import java.util.Optional;
 
 public class SetChestMidpointCommand extends StoppedCommand {
 
-    public SetChestMidpointCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> chestMidpoint = getArgument(CommandKeywords.MIDPOINT);
-        if (!chestMidpoint.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.MIDPOINT)) {
             Bukkit.getLogger().warning("Chest midpoint was not present.");
             return false;
         }
 
-        Double midpoint = Double.parseDouble(chestMidpoint.get());
+        String chestMidpoint = arguments.get(CommandKeywords.MIDPOINT);
+
+        //TODO: Sanity check
+        Double midpoint = Double.parseDouble(chestMidpoint);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
         Bukkit.getLogger().info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");

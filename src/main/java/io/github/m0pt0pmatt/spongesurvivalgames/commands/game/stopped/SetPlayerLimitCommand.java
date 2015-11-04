@@ -38,25 +38,21 @@ import java.util.Optional;
  */
 public class SetPlayerLimitCommand extends StoppedCommand {
 
-    public SetPlayerLimitCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> playerLimitString = getArgument(CommandKeywords.PLAYER_LIMIT);
-        if (!playerLimitString.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.PLAYER_LIMIT)) {
             Bukkit.getLogger().warning("Player limit was not present.");
             return false;
         }
+        String playerLimitString = arguments.get(CommandKeywords.PLAYER_LIMIT);
 
         //TODO: Add sanity check
-        int playerLimit = Integer.parseInt(playerLimitString.get());
+        int playerLimit = Integer.parseInt(playerLimitString);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit);
         Bukkit.getLogger().info("Player limit for game \"" + id + "\" set to " + playerLimit + ".");

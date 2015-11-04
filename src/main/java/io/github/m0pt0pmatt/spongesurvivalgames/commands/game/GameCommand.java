@@ -40,21 +40,16 @@ import java.util.Optional;
  */
 public abstract class GameCommand extends SurvivalGamesCommand {
 
-    public GameCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     protected String id;
 
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        Optional<String> idOptional = getArgument(CommandKeywords.ID);
-        if (!idOptional.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.ID)) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;
         }
 
-        id = idOptional.get();
+        id = arguments.get(CommandKeywords.ID);
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
             Bukkit.getLogger().warning("No Survival Game has specified ID \"" + id + "\".");

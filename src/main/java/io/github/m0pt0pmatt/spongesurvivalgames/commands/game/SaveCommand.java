@@ -39,24 +39,20 @@ import java.util.Optional;
 
 public class SaveCommand extends GameCommand {
 
-    public SaveCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> fileName = getArgument(CommandKeywords.FILENAME);
-        if (!fileName.isPresent()) {
+        String fileName = arguments.get(CommandKeywords.FILENAME);
+        if (!arguments.containsKey(CommandKeywords.FILENAME)) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
         }
 
-        File file = new File(fileName.get());
+        File file = new File(fileName);
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
         YamlConfiguration config;
 

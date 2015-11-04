@@ -38,14 +38,10 @@ import java.util.Map;
  */
 public abstract class ReadyCommand extends GameCommand {
 
-    public ReadyCommand(Map<String, String> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
