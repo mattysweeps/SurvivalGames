@@ -46,10 +46,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,10 +56,9 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
     public static Map<String, SurvivalGame> survivalGameMap;
     public static BukkitSurvivalGamesPlugin plugin;
-    public static final PartialLookupTrie<String, SurvivalGamesCommand> commandTrie = new PartialLookupTrie();
-
-    private final CommandExecutor commandExecutor = new SurvivalGamesCommandExecutor();
-    private final TabCompleter tabCompleter = new SurvivalGamesTabCompleter();
+    public static final PartialLookupTrie<String, SurvivalGamesCommand> commandTrie = new PartialLookupTrie<>();
+    private static final CommandExecutor commandExecutor = new SurvivalGamesCommandExecutor();
+    private static final TabCompleter tabCompleter = new SurvivalGamesTabCompleter();
 
     public BukkitSurvivalGamesPlugin() {
         BukkitSurvivalGamesPlugin.plugin = this;

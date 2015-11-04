@@ -83,6 +83,10 @@ public class PartialLookupTrie<T, C> {
         for (; current != null && current.children.size() > 0 && i < input.length; i++){
 
             //There should only be one valid path
+            if (current.children.entrySet().size() > 1){
+                return null;
+            }
+
             T key = current.children.entrySet().iterator().next().getKey();
             arguments.put(key, input[i]);
             current = current.children.get(key);
