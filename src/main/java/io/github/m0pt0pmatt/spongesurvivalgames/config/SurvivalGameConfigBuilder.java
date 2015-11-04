@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -85,8 +86,38 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder addLoot(ItemStack loot) {
+    public SurvivalGameConfigBuilder addLoot(Loot loot) {
         config.getLoot().add(loot);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder xMin(Integer xMin){
+        config.setXMin(xMin);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder xMax(Integer xMax){
+        config.setXMax(xMax);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder yMin(Integer yMin){
+        config.setYMin(yMin);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder yMax(Integer yMax){
+        config.setYMax(yMax);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder zMin(Integer zMin){
+        config.setZMin(zMin);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder zMax(Integer zMax){
+        config.setZMax(zMax);
         return this;
     }
 }

@@ -59,4 +59,11 @@ public class CommandKeywords {
     public static final String SSG = "ssg";
     public static final String EXIT = "exit";
     public static final String PLAYER = "player";
+    public static final String BOUNDS = "bounds";
+    public static final String XMIN = "xmin";
+    public static final String XMAX = "xmax";
+    public static final String YMIN = "ymin";
+    public static final String YMAX = "ymax";
+    public static final String ZMIN = "zmin";
+    public static final String ZMAX = "zmax";
 }

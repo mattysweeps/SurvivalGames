@@ -118,7 +118,7 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -128,6 +128,13 @@ public class SurvivalGame {
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
+        if (!config.getXMin().isPresent()) throw new NoBoundsException();
+        if (!config.getXMax().isPresent()) throw new NoBoundsException();
+        if (!config.getYMin().isPresent()) throw new NoBoundsException();
+        if (!config.getYMax().isPresent()) throw new NoBoundsException();
+        if (!config.getZMin().isPresent()) throw new NoBoundsException();
+        if (!config.getZMax().isPresent()) throw new NoBoundsException();
+
 
         // Set the state
         state = SurvivalGameState.RUNNING;

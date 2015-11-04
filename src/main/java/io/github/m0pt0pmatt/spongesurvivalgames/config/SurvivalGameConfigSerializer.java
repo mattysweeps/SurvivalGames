@@ -51,7 +51,14 @@ public class SurvivalGameConfigSerializer {
         SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
         CHEST_MIDPOINT("chest.midpoint", 0.0),
         CHEST_RANGE("chest.range", 0.0),
-        LOOT("loot", new LinkedList<ItemStack>());
+        LOOT("loot", new LinkedList<ItemStack>()),
+        XMIN("xmin", 0),
+        XMAX("xmax", 0),
+        YMIN("ymin", 0),
+        YMAX("ymax", 0),
+        ZMIN("zmin", 0),
+        ZMAX("zmax", 0)
+        ;
 
         private String key;
 
@@ -86,6 +93,13 @@ public class SurvivalGameConfigSerializer {
         builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()));
 
         builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()));
+
+        builder.xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()));
+        builder.xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()));
+        builder.yMin(config.getInt(Fields.YMIN.getKey(), (Integer) Fields.YMIN.getDefault()));
+        builder.yMax(config.getInt(Fields.YMAX.getKey(), (Integer) Fields.YMAX.getDefault()));
+        builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
+        builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
 
         List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
 
@@ -138,12 +152,19 @@ public class SurvivalGameConfigSerializer {
         config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit());
         config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime());
 
-        config.set(Fields.SPAWNS.getKey(), new ArrayList<Vector>(obj.getSpawns()));
+        config.set(Fields.SPAWNS.getKey(), new ArrayList<>(obj.getSpawns()));
 
         config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint());
         config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange());
 
         config.set(Fields.LOOT.getKey(), obj.getLoot());
+
+        config.set(Fields.XMIN.getKey(), obj.getXMin());
+        config.set(Fields.XMAX.getKey(), obj.getXMax());
+        config.set(Fields.YMIN.getKey(), obj.getYMin());
+        config.set(Fields.YMAX.getKey(), obj.getYMax());
+        config.set(Fields.ZMIN.getKey(), obj.getZMin());
+        config.set(Fields.ZMAX.getKey(), obj.getZMax());
 
         return config;
     }

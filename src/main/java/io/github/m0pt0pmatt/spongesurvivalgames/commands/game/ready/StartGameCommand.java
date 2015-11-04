@@ -64,6 +64,9 @@ public class StartGameCommand extends ReadyCommand {
         } catch (NoChestMidpointException e) {
             Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
             return false;
+        } catch (NoBoundsException e) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have bounds assigned to it.");
+            return false;
         } catch (TaskException e) {
             Bukkit.getLogger().warning(e.getMessage());
             return false;

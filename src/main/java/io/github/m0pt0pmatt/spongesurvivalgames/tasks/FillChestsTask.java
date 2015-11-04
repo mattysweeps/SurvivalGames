@@ -45,10 +45,12 @@ public class FillChestsTask implements SurvivalGameTask {
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 
-        //TODO: Need to make these part of the config file.
-        int xmin = 0, xmax = 0;
-        int ymin = 0, ymax = 0;
-        int zmin = 0, zmax = 0;
+        int xmin = game.getConfig().getXMin().get();
+        int xmax = game.getConfig().getXMax().get();
+        int ymin = game.getConfig().getYMin().get();
+        int ymax = game.getConfig().getYMax().get();
+        int zmin = game.getConfig().getZMin().get();
+        int zmax = game.getConfig().getZMax().get();
 
         Collection<Block> chests = new ArrayList<Block>();
         for (int x = xmin; x < xmax; x++) {
