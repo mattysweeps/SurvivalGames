@@ -2,7 +2,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.loot;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,22 +14,17 @@ import java.util.Random;
 public class LootGenerator {
 
     private static Random rand = new Random();
-    private List<Loot> loot;
-    private double weight;
-
-    public LootGenerator() {
-        loot = new LinkedList<Loot>();
-        weight = 0;
-    }
+    private List<Loot> loot = new ArrayList<>();
+    private double weight = 0;
 
     /**
      * Adds a piece of loot to this generator's list of loot items.
      *
-     * @param obj
+     * @param loot
      */
-    public void addLoot(Loot obj) {
-        loot.add(obj);
-        weight += obj.getWeight();
+    public void addLoot(Loot loot) {
+        this.loot.add(loot);
+        weight += loot.getWeight();
     }
 
     /**
@@ -54,16 +49,18 @@ public class LootGenerator {
         double pos = rand.nextDouble() * weight;
         double index = 0.0;
 
-        for (Loot obj : loot) {
-            index += obj.getWeight();
+        Loot chosenLoot = null;
+
+        for (Loot item : loot) {
+            index += item.getWeight();
             if (index >= pos) {
                 //finally got up to the item with the generated weight
-                return obj;
+                chosenLoot = item;
+                break;
             }
         }
 
-        //We should never reach here! This is an error! UNDEFINED
-        return null;
+        return chosenLoot;
     }
 
 }

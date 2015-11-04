@@ -69,5 +69,4 @@ public class Loot implements ConfigurationSerializable {
         return weight;
     }
 
-
 }

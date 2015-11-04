@@ -100,6 +100,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
     /**
      * Helper function to get a set of players from their UUIDs
+     *
      * @param playerUUIDs the UUIDs of the players
      * @return All players who were logged in to the server
      */

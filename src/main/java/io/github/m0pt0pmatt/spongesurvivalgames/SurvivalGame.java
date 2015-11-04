@@ -41,7 +41,6 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private final Set<UUID> playerUUIDs = new HashSet<>();
     private static final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
             new Vector(1, 1, 0),
@@ -69,6 +68,7 @@ public class SurvivalGame {
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
     ));
+    private final Set<UUID> playerUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
 
