@@ -26,13 +26,13 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -73,8 +73,7 @@ public class SurvivalGameConfigSerializer {
 	}
 	
     @SuppressWarnings("unchecked")
-	@Override
-    public SurvivalGameConfig deserialize(ConfigurationSection config) {
+	public SurvivalGameConfig deserialize(ConfigurationSection config) {
         SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
         
         builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
@@ -117,45 +116,36 @@ public class SurvivalGameConfigSerializer {
 		
 		builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
 		
-		for (ItemStack item : (List<ItemStack>) config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault()) {
-			builder.addLoot(item);
+		for (Object item : config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault())) {
+			if (!(item instanceof ItemStack)) {
+				BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
+						+ " List item not an ITEMSTACK! Skipping...");
+				continue;				
+			}
+			builder.addLoot((ItemStack) item);
 		}
 		
         return builder.build();
     }
 
-    @Override
-    public void serialize(TypeToken<?> type, SurvivalGameConfig obj, ConfigurationNode value) throws ObjectMappingException {
-        if (obj.getWorldName().isPresent()) value.getNode("world").setValue(obj.getWorldName().get());
-
-        ConfigurationNode exitNode = value.getNode("exit");
-        if (obj.getExitWorld().isPresent()) exitNode.getNode("world").setValue(obj.getExitWorld().get());
-        if (obj.getExit().isPresent()) {
-            exitNode.getNode("X").setValue(obj.getExit().get().getX());
-            exitNode.getNode("Y").setValue(obj.getExit().get().getY());
-            exitNode.getNode("Z").setValue(obj.getExit().get().getZ());
-        }
-
-        ConfigurationNode centerNode = value.getNode("center");
-        if (obj.getCenter().isPresent()) {
-            centerNode.getNode("X").setValue(obj.getCenter().get().getX());
-            centerNode.getNode("Y").setValue(obj.getCenter().get().getY());
-            centerNode.getNode("Z").setValue(obj.getCenter().get().getZ());
-        }
-
-        if (obj.getPlayerLimit().isPresent()) value.getNode("playerLimit").setValue(obj.getPlayerLimit().get());
-        if (obj.getCountdownTime().isPresent()) value.getNode("countdownTime").setValue(obj.getCountdownTime().get());
-
-        ConfigurationNode spawnsNode = value.getNode("spawns");
-        for (Vector spawn : obj.getSpawns()) {
-            ConfigurationNode spawnNode = spawnsNode.getAppendedNode();
-            spawnNode.getNode("X").setValue(spawn.getX());
-            spawnNode.getNode("Y").setValue(spawn.getY());
-            spawnNode.getNode("Z").setValue(spawn.getZ());
-        }
-
-        ConfigurationNode chestNode = value.getNode("chest");
-        if (obj.getChestMidpoint().isPresent()) chestNode.getNode("midpoint").setValue(obj.getChestMidpoint().get());
-        if (obj.getChestRange().isPresent()) chestNode.getNode("range").setValue(obj.getChestRange().get());
+    public ConfigurationSection serialize(SurvivalGameConfig obj) {
+    	
+    	ConfigurationSection config = new YamlConfiguration();
+    	
+    	config.set(Fields.WORLD.getKey(), obj.getWorldName());
+    	config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld());
+    	config.set(Fields.EXIT.getKey(), obj.getExit());
+    	config.set(Fields.CENTER.getKey(), obj.getCenter());
+    	config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit());
+    	config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime());
+    	
+        config.set(Fields.SPAWNS.getKey(), new ArrayList<Vector>(obj.getSpawns()));
+        
+        config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint());
+        config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange());
+        
+        config.set(Fields.LOOT.getKey(), obj.getLoot());
+        
+        return config;
     }
 }
