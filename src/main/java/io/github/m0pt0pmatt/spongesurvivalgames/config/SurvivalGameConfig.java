@@ -25,12 +25,51 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 
 public class SurvivalGameConfig {
+	
+	private enum Fields {
+		
+		WORLD("world", ""),
+		PLAYERLIMIT("playerLimit", 16),
+		COUNTDOWNTIME("countdownTime", 30),
+		EXITWORLD("exit.world", ""),
+		EXIT("exit", new Vector(0,0,0)),
+		CENTER("center", new Vector(0,0,0)),
+		SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
+		CHEST_MIDPOINT("chest.midpoint", 0.0),
+		CHEST_RANGE("chest.range", 0.0),
+		LOOT("loot", new LinkedList<ItemStack>());
+		
+		private String key;
+		
+		private Object def;
+		
+		private Fields(String key, Object def) {
+			this.key = key;
+			this.def = def;
+		}
+		
+		public String getKey() {
+			return key;
+		}
+		
+		public Object getDefault() {
+			return def;
+		}
+	}
 
     private String worldName;
 
@@ -50,50 +89,110 @@ public class SurvivalGameConfig {
 
     private Double chestRange;
 
-    private List<ItemStack> loot = new ArrayList<>();
+    private List<ItemStack> loot = new ArrayList<ItemStack>();
+    
+    /**
+     * Returns a game configuration from the passed configuration section.<br />
+     * @param config
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public static SurvivalGameConfig fromConfig(ConfigurationSection config) {
+    	SurvivalGameConfig scfg = new SurvivalGameConfig();
+    	
+    	scfg.worldName = config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault());
+    	
+    	scfg.exitWorld = config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault());
+    	
+    	scfg.exit = config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault());
+    	
+    	scfg.center = config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault());
+    	
+    	scfg.playerLimit = config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault());
+    	
+    	scfg.countdownTime = config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault());
+    	
+		List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
+    	Set<Vector> spawns = new HashSet<Vector>();
+    	
+    	if (!vectorList.isEmpty()) {
+    		for (Map<String, Object> map : vectorList) {
+    			
+    			if (!map.containsKey("X") || !map.containsKey("Y") || !map.containsKey("Z")) {
+    				BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to find correct keys when parsing "
+    						+ "spawn list!");
+    				continue;
+    			}
+    			
+    			spawns.add(new Vector(
+    					(Double) map.get("X"),
+    					(Double) map.get("Y"),
+    					(Double) map.get("Z")));
+    		}
+    	}
 
-    public Optional<String> getWorldName() {
-        return worldName == null ? Optional.empty() : Optional.of(worldName);
+		scfg.spawns = spawns;
+		
+		scfg.chestMidpoint = config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault());
+		
+		scfg.chestRange = config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault());
+		
+		scfg.loot = (List<ItemStack>) config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault());
+		
+    	return scfg;
+    	
+    }
+
+    /**
+     * Returns the name of the world.
+     * @return The string name, or null if none is set
+     */
+    public String getWorldName() {
+        return worldName;
     }
 
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
 
-    public Optional<String> getExitWorld() {
-        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
+    /**
+     * Returns the exit world name, or null
+     * @return
+     */
+    public String getExitWorld() {
+        return exitWorld;
     }
 
     public void setExitWorld(String exitWorld) {
         this.exitWorld = exitWorld;
     }
 
-    public Optional<Vector> getExit() {
-        return exit == null ? Optional.empty() : Optional.of(exit);
+    public Vector getExit() {
+        return exit;
     }
 
     public void setExit(Vector exit) {
         this.exit = exit;
     }
 
-    public Optional<Vector> getCenter() {
-        return center == null ? Optional.empty() : Optional.of(center);
+    public Vector getCenter() {
+        return center;
     }
 
     public void setCenter(Vector center) {
         this.center = center;
     }
 
-    public Optional<Integer> getPlayerLimit() {
-        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
+    public Integer getPlayerLimit() {
+        return playerLimit;
     }
 
     public void setPlayerLimit(Integer playerLimit) {
         this.playerLimit = playerLimit;
     }
 
-    public Optional<Integer> getCountdownTime() {
-        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
+    public Integer getCountdownTime() {
+        return countdownTime;
     }
 
     public void setCountdownTime(Integer countdownTime) {
@@ -104,16 +203,16 @@ public class SurvivalGameConfig {
         return spawns;
     }
 
-    public Optional<Double> getChestMidpoint() {
-        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
+    public Double getChestMidpoint() {
+        return chestMidpoint;
     }
 
     public void setChestMidpoint(Double chestMidpoint) {
         this.chestMidpoint = chestMidpoint;
     }
 
-    public Optional<Double> getChestRange() {
-        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
+    public Double getChestRange() {
+        return chestRange;
     }
 
     public void setChestRange(Double chestRange) {
