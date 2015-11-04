@@ -38,6 +38,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
@@ -69,6 +70,23 @@ import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SurvivalGameTask;
 public class SurvivalGame {
 
 	//TODO make these fields STATIC (surroundingVectors, etc) to save some space
+	
+	private class loseTask implements Runnable {
+		
+		private Player player;
+		
+		public loseTask(Player player) {
+			this.player = player;
+		}
+		
+		public void run() {
+			if (!player.isOnline()) {
+				return;
+			}
+			
+			player.teleport(getExit().get());
+		}
+	};
 	
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
@@ -298,11 +316,8 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null){
-        	//TODO
-//            BukkitSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-//                    .execute(() -> player.get().setLocation(getExit().get()))
-//                    .delay(10, TimeUnit.MILLISECONDS)
-//                    .submit(BukkitSurvivalGamesPlugin.plugin);
+        	Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
+        			new loseTask(player), 20);
         }
 
         checkWin();
