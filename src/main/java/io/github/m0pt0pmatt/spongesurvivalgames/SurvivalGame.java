@@ -338,4 +338,13 @@ public class SurvivalGame {
                 new stopTask(this), 200);
 
     }
+
+    public void setBounds(int xMin, int xMax, int yMin, int yMax, int zMin, int zMax) {
+        config.setXMin(Math.min(xMin, xMax));
+        config.setXMax(Math.max(xMin, xMax));
+        config.setYMin(Math.min(yMin, yMax));
+        config.setYMax(Math.max(yMin, yMax));
+        config.setZMin(Math.min(zMin, zMax));
+        config.setZMax(Math.max(zMin, zMax));
+    }
 }

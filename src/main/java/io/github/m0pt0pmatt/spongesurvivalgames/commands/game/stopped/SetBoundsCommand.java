@@ -1,15 +1,37 @@
+/*
+ * This file is part of SpongeSurvivalGamesPlugin, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-/**
- * Created by Matt on 11/4/2015.
- */
 public class SetBoundsCommand extends StoppedCommand {
 
     @Override
@@ -31,23 +53,24 @@ public class SetBoundsCommand extends StoppedCommand {
             return false;
         }
 
-        String xString = arguments.get(CommandKeywords.X);
-        String yString = arguments.get(CommandKeywords.Y);
-        String zString = arguments.get(CommandKeywords.Z);
-        String xString = arguments.get(CommandKeywords.X);
-        String yString = arguments.get(CommandKeywords.Y);
-        String zString = arguments.get(CommandKeywords.Z);
+        String xMinString = arguments.get(CommandKeywords.XMIN);
+        String yMinString = arguments.get(CommandKeywords.YMIN);
+        String zMinString = arguments.get(CommandKeywords.ZMIN);
+        String xMaxString = arguments.get(CommandKeywords.XMAX);
+        String yMaxString = arguments.get(CommandKeywords.YMAX);
+        String zMaxString = arguments.get(CommandKeywords.ZMAX);
 
         //TODO: Add sanity check
-        int x = Integer.parseInt(xString);
-        int y = Integer.parseInt(yString);
-        int z = Integer.parseInt(zString);
-        int x = Integer.parseInt(xString);
-        int y = Integer.parseInt(yString);
-        int z = Integer.parseInt(zString);
+        int xMin = Integer.parseInt(xMinString);
+        int yMin = Integer.parseInt(yMinString);
+        int zMin = Integer.parseInt(zMinString);
+        int xMax = Integer.parseInt(xMaxString);
+        int yMax = Integer.parseInt(yMaxString);
+        int zMax = Integer.parseInt(zMaxString);
 
-        
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, yMin, yMax, zMin, zMax);
+        Bukkit.getLogger().info("Bounds set for game \"" + id + "\".");
 
-        return false;
+        return true;
     }
 }
