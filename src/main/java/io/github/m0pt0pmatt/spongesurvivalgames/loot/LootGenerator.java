@@ -62,6 +62,7 @@ public class LootGenerator {
 			}
 		}
 		
+		//We should never reach here! This is an error! UNDEFINED
 		return null;
 	}
 	
