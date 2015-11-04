@@ -45,7 +45,7 @@ public class CreateGameCommand extends SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender){
 
-        Optional<String> id = getArgument("id");
+        Optional<String> id = getArgument(CommandKeywords.ID);
         if (!id.isPresent()) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;

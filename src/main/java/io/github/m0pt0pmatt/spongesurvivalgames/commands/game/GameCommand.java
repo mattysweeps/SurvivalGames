@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -48,7 +49,7 @@ public abstract class GameCommand extends SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender){
 
-        Optional<String> idOptional = getArgument("id");
+        Optional<String> idOptional = getArgument(CommandKeywords.ID);
         if (!idOptional.isPresent()) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;

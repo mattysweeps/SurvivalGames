@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -50,31 +51,15 @@ public class SaveCommand extends GameCommand {
             return false;
         }
 
-        Optional<String> fileName = getArgument("fileName");
+        Optional<String> fileName = getArgument(CommandKeywords.FILENAME);
         if (!fileName.isPresent()) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
         }
 
         File file = new File(fileName.get());
-//        ConfigurationLoader<CommentedConfigurationNode> loader =
-//                HoconConfigurationLoader.builder().setFile(file).build();
-//        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
-//
-//        CommentedConfigurationNode node = loader.createEmptyNode(ConfigurationOptions.defaults());
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
         YamlConfiguration config;
-        
-//        try {
-//            serializer.serialize(
-//                    TypeToken.of(SurvivalGameConfig.class),
-//                    BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig(),
-//                    node
-//            );
-//        } catch (ObjectMappingException e) {
-//            Bukkit.getLogger().warning("Mapping exception thrown");
-//            return false;
-//        }
         
         config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 

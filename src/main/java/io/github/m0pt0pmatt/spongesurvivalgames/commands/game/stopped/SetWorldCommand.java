@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -50,7 +51,7 @@ public class SetWorldCommand extends StoppedCommand {
             return false;
         }
 
-        Optional<String> worldName = getArgument("worldName");
+        Optional<String> worldName = getArgument(CommandKeywords.WORLDNAME);
         if (!worldName.isPresent()) {
             Bukkit.getLogger().warning("World name was not present.");
             return false;

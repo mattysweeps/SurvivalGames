@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -51,9 +52,9 @@ public class AddSpawnCommand extends StoppedCommand {
             return false;
         }
 
-        Optional<String> xString = getArgument("x");
-        Optional<String> yString = getArgument("y");
-        Optional<String> zString = getArgument("z");
+        Optional<String> xString = getArgument(CommandKeywords.X);
+        Optional<String> yString = getArgument(CommandKeywords.Y);
+        Optional<String> zString = getArgument(CommandKeywords.Z);
         if (!xString.isPresent() || !yString.isPresent() || !zString.isPresent()) {
             Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
             return false;

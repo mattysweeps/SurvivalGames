@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -46,7 +47,7 @@ public class SetChestMidpointCommand extends StoppedCommand {
             return false;
         }
 
-        Optional<String> chestMidpoint = getArgument("chestMidpoint");
+        Optional<String> chestMidpoint = getArgument(CommandKeywords.MIDPOINT);
         if (!chestMidpoint.isPresent()) {
             Bukkit.getLogger().warning("Chest midpoint was not present.");
             return false;

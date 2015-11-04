@@ -55,7 +55,7 @@ public class SurvivalGameConfig {
 
     private Double chestRange;
 
-    private List<ItemStack> loot = new ArrayList<ItemStack>();
+    private List<ItemStack> loot = new ArrayList<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);

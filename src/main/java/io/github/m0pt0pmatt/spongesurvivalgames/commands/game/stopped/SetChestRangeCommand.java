@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -46,7 +47,7 @@ public class SetChestRangeCommand extends StoppedCommand{
             return false;
         }
 
-        Optional<String> chestRange = getArgument("chestRange");
+        Optional<String> chestRange = getArgument(CommandKeywords.RANGE);
         if (!chestRange.isPresent()) {
             Bukkit.getLogger().warning("Chest range was not present.");
             return false;

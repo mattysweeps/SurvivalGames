@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,7 +53,7 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
 
-        Optional<String> playerName = getArgument("playerName");
+        Optional<String> playerName = getArgument(CommandKeywords.PLAYERNAME);
         if (!playerName.isPresent()) {
             Bukkit.getLogger().warning("Player name is not present.");
             return false;

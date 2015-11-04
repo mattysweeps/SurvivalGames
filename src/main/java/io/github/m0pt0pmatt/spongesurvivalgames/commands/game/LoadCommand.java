@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -52,7 +53,7 @@ public class LoadCommand extends GameCommand {
             return false;
         }
 
-        Optional<String> fileName = getArgument("fileName");
+        Optional<String> fileName = getArgument(CommandKeywords.FILENAME);
         if (!fileName.isPresent()) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
