@@ -25,29 +25,28 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to add a player to a game
  */
 public class AddPlayerCommand extends ReadyCommand {
 
-    public AddPlayerCommand(Map<String, String> arguments){
+    public AddPlayerCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;

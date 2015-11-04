@@ -25,31 +25,24 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestMidpointException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestRangeException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
+import java.util.Map;
 
 /**
  * Command to set a game to the RUNNING state (start the game)
  */
 public class StartGameCommand extends ReadyCommand {
 
-    public StartGameCommand(Map<String, String> arguments){
+    public StartGameCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;

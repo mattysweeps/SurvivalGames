@@ -25,25 +25,24 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to create a new game
  */
 public class CreateGameCommand extends SurvivalGamesCommand {
 
-    public CreateGameCommand(Map<String, String> arguments){
+    public CreateGameCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         Optional<String> id = getArgument(CommandKeywords.ID);
         if (!id.isPresent()) {

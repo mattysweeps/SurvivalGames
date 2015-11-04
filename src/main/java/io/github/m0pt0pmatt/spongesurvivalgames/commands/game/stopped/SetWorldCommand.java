@@ -25,27 +25,26 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to set the world where the game will be played
  */
 public class SetWorldCommand extends StoppedCommand {
 
-    public SetWorldCommand(Map<String, String> arguments){
+    public SetWorldCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;

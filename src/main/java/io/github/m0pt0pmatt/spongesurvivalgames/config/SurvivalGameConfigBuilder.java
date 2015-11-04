@@ -75,18 +75,18 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder chestMidpoint(Double chestMidpoint){
+    public SurvivalGameConfigBuilder chestMidpoint(Double chestMidpoint) {
         config.setChestMidpoint(chestMidpoint);
         return this;
     }
 
-    public SurvivalGameConfigBuilder chestRange(Double chestRange){
+    public SurvivalGameConfigBuilder chestRange(Double chestRange) {
         config.setChestRange(chestRange);
         return this;
     }
-    
+
     public SurvivalGameConfigBuilder addLoot(ItemStack loot) {
-    	config.getLoot().add(loot);
-    	return this;
+        config.getLoot().add(loot);
+        return this;
     }
 }

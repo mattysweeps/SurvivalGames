@@ -25,15 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to set the exit location for a game
@@ -41,12 +40,12 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
  */
 public class SetExitCommand extends StoppedCommand {
 
-    public SetExitCommand(Map<String, String> arguments){
+    public SetExitCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;

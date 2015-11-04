@@ -25,24 +25,23 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
+import java.util.Map;
+import java.util.Optional;
 
 public class PrintExitCommand extends GameCommand {
 
-    public PrintExitCommand(Map<String, String> arguments){
+    public PrintExitCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;

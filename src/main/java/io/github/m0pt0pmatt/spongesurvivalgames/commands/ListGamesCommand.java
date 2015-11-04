@@ -25,24 +25,23 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import java.util.Map;
 
 /**
  * Command to list all games
  */
 public class ListGamesCommand extends SurvivalGamesCommand {
 
-    public ListGamesCommand(Map<String, String> arguments){
+    public ListGamesCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         Bukkit.getLogger().info("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
         for (Map.Entry<String, SurvivalGame> entry : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {

@@ -25,15 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * GameCommands require the name of the game as the first argument
@@ -41,13 +40,13 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
  */
 public abstract class GameCommand extends SurvivalGamesCommand {
 
-    public GameCommand(Map<String, String> arguments){
+    public GameCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     protected String id;
 
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         Optional<String> idOptional = getArgument(CommandKeywords.ID);
         if (!idOptional.isPresent()) {

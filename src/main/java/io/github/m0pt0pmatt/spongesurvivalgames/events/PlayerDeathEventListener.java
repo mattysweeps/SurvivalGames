@@ -25,25 +25,24 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.events;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import java.util.Map;
 
-public class PlayerDeathEventListener implements Listener{
+public class PlayerDeathEventListener implements Listener {
 
-    public void onPlayerDeath(PlayerDeathEvent event){
+    public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
 
-        for (Map.Entry<String, SurvivalGame> game: BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()){
-            if (game.getValue().getState().equals(SurvivalGameState.RUNNING)){
-                if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())){
+        for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
+            if (game.getValue().getState().equals(SurvivalGameState.RUNNING)) {
+                if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Death has occurred inside the game
                     game.getValue().reportDeath(player.getUniqueId());
                     return;

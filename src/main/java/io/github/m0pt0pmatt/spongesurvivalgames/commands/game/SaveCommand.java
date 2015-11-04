@@ -25,27 +25,26 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-
 public class SaveCommand extends GameCommand {
 
-    public SaveCommand(Map<String, String> arguments){
+    public SaveCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;
@@ -60,7 +59,7 @@ public class SaveCommand extends GameCommand {
         File file = new File(fileName.get());
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
         YamlConfiguration config;
-        
+
         config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 
         try {

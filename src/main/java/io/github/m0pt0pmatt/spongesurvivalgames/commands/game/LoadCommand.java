@@ -25,29 +25,28 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 public class LoadCommand extends GameCommand {
 
-    public LoadCommand(Map<String, String> arguments){
+    public LoadCommand(Map<String, String> arguments) {
         super(arguments);
     }
 
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender) {
 
         if (!super.execute(sender)) {
             return false;
@@ -74,7 +73,7 @@ public class LoadCommand extends GameCommand {
         }
 
         SurvivalGameConfig config;
-        
+
         config = serializer.deserialize(yaml);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);

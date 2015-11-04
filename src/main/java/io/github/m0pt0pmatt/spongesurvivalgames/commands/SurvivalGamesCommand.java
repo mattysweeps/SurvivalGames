@@ -25,22 +25,22 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import org.bukkit.command.CommandSender;
 
 public abstract class SurvivalGamesCommand {
 
     private final Map<String, String> arguments = new HashMap<>();
 
-    public SurvivalGamesCommand(Map<String, String> arguments){
+    public SurvivalGamesCommand(Map<String, String> arguments) {
         this.arguments.putAll(arguments);
     }
 
-    public Optional<String> getArgument(String key){
-        if (arguments.containsKey(key)){
+    public Optional<String> getArgument(String key) {
+        if (arguments.containsKey(key)) {
             return Optional.of(arguments.get(key));
         }
         return Optional.empty();
