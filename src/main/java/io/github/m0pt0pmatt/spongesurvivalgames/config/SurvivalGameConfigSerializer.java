@@ -26,56 +26,101 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
-    @Override
-    public SurvivalGameConfig deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+
+public class SurvivalGameConfigSerializer {
+	
+	
+	private enum Fields {
+		
+		WORLD("world", ""),
+		PLAYERLIMIT("playerLimit", 16),
+		COUNTDOWNTIME("countdownTime", 30),
+		EXITWORLD("exit.world", ""),
+		EXIT("exit", new Vector(0,0,0)),
+		CENTER("center", new Vector(0,0,0)),
+		SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
+		CHEST_MIDPOINT("chest.midpoint", 0.0),
+		CHEST_RANGE("chest.range", 0.0),
+		LOOT("loot", new LinkedList<ItemStack>());
+		
+		private String key;
+		
+		private Object def;
+		
+		private Fields(String key, Object def) {
+			this.key = key;
+			this.def = def;
+		}
+		
+		public String getKey() {
+			return key;
+		}
+		
+		public Object getDefault() {
+			return def;
+		}
+	}
+	
+    @SuppressWarnings("unchecked")
+	@Override
+    public SurvivalGameConfig deserialize(ConfigurationSection config) {
         SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
-
-        try {
-            builder = builder
-                    .worldName(value.getNode("world").getString(""))
-                    .playerLimit(value.getNode("playerLimit").getInt())
-                    .countdownTime(value.getNode("countdownTime").getInt());
-
-            ConfigurationNode exitNode = value.getNode("exit");
-            builder = builder
-                    .exitWorld(exitNode.getNode("world").getString(""))
-                    .exitLocation(new Vector(
-                            exitNode.getNode("X").getDouble(),
-                            exitNode.getNode("Y").getDouble(),
-                            exitNode.getNode("Z").getDouble()
-                    ));
-
-            ConfigurationNode centerNode = value.getNode("center");
-            builder = builder
-                    .centerLocation(new Vector(
-                            centerNode.getNode("X").getDouble(),
-                            centerNode.getNode("Y").getDouble(),
-                            centerNode.getNode("Z").getDouble()
-                    ));
-
-            ConfigurationNode spawnsNode = value.getNode("spawns");
-            while (spawnsNode.hasListChildren()) {
-                builder = builder
-                        .addSpawn(new Vector(
-                                spawnsNode.getNode("X").getDouble(),
-                                spawnsNode.getNode("Y").getDouble(),
-                                spawnsNode.getNode("Z").getDouble()
-                        ));
-                spawnsNode = spawnsNode.getAppendedNode();
-            }
-
-            ConfigurationNode chestNode = value.getNode("chest");
-            builder = builder
-                    .chestMidpoint(chestNode.getNode("midpoint").getDouble())
-                    .chestRange(chestNode.getNode("range").getDouble());
-
-        } catch (Exception e) {
-            SpongeSurvivalGamesPlugin.logger.error("Error loading config");
-        }
-
+        
+        builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
+    	
+    	builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault()));
+    	
+    	builder.exitLocation(config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault()));
+    	
+    	builder.centerLocation(config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault()));
+    	
+    	builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()));
+    	
+    	builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()));
+    	
+		List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
+    	
+    	if (!vectorList.isEmpty()) {
+    		for (Map<String, Object> map : vectorList) {
+    			
+    			if (!map.containsKey("X") || !map.containsKey("Y") || !map.containsKey("Z")) {
+    				BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to find correct keys when parsing "
+    						+ "spawn list! Skipping...");
+    				continue;
+    			}
+    			
+    			try {
+    			builder.addSpawn(new Vector(
+    					(Double) map.get("X"),
+    					(Double) map.get("Y"),
+    					(Double) map.get("Z")));
+    			} catch (ClassCastException e) {
+    				BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when reading double "
+    						+ "value in spawn location! Skipping...");
+    				continue;
+    			}
+    		}
+    	}
+		
+		builder.chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()));
+		
+		builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
+		
+		for (ItemStack item : (List<ItemStack>) config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault()) {
+			builder.addLoot(item);
+		}
+		
         return builder.build();
     }
 

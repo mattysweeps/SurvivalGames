@@ -97,7 +97,7 @@ public class SurvivalGameConfig {
      * @return
      */
     @SuppressWarnings("unchecked")
-	public static SurvivalGameConfig fromConfig(ConfigurationSection config) {
+	protected static SurvivalGameConfig fromConfig(ConfigurationSection config) {
     	SurvivalGameConfig scfg = new SurvivalGameConfig();
     	
     	scfg.worldName = config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault());
