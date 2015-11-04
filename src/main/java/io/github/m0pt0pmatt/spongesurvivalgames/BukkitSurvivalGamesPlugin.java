@@ -58,15 +58,15 @@ import java.util.stream.Collectors;
 public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
     public static final PartialLookupTrie<String, SurvivalGamesCommand> commandTrie = new PartialLookupTrie<>();
+    public static final Map<String, SurvivalGame> survivalGameMap = new HashMap<>();
     private static final CommandExecutor commandExecutor = new SurvivalGamesCommandExecutor();
     private static final TabCompleter tabCompleter = new SurvivalGamesTabCompleter();
-    public static Map<String, SurvivalGame> survivalGameMap;
     public static BukkitSurvivalGamesPlugin plugin;
 
     public BukkitSurvivalGamesPlugin() {
         BukkitSurvivalGamesPlugin.plugin = this;
-        BukkitSurvivalGamesPlugin.survivalGameMap = new HashMap<>();
 
+        //Register all commands
         commandTrie.add(new String[]{CommandKeywords.CREATE, CommandKeywords.ID}, new CreateGameCommand());
         commandTrie.add(new String[]{CommandKeywords.LIST}, new ListGamesCommand());
         commandTrie.add(new String[]{CommandKeywords.DELETE, CommandKeywords.ID}, new DeleteGameCommand());
@@ -98,15 +98,16 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         commandTrie.add(new String[]{CommandKeywords.SAVE, CommandKeywords.ID}, new SaveCommand());
     }
 
+    /**
+     * Helper function to get a set of players from their UUIDs
+     * @param playerUUIDs the UUIDs of the players
+     * @return All players who were logged in to the server
+     */
     public static Set<Player> getPlayers(Set<UUID> playerUUIDs) {
         return playerUUIDs.stream()
                 .map(uuid -> Bukkit.getServer().getPlayer(uuid))
                 .filter((player) -> player != null)
                 .collect(Collectors.toSet());
-    }
-
-    public Map<String, SurvivalGame> getSurvivalGameMap() {
-        return survivalGameMap;
     }
 
     @Override

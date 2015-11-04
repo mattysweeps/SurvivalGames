@@ -41,10 +41,8 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    //TODO make these fields STATIC (surroundingVectors, etc) to save some space
-
     private final Set<UUID> playerUUIDs = new HashSet<>();
-    private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
+    private static final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
             new Vector(1, 1, 0),
             new Vector(-1, 0, 0),
@@ -56,7 +54,7 @@ public class SurvivalGame {
             new Vector(0, 2, 0),
             new Vector(0, -1, 0)
     ));
-    private final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+    private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new SetGameModeTask(),
@@ -65,10 +63,10 @@ public class SurvivalGame {
             new FillChestsTask(),
             new CreateCountdownTask()
     ));
-    private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
+    private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
             new DespawnPlayersTask()
     ));
-    private final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
+    private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
     ));
     private SurvivalGameState state = SurvivalGameState.STOPPED;
@@ -99,13 +97,13 @@ public class SurvivalGame {
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
 
-
         // Set the state
         state = SurvivalGameState.RUNNING;
 
         //Execute each task
         executeTasks(startTasks);
 
+        //Check if the game is over as soon as it starts
         checkWin();
     }
 
@@ -124,6 +122,7 @@ public class SurvivalGame {
     }
 
     private void executeTasks(List<SurvivalGameTask> tasks) throws TaskException {
+
         //Execute each task
         Optional<TaskException> exception = tasks.stream()
                 .map(task -> {
@@ -142,7 +141,6 @@ public class SurvivalGame {
     }
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
-
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
         if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw new PlayerLimitReachedException();
 
@@ -189,7 +187,6 @@ public class SurvivalGame {
     }
 
     public Optional<Location> getCenter() {
-
         Optional<Vector> center = config.getCenter();
         if (!center.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -216,7 +213,6 @@ public class SurvivalGame {
     }
 
     public Optional<Location> getExit() {
-
         Optional<Vector> exit = config.getExit();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -277,8 +273,12 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null) {
-            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                    new exitTask(player), 1);
+            Bukkit.getScheduler().runTaskLater(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        if (player.isOnline()) player.teleport(getExit().get());
+                    },
+                    10);
         }
 
         checkWin();
@@ -293,14 +293,25 @@ public class SurvivalGame {
         UUID winnerUUID = playerUUIDs.stream().findFirst().get();
         Player winner = Bukkit.getServer().getPlayer(winnerUUID);
         if (winner != null) {
-            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                    new exitTask(winner), 200);
+            Bukkit.getScheduler().runTaskLater(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        if (winner.isOnline()) winner.teleport(getExit().get());
+                    },
+                    200);
             winner.sendMessage("Congratulations! You won!");
         }
 
-        Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                new stopTask(this), 200);
-
+        Bukkit.getScheduler().runTaskLater(
+                BukkitSurvivalGamesPlugin.plugin,
+                () -> {
+                    try {
+                        stop();
+                    } catch (TaskException e) {
+                        e.printStackTrace();
+                    }
+                },
+                200);
     }
 
     public void setBounds(int xMin, int xMax, int yMin, int yMax, int zMin, int zMax) {
@@ -312,38 +323,4 @@ public class SurvivalGame {
         config.setZMax(Math.max(zMin, zMax));
     }
 
-    private class exitTask implements Runnable {
-
-        private Player player;
-
-        public exitTask(Player player) {
-            this.player = player;
-        }
-
-        public void run() {
-            if (!player.isOnline()) {
-                return;
-            }
-
-            player.teleport(getExit().get());
-        }
-    }
-
-    private class stopTask implements Runnable {
-
-        private SurvivalGame game;
-
-        public stopTask(SurvivalGame game) {
-            this.game = game;
-        }
-
-        public void run() {
-            try {
-                game.stop();
-            } catch (TaskException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
 }

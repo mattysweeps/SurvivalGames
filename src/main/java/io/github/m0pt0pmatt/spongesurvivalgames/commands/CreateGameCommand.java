@@ -37,6 +37,7 @@ import java.util.Map;
  */
 public class CreateGameCommand extends SurvivalGamesCommand {
 
+    @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
         if (!arguments.containsKey(CommandKeywords.ID)) {
