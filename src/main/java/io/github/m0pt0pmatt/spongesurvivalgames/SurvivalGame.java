@@ -80,7 +80,7 @@ public class SurvivalGame {
         return state;
     }
 
-    public LootGenerator getLootGenerator(){
+    public LootGenerator getLootGenerator() {
         return lootGenerator;
     }
 

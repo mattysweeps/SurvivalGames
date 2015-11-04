@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,25 +44,30 @@ public class AddHeldLootCommand extends StoppedCommand {
             return false;
         }
 
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             Bukkit.getLogger().warning("Command Sender must be a player");
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.LOOT)){
+        if (!arguments.containsKey(CommandKeywords.LOOT)) {
             Bukkit.getLogger().warning("No loot weight specified");
             return false;
         }
 
         String weightString = arguments.get(CommandKeywords.LOOT);
 
-        //TODO: Add sanity check
-        Double weight = Double.parseDouble(weightString);
+        Double weight;
+        try {
+            weight = Double.parseDouble(weightString);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert from string to double");
+            return false;
+        }
 
         Player player = (Player) sender;
 
         ItemStack item = player.getItemInHand();
-        if (item == null){
+        if (item == null) {
             Bukkit.getLogger().warning("No item in hand");
             return false;
         }

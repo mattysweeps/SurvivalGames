@@ -48,8 +48,13 @@ public class SetCountdownCommand extends StoppedCommand {
         }
         String countdownTimeString = arguments.get(CommandKeywords.COUNTDOWN);
 
-        //TODO: Add sanity check
-        int countdownTime = Integer.parseInt(countdownTimeString);
+        int countdownTime;
+        try {
+            countdownTime = Integer.parseInt(countdownTimeString);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert String to Integer");
+            return false;
+        }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);

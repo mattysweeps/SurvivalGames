@@ -60,13 +60,18 @@ public class SetBoundsCommand extends StoppedCommand {
         String yMaxString = arguments.get(CommandKeywords.YMAX);
         String zMaxString = arguments.get(CommandKeywords.ZMAX);
 
-        //TODO: Add sanity check
-        int xMin = Integer.parseInt(xMinString);
-        int yMin = Integer.parseInt(yMinString);
-        int zMin = Integer.parseInt(zMinString);
-        int xMax = Integer.parseInt(xMaxString);
-        int yMax = Integer.parseInt(yMaxString);
-        int zMax = Integer.parseInt(zMaxString);
+        int xMin, xMax, yMin, yMax, zMin, zMax;
+        try {
+            xMin = Integer.parseInt(xMinString);
+            yMin = Integer.parseInt(yMinString);
+            zMin = Integer.parseInt(zMinString);
+            xMax = Integer.parseInt(xMaxString);
+            yMax = Integer.parseInt(yMaxString);
+            zMax = Integer.parseInt(zMaxString);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert from String to Integer");
+            return false;
+        }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, yMin, yMax, zMin, zMax);
         Bukkit.getLogger().info("Bounds set for game \"" + id + "\".");

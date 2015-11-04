@@ -50,8 +50,13 @@ public class SetPlayerLimitCommand extends StoppedCommand {
         }
         String playerLimitString = arguments.get(CommandKeywords.PLAYER_LIMIT);
 
-        //TODO: Add sanity check
-        int playerLimit = Integer.parseInt(playerLimitString);
+        int playerLimit;
+        try {
+            playerLimit = Integer.parseInt(playerLimitString);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert from String to Integer");
+            return false;
+        }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit);
         Bukkit.getLogger().info("Player limit for game \"" + id + "\" set to " + playerLimit + ".");

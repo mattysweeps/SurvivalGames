@@ -48,8 +48,13 @@ public class SetChestMidpointCommand extends StoppedCommand {
 
         String chestMidpoint = arguments.get(CommandKeywords.MIDPOINT);
 
-        //TODO: Sanity check
-        Double midpoint = Double.parseDouble(chestMidpoint);
+        Double midpoint;
+        try {
+            midpoint = Double.parseDouble(chestMidpoint);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert String to Double");
+            return false;
+        }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
         Bukkit.getLogger().info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");

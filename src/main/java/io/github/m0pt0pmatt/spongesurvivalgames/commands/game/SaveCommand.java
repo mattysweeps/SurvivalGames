@@ -38,6 +38,8 @@ import java.util.Map;
 
 public class SaveCommand extends GameCommand {
 
+    private static final SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -52,10 +54,7 @@ public class SaveCommand extends GameCommand {
         }
 
         File file = new File(fileName);
-        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
-        YamlConfiguration config;
-
-        config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
+        YamlConfiguration config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 
         try {
             config.save(file);

@@ -47,8 +47,13 @@ public class SetChestRangeCommand extends StoppedCommand {
         }
         String chestRange = arguments.get(CommandKeywords.RANGE);
 
-        //TODO: Sanity check
-        Double range = Double.parseDouble(chestRange);
+        Double range;
+        try {
+            range = Double.parseDouble(chestRange);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert String to Double");
+            return false;
+        }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
         Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");

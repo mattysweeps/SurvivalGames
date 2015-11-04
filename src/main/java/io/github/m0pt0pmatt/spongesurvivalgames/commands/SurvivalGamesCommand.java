@@ -32,7 +32,6 @@ import java.util.Map;
 public abstract class SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
-        if (sender == null || arguments == null) return false;
-        return true;
+        return !(sender == null || arguments == null);
     }
 }

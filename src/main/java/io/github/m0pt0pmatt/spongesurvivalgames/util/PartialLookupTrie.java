@@ -38,7 +38,7 @@ public class PartialLookupTrie<T, C> {
         if (list == null || list.length < 1) return;
 
         Node<T, C> current = first;
-        for (T t: list) {
+        for (T t : list) {
             if (!current.children.containsKey(t)) {
                 current.children.put(t, new Node<>());
             }
@@ -86,14 +86,14 @@ public class PartialLookupTrie<T, C> {
     public List<T> partialMatch(T[] list) {
         List<T> output = new LinkedList<>();
 
-        if (list == null || list.length < 1){
+        if (list == null || list.length < 1) {
             output.addAll(first.children.keySet());
             return output;
         }
 
         Node<T, C> current = first;
 
-        for (T t: list){
+        for (T t : list) {
 
             //True match
             if (current.children.containsKey(t)) {

@@ -30,12 +30,10 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorExc
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +52,7 @@ public class FillChestsTask implements SurvivalGameTask {
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
 
-        Collection<Block> chests = new ArrayList<Block>();
+        Collection<Block> chests = new ArrayList<>();
         for (int x = xmin; x < xmax; x++) {
             for (int y = ymin; y < ymax; y++) {
                 for (int z = zmin; z < zmax; z++) {
@@ -85,8 +83,8 @@ public class FillChestsTask implements SurvivalGameTask {
                             Loot item = game.getLootGenerator().generate();
                             if (item != null) inventory.addItem(item.getItem());
                         } catch (EmptyLootGeneratorException e) {
-                            //TODO: push an exception up
                         }
+
                     }
 
                     chest.update();

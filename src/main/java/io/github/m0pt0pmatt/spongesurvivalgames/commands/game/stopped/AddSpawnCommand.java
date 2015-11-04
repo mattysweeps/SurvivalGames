@@ -54,10 +54,15 @@ public class AddSpawnCommand extends StoppedCommand {
         String yString = arguments.get(CommandKeywords.Y);
         String zString = arguments.get(CommandKeywords.Z);
 
-        //TODO: Add sanity check
-        int x = Integer.parseInt(xString);
-        int y = Integer.parseInt(yString);
-        int z = Integer.parseInt(zString);
+        int x, y, z;
+        try {
+            x = Integer.parseInt(xString);
+            y = Integer.parseInt(yString);
+            z = Integer.parseInt(zString);
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Unable to convert from String to Integer");
+            return false;
+        }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x, y, z);

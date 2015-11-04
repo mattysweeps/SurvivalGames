@@ -155,7 +155,7 @@ public class SurvivalGameConfigSerializer {
 
         private Object def;
 
-        private Fields(String key, Object def) {
+        Fields(String key, Object def) {
             this.key = key;
             this.def = def;
         }
