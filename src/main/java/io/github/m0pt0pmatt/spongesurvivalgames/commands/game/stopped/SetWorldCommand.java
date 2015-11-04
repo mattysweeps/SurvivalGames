@@ -25,45 +25,42 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to set the world where the game will be played
  */
 public class SetWorldCommand extends StoppedCommand {
 
-    public SetWorldCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> worldName = getArgument("worldName");
-        if (!worldName.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.WORLDNAME)) {
             Bukkit.getLogger().warning("World name was not present.");
             return false;
         }
 
+        String worldName = arguments.get(CommandKeywords.WORLDNAME);
+
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName.get());
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("World \"" + worldName.get() + "\" does not exist.");
+            Bukkit.getLogger().warning("World \"" + worldName + "\" does not exist.");
             return false;
         }
 
-        Bukkit.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
+        Bukkit.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName + "\".");
         return true;
     }
 }

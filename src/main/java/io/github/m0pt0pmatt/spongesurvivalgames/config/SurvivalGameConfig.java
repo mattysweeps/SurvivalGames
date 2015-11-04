@@ -25,17 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class SurvivalGameConfig {
+import java.util.*;
 
+public class SurvivalGameConfig {
 
     private String worldName;
 
@@ -55,7 +51,19 @@ public class SurvivalGameConfig {
 
     private Double chestRange;
 
-    private List<ItemStack> loot = new ArrayList<ItemStack>();
+    private List<Loot> loot = new ArrayList<>();
+
+    private Integer xMin;
+
+    private Integer xMax;
+
+    private Integer yMin;
+
+    private Integer yMax;
+
+    private Integer zMin;
+
+    private Integer zMax;
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -125,8 +133,56 @@ public class SurvivalGameConfig {
         this.chestRange = chestRange;
     }
 
-    public List<ItemStack> getLoot() {
+    public List<Loot> getLoot() {
         return loot;
+    }
+
+    public Optional<Integer> getXMin(){
+        return xMin == null ? Optional.empty() : Optional.of(xMin);
+    }
+
+    public void setXMin(Integer xMin){
+        this.xMin = xMin;
+    }
+
+    public Optional<Integer> getXMax(){
+        return xMax == null ? Optional.empty() : Optional.of(xMax);
+    }
+
+    public void setXMax(Integer xMax){
+        this.xMax = xMax;
+    }
+
+    public Optional<Integer> getYMin(){
+        return yMin == null ? Optional.empty() : Optional.of(yMin);
+    }
+
+    public void setYMin(Integer yMin){
+        this.yMin = yMin;
+    }
+
+    public Optional<Integer> getYMax(){
+        return yMin == null ? Optional.empty() : Optional.of(yMin);
+    }
+
+    public void setYMax(Integer yMax){
+        this.yMax = yMax;
+    }
+
+    public Optional<Integer> getZMin(){
+        return zMin == null ? Optional.empty() : Optional.of(zMin);
+    }
+
+    public void setZMin(Integer zMin){
+        this.zMin = zMin;
+    }
+
+    public Optional<Integer> getZMax(){
+        return zMax == null ? Optional.empty() : Optional.of(zMax);
+    }
+
+    public void setZMax(Integer zMax){
+        this.zMax = zMax;
     }
 
 }

@@ -23,33 +23,7 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.Bukkit;
-
-public class CreateCountdownTask implements SurvivalGameTask {
-    @Override
-    public void execute(SurvivalGame game) throws TaskException {
-
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
-            for (int i = game.getCountdownTime().get(); i > 0; i--) {
-                final int j = i;
-
-                Bukkit.getScheduler().scheduleSyncDelayedTask(
-                        BukkitSurvivalGamesPlugin.plugin,
-                        () -> player.sendMessage(Integer.toString(j)),
-                        20L * (game.getCountdownTime().get() - i)
-                );
-            }
-
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
-                    BukkitSurvivalGamesPlugin.plugin,
-                    () -> player.sendMessage("Go!"),
-                    20L * game.getCountdownTime().get()
-            );
-        });
-    }
+public class NoBoundsException extends SurvivalGameException {
 }

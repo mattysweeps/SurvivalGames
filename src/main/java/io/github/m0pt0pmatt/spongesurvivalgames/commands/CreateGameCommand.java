@@ -25,39 +25,34 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to create a new game
  */
 public class CreateGameCommand extends SurvivalGamesCommand {
 
-    public CreateGameCommand(Map<String, String> arguments){
-        super(arguments);
-    }
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-    public boolean execute(CommandSender sender){
-
-        Optional<String> id = getArgument("id");
-        if (!id.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.ID)) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;
         }
+        String id = arguments.get(CommandKeywords.ID);
 
-        if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id.get())) {
+        if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
             Bukkit.getLogger().warning("Survival Game ID already exists.");
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.put(id.get(), new SurvivalGame());
-        Bukkit.getLogger().info("Survival Game \"" + id.get() + "\" created.");
+        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
+        Bukkit.getLogger().info("Survival Game \"" + id + "\" created.");
 
         return true;
     }

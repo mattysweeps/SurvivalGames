@@ -25,27 +25,22 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import java.util.Map;
 
 /**
  * Command to set a game to the STOPPED state
  */
 public class StopGameCommand extends ReadyCommand {
 
-    public StopGameCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 

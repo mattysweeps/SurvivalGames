@@ -25,57 +25,37 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-
 public class SaveCommand extends GameCommand {
 
-    public SaveCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> fileName = getArgument("fileName");
-        if (!fileName.isPresent()) {
+        String fileName = arguments.get(CommandKeywords.FILENAME);
+        if (!arguments.containsKey(CommandKeywords.FILENAME)) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
         }
 
-        File file = new File(fileName.get());
-//        ConfigurationLoader<CommentedConfigurationNode> loader =
-//                HoconConfigurationLoader.builder().setFile(file).build();
-//        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
-//
-//        CommentedConfigurationNode node = loader.createEmptyNode(ConfigurationOptions.defaults());
+        File file = new File(fileName);
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
         YamlConfiguration config;
-        
-//        try {
-//            serializer.serialize(
-//                    TypeToken.of(SurvivalGameConfig.class),
-//                    BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig(),
-//                    node
-//            );
-//        } catch (ObjectMappingException e) {
-//            Bukkit.getLogger().warning("Mapping exception thrown");
-//            return false;
-//        }
-        
+
         config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 
         try {

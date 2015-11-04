@@ -25,14 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * GameCommands require the name of the game as the first argument
@@ -40,21 +40,16 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
  */
 public abstract class GameCommand extends SurvivalGamesCommand {
 
-    public GameCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     protected String id;
 
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        Optional<String> idOptional = getArgument("id");
-        if (!idOptional.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.ID)) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;
         }
 
-        id = idOptional.get();
+        id = arguments.get(CommandKeywords.ID);
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
             Bukkit.getLogger().warning("No Survival Game has specified ID \"" + id + "\".");

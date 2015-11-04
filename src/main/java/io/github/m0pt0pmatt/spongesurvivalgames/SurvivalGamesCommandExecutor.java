@@ -23,33 +23,32 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.Bukkit;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 
-public class CreateCountdownTask implements SurvivalGameTask {
+import java.util.HashMap;
+import java.util.Map;
+
+public class SurvivalGamesCommandExecutor implements CommandExecutor {
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
-            for (int i = game.getCountdownTime().get(); i > 0; i--) {
-                final int j = i;
+        Map<String, String> arguments = new HashMap<>();
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(
-                        BukkitSurvivalGamesPlugin.plugin,
-                        () -> player.sendMessage(Integer.toString(j)),
-                        20L * (game.getCountdownTime().get() - i)
-                );
-            }
+        for (int i= 0; i < strings.length; i++){
+            strings[i] = strings[i].toLowerCase();
+        }
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
-                    BukkitSurvivalGamesPlugin.plugin,
-                    () -> player.sendMessage("Go!"),
-                    20L * game.getCountdownTime().get()
-            );
-        });
+        SurvivalGamesCommand cmd = BukkitSurvivalGamesPlugin.commandTrie.match(strings, arguments);
+        if (cmd == null){
+            return false;
+        }
+
+        return cmd.execute(commandSender, arguments);
     }
 }

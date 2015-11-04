@@ -25,10 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,8 +35,9 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
 
 public class FillChestsTask implements SurvivalGameTask {
     @Override
@@ -46,17 +45,19 @@ public class FillChestsTask implements SurvivalGameTask {
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 
-        //TODO: Need to make these part of the config file.
-        int xmin = 0, xmax = 0;
-        int ymin = 0, ymax = 0;
-        int zmin = 0, zmax = 0;
+        int xmin = game.getConfig().getXMin().get();
+        int xmax = game.getConfig().getXMax().get();
+        int ymin = game.getConfig().getYMin().get();
+        int ymax = game.getConfig().getYMax().get();
+        int zmin = game.getConfig().getZMin().get();
+        int zmax = game.getConfig().getZMax().get();
 
         Collection<Block> chests = new ArrayList<Block>();
-        for (int x = xmin; x < xmax; x++){
-            for (int y = ymin; y < ymax; y++){
-                for (int z = zmin; z < zmax; z++){
+        for (int x = xmin; x < xmax; x++) {
+            for (int y = ymin; y < ymax; y++) {
+                for (int z = zmin; z < zmax; z++) {
                     Block block = world.getBlockAt(x, y, z);
-                    if (block.getState() instanceof Chest){
+                    if (block.getState() instanceof Chest) {
                         chests.add(block);
                     }
                 }
@@ -72,12 +73,12 @@ public class FillChestsTask implements SurvivalGameTask {
 
                     double itemCount = (
                             game.getChestMidpoint().get() +
-                            (
-                                    (random.nextDouble() * game.getChestRange().get())
-                                            * (random.nextDouble() > 0.5 ? 1 : -1)
-                            )
+                                    (
+                                            (random.nextDouble() * game.getChestRange().get())
+                                                    * (random.nextDouble() > 0.5 ? 1 : -1)
+                                    )
                     );
-                    for (int i = 0; i < itemCount; i++){
+                    for (int i = 0; i < itemCount; i++) {
                         inventory.addItem(new ItemStack(Material.STONE));
                     }
 

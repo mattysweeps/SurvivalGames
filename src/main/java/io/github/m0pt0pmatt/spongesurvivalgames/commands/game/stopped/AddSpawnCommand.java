@@ -25,44 +25,40 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to add a spawn location to a game
  */
 public class AddSpawnCommand extends StoppedCommand {
 
-    public AddSpawnCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> xString = getArgument("x");
-        Optional<String> yString = getArgument("y");
-        Optional<String> zString = getArgument("z");
-        if (!xString.isPresent() || !yString.isPresent() || !zString.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X)) {
             Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
             return false;
         }
+        String xString = arguments.get(CommandKeywords.X);
+        String yString = arguments.get(CommandKeywords.Y);
+        String zString = arguments.get(CommandKeywords.Z);
 
         //TODO: Add sanity check
-        int x = Integer.parseInt(xString.get());
-        int y = Integer.parseInt(yString.get());
-        int z = Integer.parseInt(zString.get());
+        int x = Integer.parseInt(xString);
+        int y = Integer.parseInt(yString);
+        int z = Integer.parseInt(zString);
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x, y, z);

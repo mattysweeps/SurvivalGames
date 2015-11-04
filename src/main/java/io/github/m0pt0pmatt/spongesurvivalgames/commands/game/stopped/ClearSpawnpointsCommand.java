@@ -25,26 +25,21 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import java.util.Map;
 
 /**
  * Command to clear all spawn locations from a game
  */
 public class ClearSpawnpointsCommand extends StoppedCommand {
 
-    public ClearSpawnpointsCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 

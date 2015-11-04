@@ -25,36 +25,32 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
+import java.util.Map;
+import java.util.Optional;
 
 public class SetCountdownCommand extends StoppedCommand {
 
-    public SetCountdownCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> countdownTimeString = getArgument("countdown");
-        if (!countdownTimeString.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.COUNTDOWN)) {
             Bukkit.getLogger().warning("No Countdown time specified");
             return false;
         }
+        String countdownTimeString = arguments.get(CommandKeywords.COUNTDOWN);
 
         //TODO: Add sanity check
-        int countdownTime = Integer.parseInt(countdownTimeString.get());
+        int countdownTime = Integer.parseInt(countdownTimeString);
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);

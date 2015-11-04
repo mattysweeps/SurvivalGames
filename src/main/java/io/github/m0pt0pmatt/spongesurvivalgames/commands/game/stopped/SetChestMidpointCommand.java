@@ -25,34 +25,32 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import java.util.Map;
+import java.util.Optional;
 
 public class SetChestMidpointCommand extends StoppedCommand {
 
-    public SetChestMidpointCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> chestMidpoint = getArgument("chestMidpoint");
-        if (!chestMidpoint.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.MIDPOINT)) {
             Bukkit.getLogger().warning("Chest midpoint was not present.");
             return false;
         }
 
-        Double midpoint = Double.parseDouble(chestMidpoint.get());
+        String chestMidpoint = arguments.get(CommandKeywords.MIDPOINT);
+
+        //TODO: Sanity check
+        Double midpoint = Double.parseDouble(chestMidpoint);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
         Bukkit.getLogger().info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");

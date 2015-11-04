@@ -25,17 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SpawnPlayersTask implements SurvivalGameTask {
 

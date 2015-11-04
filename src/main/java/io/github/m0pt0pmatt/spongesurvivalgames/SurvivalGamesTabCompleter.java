@@ -23,33 +23,25 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class CreateCountdownTask implements SurvivalGameTask {
+import java.util.LinkedList;
+import java.util.List;
+
+public class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
-            for (int i = game.getCountdownTime().get(); i > 0; i--) {
-                final int j = i;
+        for (int i= 0; i < strings.length; i++){
+            strings[i] = strings[i].toLowerCase();
+        }
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(
-                        BukkitSurvivalGamesPlugin.plugin,
-                        () -> player.sendMessage(Integer.toString(j)),
-                        20L * (game.getCountdownTime().get() - i)
-                );
-            }
-
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
-                    BukkitSurvivalGamesPlugin.plugin,
-                    () -> player.sendMessage("Go!"),
-                    20L * game.getCountdownTime().get()
-            );
-        });
+        List<String> list = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(strings);
+        if (list == null) return new LinkedList<>();
+        return list;
     }
 }

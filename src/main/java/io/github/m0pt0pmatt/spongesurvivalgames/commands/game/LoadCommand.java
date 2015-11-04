@@ -25,40 +25,37 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 public class LoadCommand extends GameCommand {
 
-    public LoadCommand(Map<String, String> arguments){
-        super(arguments);
-    }
-
     @Override
-    public boolean execute(CommandSender sender){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!super.execute(sender)) {
+        if (!super.execute(sender, arguments)) {
             return false;
         }
 
-        Optional<String> fileName = getArgument("fileName");
-        if (!fileName.isPresent()) {
+        if (!arguments.containsKey(CommandKeywords.FILENAME)) {
             Bukkit.getLogger().warning("No file name given.");
             return false;
         }
+        String fileName = arguments.get(CommandKeywords.FILENAME);
 
-        File file = new File(fileName.get());
+
+        File file = new File(fileName);
 //        ConfigurationLoader<CommentedConfigurationNode> loader =
 //                HoconConfigurationLoader.builder().setFile(file).build();
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
@@ -73,7 +70,7 @@ public class LoadCommand extends GameCommand {
         }
 
         SurvivalGameConfig config;
-        
+
         config = serializer.deserialize(yaml);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);

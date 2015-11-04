@@ -25,85 +25,59 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestMidpointException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestRangeException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCenterChestsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCountdownTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DespawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.RotatePlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SetGameModeTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SurvivalGameTask;
+import java.util.*;
 
 /**
  * represents a Survival Game.
  */
 public class SurvivalGame {
 
-	//TODO make these fields STATIC (surroundingVectors, etc) to save some space
-	
-	private class exitTask implements Runnable {
-		
-		private Player player;
-		
-		public exitTask(Player player) {
-			this.player = player;
-		}
-		
-		public void run() {
-			if (!player.isOnline()) {
-				return;
-			}
-			
-			player.teleport(getExit().get());
-		}
-	}
-	private class stopTask implements Runnable {
-		
-		private SurvivalGame game;
-		
-		public stopTask(SurvivalGame game) {
-			this.game = game;
-		}
-		
-		public void run() {
-			try {
-				game.stop();
-			} catch (TaskException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
+    //TODO make these fields STATIC (surroundingVectors, etc) to save some space
+
+    private class exitTask implements Runnable {
+
+        private Player player;
+
+        public exitTask(Player player) {
+            this.player = player;
+        }
+
+        public void run() {
+            if (!player.isOnline()) {
+                return;
+            }
+
+            player.teleport(getExit().get());
+        }
+    }
+
+    private class stopTask implements Runnable {
+
+        private SurvivalGame game;
+
+        public stopTask(SurvivalGame game) {
+            this.game = game;
+        }
+
+        public void run() {
+            try {
+                game.stop();
+            } catch (TaskException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
@@ -144,7 +118,7 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -154,6 +128,13 @@ public class SurvivalGame {
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
+        if (!config.getXMin().isPresent()) throw new NoBoundsException();
+        if (!config.getXMax().isPresent()) throw new NoBoundsException();
+        if (!config.getYMin().isPresent()) throw new NoBoundsException();
+        if (!config.getYMax().isPresent()) throw new NoBoundsException();
+        if (!config.getZMin().isPresent()) throw new NoBoundsException();
+        if (!config.getZMax().isPresent()) throw new NoBoundsException();
+
 
         // Set the state
         state = SurvivalGameState.RUNNING;
@@ -323,7 +304,7 @@ public class SurvivalGame {
     }
 
     public void reportDeath(UUID playerUUID) {
-        if (!playerUUIDs.contains(playerUUID)){
+        if (!playerUUIDs.contains(playerUUID)) {
             //unregistered player
             return;
         }
@@ -331,9 +312,9 @@ public class SurvivalGame {
         playerUUIDs.remove(playerUUID);
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
-        if (player != null){
-        	Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
-        			new exitTask(player), 1);
+        if (player != null) {
+            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
+                    new exitTask(player), 1);
         }
 
         checkWin();
@@ -341,20 +322,20 @@ public class SurvivalGame {
 
     private void checkWin() {
 
-        if (playerUUIDs.size() > 1){
+        if (playerUUIDs.size() > 1) {
             return;
         }
 
         UUID winnerUUID = playerUUIDs.stream().findFirst().get();
         Player winner = Bukkit.getServer().getPlayer(winnerUUID);
-        if (winner != null){
-        	Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
-        			new exitTask(winner), 200);
-        	winner.sendMessage("Congratulations! You won!");
+        if (winner != null) {
+            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
+                    new exitTask(winner), 200);
+            winner.sendMessage("Congratulations! You won!");
         }
 
-        Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin, 
-        			new stopTask(this), 200);
+        Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
+                new stopTask(this), 200);
 
     }
 }

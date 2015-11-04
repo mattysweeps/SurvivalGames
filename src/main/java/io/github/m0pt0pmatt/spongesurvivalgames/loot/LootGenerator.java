@@ -1,15 +1,15 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.loot;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
-
 /**
  * Class which houses loot and can produce a piece of loot on command
- * @author Skyler
  *
+ * @author Skyler
  */
 public class LootGenerator {
 	
