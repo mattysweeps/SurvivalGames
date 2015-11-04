@@ -26,12 +26,13 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Trie<T, C> {
+public class PartialLookupTrie<T, C> {
 
-    private Node<T, C> first = null;
+    private Node<T, C> first = new Node<>();
 
     private class Node<T, C>{
         Map<T, Node<T, C>> children = new HashMap<>();
@@ -47,17 +48,10 @@ public class Trie<T, C> {
     }
 
     public void add(T[] list, C data){
-        if (list.length < 1) return;
-        int i = 0;
-
-
-        if (first == null){
-            first = new Node<>();
-            i++;
-        }
+        if (list == null || list.length < 1) return;
 
         Node<T, C> current = first;
-        for (; i < list.length; i++){
+        for (int i = 0; i < list.length; i++){
             if (!current.children.containsKey(list[i])){
                 current.children.put(list[i], new Node<>());
             }
@@ -69,11 +63,58 @@ public class Trie<T, C> {
     }
 
     public C match(T[] input, Map<T, T> arguments){
+        if (input == null || input.length < 1) return null;
+        if (first == null) return null;
 
-        return null;
+        Node<T, C> current = first;
+
+        int i;
+        for (i = 0; i < input.length; i++){
+
+            //True match
+            if (current.children.containsKey(input[i])){
+                current = current.children.get(input[i]);
+            }
+            else{
+                break;
+            }
+        }
+
+        for (; current != null && current.children.size() > 0 && i < input.length; i++){
+
+            //There should only be one valid path
+            T key = current.children.entrySet().iterator().next().getKey();
+            arguments.put(key, input[i]);
+            current = current.children.get(key);
+        }
+
+        if (current == null) return null;
+
+        return current.data;
     }
 
     public List<T> partialMatch(T[] list) {
-        return null;
+        List<T> output = new LinkedList<>();
+        if (list == null || list.length < 1) return output;
+
+        Node<T, C> current = first;
+
+        int i;
+        for (i = 0; i < list.length; i++){
+
+            //True match
+            if (current.children.containsKey(list[i])){
+                current = current.children.get(list[i]);
+            }
+            else{
+                break;
+            }
+        }
+
+        if (current != null){
+            output.addAll(current.children.keySet());
+        }
+
+        return output;
     }
 }

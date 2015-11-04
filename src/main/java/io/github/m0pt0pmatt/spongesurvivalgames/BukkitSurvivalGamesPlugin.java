@@ -39,7 +39,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.Trie;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.PartialLookupTrie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -59,7 +59,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
     public static Map<String, SurvivalGame> survivalGameMap;
     public static BukkitSurvivalGamesPlugin plugin;
-    public static final Trie<String, SurvivalGamesCommand> commandTrie = new Trie();
+    public static final PartialLookupTrie<String, SurvivalGamesCommand> commandTrie = new PartialLookupTrie();
 
     private final CommandExecutor commandExecutor = new SurvivalGamesCommandExecutor();
     private final TabCompleter tabCompleter = new SurvivalGamesTabCompleter();
