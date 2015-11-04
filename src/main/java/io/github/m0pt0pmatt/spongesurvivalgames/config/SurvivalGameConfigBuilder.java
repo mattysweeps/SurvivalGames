@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class SurvivalGameConfigBuilder {
@@ -82,5 +83,10 @@ public class SurvivalGameConfigBuilder {
     public SurvivalGameConfigBuilder chestRange(Double chestRange){
         config.setChestRange(chestRange);
         return this;
+    }
+    
+    public SurvivalGameConfigBuilder addLoot(ItemStack loot) {
+    	config.getLoot().add(loot);
+    	return this;
     }
 }
