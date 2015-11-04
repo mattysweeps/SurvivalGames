@@ -26,59 +26,20 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class SurvivalGameConfigSerializer {
 
-
-    private enum Fields {
-
-        WORLD("world", ""),
-        PLAYERLIMIT("playerLimit", 16),
-        COUNTDOWNTIME("countdownTime", 30),
-        EXITWORLD("exit.world", ""),
-        EXIT("exit", new Vector(0, 0, 0)),
-        CENTER("center", new Vector(0, 0, 0)),
-        SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
-        CHEST_MIDPOINT("chest.midpoint", 0.0),
-        CHEST_RANGE("chest.range", 0.0),
-        LOOT("loot", new LinkedList<ItemStack>()),
-        XMIN("xmin", 0),
-        XMAX("xmax", 0),
-        YMIN("ymin", 0),
-        YMAX("ymax", 0),
-        ZMIN("zmin", 0),
-        ZMAX("zmax", 0)
-        ;
-
-        private String key;
-
-        private Object def;
-
-        private Fields(String key, Object def) {
-            this.key = key;
-            this.def = def;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Object getDefault() {
-            return def;
-        }
-    }
 
     @SuppressWarnings("unchecked")
     public SurvivalGameConfig deserialize(ConfigurationSection config) {
@@ -169,5 +130,42 @@ public class SurvivalGameConfigSerializer {
         config.set(Fields.ZMAX.getKey(), obj.getZMax());
 
         return config;
+    }
+
+    private enum Fields {
+
+        WORLD("world", ""),
+        PLAYERLIMIT("playerLimit", 16),
+        COUNTDOWNTIME("countdownTime", 30),
+        EXITWORLD("exit.world", ""),
+        EXIT("exit", new Vector(0, 0, 0)),
+        CENTER("center", new Vector(0, 0, 0)),
+        SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
+        CHEST_MIDPOINT("chest.midpoint", 0.0),
+        CHEST_RANGE("chest.range", 0.0),
+        LOOT("loot", new LinkedList<ItemStack>()),
+        XMIN("xmin", 0),
+        XMAX("xmax", 0),
+        YMIN("ymin", 0),
+        YMAX("ymax", 0),
+        ZMIN("zmin", 0),
+        ZMAX("zmax", 0);
+
+        private String key;
+
+        private Object def;
+
+        private Fields(String key, Object def) {
+            this.key = key;
+            this.def = def;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public Object getDefault() {
+            return def;
+        }
     }
 }

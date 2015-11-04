@@ -33,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to add a spawn location to a game

@@ -32,7 +32,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * GameCommands require the name of the game as the first argument

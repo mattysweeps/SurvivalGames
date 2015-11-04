@@ -27,13 +27,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public abstract class SurvivalGamesCommand {
 
-    public boolean execute(CommandSender sender, Map<String, String> arguments){
+    public boolean execute(CommandSender sender, Map<String, String> arguments) {
         if (sender == null || arguments == null) return false;
         return true;
     }

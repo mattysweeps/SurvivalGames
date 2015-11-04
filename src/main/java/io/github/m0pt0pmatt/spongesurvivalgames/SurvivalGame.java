@@ -43,41 +43,6 @@ public class SurvivalGame {
 
     //TODO make these fields STATIC (surroundingVectors, etc) to save some space
 
-    private class exitTask implements Runnable {
-
-        private Player player;
-
-        public exitTask(Player player) {
-            this.player = player;
-        }
-
-        public void run() {
-            if (!player.isOnline()) {
-                return;
-            }
-
-            player.teleport(getExit().get());
-        }
-    }
-
-    private class stopTask implements Runnable {
-
-        private SurvivalGame game;
-
-        public stopTask(SurvivalGame game) {
-            this.game = game;
-        }
-
-        public void run() {
-            try {
-                game.stop();
-            } catch (TaskException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
@@ -106,7 +71,6 @@ public class SurvivalGame {
     private final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
     ));
-
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
 
@@ -346,5 +310,40 @@ public class SurvivalGame {
         config.setYMax(Math.max(yMin, yMax));
         config.setZMin(Math.min(zMin, zMax));
         config.setZMax(Math.max(zMin, zMax));
+    }
+
+    private class exitTask implements Runnable {
+
+        private Player player;
+
+        public exitTask(Player player) {
+            this.player = player;
+        }
+
+        public void run() {
+            if (!player.isOnline()) {
+                return;
+            }
+
+            player.teleport(getExit().get());
+        }
+    }
+
+    private class stopTask implements Runnable {
+
+        private SurvivalGame game;
+
+        public stopTask(SurvivalGame game) {
+            this.game = game;
+        }
+
+        public void run() {
+            try {
+                game.stop();
+            } catch (TaskException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }

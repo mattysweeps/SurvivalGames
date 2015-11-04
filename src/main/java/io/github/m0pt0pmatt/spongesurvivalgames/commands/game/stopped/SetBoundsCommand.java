@@ -43,11 +43,11 @@ public class SetBoundsCommand extends StoppedCommand {
 
         if (
                 !arguments.containsKey(CommandKeywords.XMIN) ||
-                !arguments.containsKey(CommandKeywords.XMAX) ||
-                !arguments.containsKey(CommandKeywords.YMIN) ||
-                !arguments.containsKey(CommandKeywords.YMAX) ||
-                !arguments.containsKey(CommandKeywords.ZMIN) ||
-                !arguments.containsKey(CommandKeywords.ZMAX)
+                        !arguments.containsKey(CommandKeywords.XMAX) ||
+                        !arguments.containsKey(CommandKeywords.YMIN) ||
+                        !arguments.containsKey(CommandKeywords.YMAX) ||
+                        !arguments.containsKey(CommandKeywords.ZMIN) ||
+                        !arguments.containsKey(CommandKeywords.ZMAX)
                 ) {
             Bukkit.getLogger().warning("Missing one or more bounds.");
             return false;

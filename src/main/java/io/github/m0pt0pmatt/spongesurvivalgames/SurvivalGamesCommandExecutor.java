@@ -40,12 +40,12 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
 
         Map<String, String> arguments = new HashMap<>();
 
-        for (int i= 0; i < strings.length; i++){
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = strings[i].toLowerCase();
         }
 
         SurvivalGamesCommand cmd = BukkitSurvivalGamesPlugin.commandTrie.match(strings, arguments);
-        if (cmd == null){
+        if (cmd == null) {
             return false;
         }
 

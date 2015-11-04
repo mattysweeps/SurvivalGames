@@ -31,7 +31,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class SetChestRangeCommand extends StoppedCommand {
 

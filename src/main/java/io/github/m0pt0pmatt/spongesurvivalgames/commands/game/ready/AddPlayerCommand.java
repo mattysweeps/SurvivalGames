@@ -34,7 +34,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to add a player to a game

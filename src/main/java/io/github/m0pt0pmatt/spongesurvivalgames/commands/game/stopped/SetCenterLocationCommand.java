@@ -33,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to set the center location for the game (where players look when they spawn)

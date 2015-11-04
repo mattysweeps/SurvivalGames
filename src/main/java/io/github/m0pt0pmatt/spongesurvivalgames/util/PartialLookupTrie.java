@@ -34,25 +34,12 @@ public class PartialLookupTrie<T, C> {
 
     private Node<T, C> first = new Node<>();
 
-    private class Node<T, C>{
-        Map<T, Node<T, C>> children = new HashMap<>();
-        C data;
-
-        public Node(){
-            this.data = null;
-        }
-
-        public Node(C data){
-            this.data = data;
-        }
-    }
-
-    public void add(T[] list, C data){
+    public void add(T[] list, C data) {
         if (list == null || list.length < 1) return;
 
         Node<T, C> current = first;
-        for (int i = 0; i < list.length; i++){
-            if (!current.children.containsKey(list[i])){
+        for (int i = 0; i < list.length; i++) {
+            if (!current.children.containsKey(list[i])) {
                 current.children.put(list[i], new Node<>());
             }
 
@@ -62,28 +49,27 @@ public class PartialLookupTrie<T, C> {
         current.data = data;
     }
 
-    public C match(T[] input, Map<T, T> arguments){
+    public C match(T[] input, Map<T, T> arguments) {
         if (input == null || input.length < 1) return null;
         if (first == null) return null;
 
         Node<T, C> current = first;
 
         int i;
-        for (i = 0; i < input.length; i++){
+        for (i = 0; i < input.length; i++) {
 
             //True match
-            if (current.children.containsKey(input[i])){
+            if (current.children.containsKey(input[i])) {
                 current = current.children.get(input[i]);
-            }
-            else{
+            } else {
                 break;
             }
         }
 
-        for (; current != null && current.children.size() > 0 && i < input.length; i++){
+        for (; current != null && current.children.size() > 0 && i < input.length; i++) {
 
             //There should only be one valid path
-            if (current.children.entrySet().size() > 1){
+            if (current.children.entrySet().size() > 1) {
                 return null;
             }
 
@@ -104,21 +90,33 @@ public class PartialLookupTrie<T, C> {
         Node<T, C> current = first;
 
         int i;
-        for (i = 0; i < list.length; i++){
+        for (i = 0; i < list.length; i++) {
 
             //True match
-            if (current.children.containsKey(list[i])){
+            if (current.children.containsKey(list[i])) {
                 current = current.children.get(list[i]);
-            }
-            else{
+            } else {
                 break;
             }
         }
 
-        if (current != null){
+        if (current != null) {
             output.addAll(current.children.keySet());
         }
 
         return output;
+    }
+
+    private class Node<T, C> {
+        Map<T, Node<T, C>> children = new HashMap<>();
+        C data;
+
+        public Node() {
+            this.data = null;
+        }
+
+        public Node(C data) {
+            this.data = data;
+        }
     }
 }

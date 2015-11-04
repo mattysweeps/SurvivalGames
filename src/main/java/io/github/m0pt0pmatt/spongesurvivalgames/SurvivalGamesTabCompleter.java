@@ -36,7 +36,7 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        for (int i= 0; i < strings.length; i++){
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = strings[i].toLowerCase();
         }
 
