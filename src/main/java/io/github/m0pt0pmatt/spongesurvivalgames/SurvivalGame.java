@@ -331,6 +331,30 @@ public class SurvivalGame {
         config.setZMax(Math.max(zMin, zMax));
     }
 
+    public Optional<Integer> getXMin(){
+        return config.getXMin();
+    }
+
+    public Optional<Integer> getXMax(){
+        return config.getXMax();
+    }
+
+    public Optional<Integer> getYMin(){
+        return config.getYMin();
+    }
+
+    public Optional<Integer> getYMax(){
+        return config.getYMax();
+    }
+
+    public Optional<Integer> getZMin(){
+        return config.getZMin();
+    }
+
+    public Optional<Integer> getZMax(){
+        return config.getZMax();
+    }
+
     public List<Loot> getLoot() {
         return config.getLoot();
     }

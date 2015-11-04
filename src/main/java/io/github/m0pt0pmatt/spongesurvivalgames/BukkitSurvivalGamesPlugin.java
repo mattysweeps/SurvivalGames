@@ -78,6 +78,8 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.PLAYER_LIMIT, CommandKeywords.ID}, new PrintPlayerLimitCommand());
         commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.SPAWNS, CommandKeywords.ID}, new PrintSpawnsCommand());
         commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.WORLD, CommandKeywords.ID}, new PrintWorldCommand());
+        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.BOUNDS, CommandKeywords.ID}, new PrintBoundsCommand());
+        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.LOOT, CommandKeywords.ID}, new PrintLootCommand());
         commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.SPAWN, CommandKeywords.ID, CommandKeywords.X, CommandKeywords.Y, CommandKeywords.Z}, new AddSpawnCommand());
         commandTrie.add(new String[]{CommandKeywords.CLEAR, CommandKeywords.SPAWNS, CommandKeywords.ID}, new ClearSpawnpointsCommand());
         commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.CENTER, CommandKeywords.ID, CommandKeywords.X, CommandKeywords.Y, CommandKeywords.Z}, new SetCenterLocationCommand());
