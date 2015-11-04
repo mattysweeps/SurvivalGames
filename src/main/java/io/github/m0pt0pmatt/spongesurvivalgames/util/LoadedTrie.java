@@ -30,17 +30,28 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PartialLookupTrie<T, C> {
+/**
+ * Specialized Trie data structure
+ * <p>A LoadedTrie is a Trie where a payload is stored at the end of each branch (each leaf node).</p>
+ * @param <T> The type which makes up the entire branch of the trie. For standard tries, this type is Character
+ * @param <D> The type data to stor at the end of branches (leaf nodes).
+ */
+public class LoadedTrie<T, D> {
 
-    private Node<T, C> first = new Node<>();
+    private Node first = new Node();
 
-    public void add(T[] list, C data) {
-        if (list == null || list.length < 1) return;
+    /**
+     * Adds a new branch to the trie
+     * @param list The new branch to be added
+     * @param data The data to store at the end of the branch
+     */
+    public void add(T[] list, D data) {
+        if (list == null) return;
 
-        Node<T, C> current = first;
+        Node current = first;
         for (T t : list) {
             if (!current.children.containsKey(t)) {
-                current.children.put(t, new Node<>());
+                current.children.put(t, new Node());
             }
 
             current = current.children.get(t);
@@ -49,16 +60,20 @@ public class PartialLookupTrie<T, C> {
         current.data = data;
     }
 
-    public C match(T[] input, Map<T, T> arguments) {
-        if (input == null || input.length < 1) return null;
-        if (first == null) return null;
+    /**
+     * Attempts to traverse the trie
+     * @param input The input sequence for traversing the trie.
+     * @param missingSuffixes Any mismatched Ts are stored in this map. the key is the expected value, and the value was the actual input. Note that, since this is a Map, duplicates are erased
+     * @return The data if a leaf node was reached, null otherwise
+     */
+    public D match(T[] input, Map<T, T> missingSuffixes) {
+        if (input == null) return null;
 
-        Node<T, C> current = first;
-
+        Node current = first;
         int i;
-        for (i = 0; i < input.length; i++) {
 
-            //True match
+        //Traverse the trie while we get true matches
+        for (i = 0; i < input.length; i++) {
             if (current.children.containsKey(input[i])) {
                 current = current.children.get(input[i]);
             } else {
@@ -66,6 +81,7 @@ public class PartialLookupTrie<T, C> {
             }
         }
 
+        //If there is only one possible path, we can continue, storing the actual prefix
         for (; current != null && current.children.size() > 0 && i < input.length; i++) {
 
             //There should only be one valid path
@@ -74,15 +90,19 @@ public class PartialLookupTrie<T, C> {
             }
 
             T key = current.children.entrySet().iterator().next().getKey();
-            arguments.put(key, input[i]);
+            missingSuffixes.put(key, input[i]);
             current = current.children.get(key);
         }
 
         if (current == null) return null;
-
         return current.data;
     }
 
+    /**
+     * Returns all the possible immediate suffixes available after following a branch
+     * @param list the input sequence for traversing the trie
+     * @return List of the next Ts for the given input
+     */
     public List<T> partialMatch(T[] list) {
         List<T> output = new LinkedList<>();
 
@@ -91,11 +111,10 @@ public class PartialLookupTrie<T, C> {
             return output;
         }
 
-        Node<T, C> current = first;
+        Node current = first;
 
+        //Traverse the trie while we get true matches
         for (T t : list) {
-
-            //True match
             if (current.children.containsKey(t)) {
                 current = current.children.get(t);
             } else {
@@ -110,8 +129,8 @@ public class PartialLookupTrie<T, C> {
         return output;
     }
 
-    private class Node<E, D> {
-        Map<E, Node<E, D>> children = new HashMap<>();
+    private class Node {
+        Map<T, Node> children = new HashMap<>();
         D data;
 
         public Node() {
