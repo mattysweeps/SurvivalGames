@@ -43,6 +43,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SurvivalGame {
 
+	//TODO make these fields STATIC (surroundingVectors, etc) to save some space
+	
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
