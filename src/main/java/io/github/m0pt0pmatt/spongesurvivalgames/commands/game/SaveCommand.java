@@ -36,6 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Command to save a configuration for a game
+ */
 public class SaveCommand extends GameCommand {
 
     private static final SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();

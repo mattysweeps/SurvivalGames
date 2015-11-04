@@ -34,6 +34,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
+/**
+ * Task for creating the player cage which surronds a player at the start of the match
+ */
 public class CreateCageSnapshotsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {

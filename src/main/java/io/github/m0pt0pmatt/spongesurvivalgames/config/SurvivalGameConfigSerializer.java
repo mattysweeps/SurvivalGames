@@ -38,6 +38,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to Serialize and DeSerialize a SurvivalGameConfig
+ */
 public class SurvivalGameConfigSerializer {
 
 

@@ -50,7 +50,7 @@ public class SetChestRangeCommand extends StoppedCommand {
         Double range;
         try {
             range = Double.parseDouble(chestRange);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert String to Double");
             return false;
         }

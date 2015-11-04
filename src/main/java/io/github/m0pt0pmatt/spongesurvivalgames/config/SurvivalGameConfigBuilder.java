@@ -28,6 +28,9 @@ package io.github.m0pt0pmatt.spongesurvivalgames.config;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.util.Vector;
 
+/**
+ * Builder Pattern for SurvivalGameConfigs
+ */
 public class SurvivalGameConfigBuilder {
 
     private final SurvivalGameConfig config;

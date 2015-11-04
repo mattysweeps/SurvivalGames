@@ -30,38 +30,27 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+/**
+ * Config for a Survival Game
+ * <p>All configurable fields are stored in this class. Getter which return Nullable values return Optionals.</p>
+ */
 public class SurvivalGameConfig {
 
     private String worldName;
-
     private String exitWorld;
-
     private Vector exit;
-
     private Vector center;
-
     private Integer playerLimit;
-
     private Integer countdownTime;
-
     private Set<Vector> spawns = new HashSet<>();
-
     private Double chestMidpoint;
-
     private Double chestRange;
-
     private List<Loot> loot = new ArrayList<>();
-
     private Integer xMin;
-
     private Integer xMax;
-
     private Integer yMin;
-
     private Integer yMax;
-
     private Integer zMin;
-
     private Integer zMax;
 
     public Optional<String> getWorldName() {

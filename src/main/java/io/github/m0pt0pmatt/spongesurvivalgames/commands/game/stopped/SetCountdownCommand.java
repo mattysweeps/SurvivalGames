@@ -33,6 +33,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Command to set the countdown time for a game
+ */
 public class SetCountdownCommand extends StoppedCommand {
 
     @Override
@@ -51,7 +54,7 @@ public class SetCountdownCommand extends StoppedCommand {
         int countdownTime;
         try {
             countdownTime = Integer.parseInt(countdownTimeString);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert String to Integer");
             return false;
         }

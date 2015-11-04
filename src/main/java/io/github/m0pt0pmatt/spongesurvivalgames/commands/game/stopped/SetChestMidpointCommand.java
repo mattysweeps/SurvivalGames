@@ -32,6 +32,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Command to set the chest midpoint value for a game
+ */
 public class SetChestMidpointCommand extends StoppedCommand {
 
     @Override
@@ -51,7 +54,7 @@ public class SetChestMidpointCommand extends StoppedCommand {
         Double midpoint;
         try {
             midpoint = Double.parseDouble(chestMidpoint);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert String to Double");
             return false;
         }

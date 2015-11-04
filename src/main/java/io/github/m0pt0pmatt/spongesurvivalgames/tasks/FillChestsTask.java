@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
+/**
+ * Task for filling the chests with random loot
+ */
 public class FillChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {

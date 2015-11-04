@@ -32,6 +32,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Command to print the countdown seconds for a game
+ */
 public class PrintCountdownCommand extends GameCommand {
 
     @Override

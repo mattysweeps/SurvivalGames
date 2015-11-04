@@ -30,6 +30,9 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
 
+/**
+ * Task for counting down the starting time
+ */
 public class CreateCountdownTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {

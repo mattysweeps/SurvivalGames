@@ -25,13 +25,29 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Base class for all commands.
+ * <p>Checks that arguments are not null</p>
+ */
 public abstract class SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
-        return !(sender == null || arguments == null);
+
+        if (sender == null) {
+            Bukkit.getLogger().warning("CommandSender was null");
+            return false;
+        }
+
+        if (arguments == null) {
+            Bukkit.getLogger().warning("Argument Map was null");
+            return false;
+        }
+
+        return true;
     }
 }

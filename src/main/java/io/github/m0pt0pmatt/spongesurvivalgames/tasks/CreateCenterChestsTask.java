@@ -31,6 +31,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
+/**
+ * Class for creating the chests in the center of the game
+ */
 public class CreateCenterChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {

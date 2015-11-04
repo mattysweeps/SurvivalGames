@@ -34,6 +34,9 @@ import org.bukkit.command.CommandSender;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Command to print the exit location of a game
+ */
 public class PrintExitCommand extends GameCommand {
 
     @Override

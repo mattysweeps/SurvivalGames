@@ -38,6 +38,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Command to load a configuration for a game
+ */
 public class LoadCommand extends GameCommand {
 
     @Override
@@ -55,12 +58,9 @@ public class LoadCommand extends GameCommand {
 
 
         File file = new File(fileName);
-//        ConfigurationLoader<CommentedConfigurationNode> loader =
-//                HoconConfigurationLoader.builder().setFile(file).build();
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
         YamlConfiguration yaml = new YamlConfiguration();
 
-//        ConfigurationNode node;
         try {
             yaml.load(file);
         } catch (IOException | InvalidConfigurationException e) {

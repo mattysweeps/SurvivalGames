@@ -25,6 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
+/**
+ * All keywords used when executing commands and when grabbing arguments
+ */
 public class CommandKeywords {
     public static final String CREATE = "create";
     public static final String DELETE = "delete";

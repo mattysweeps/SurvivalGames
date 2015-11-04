@@ -30,11 +30,23 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.GameMode;
 
-public class SetGameModeTask implements SurvivalGameTask {
+/**
+ * Task for resetting the players' food and health levels
+ */
+public class ReadyPlayerTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws TaskException {
 
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
-                .forEach(player -> player.setGameMode(GameMode.ADVENTURE));
+                .forEach(player -> {
+
+                    //TODO: Make sure these are valid
+                    player.setGameMode(GameMode.ADVENTURE);
+                    player.setMaxHealth(20);
+                    player.setHealth(player.getMaxHealth());
+                    player.setFoodLevel(20);
+                    player.setSaturation(player.getFoodLevel());
+                    player.setExhaustion(player.getFoodLevel());
+                });
     }
 }

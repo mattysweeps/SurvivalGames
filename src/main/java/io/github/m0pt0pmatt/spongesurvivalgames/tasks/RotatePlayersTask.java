@@ -31,6 +31,9 @@ import org.bukkit.Location;
 
 import java.util.Optional;
 
+/**
+ * Task for rotating the players towards the center location
+ */
 public class RotatePlayersTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) {

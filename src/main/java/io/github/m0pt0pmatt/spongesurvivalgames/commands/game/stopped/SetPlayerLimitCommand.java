@@ -53,7 +53,7 @@ public class SetPlayerLimitCommand extends StoppedCommand {
         int playerLimit;
         try {
             playerLimit = Integer.parseInt(playerLimitString);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert from String to Integer");
             return false;
         }

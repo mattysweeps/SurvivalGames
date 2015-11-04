@@ -32,6 +32,9 @@ import org.bukkit.command.TabCompleter;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Tab completer for the plugin
+ */
 public class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {

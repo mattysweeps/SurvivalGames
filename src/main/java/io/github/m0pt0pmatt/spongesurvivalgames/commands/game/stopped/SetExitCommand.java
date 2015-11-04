@@ -66,7 +66,7 @@ public class SetExitCommand extends StoppedCommand {
             x = Integer.parseInt(xString);
             y = Integer.parseInt(yString);
             z = Integer.parseInt(zString);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert from String to Integer");
             return false;
         }

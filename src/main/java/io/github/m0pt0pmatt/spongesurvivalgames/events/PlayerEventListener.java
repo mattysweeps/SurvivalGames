@@ -29,13 +29,19 @@ import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Map;
 
-public class PlayerDeathEventListener implements Listener {
+/**
+ * Listener class for the plugin.
+ */
+public class PlayerEventListener implements Listener {
 
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
@@ -52,4 +58,19 @@ public class PlayerDeathEventListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onPlayerDisconnect(PlayerQuitEvent event) {
+
+        Player player = event.getPlayer();
+
+        for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
+            if (game.getValue().getState().equals(SurvivalGameState.RUNNING)) {
+                if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
+                    //Player has quit in the middle of a match
+                    game.getValue().reportDeath(player.getUniqueId());
+                    return;
+                }
+            }
+        }
+    }
 }

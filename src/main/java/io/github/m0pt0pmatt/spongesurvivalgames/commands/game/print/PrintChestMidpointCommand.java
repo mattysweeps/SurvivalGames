@@ -33,6 +33,9 @@ import org.bukkit.command.CommandSender;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Command to print the chest midpoint value for a game
+ */
 public class PrintChestMidpointCommand extends GameCommand {
 
     @Override

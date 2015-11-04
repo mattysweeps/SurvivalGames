@@ -35,6 +35,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
+/**
+ * Command to add a held item to a game's loot list
+ */
 public class AddHeldLootCommand extends StoppedCommand {
 
     @Override
@@ -59,7 +62,7 @@ public class AddHeldLootCommand extends StoppedCommand {
         Double weight;
         try {
             weight = Double.parseDouble(weightString);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert from string to double");
             return false;
         }

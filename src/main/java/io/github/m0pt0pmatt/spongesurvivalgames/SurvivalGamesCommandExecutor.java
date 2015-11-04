@@ -33,6 +33,9 @@ import org.bukkit.command.CommandSender;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Command Executor for the plugin
+ */
 public class SurvivalGamesCommandExecutor implements CommandExecutor {
 
     @Override

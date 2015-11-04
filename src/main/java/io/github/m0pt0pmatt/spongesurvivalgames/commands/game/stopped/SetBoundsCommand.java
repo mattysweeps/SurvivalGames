@@ -32,6 +32,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Command to set the bounds of a game
+ */
 public class SetBoundsCommand extends StoppedCommand {
 
     @Override
@@ -68,7 +71,7 @@ public class SetBoundsCommand extends StoppedCommand {
             xMax = Integer.parseInt(xMaxString);
             yMax = Integer.parseInt(yMaxString);
             zMax = Integer.parseInt(zMaxString);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert from String to Integer");
             return false;
         }

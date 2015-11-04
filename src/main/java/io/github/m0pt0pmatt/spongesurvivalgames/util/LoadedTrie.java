@@ -33,6 +33,7 @@ import java.util.Map;
 /**
  * Specialized Trie data structure
  * <p>A LoadedTrie is a Trie where a payload is stored at the end of each branch (each leaf node).</p>
+ *
  * @param <T> The type which makes up the entire branch of the trie. For standard tries, this type is Character
  * @param <D> The type data to stor at the end of branches (leaf nodes).
  */
@@ -42,6 +43,7 @@ public class LoadedTrie<T, D> {
 
     /**
      * Adds a new branch to the trie
+     *
      * @param list The new branch to be added
      * @param data The data to store at the end of the branch
      */
@@ -62,7 +64,8 @@ public class LoadedTrie<T, D> {
 
     /**
      * Attempts to traverse the trie
-     * @param input The input sequence for traversing the trie.
+     *
+     * @param input           The input sequence for traversing the trie.
      * @param missingSuffixes Any mismatched Ts are stored in this map. the key is the expected value, and the value was the actual input. Note that, since this is a Map, duplicates are erased
      * @return The data if a leaf node was reached, null otherwise
      */
@@ -100,6 +103,7 @@ public class LoadedTrie<T, D> {
 
     /**
      * Returns all the possible immediate suffixes available after following a branch
+     *
      * @param list the input sequence for traversing the trie
      * @return List of the next Ts for the given input
      */
