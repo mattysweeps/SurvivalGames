@@ -166,7 +166,7 @@ public class SurvivalGameConfig {
     }
 
     public Optional<Integer> getYMax(){
-        return yMin == null ? Optional.empty() : Optional.of(yMin);
+        return yMax == null ? Optional.empty() : Optional.of(yMax);
     }
 
     public void setYMax(Integer yMax){
