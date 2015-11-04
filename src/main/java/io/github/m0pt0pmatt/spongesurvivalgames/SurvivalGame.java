@@ -56,13 +56,13 @@ public class SurvivalGame {
             new Vector(0, -1, 0)
     ));
     private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+            new ResetLootGeneratorTask(),
+            new CreateCenterChestsTask(),
+            new FillChestsTask(),
+            new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new ReadyPlayerTask(),
-            new CreateCageSnapshotsTask(),
-            new CreateCenterChestsTask(),
-            new ResetLootGeneratorTask(),
-            new FillChestsTask(),
             new CreateCountdownTask()
     ));
     private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
