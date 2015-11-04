@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -51,7 +52,7 @@ public class SurvivalGameConfig {
 
     private Double chestRange;
 
-    private List<ItemStack> loot = new ArrayList<>();
+    private List<Loot> loot = new ArrayList<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -121,7 +122,7 @@ public class SurvivalGameConfig {
         this.chestRange = chestRange;
     }
 
-    public List<ItemStack> getLoot() {
+    public List<Loot> getLoot() {
         return loot;
     }
 
