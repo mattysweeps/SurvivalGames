@@ -25,11 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
 public class CreateCenterChestsTask implements SurvivalGameTask {
     @Override

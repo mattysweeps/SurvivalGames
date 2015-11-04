@@ -25,13 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import java.util.Map;
 import java.util.Optional;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 
 public class SetChestMidpointCommand extends StoppedCommand {
 

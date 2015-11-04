@@ -25,13 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import org.bukkit.Bukkit;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-
-import java.util.concurrent.TimeUnit;
 
 public class CreateCountdownTask implements SurvivalGameTask {
     @Override

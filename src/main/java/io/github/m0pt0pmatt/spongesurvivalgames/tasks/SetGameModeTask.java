@@ -25,11 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import org.bukkit.GameMode;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.OfferGameModeException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.GameMode;
 
 public class SetGameModeTask implements SurvivalGameTask {
     @Override

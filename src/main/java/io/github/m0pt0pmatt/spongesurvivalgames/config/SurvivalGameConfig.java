@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.config;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
@@ -56,56 +57,48 @@ public class SurvivalGameConfig {
 
     private List<ItemStack> loot = new ArrayList<ItemStack>();
 
-    /**
-     * Returns the name of the world.
-     * @return The string name, or null if none is set
-     */
-    public String getWorldName() {
-        return worldName;
+    public Optional<String> getWorldName() {
+        return worldName == null ? Optional.empty() : Optional.of(worldName);
     }
 
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
 
-    /**
-     * Returns the exit world name, or null
-     * @return
-     */
-    public String getExitWorld() {
-        return exitWorld;
+    public Optional<String> getExitWorld() {
+        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
     }
 
     public void setExitWorld(String exitWorld) {
         this.exitWorld = exitWorld;
     }
 
-    public Vector getExit() {
-        return exit;
+    public Optional<Vector> getExit() {
+        return exit == null ? Optional.empty() : Optional.of(exit);
     }
 
     public void setExit(Vector exit) {
         this.exit = exit;
     }
 
-    public Vector getCenter() {
-        return center;
+    public Optional<Vector> getCenter() {
+        return center == null ? Optional.empty() : Optional.of(center);
     }
 
     public void setCenter(Vector center) {
         this.center = center;
     }
 
-    public Integer getPlayerLimit() {
-        return playerLimit;
+    public Optional<Integer> getPlayerLimit() {
+        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
     }
 
     public void setPlayerLimit(Integer playerLimit) {
         this.playerLimit = playerLimit;
     }
 
-    public Integer getCountdownTime() {
-        return countdownTime;
+    public Optional<Integer> getCountdownTime() {
+        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
     }
 
     public void setCountdownTime(Integer countdownTime) {
@@ -116,16 +109,16 @@ public class SurvivalGameConfig {
         return spawns;
     }
 
-    public Double getChestMidpoint() {
-        return chestMidpoint;
+    public Optional<Double> getChestMidpoint() {
+        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
     }
 
     public void setChestMidpoint(Double chestMidpoint) {
         this.chestMidpoint = chestMidpoint;
     }
 
-    public Double getChestRange() {
-        return chestRange;
+    public Optional<Double> getChestRange() {
+        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
     }
 
     public void setChestRange(Double chestRange) {

@@ -25,15 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
+import java.util.Map;
+import java.util.Optional;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to add a spawn location to a game

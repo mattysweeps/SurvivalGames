@@ -25,14 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import java.util.Map;
 import java.util.Optional;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 
 /**
  * Command to create a new game

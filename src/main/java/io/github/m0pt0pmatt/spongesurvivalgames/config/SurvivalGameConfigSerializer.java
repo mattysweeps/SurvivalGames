@@ -128,9 +128,9 @@ public class SurvivalGameConfigSerializer {
         return builder.build();
     }
 
-    public ConfigurationSection serialize(SurvivalGameConfig obj) {
+    public YamlConfiguration serialize(SurvivalGameConfig obj) {
     	
-    	ConfigurationSection config = new YamlConfiguration();
+    	YamlConfiguration config = new YamlConfiguration();
     	
     	config.set(Fields.WORLD.getKey(), obj.getWorldName());
     	config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld());

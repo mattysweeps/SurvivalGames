@@ -25,16 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
+import java.util.Map;
+import java.util.Optional;
+
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.Optional;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 
 /**
  * Command to add a player to a game

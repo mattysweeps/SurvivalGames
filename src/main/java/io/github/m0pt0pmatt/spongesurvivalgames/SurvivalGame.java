@@ -25,18 +25,43 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestMidpointException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestRangeException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCageSnapshotsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCenterChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCountdownTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DespawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.RotatePlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SetGameModeTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SurvivalGameTask;
 
 /**
  * represents a Survival Game.
@@ -273,10 +298,11 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null){
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .execute(() -> player.get().setLocation(getExit().get()))
-                    .delay(10, TimeUnit.MILLISECONDS)
-                    .submit(SpongeSurvivalGamesPlugin.plugin);
+        	//TODO
+//            BukkitSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+//                    .execute(() -> player.get().setLocation(getExit().get()))
+//                    .delay(10, TimeUnit.MILLISECONDS)
+//                    .submit(BukkitSurvivalGamesPlugin.plugin);
         }
 
         checkWin();
@@ -291,23 +317,24 @@ public class SurvivalGame {
         UUID winnerUUID = playerUUIDs.stream().findFirst().get();
         Player winner = Bukkit.getServer().getPlayer(winnerUUID);
         if (winner != null){
-            winner.sendMessage("Congratulations! You won!");
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .execute(() -> winner.get().setLocation(getExit().get()))
-                    .delay(10, TimeUnit.SECONDS)
-                    .submit(SpongeSurvivalGamesPlugin.plugin);
+        	//TODO
+//            winner.sendMessage("Congratulations! You won!");
+//            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+//                    .execute(() -> winner.get().setLocation(getExit().get()))
+//                    .delay(10, TimeUnit.SECONDS)
+//                    .submit(SpongeSurvivalGamesPlugin.plugin);
         }
 
-        SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                .execute(() -> {
-                    try {
-                        stop();
-                    } catch (TaskException e) {
-                        e.printStackTrace();
-                    }
-                })
-                .delay(10, TimeUnit.SECONDS)
-                .submit(SpongeSurvivalGamesPlugin.plugin);
+//        SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
+//                .execute(() -> {
+//                    try {
+//                        stop();
+//                    } catch (TaskException e) {
+//                        e.printStackTrace();
+//                    }
+//                })
+//                .delay(10, TimeUnit.SECONDS)
+//                .submit(SpongeSurvivalGamesPlugin.plugin);
 
     }
 }

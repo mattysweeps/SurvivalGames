@@ -25,13 +25,19 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.Map;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestMidpointException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestRangeException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
 
 /**
  * Command to set a game to the RUNNING state (start the game)

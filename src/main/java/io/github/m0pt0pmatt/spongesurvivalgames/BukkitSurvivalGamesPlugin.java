@@ -25,27 +25,22 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.DeleteGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerDeathEventListener;
 
 /**
  * SpongeSurvivalGames Sponge Plugin
@@ -73,7 +68,7 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        registerCommands();
+        //registerCommands();
         survivalGameMap.clear();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathEventListener(), this);
         Bukkit.getLogger().info("Sponge Survival Games Plugin Enabled");
@@ -212,7 +207,7 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
         return false;
     }
 
-    private void registerCommands() {
+    /*private void registerCommands() {
 
         CommandSpec createSurvivalGameCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
@@ -486,8 +481,8 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
                                 .build(), "chest"
                 )
                 .build();
-    }
-
+    }*/
+    /*
     private CommandSpec registerClearCommands() {
         CommandSpec clearSpawnsCommand = CommandSpec.builder()
                 .description(Texts.of("<id>"))
@@ -501,7 +496,7 @@ public class BukkitSurvivalGamesPlugin  extends JavaPlugin {
                 .child(clearSpawnsCommand, "spawns")
                 .build();
     }
-
+    */
 
 }
 

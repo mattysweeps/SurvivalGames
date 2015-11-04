@@ -25,12 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import org.bukkit.command.CommandSender;
 
 public abstract class SurvivalGamesCommand {
 
