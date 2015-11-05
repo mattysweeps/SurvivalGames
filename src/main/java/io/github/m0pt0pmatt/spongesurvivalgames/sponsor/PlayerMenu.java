@@ -17,6 +17,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.InvalidIDLookupException;
+
 /**
  * A menu with all players available for selection by the sponsor.
  * @author Skyler
@@ -25,6 +27,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class PlayerMenu extends SponsorInventory implements Listener {
 	
 	private static final String menuTitlePrefix = "PLMNU_";
+	
+	/**
+	 * How many slots will be in the created, rendered inventory
+	 */
+	private static final int inventorySlotCount = 27;
 	
 	private Map<Integer, UUID> playerMap;
 	
@@ -37,7 +44,7 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 	@Override
 	public Inventory getFormattedInventory() {
 		
-		Inventory inv = Bukkit.createInventory(owner.getPlayer(), 27, 
+		Inventory inv = Bukkit.createInventory(owner.getPlayer(), inventorySlotCount, 
 				(menuTitlePrefix + owner.getPlayer().getName()).substring(0, 31) ); //limit to 32 chars cause title limit
 		List<Player> players = getValidPlayers();
 		int index = 0;
@@ -53,7 +60,7 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 	}
 	
 	@EventHandler
-	public void onInventoryInteract(InventoryClickEvent e) {
+	public void onInventoryInteract(InventoryClickEvent e) throws InvalidIDLookupException {
 		if (e.isCancelled()) {
 			return;
 		}
@@ -62,11 +69,21 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 			return; //wrong inventory
 		}
 		
+		if (e.getRawSlot() >= inventorySlotCount) {
+			return; //player inventory space
+		}
+		
 		if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
 			return; //click'ed on nothing
 		}
 		
+		UUID id = playerMap.get(e.getRawSlot());
 		
+		if (id == null) {
+			throw new InvalidIDLookupException(e.getRawSlot() + "");
+		}
+		
+		selectPlayer(id);
 		
 	}
 	
@@ -109,6 +126,14 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 		skull.setItemMeta(meta);
 		
 		return skull;
+	}
+	
+	/**
+	 * Selects the provided player (by ID) and moved the sponsor on through the menus
+	 * @param selectedID
+	 */
+	private void selectPlayer(UUID selectedID) {
+		
 	}
 	
 }
