@@ -93,8 +93,8 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.BOUNDS, CommandKeywords.ID, CommandKeywords.XMIN, CommandKeywords.XMAX, CommandKeywords.YMIN, CommandKeywords.YMAX, CommandKeywords.ZMIN, CommandKeywords.ZMAX}, new SetBoundsCommand());
         commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.HELD, CommandKeywords.LOOT, CommandKeywords.ID, CommandKeywords.WEIGHT}, new AddHeldLootCommand());
         commandTrie.add(new String[]{CommandKeywords.READY, CommandKeywords.ID}, new ReadyGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.PLAYER, CommandKeywords.ID}, new AddPlayerCommand());
-        commandTrie.add(new String[]{CommandKeywords.REMOVE, CommandKeywords.PLAYER, CommandKeywords.ID}, new RemovePlayerCommand());
+        commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.PLAYER, CommandKeywords.ID, CommandKeywords.PLAYERNAME}, new AddPlayerCommand());
+        commandTrie.add(new String[]{CommandKeywords.REMOVE, CommandKeywords.PLAYER, CommandKeywords.ID, CommandKeywords.PLAYERNAME}, new RemovePlayerCommand());
         commandTrie.add(new String[]{CommandKeywords.START, CommandKeywords.ID}, new StartGameCommand());
         commandTrie.add(new String[]{CommandKeywords.STOP, CommandKeywords.ID}, new StopGameCommand());
         commandTrie.add(new String[]{CommandKeywords.FORCE_STOP, CommandKeywords.ID}, new ForceStopGameCommand());

@@ -49,6 +49,7 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
 
         SurvivalGamesCommand cmd = BukkitSurvivalGamesPlugin.commandTrie.match(strings, arguments);
         if (cmd == null) {
+            Bukkit.getLogger().warning("No command found");
             return false;
         }
 
