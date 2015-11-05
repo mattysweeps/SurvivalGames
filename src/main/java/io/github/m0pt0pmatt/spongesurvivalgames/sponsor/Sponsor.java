@@ -91,13 +91,6 @@ public class Sponsor {
 	 */
 	private static final String inventoryKeyPrefix = "SPONSINV_";
 	
-	/**
-	 * Create the static sponsor inventory.<br />
-	 */
-	private void generateInventory() {
-		sponsorInventory = Bukkit.createInventory(null, 27, inventoryKey);
-	}
-	
 	private Player player;
 	
 	private SurvivalGame game;
@@ -107,9 +100,6 @@ public class Sponsor {
 	public Sponsor(SurvivalGame game, Player player) {
 		this.player = player;
 		this.game = game;
-		if (Sponsor.sponsorInventory == null) {
-			Sponsor.generateInventory();
-		}
 	}
 	
 	public SurvivalGame getGame() {

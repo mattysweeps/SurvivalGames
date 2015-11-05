@@ -1,13 +1,18 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -17,12 +22,15 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @author Skyler
  *
  */
-public class PlayerMenu extends SponsorInventory {
+public class PlayerMenu extends SponsorInventory implements Listener {
 	
 	private static final String menuTitlePrefix = "PLMNU_";
 	
+	private Map<Integer, UUID> playerMap;
+	
 	public PlayerMenu(Sponsor owner) {
 		super(owner);
+		playerMap = new HashMap<Integer, UUID>();
 	}
 	
 	
@@ -35,11 +43,31 @@ public class PlayerMenu extends SponsorInventory {
 		int index = 0;
 		
 		for (Player player : players) {
-			
+			inv.setItem(index, 
+					getHeadItem(player));
+			playerMap.put(index, player.getUniqueId());
+			index++;
+		}
+		
+		return inv;
+	}
+	
+	@EventHandler
+	public void onInventoryInteract(InventoryClickEvent e) {
+		if (e.isCancelled()) {
+			return;
+		}
+		
+		if (!e.getInventory().getTitle().equals(menuTitlePrefix + owner.getPlayer().getName().substring(0, 31))) {
+			return; //wrong inventory
+		}
+		
+		if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
+			return; //click'ed on nothing
 		}
 		
 		
-		return inv;
+		
 	}
 	
 	/**
