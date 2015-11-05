@@ -1,10 +1,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +16,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.InvalidIDLookupException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.GiveItemTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuPlayerTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.RestoreHealthTask;
@@ -127,6 +133,13 @@ public class SponsorMenu extends SponsorInventory implements Listener {
 		}
 	}
 	
+	/**
+	 * Maps the position in the menu to a menu button.<br />
+	 * This could be achieved using the ordinal numbers of the MenuButtons enum, but it
+	 * makes much more unreadible code
+	 */
+	private static Map<Integer, MenuButtons> menuMap = null;
+	
 	private UUID targetID;
 	
 	public SponsorMenu(Sponsor owner, UUID targetID) {
@@ -137,18 +150,21 @@ public class SponsorMenu extends SponsorInventory implements Listener {
 	
 	@Override
 	public Inventory getFormattedInventory() {
+		
+		SponsorMenu.compileMenuMap();
+		
 		Inventory inv = Bukkit.createInventory(owner.getPlayer(), inventorySlotCount, 
 				(menuTitlePrefix + owner.getPlayer().getName()).substring(0, 31));
 		
-		
-		
-		
-		
+		for (Entry<Integer, MenuButtons> entry : menuMap.entrySet()) {
+			inv.setItem(entry.getKey(), entry.getValue().getItem());
+		}
+				
 		return inv;
 	}
 	
 	@EventHandler
-	public void onInventoryInteract(InventoryClickEvent e) {
+	public void onInventoryInteract(InventoryClickEvent e) throws InvalidIDLookupException {
 		if (e.isCancelled()) {
 			return;
 		}
@@ -157,12 +173,48 @@ public class SponsorMenu extends SponsorInventory implements Listener {
 			return; //wrong inventory
 		}
 		
+		if (e.getRawSlot() >= inventorySlotCount) {
+			return; //in the player inventory
+		}
+		
 		if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
 			return; //click'ed on nothing
 		}
 		
+		e.setCancelled(true);
+		e.getWhoClicked().closeInventory();
 		
+		MenuButtons button = menuMap.get(e.getRawSlot());
 		
+		if (button == null) {
+			throw new InvalidIDLookupException(e.getRawSlot() + "");
+		}
+		
+		Player player = Bukkit.getPlayer(targetID);
+		
+		try {
+			button.getTask().execute(player);
+		} catch (TaskException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Builds the map from positions to menu buttons, if it hasn't already been built
+	 */
+	private static void compileMenuMap() {
+		if (menuMap != null) {
+			return;
+		}
+		
+		menuMap = new HashMap<Integer, MenuButtons>();
+		
+		int index = 0;
+		for (MenuButtons button : MenuButtons.values()) {
+			menuMap.put(index, button);
+			index++;
+		}
 	}
 		
 }
