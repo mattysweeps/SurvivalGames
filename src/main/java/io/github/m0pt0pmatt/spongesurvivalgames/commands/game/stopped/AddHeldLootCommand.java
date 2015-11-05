@@ -57,7 +57,7 @@ public class AddHeldLootCommand extends StoppedCommand {
             return false;
         }
 
-        String weightString = arguments.get(CommandKeywords.LOOT);
+        String weightString = arguments.get(CommandKeywords.WEIGHT);
 
         Double weight;
         try {

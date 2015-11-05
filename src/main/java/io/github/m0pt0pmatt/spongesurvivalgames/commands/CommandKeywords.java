@@ -71,4 +71,5 @@ public class CommandKeywords {
     public static final String ZMAX = "zmax";
     public static final String LOOT = "loot";
     public static final String WEIGHT = "weight";
+    public static final String HELD = "HELD";
 }
