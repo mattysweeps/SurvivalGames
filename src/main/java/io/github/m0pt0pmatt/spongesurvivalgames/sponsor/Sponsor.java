@@ -85,12 +85,6 @@ public class Sponsor {
 		}
 	}
 	
-	/**
-	 * Static key to use as the title for the sponsor's inventory to check for clicks.<br />
-	 * Need to be conscious of the 32 char length limit
-	 */
-	private static final String inventoryKeyPrefix = "SPONSINV_";
-	
 	private Player player;
 	
 	private SurvivalGame game;
@@ -108,5 +102,15 @@ public class Sponsor {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	/**
+	 * Sets the inventory stored with this sponsor and displays it to the player.
+	 * @param newInv
+	 */
+	protected void setInventory(SponsorInventory newInv) {
+		this.inv = newInv;
+		player.openInventory(
+				inv.getFormattedInventory());
 	}
 }
