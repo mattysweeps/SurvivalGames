@@ -18,6 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.InvalidIDLookupException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.SelectPlayerTask;
 
 /**
  * A menu with all players available for selection by the sponsor.
@@ -83,6 +86,10 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 			throw new InvalidIDLookupException(e.getRawSlot() + "");
 		}
 		
+		e.setCancelled(true);
+		
+		e.getWhoClicked().closeInventory();
+		
 		selectPlayer(id);
 		
 	}
@@ -133,7 +140,13 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 	 * @param selectedID
 	 */
 	private void selectPlayer(UUID selectedID) {
+		MenuTask task = new SelectPlayerTask(owner, selectedID);
 		
+		try {
+			task.execute();
+		} catch (TaskException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

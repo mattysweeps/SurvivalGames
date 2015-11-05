@@ -2,11 +2,9 @@ package io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions;
 
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsor;
+import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.SponsorMenu;
 
 /**
  * Selects for a sponsor a player, and progresses the menu slides.<br />
@@ -20,13 +18,14 @@ public class SelectPlayerTask implements MenuTask {
 	private Sponsor owner;
 	
 	public SelectPlayerTask(Sponsor sponsor, UUID selected) {
-		this.selected = uuid;
+		this.selected = selected;
 		this.owner = sponsor;
 	}
 
 	@Override
-	public void execute(SurvivalGame game, Player player) throws TaskException {
-		
+	public void execute() throws TaskException {
+		SponsorMenu menu = new SponsorMenu(owner, selected);
+		owner.setInventory(menu);
 	}
 
 }
