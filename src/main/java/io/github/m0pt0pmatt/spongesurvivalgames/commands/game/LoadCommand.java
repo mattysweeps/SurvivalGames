@@ -57,7 +57,7 @@ public class LoadCommand extends GameCommand {
         String fileName = arguments.get(CommandKeywords.FILENAME);
 
 
-        File file = new File(fileName);
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
         YamlConfiguration yaml = new YamlConfiguration();
 

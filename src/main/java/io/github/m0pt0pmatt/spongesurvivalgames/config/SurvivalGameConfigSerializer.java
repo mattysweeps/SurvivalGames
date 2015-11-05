@@ -26,17 +26,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.util.Vector;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 /**
  * Class to Serialize and DeSerialize a SurvivalGameConfig
@@ -140,13 +140,13 @@ public class SurvivalGameConfigSerializer {
         WORLD("world", ""),
         PLAYERLIMIT("playerLimit", 16),
         COUNTDOWNTIME("countdownTime", 30),
-        EXITWORLD("exit.world", ""),
+        EXITWORLD("exitWorld", ""),
         EXIT("exit", new Vector(0, 0, 0)),
         CENTER("center", new Vector(0, 0, 0)),
         SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
         CHEST_MIDPOINT("chest.midpoint", 0.0),
         CHEST_RANGE("chest.range", 0.0),
-        LOOT("loot", new LinkedList<ItemStack>()),
+        LOOT("loot", new LinkedList<Loot>()),
         XMIN("xmin", 0),
         XMAX("xmax", 0),
         YMIN("ymin", 0),

@@ -56,7 +56,7 @@ public class SaveCommand extends GameCommand {
             return false;
         }
 
-        File file = new File(fileName);
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
         YamlConfiguration config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 
         try {
