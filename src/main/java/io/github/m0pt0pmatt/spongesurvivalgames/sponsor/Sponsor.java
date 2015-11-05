@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.GiveItemTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuTask;
 
@@ -99,12 +100,23 @@ public class Sponsor {
 	
 	private Player player;
 	
-	private Inventory 
+	private SurvivalGame game;
 	
-	public Sponsor(Player player) {
+	private SponsorInventory inv;
+	
+	public Sponsor(SurvivalGame game, Player player) {
 		this.player = player;
+		this.game = game;
 		if (Sponsor.sponsorInventory == null) {
 			Sponsor.generateInventory();
 		}
+	}
+	
+	public SurvivalGame getGame() {
+		return game;
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 }
