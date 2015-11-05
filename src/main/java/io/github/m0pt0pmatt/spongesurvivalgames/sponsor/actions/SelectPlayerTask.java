@@ -26,7 +26,7 @@ public class SelectPlayerTask implements MenuTask {
 
 	@Override
 	public void execute(SurvivalGame game, Player player) throws TaskException {
-		player.getInventory().addItem(this.item);
+		
 	}
 
 }
