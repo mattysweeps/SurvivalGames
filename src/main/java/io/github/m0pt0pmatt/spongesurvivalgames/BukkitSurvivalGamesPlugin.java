@@ -39,6 +39,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -121,6 +122,8 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         Bukkit.getLogger().info("Sponge Survival Games Plugin Enabled");
         getCommand(CommandKeywords.SSG).setExecutor(commandExecutor);
         getCommand(CommandKeywords.SSG).setTabCompleter(tabCompleter);
+        
+        Loot.registerAliases();
     }
 
 }

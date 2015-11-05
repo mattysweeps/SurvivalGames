@@ -42,7 +42,7 @@ public class Loot implements ConfigurationSerializable {
     private ItemStack item;
     private double weight;
 
-    {
+    public static void registerAliases() {
         //Register this serializable class with some aliases too
         ConfigurationSerialization.registerClass(Loot.class);
         ConfigurationSerialization.registerClass(Loot.class, "loot");
