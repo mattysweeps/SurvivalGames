@@ -11,7 +11,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.SponsorMenu;
  * @author Skyler
  *
  */
-public class SelectPlayerTask implements MenuTask {
+public class SelectPlayerTask {
 
 	private UUID selected;
 	
@@ -22,7 +22,6 @@ public class SelectPlayerTask implements MenuTask {
 		this.owner = sponsor;
 	}
 
-	@Override
 	public void execute() throws TaskException {
 		SponsorMenu menu = new SponsorMenu(owner, selected);
 		owner.setInventory(menu);

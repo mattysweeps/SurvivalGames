@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.InvalidIDLookupException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.SelectPlayerTask;
 
 /**
@@ -140,7 +139,7 @@ public class PlayerMenu extends SponsorInventory implements Listener {
 	 * @param selectedID
 	 */
 	private void selectPlayer(UUID selectedID) {
-		MenuTask task = new SelectPlayerTask(owner, selectedID);
+		SelectPlayerTask task = new SelectPlayerTask(owner, selectedID);
 		
 		try {
 			task.execute();

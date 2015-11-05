@@ -5,19 +5,16 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
-public class GiveItemTask implements MenuTask {
+public class GiveItemTask implements MenuPlayerTask {
 
 	private ItemStack item;
 	
-	private Player player;
-	
-	public GiveItemTask(Player player, ItemStack item) {
+	public GiveItemTask(ItemStack item) {
 		this.item = item;
-		this.player = player;
 	}
 
 	@Override
-	public void execute() throws TaskException {
+	public void execute(Player player) throws TaskException {
 		if (player == null || !player.isOnline()) {
 			throw new TaskException();
 		}

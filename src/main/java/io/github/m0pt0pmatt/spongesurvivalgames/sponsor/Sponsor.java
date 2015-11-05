@@ -1,14 +1,12 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.GiveItemTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.actions.MenuPlayerTask;
 
 /**
  * Wrapper  class for a player who has been appointed as a sponsor.<br />
@@ -69,9 +67,9 @@ public class Sponsor {
 		
 		private ItemStack displayItem;
 		
-		private MenuTask task;
+		private MenuPlayerTask task;
 		
-		private MenuButtons(ItemStack item, MenuTask task) {
+		private MenuButtons(ItemStack item, MenuPlayerTask task) {
 			this.displayItem = item;
 			this.task = task;
 		}
@@ -80,7 +78,7 @@ public class Sponsor {
 			return displayItem;
 		}
 		
-		public MenuTask getTask() {
+		public MenuPlayerTask getTask() {
 			return task;
 		}
 	}
