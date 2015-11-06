@@ -93,8 +93,9 @@ public class SurvivalGame {
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
-        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
+        	(playerUUIDs.size(), config.getSpawns().size());
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
@@ -150,7 +151,8 @@ public class SurvivalGame {
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
-        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw new PlayerLimitReachedException();
+        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw 
+        	new PlayerLimitReachedException(config.getPlayerLimit().get());
 
         playerUUIDs.add(player);
     }
@@ -160,9 +162,10 @@ public class SurvivalGame {
     }
 
     public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
+        if (!config.getWorldName().isPresent()) throw new NoWorldNameException(
+        		"World for map empty when trying to set up center location!");
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
 
         config.setCenter(new Vector(x, y, z));
     }
@@ -170,7 +173,7 @@ public class SurvivalGame {
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
 
         config.getSpawns().add(new Vector(x, y, z));
     }
@@ -181,14 +184,14 @@ public class SurvivalGame {
 
     public void setWorld(String worldName) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(worldName);
 
         config.setWorldName(world.getName());
     }
 
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(worldName);
 
         config.setExit(new Vector(x, y, z));
         config.setExitWorld(worldName);
@@ -235,7 +238,7 @@ public class SurvivalGame {
     }
 
     public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
-        if (countdownTime < 0) throw new NegativeCountdownTimeException();
+        if (countdownTime < 0) throw new NegativeCountdownTimeException(countdownTime);
         config.setCountdownTime(countdownTime);
     }
 

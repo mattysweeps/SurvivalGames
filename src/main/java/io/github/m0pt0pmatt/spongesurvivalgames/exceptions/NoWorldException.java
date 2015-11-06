@@ -30,14 +30,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  */
 public class NoWorldException extends SurvivalGameException {
 	
-	private String description;
+	private String worldName;
 	
-	public NoWorldException(String description) {
-		this.description = description;
+	public NoWorldException(String worldName) {
+		this.worldName = worldName;
 	}
 
 	@Override
 	public String getDescription() {
-		return description;
+		return "The world named " + worldName + " does not exist!";
 	}
 }
