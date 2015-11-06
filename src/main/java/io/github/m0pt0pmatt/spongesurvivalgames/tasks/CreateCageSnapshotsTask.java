@@ -43,7 +43,7 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
         for (Vector spawn : game.getSpawns()) {
 
             World world = Bukkit.getServer().getWorld(game.getWorldName().get());
-            if (world == null) throw new TaskException("World " + game.getWorldName() + " doesn't exist");
+            if (world == null) throw new TaskException("World not found: " + game.getWorldName().get());
 
             Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
