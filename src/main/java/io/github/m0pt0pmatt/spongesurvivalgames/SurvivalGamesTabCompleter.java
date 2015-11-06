@@ -29,6 +29,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,8 +46,8 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
 
         List<String> list = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(strings);
         if (list == null) return new LinkedList<>();
-        List<String> lowerCase = new ArrayList<String>(list.size());
-        list.forEach( (s) -> { lowerCase.add(s.toLowerCase()); } );
+        List<String> lowerCase = new ArrayList<>(list.size());
+        list.forEach(st -> lowerCase.add(st.toLowerCase()));
         return lowerCase;
     }
 }

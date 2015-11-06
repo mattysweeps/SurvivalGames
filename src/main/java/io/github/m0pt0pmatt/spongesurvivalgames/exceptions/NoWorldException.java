@@ -29,4 +29,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  * Exception thrown when the specified world did not exist
  */
 public class NoWorldException extends SurvivalGameException {
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }

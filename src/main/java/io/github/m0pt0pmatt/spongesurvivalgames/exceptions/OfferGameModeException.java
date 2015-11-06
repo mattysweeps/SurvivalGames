@@ -26,4 +26,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class OfferGameModeException extends TaskException {
+
+    public OfferGameModeException(String description) {
+        super(description);
+    }
 }
