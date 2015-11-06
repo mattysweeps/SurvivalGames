@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 
 /**
  * Command Executor for the plugin

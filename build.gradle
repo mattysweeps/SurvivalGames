@@ -1,0 +1,26 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+eclipse {
+    classpath {
+        downloadSources=true
+    }
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/groups/public/"
+    }
+    maven {
+        name = 'sponge'
+        url = 'http://repo.spongepowered.org/maven'
+    }
+}
+
+dependencies {
+    compile 'org.bukkit:bukkit:1.8-R0.1-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:2.1-SNAPSHOT'
+}

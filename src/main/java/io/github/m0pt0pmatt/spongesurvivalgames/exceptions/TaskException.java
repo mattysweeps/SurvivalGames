@@ -26,7 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class TaskException extends SurvivalGameException {
-
 	private String description;
 	
 	public TaskException(String description) {

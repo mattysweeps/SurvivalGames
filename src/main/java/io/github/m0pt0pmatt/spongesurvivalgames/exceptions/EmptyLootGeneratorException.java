@@ -26,7 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class EmptyLootGeneratorException extends SurvivalGameException {
-
 	@Override
 	public String getDescription() {
 		return "The loot generator cannot be empty!";

@@ -46,8 +46,8 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
 
         List<String> list = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(strings);
         if (list == null) return new LinkedList<>();
-        List<String> lowerCase = new ArrayList<String>(list.size());
-        list.forEach( string -> { lowerCase.add(string.toLowerCase()); } );
+        List<String> lowerCase = new ArrayList<>(list.size());
+        list.forEach(st -> lowerCase.add(st.toLowerCase()));
         return lowerCase;
     }
 }
