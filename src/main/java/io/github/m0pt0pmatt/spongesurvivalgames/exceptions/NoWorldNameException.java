@@ -26,4 +26,15 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoWorldNameException extends SurvivalGameException {
+
+	private String description;
+	
+	public NoWorldNameException(String description) {
+		this.description = description;
+	}
+	
+	@Override
+	public String getDescription() {
+		return description;
+	}
 }

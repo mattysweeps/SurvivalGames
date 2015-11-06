@@ -29,4 +29,15 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  * Exception thrown when the player limit for a game was reached
  */
 public class PlayerLimitReachedException extends SurvivalGameException {
+	
+	private int max;
+	
+	public PlayerLimitReachedException(int max) {
+		this.max = max;
+	}
+
+	@Override
+	public String getDescription() {
+		return "Already at a max of " + this.max;
+	}
 }

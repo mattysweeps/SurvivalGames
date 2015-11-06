@@ -26,4 +26,9 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoPlayerLimitException extends SurvivalGameException {
+
+	@Override
+	public String getDescription() {
+		return "No player limit has been defined";
+	}
 }

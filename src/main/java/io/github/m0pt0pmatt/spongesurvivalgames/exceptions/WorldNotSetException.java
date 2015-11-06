@@ -29,4 +29,15 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  * Exception thrown when the world was not set for a game
  */
 public class WorldNotSetException extends SurvivalGameException {
+
+	private String worldName;
+	
+	public WorldNotSetException(String worldName) {
+		this.worldName = worldName;
+	}
+	
+	@Override
+	public String getDescription() {
+		return worldName;
+	}
 }
