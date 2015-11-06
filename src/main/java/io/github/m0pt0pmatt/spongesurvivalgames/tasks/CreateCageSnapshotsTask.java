@@ -48,12 +48,12 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
             Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
             game.getSurroundingVectors().stream()
-                    .forEach(vector -> location.add(vector).getBlock().setType(Material.BARRIER));
+                    .forEach(vector -> location.clone().add(vector).getBlock().setType(Material.BARRIER));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> game.getSurroundingVectors().stream()
-                            .forEach(vector -> location.add(vector).getBlock().setType(Material.AIR)),
+                            .forEach(vector -> location.clone().add(vector).getBlock().setType(Material.AIR)),
                     20L * game.getCountdownTime().get()
             );
         }
