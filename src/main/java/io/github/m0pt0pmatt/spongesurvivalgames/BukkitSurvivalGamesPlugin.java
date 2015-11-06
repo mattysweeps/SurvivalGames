@@ -25,10 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
@@ -68,38 +65,133 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         BukkitSurvivalGamesPlugin.plugin = this;
 
         //Register all commands
-        commandTrie.add(new String[]{CommandKeywords.CREATE, CommandKeywords.ID}, new CreateGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.LIST}, new ListGamesCommand());
-        commandTrie.add(new String[]{CommandKeywords.DELETE, CommandKeywords.ID}, new DeleteGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.CENTER, CommandKeywords.ID}, new PrintCenterCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.CHEST, CommandKeywords.MIDPOINT, CommandKeywords.ID}, new PrintChestMidpointCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.CHEST, CommandKeywords.RANGE, CommandKeywords.ID}, new PrintChestRangeCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.COUNTDOWN, CommandKeywords.ID}, new PrintCountdownCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.EXIT, CommandKeywords.ID}, new PrintExitCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.PLAYER_LIMIT, CommandKeywords.ID}, new PrintPlayerLimitCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.SPAWNS, CommandKeywords.ID}, new PrintSpawnsCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.WORLD, CommandKeywords.ID}, new PrintWorldCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.BOUNDS, CommandKeywords.ID}, new PrintBoundsCommand());
-        commandTrie.add(new String[]{CommandKeywords.PRINT, CommandKeywords.LOOT, CommandKeywords.ID}, new PrintLootCommand());
-        commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.SPAWN, CommandKeywords.ID, CommandKeywords.X, CommandKeywords.Y, CommandKeywords.Z}, new AddSpawnCommand());
-        commandTrie.add(new String[]{CommandKeywords.CLEAR, CommandKeywords.SPAWNS, CommandKeywords.ID}, new ClearSpawnpointsCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.CENTER, CommandKeywords.ID, CommandKeywords.X, CommandKeywords.Y, CommandKeywords.Z}, new SetCenterLocationCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.CHEST, CommandKeywords.MIDPOINT, CommandKeywords.ID, CommandKeywords.MIDPOINT,}, new SetChestMidpointCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.CHEST, CommandKeywords.RANGE, CommandKeywords.ID, CommandKeywords.RANGE}, new SetChestRangeCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.COUNTDOWN, CommandKeywords.ID, CommandKeywords.COUNTDOWN}, new SetCountdownCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.EXIT, CommandKeywords.ID, CommandKeywords.WORLDNAME, CommandKeywords.X, CommandKeywords.Y, CommandKeywords.Z}, new SetExitCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.PLAYER_LIMIT, CommandKeywords.ID, CommandKeywords.PLAYER_LIMIT}, new SetPlayerLimitCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.WORLD, CommandKeywords.ID, CommandKeywords.WORLDNAME}, new SetWorldCommand());
-        commandTrie.add(new String[]{CommandKeywords.SET, CommandKeywords.BOUNDS, CommandKeywords.ID, CommandKeywords.XMIN, CommandKeywords.XMAX, CommandKeywords.YMIN, CommandKeywords.YMAX, CommandKeywords.ZMIN, CommandKeywords.ZMAX}, new SetBoundsCommand());
-        commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.HELD, CommandKeywords.LOOT, CommandKeywords.ID, CommandKeywords.WEIGHT}, new AddHeldLootCommand());
-        commandTrie.add(new String[]{CommandKeywords.READY, CommandKeywords.ID}, new ReadyGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.ADD, CommandKeywords.PLAYER, CommandKeywords.ID, CommandKeywords.PLAYERNAME}, new AddPlayerCommand());
-        commandTrie.add(new String[]{CommandKeywords.REMOVE, CommandKeywords.PLAYER, CommandKeywords.ID, CommandKeywords.PLAYERNAME}, new RemovePlayerCommand());
-        commandTrie.add(new String[]{CommandKeywords.START, CommandKeywords.ID}, new StartGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.STOP, CommandKeywords.ID}, new StopGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.FORCE_STOP, CommandKeywords.ID}, new ForceStopGameCommand());
-        commandTrie.add(new String[]{CommandKeywords.LOAD, CommandKeywords.ID, CommandKeywords.FILENAME}, new LoadCommand());
-        commandTrie.add(new String[]{CommandKeywords.SAVE, CommandKeywords.ID, CommandKeywords.FILENAME}, new SaveCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.CREATE},
+                new String[]{CommandArgs.ID},
+                new CreateGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.LIST},
+                new ListGamesCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.DELETE},
+                new String[]{CommandArgs.ID},
+                new DeleteGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.CENTER},
+                new String[]{CommandArgs.ID},
+                new PrintCenterCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.CHEST, CommandKeywords.MIDPOINT},
+                new String[]{CommandArgs.ID},
+                new PrintChestMidpointCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.CHEST, CommandKeywords.RANGE},
+                new String[]{CommandArgs.ID},
+                new PrintChestRangeCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.COUNTDOWN},
+                new String[]{CommandArgs.ID},
+                new PrintCountdownCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.EXIT},
+                new String[]{CommandArgs.ID},
+                new PrintExitCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.PLAYER_LIMIT},
+                new String[]{CommandArgs.ID},
+                new PrintPlayerLimitCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.SPAWNS},
+                new String[]{CommandArgs.ID},
+                new PrintSpawnsCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.WORLD},
+                new String[]{CommandArgs.ID},
+                new PrintWorldCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.BOUNDS},
+                new String[]{CommandArgs.ID},
+                new PrintBoundsCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.LOOT},
+                new String[]{CommandArgs.ID},
+                new PrintLootCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.ADD, CommandKeywords.SPAWN},
+                new String[]{CommandArgs.ID, CommandArgs.X, CommandArgs.Y, CommandArgs.Z},
+                new AddSpawnCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.CLEAR, CommandKeywords.SPAWNS},
+                new String[]{CommandArgs.ID},
+                new ClearSpawnpointsCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.CENTER},
+                new String[]{CommandArgs.ID, CommandArgs.X, CommandArgs.Y, CommandArgs.Z},
+                new SetCenterLocationCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.CHEST, CommandKeywords.MIDPOINT},
+                new String[]{CommandArgs.ID, CommandArgs.MIDPOINT,},
+                new SetChestMidpointCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.CHEST, CommandKeywords.RANGE},
+                new String[]{CommandArgs.ID, CommandArgs.RANGE},
+                new SetChestRangeCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.COUNTDOWN},
+                new String[]{CommandArgs.ID, CommandArgs.COUNTDOWN},
+                new SetCountdownCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.EXIT},
+                new String[]{CommandArgs.ID, CommandArgs.WORLDNAME, CommandArgs.X, CommandArgs.Y, CommandArgs.Z},
+                new SetExitCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.PLAYER_LIMIT},
+                new String[]{CommandArgs.ID, CommandKeywords.PLAYER_LIMIT},
+                new SetPlayerLimitCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.WORLD},
+                new String[]{CommandArgs.ID, CommandArgs.WORLDNAME},
+                new SetWorldCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.BOUNDS},
+                new String[]{CommandArgs.ID, CommandArgs.XMIN, CommandArgs.XMAX, CommandArgs.YMIN, CommandArgs.YMAX, CommandArgs.ZMIN, CommandArgs.ZMAX},
+                new SetBoundsCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.ADD, CommandKeywords.HELD, CommandKeywords.LOOT},
+                new String[]{CommandArgs.ID, CommandArgs.WEIGHT},
+                new AddHeldLootCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.READY},
+                new String[]{CommandArgs.ID},
+                new ReadyGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.ADD, CommandKeywords.PLAYER},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME},
+                new AddPlayerCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.REMOVE, CommandKeywords.PLAYER},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME},
+                new RemovePlayerCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.START},
+                new String[]{CommandArgs.ID},
+                new StartGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.STOP},
+                new String[]{CommandArgs.ID},
+                new StopGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.FORCE_STOP},
+                new String[]{CommandArgs.ID},
+                new ForceStopGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.LOAD},
+                new String[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new LoadCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SAVE},
+                new String[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new SaveCommand());
     }
 
     /**

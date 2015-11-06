@@ -35,7 +35,7 @@ import java.util.Map;
  * <p>A LoadedTrie is a Trie where a payload is stored at the end of each branch (each leaf node).</p>
  *
  * @param <T> The type which makes up the entire branch of the trie. For standard tries, this type is Character
- * @param <D> The type data to stor at the end of branches (leaf nodes).
+ * @param <D> The type data to store at the end of branches (leaf nodes).
  */
 public class LoadedTrie<T, D> {
 
@@ -47,7 +47,7 @@ public class LoadedTrie<T, D> {
      * @param list The new branch to be added
      * @param data The data to store at the end of the branch
      */
-    public void add(T[] list, D data) {
+    public void add(T[] list, T[] leftovers, D data) {
         if (list == null) return;
 
         Node current = first;
@@ -60,16 +60,21 @@ public class LoadedTrie<T, D> {
         }
 
         current.data = data;
+        current.leftovers = leftovers;
+    }
+
+    public void add(T[] list, D data){
+        add(list, null, data);
     }
 
     /**
      * Attempts to traverse the trie
      *
      * @param input           The input sequence for traversing the trie.
-     * @param missingSuffixes Any mismatched Ts are stored in this map. the key is the expected value, and the value was the actual input. Note that, since this is a Map, duplicates are erased
+     * @param leftovers Any mismatched Ts are stored in this map. the key is the expected value, and the value was the actual input. Note that, since this is a Map, duplicates are erased
      * @return The data if a leaf node was reached, null otherwise
      */
-    public D match(T[] input, Map<T, T> missingSuffixes) {
+    public D match(T[] input, Map<T, T> leftovers) {
         if (input == null) return null;
 
         Node current = first;
@@ -84,20 +89,13 @@ public class LoadedTrie<T, D> {
             }
         }
 
-        //If there is only one possible path, we can continue, storing the actual prefix
-        for (; current != null && current.children.size() > 0 && i < input.length; i++) {
+        if (current == null) return null;
 
-            //There should only be one valid path
-            if (current.children.entrySet().size() > 1) {
-                return null;
-            }
-
-            T key = current.children.entrySet().iterator().next().getKey();
-            missingSuffixes.put(key, input[i]);
-            current = current.children.get(key);
+        //Collect leftovers
+        for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++){
+            leftovers.put(current.leftovers[j], input[i]);
         }
 
-        if (current == null) return null;
         return current.data;
     }
 
@@ -135,11 +133,7 @@ public class LoadedTrie<T, D> {
 
     private class Node {
         Map<T, Node> children = new HashMap<>();
-        D data;
-
-        public Node() {
-            this.data = null;
-        }
-
+        D data = null;
+        T[] leftovers = null;
     }
 }

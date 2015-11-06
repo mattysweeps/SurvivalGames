@@ -51,25 +51,11 @@ public class CommandKeywords {
     public static final String SPAWN = "spawn";
     public static final String SPAWNS = "spawns";
     public static final String WORLD = "world";
-    public static final String ID = "id";
-    public static final String X = "x";
-    public static final String Y = "y";
-    public static final String Z = "z";
-    public static final String WORLDNAME = "worldname";
-    public static final String FILENAME = "filename";
     public static final String PLAYER_LIMIT = "player-limit";
-    public static final String PLAYERNAME = "playername";
     public static final String SSG = "ssg";
     public static final String EXIT = "exit";
     public static final String PLAYER = "player";
     public static final String BOUNDS = "bounds";
-    public static final String XMIN = "xmin";
-    public static final String XMAX = "xmax";
-    public static final String YMIN = "ymin";
-    public static final String YMAX = "ymax";
-    public static final String ZMIN = "zmin";
-    public static final String ZMAX = "zmax";
     public static final String LOOT = "loot";
-    public static final String WEIGHT = "weight";
     public static final String HELD = "HELD";
 }
