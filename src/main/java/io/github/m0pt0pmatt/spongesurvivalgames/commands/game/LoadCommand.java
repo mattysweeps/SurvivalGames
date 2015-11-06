@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 import org.bukkit.Bukkit;
@@ -56,9 +55,9 @@ public class LoadCommand extends GameCommand {
             return false;
         }
         String fileName = arguments.get(CommandArgs.FILENAME);
-        
+
         File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
-        
+
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
         YamlConfiguration yaml = new YamlConfiguration();
 

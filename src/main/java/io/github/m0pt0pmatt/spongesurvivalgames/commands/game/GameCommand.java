@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -26,8 +26,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoChestMidpointException extends SurvivalGameException {
-	@Override
-	public String getDescription() {
-		return "No chest midpoint has been defined!";
-	}
+    @Override
+    public String getDescription() {
+        return "No chest midpoint has been defined!";
+    }
 }

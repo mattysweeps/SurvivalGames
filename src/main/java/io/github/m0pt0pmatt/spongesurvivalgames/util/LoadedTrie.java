@@ -63,7 +63,7 @@ public class LoadedTrie<T, D> {
         current.leftovers = leftovers;
     }
 
-    public void add(T[] list, D data){
+    public void add(T[] list, D data) {
         add(list, null, data);
     }
 
@@ -89,7 +89,7 @@ public class LoadedTrie<T, D> {
         if (current == null) return trieReturn;
 
         //Collect leftovers
-        for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++){
+        for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++) {
             trieReturn.leftoverMap.put(current.leftovers[j], input[i]);
         }
 

@@ -48,7 +48,7 @@ public class PrintLootCommand extends GameCommand {
 
         List<Loot> loot = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLoot();
         Bukkit.getLogger().info("Printing loot for game \"" + id + "\":");
-        for (Loot l: loot){
+        for (Loot l : loot) {
             Bukkit.getLogger().info("Item: " + l.getItem().toString() + ", Weight: " + l.getWeight());
         }
 

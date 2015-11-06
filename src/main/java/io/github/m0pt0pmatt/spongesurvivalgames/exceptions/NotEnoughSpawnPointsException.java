@@ -30,16 +30,16 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  */
 public class NotEnoughSpawnPointsException extends SurvivalGameException {
 
-	private int current;
-	private int required;
-	
-	public NotEnoughSpawnPointsException(int currentSpawnPoints, int required) {
-		this.current = currentSpawnPoints;
-		this.required = required;
-	}
-	
-	@Override
-	public String getDescription() {
-		return required + " spawnpoints are required, but only " + current + " were defined!";
-	}
+    private int current;
+    private int required;
+
+    public NotEnoughSpawnPointsException(int currentSpawnPoints, int required) {
+        this.current = currentSpawnPoints;
+        this.required = required;
+    }
+
+    @Override
+    public String getDescription() {
+        return required + " spawnpoints are required, but only " + current + " were defined!";
+    }
 }

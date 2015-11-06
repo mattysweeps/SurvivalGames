@@ -42,13 +42,6 @@ public class Loot implements ConfigurationSerializable {
     private ItemStack item;
     private double weight;
 
-    public static void registerAliases() {
-        //Register this serializable class with some aliases too
-        ConfigurationSerialization.registerClass(Loot.class);
-        ConfigurationSerialization.registerClass(Loot.class, "loot");
-        ConfigurationSerialization.registerClass(Loot.class, "LOOT");
-    }
-
     private Loot() {
         this.weight = 0;
         this.item = null;
@@ -57,6 +50,13 @@ public class Loot implements ConfigurationSerializable {
     public Loot(ItemStack item, double weight) {
         this.item = item;
         this.weight = weight;
+    }
+
+    public static void registerAliases() {
+        //Register this serializable class with some aliases too
+        ConfigurationSerialization.registerClass(Loot.class);
+        ConfigurationSerialization.registerClass(Loot.class, "loot");
+        ConfigurationSerialization.registerClass(Loot.class, "LOOT");
     }
 
     /**

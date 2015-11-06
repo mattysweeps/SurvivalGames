@@ -29,8 +29,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  * Exception thrown when the exit location for a game was needed
  */
 public class NoExitLocationException extends SurvivalGameException {
-	@Override
-	public String getDescription() {
-		return "No Exit Location has been defined!";
-	}
+    @Override
+    public String getDescription() {
+        return "No Exit Location has been defined!";
+    }
 }

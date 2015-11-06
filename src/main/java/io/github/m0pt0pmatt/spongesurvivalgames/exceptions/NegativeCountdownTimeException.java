@@ -30,14 +30,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  */
 public class NegativeCountdownTimeException extends SurvivalGameException {
 
-	private int countdown;
-	
-	public NegativeCountdownTimeException(int countdown) {
-		this.countdown = countdown;
-	}
-	
-	@Override
-	public String getDescription() {
-		return "The countdown cannot be negative: " + countdown;
-	}
+    private int countdown;
+
+    public NegativeCountdownTimeException(int countdown) {
+        this.countdown = countdown;
+    }
+
+    @Override
+    public String getDescription() {
+        return "The countdown cannot be negative: " + countdown;
+    }
 }

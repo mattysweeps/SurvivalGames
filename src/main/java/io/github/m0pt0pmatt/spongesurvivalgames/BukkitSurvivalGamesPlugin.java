@@ -214,7 +214,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         Bukkit.getLogger().info("Sponge Survival Games Plugin Enabled");
         getCommand(CommandKeywords.SSG).setExecutor(commandExecutor);
         getCommand(CommandKeywords.SSG).setTabCompleter(tabCompleter);
-        
+
         Loot.registerAliases();
     }
 

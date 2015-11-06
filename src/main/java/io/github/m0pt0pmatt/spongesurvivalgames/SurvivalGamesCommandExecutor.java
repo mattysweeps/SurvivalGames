@@ -26,15 +26,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
-import java.util.HashMap;
-import java.util.Map;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrieReturn;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Command Executor for the plugin
@@ -57,11 +56,11 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
             return false;
         }
 
-        if (!trieReturn.data.execute(commandSender, arguments)){
+        if (!trieReturn.data.execute(commandSender, arguments)) {
             StringBuilder builder = new StringBuilder();
             builder.append("Usage: /ssg");
             trieReturn.matched.forEach(string -> builder.append(" ").append(string));
-            for (String string: trieReturn.leftovers) builder.append(" ").append(string);
+            for (String string : trieReturn.leftovers) builder.append(" ").append(string);
             commandSender.sendMessage(builder.toString());
             return false;
         }

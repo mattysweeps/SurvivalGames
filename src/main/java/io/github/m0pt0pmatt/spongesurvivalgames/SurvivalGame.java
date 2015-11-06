@@ -99,7 +99,7 @@ public class SurvivalGame {
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
         if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
-        	(playerUUIDs.size(), config.getSpawns().size());
+                (playerUUIDs.size(), config.getSpawns().size());
         if (playerUUIDs.isEmpty()) throw new NoPlayerException("No players when starting game!");
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
@@ -156,8 +156,8 @@ public class SurvivalGame {
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
-        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw 
-        	new PlayerLimitReachedException(config.getPlayerLimit().get());
+        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
+                new PlayerLimitReachedException(config.getPlayerLimit().get());
 
         playerUUIDs.add(player);
     }
@@ -168,7 +168,7 @@ public class SurvivalGame {
 
     public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
         if (!config.getWorldName().isPresent()) throw new NoWorldNameException(
-        		"World for map empty when trying to set up center location!");
+                "World for map empty when trying to set up center location!");
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
 
@@ -339,27 +339,27 @@ public class SurvivalGame {
         config.setZMax(Math.max(zMin, zMax));
     }
 
-    public Optional<Integer> getXMin(){
+    public Optional<Integer> getXMin() {
         return config.getXMin();
     }
 
-    public Optional<Integer> getXMax(){
+    public Optional<Integer> getXMax() {
         return config.getXMax();
     }
 
-    public Optional<Integer> getYMin(){
+    public Optional<Integer> getYMin() {
         return config.getYMin();
     }
 
-    public Optional<Integer> getYMax(){
+    public Optional<Integer> getYMax() {
         return config.getYMax();
     }
 
-    public Optional<Integer> getZMin(){
+    public Optional<Integer> getZMin() {
         return config.getZMin();
     }
 
-    public Optional<Integer> getZMax(){
+    public Optional<Integer> getZMax() {
         return config.getZMax();
     }
 

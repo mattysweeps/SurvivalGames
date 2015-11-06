@@ -26,8 +26,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoBoundsException extends SurvivalGameException {
-	@Override
-	public String getDescription() {
-		return "Bounds for the session have not been properly defined!";
-	}
+    @Override
+    public String getDescription() {
+        return "Bounds for the session have not been properly defined!";
+    }
 }

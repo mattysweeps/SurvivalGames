@@ -28,9 +28,9 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 import org.bukkit.GameMode;
 
 public abstract class OfferGameModeException extends TaskException {
-	
-	public OfferGameModeException(GameMode modeOffered, String description) {
-		super(description + " : " + modeOffered.toString());
-	}
-	
+
+    public OfferGameModeException(GameMode modeOffered, String description) {
+        super(description + " : " + modeOffered.toString());
+    }
+
 }

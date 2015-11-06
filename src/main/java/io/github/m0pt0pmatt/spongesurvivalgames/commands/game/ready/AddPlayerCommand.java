@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.bukkit.Bukkit;
@@ -41,8 +40,8 @@ import java.util.Map;
  */
 public class AddPlayerCommand extends ReadyCommand {
 
-	private static final String allKeyword = "@a";
-	
+    private static final String allKeyword = "@a";
+
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -55,22 +54,21 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
-        
+
         if (playerName.equals(allKeyword)) {
-        	return addAllPlayers();
+            return addAllPlayers();
         } else {
-        	Player player = Bukkit.getPlayer(playerName);
-	        if (player == null) {
-	            Bukkit.getLogger().warning("No such player \"" + playerName + "\".");
-	            return false;
-	        }
-        	return addPlayer(player);
+            Player player = Bukkit.getPlayer(playerName);
+            if (player == null) {
+                Bukkit.getLogger().warning("No such player \"" + playerName + "\".");
+                return false;
+            }
+            return addPlayer(player);
         }
 
-        
-        
+
     }
-    
+
     private boolean addPlayer(Player player) {
 
         try {
@@ -84,17 +82,17 @@ public class AddPlayerCommand extends ReadyCommand {
         }
 
         Bukkit.getLogger().info("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
-        
+
         return true;
     }
-    
+
     private boolean addAllPlayers() {
-    	Bukkit.getOnlinePlayers().forEach(player -> {
-    		addPlayer(player);
-    	});
-    	
-    	return true;
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            addPlayer(player);
+        });
+
+        return true;
     }
-    
-   
+
+
 }
