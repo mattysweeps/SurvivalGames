@@ -67,11 +67,12 @@ public class StartGameCommand extends ReadyCommand {
         } catch (NoBoundsException e) {
             Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have bounds assigned to it.");
             return false;
-        } catch (TaskException e) {
+        } catch (NoPlayerException e) {
+        	Bukkit.getLogger().warning(e.getDescription());
+        	return false;
+    	}
+        catch (TaskException e) {
             Bukkit.getLogger().warning(e.getMessage());
-            return false;
-        } catch (NoPlayersException e) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not any players.");
             return false;
         }
 

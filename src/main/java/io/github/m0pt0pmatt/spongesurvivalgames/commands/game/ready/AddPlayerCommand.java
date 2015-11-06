@@ -40,6 +40,8 @@ import java.util.Map;
  */
 public class AddPlayerCommand extends ReadyCommand {
 
+	private static final String allKeyword = "@a";
+	
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -52,12 +54,23 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
         String playerName = arguments.get(CommandKeywords.PLAYERNAME);
-
-        Player player = Bukkit.getServer().getPlayer(playerName);
-        if (player == null) {
-            Bukkit.getLogger().warning("No such player \"" + playerName + "\".");
-            return false;
+        
+        if (playerName.equals(allKeyword)) {
+        	return addAllPlayers();
+        } else {
+        	Player player = Bukkit.getPlayer(playerName);
+	        if (player == null) {
+	            Bukkit.getLogger().warning("No such player \"" + playerName + "\".");
+	            return false;
+	        }
+        	return addPlayer(player);
         }
+
+        
+        
+    }
+    
+    private boolean addPlayer(Player player) {
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
@@ -69,7 +82,18 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
 
-        Bukkit.getLogger().info("Player \"" + playerName + "\" added to survival game \"" + id + "\".");
+        Bukkit.getLogger().info("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
+        
         return true;
     }
+    
+    private boolean addAllPlayers() {
+    	Bukkit.getOnlinePlayers().forEach(player -> {
+    		addPlayer(player);
+    	});
+    	
+    	return true;
+    }
+    
+   
 }
