@@ -25,12 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Tab completer for the plugin
