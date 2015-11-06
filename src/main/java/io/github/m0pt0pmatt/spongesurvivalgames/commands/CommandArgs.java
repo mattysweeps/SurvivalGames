@@ -43,5 +43,5 @@ public class CommandArgs {
     public static final String PLAYERNAME = "[playername]";
     public static final String RANGE = "[range]";
     public static final String COUNTDOWN = "[countdown]";
-
+    public static final String PLAYER_LIMIT = "[player-limit]";
 }

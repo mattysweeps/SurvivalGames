@@ -146,7 +146,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new SetExitCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.SET, CommandKeywords.PLAYER_LIMIT},
-                new String[]{CommandArgs.ID, CommandKeywords.PLAYER_LIMIT},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYER_LIMIT},
                 new SetPlayerLimitCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.SET, CommandKeywords.WORLD},
