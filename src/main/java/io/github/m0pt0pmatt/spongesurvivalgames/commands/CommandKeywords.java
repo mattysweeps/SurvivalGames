@@ -40,7 +40,7 @@ public class CommandKeywords {
     public static final String READY = "ready";
     public static final String START = "start";
     public static final String STOP = "stop";
-    public static final String FORCE_STOP = "force-stop";
+    public static final String FORCE = "force";
     public static final String LOAD = "load";
     public static final String SAVE = "save";
     public static final String CENTER = "center";
@@ -58,4 +58,7 @@ public class CommandKeywords {
     public static final String BOUNDS = "bounds";
     public static final String LOOT = "loot";
     public static final String HELD = "HELD";
+    public static final String DEATHMATCH = "deathmatch";
+    public static final String RADIUS = "radius";
+    public static final String TIME = "time";
 }

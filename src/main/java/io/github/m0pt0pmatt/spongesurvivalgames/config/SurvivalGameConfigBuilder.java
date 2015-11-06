@@ -122,4 +122,14 @@ public class SurvivalGameConfigBuilder {
         config.setZMax(zMax);
         return this;
     }
+
+    public SurvivalGameConfigBuilder deathmatchRadius(Integer deathmatchRadius) {
+        config.setDeathmatchRadius(deathmatchRadius);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder deathmatchTime(Integer deathmatchTime) {
+        config.setDeathmatchTime(deathmatchTime);
+        return this;
+    }
 }

@@ -66,6 +66,9 @@ public class SurvivalGameConfigSerializer {
         builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
         builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
 
+        builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
+        builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
+
         List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
 
         if (!vectorList.isEmpty()) {
@@ -85,7 +88,6 @@ public class SurvivalGameConfigSerializer {
                 } catch (ClassCastException e) {
                     BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when reading double "
                             + "value in spawn location! Skipping...");
-                    continue;
                 }
             }
         }
@@ -131,6 +133,9 @@ public class SurvivalGameConfigSerializer {
         config.set(Fields.ZMIN.getKey(), obj.getZMin());
         config.set(Fields.ZMAX.getKey(), obj.getZMax());
 
+        config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius());
+        config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime());
+
         return config;
     }
 
@@ -151,7 +156,9 @@ public class SurvivalGameConfigSerializer {
         YMIN("ymin", 0),
         YMAX("ymax", 0),
         ZMIN("zmin", 0),
-        ZMAX("zmax", 0);
+        ZMAX("zmax", 0),
+        DEATHMATCHRADIUS("deathmatchRadius", 100),
+        DEATHMATCHTIME("deathmatchTime", 60);
 
         private String key;
 

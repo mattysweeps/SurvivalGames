@@ -33,11 +33,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-/**
- * Command to set the countdown time for a game
- */
-public class SetCountdownCommand extends StoppedCommand {
-
+public class SetDeathmatchTimeCommand extends StoppedCommand {
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -45,28 +41,28 @@ public class SetCountdownCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandArgs.COUNTDOWN)) {
-            Bukkit.getLogger().warning("No Countdown time specified");
+        if (!arguments.containsKey(CommandArgs.DEATHMATCHTIME)) {
+            Bukkit.getLogger().warning("No deathmatch time specified");
             return false;
         }
-        String countdownTimeString = arguments.get(CommandArgs.COUNTDOWN);
+        String deathmatchTimeString = arguments.get(CommandArgs.DEATHMATCHTIME);
 
-        int countdownTime;
+        int deathmatchTime;
         try {
-            countdownTime = Integer.parseInt(countdownTimeString);
+            deathmatchTime = Integer.parseInt(deathmatchTimeString);
         } catch (NumberFormatException e) {
             Bukkit.getLogger().warning("Unable to convert String to Integer");
             return false;
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setDeathmatchTime(deathmatchTime);
         } catch (NegativeNumberException e) {
-            Bukkit.getLogger().warning("Negative countdown times are not valid");
+            Bukkit.getLogger().warning("Negative deathmatch times are not valid");
             return false;
         }
 
-        Bukkit.getLogger().info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+        Bukkit.getLogger().info("Game \"" + id + "\" now has a deathmatch time of \"" + deathmatchTime + "\" seconds.");
         return true;
     }
 }

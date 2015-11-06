@@ -72,6 +72,13 @@ public class SurvivalGame {
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
     ));
+    private static final List<SurvivalGameTask> deathmatchTasks = new LinkedList<>(Arrays.asList(
+            new CreateCageSnapshotsTask(),
+            new SpawnPlayersTask(),
+            new RotatePlayersTask(),
+            new CreateCountdownTask(),
+            new CreateDeathmatchBorderTask()
+    ));
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
@@ -92,7 +99,7 @@ public class SurvivalGame {
         executeTasks(readyTasks);
     }
 
-    public void start() throws WorldNotSetException, NoPlayerException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException {
+    public void start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -110,6 +117,10 @@ public class SurvivalGame {
         if (!config.getYMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
+        if (!config.getCenter().isPresent()) throw new NoCenterException();
+        if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
+        if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
+        if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
@@ -133,6 +144,31 @@ public class SurvivalGame {
 
         // Set the state
         state = SurvivalGameState.STOPPED;
+    }
+
+    public void startDeathMatch() throws TaskException {
+        if (!state.equals(SurvivalGameState.DEATHMATCH)) {
+            state = SurvivalGameState.DEATHMATCH;
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    this::beginDeathMatch,
+                    20L * config.getDeathmatchTime().get()
+            );
+
+            BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
+                    player -> player.sendMessage("Deathmatch starting in " + config.getDeathmatchTime().get() + " seconds.")
+            );
+
+        }
+    }
+
+    private void beginDeathMatch() {
+        try {
+            executeTasks(deathmatchTasks);
+        } catch (TaskException e) {
+            Bukkit.getLogger().warning("Deathmatch task failed: " + e.getDescription());
+        }
     }
 
     private void executeTasks(List<SurvivalGameTask> tasks) throws TaskException {
@@ -242,8 +278,8 @@ public class SurvivalGame {
         return config.getCountdownTime();
     }
 
-    public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
-        if (countdownTime < 0) throw new NegativeCountdownTimeException(countdownTime);
+    public void setCountdownTime(int countdownTime) throws NegativeNumberException {
+        if (countdownTime < 0) throw new NegativeNumberException(countdownTime);
         config.setCountdownTime(countdownTime);
     }
 
@@ -369,5 +405,23 @@ public class SurvivalGame {
 
     public void addLoot(Loot loot) {
         if (loot != null) config.getLoot().add(loot);
+    }
+
+    public Optional<Integer> getDeathmatchRadius() {
+        return config.getDeathmatchRadius();
+    }
+
+    public void setDeathmatchRadius(int deathmatchRadius) throws NegativeNumberException {
+        if (deathmatchRadius < 0) throw new NegativeNumberException(deathmatchRadius);
+        config.setDeathmatchRadius(deathmatchRadius);
+    }
+
+    public Optional<Integer> getDeathmatchTime() {
+        return config.getDeathmatchTime();
+    }
+
+    public void setDeathmatchTime(int deathmatchTime) throws NegativeNumberException {
+        if (deathmatchTime < 0) throw new NegativeNumberException(deathmatchTime);
+        config.setDeathmatchTime(deathmatchTime);
     }
 }

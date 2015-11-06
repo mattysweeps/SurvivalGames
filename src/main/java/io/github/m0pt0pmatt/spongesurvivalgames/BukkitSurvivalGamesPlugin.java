@@ -33,6 +33,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCom
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceDeathmatchCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
@@ -117,6 +118,14 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID},
                 new PrintLootCommand());
         commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.DEATHMATCH, CommandKeywords.RADIUS},
+                new String[]{CommandArgs.ID},
+                new PrintDeathmatchRadiusCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.DEATHMATCH, CommandKeywords.TIME},
+                new String[]{CommandArgs.ID},
+                new PrintDeathmatchTimeCommand());
+        commandTrie.add(
                 new String[]{CommandKeywords.ADD, CommandKeywords.SPAWN},
                 new String[]{CommandArgs.ID, CommandArgs.X, CommandArgs.Y, CommandArgs.Z},
                 new AddSpawnCommand());
@@ -157,6 +166,14 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID, CommandArgs.XMIN, CommandArgs.XMAX, CommandArgs.YMIN, CommandArgs.YMAX, CommandArgs.ZMIN, CommandArgs.ZMAX},
                 new SetBoundsCommand());
         commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.DEATHMATCH, CommandKeywords.RADIUS},
+                new String[]{CommandArgs.ID, CommandArgs.DEATHMATCHRADIUS},
+                new SetDeathmatchRadiusCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.SET, CommandKeywords.DEATHMATCH, CommandKeywords.TIME},
+                new String[]{CommandArgs.ID, CommandArgs.DEATHMATCHTIME},
+                new SetDeathmatchTimeCommand());
+        commandTrie.add(
                 new String[]{CommandKeywords.ADD, CommandKeywords.HELD, CommandKeywords.LOOT},
                 new String[]{CommandArgs.ID, CommandArgs.WEIGHT},
                 new AddHeldLootCommand());
@@ -181,9 +198,13 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID},
                 new StopGameCommand());
         commandTrie.add(
-                new String[]{CommandKeywords.FORCE_STOP},
+                new String[]{CommandKeywords.FORCE, CommandKeywords.STOP},
                 new String[]{CommandArgs.ID},
                 new ForceStopGameCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.FORCE, CommandKeywords.DEATHMATCH},
+                new String[]{CommandArgs.ID},
+                new ForceDeathmatchCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.LOAD},
                 new String[]{CommandArgs.ID, CommandArgs.FILENAME},

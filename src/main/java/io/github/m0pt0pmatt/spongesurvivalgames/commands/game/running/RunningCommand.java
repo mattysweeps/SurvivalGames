@@ -45,8 +45,9 @@ public abstract class RunningCommand extends GameCommand {
             return false;
         }
 
-        if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.RUNNING)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
+        if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.RUNNING) &&
+                !BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.DEATHMATCH)) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a RUNNING or DEATHMATCH state for this command.");
             return false;
         }
 

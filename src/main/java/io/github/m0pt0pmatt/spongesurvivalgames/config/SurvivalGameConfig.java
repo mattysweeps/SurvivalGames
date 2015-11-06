@@ -52,6 +52,8 @@ public class SurvivalGameConfig {
     private Integer yMax;
     private Integer zMin;
     private Integer zMax;
+    private Integer deathmatchRadius;
+    private Integer deathmatchTime;
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -173,4 +175,19 @@ public class SurvivalGameConfig {
         this.zMax = zMax;
     }
 
+    public Optional<Integer> getDeathmatchRadius() {
+        return deathmatchRadius == null ? Optional.empty() : Optional.of(deathmatchRadius);
+    }
+
+    public void setDeathmatchRadius(Integer deathmatchRadius) {
+        this.deathmatchRadius = deathmatchRadius;
+    }
+
+    public Optional<Integer> getDeathmatchTime() {
+        return deathmatchTime == null ? Optional.empty() : Optional.of(deathmatchTime);
+    }
+
+    public void setDeathmatchTime(Integer deathmatchTime) {
+        this.deathmatchTime = deathmatchTime;
+    }
 }

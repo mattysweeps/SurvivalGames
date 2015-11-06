@@ -23,27 +23,11 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-public class CommandArgs {
-    public static final String ID = "[id]";
-    public static final String X = "[x]";
-    public static final String Y = "[y]";
-    public static final String Z = "[z]";
-    public static final String WORLDNAME = "[worldname]";
-    public static final String FILENAME = "[filename]";
-    public static final String XMIN = "[xmin]";
-    public static final String XMAX = "[xmax]";
-    public static final String YMIN = "[ymin]";
-    public static final String YMAX = "[ymax]";
-    public static final String ZMIN = "[zmin]";
-    public static final String ZMAX = "[zmax]";
-    public static final String WEIGHT = "[weight]";
-    public static final String MIDPOINT = "[midpoint]";
-    public static final String PLAYERNAME = "[playername]";
-    public static final String RANGE = "[range]";
-    public static final String COUNTDOWN = "[countdown]";
-    public static final String PLAYER_LIMIT = "[player-limit]";
-    public static final String DEATHMATCHRADIUS = "[deathmatch-radius]";
-    public static final String DEATHMATCHTIME = "[deathmatch-time]";
+public class NoCenterException extends SurvivalGameException {
+    @Override
+    public String getDescription() {
+        return "No Center location set";
+    }
 }

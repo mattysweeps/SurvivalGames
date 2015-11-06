@@ -23,27 +23,26 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-public class CommandArgs {
-    public static final String ID = "[id]";
-    public static final String X = "[x]";
-    public static final String Y = "[y]";
-    public static final String Z = "[z]";
-    public static final String WORLDNAME = "[worldname]";
-    public static final String FILENAME = "[filename]";
-    public static final String XMIN = "[xmin]";
-    public static final String XMAX = "[xmax]";
-    public static final String YMIN = "[ymin]";
-    public static final String YMAX = "[ymax]";
-    public static final String ZMIN = "[zmin]";
-    public static final String ZMAX = "[zmax]";
-    public static final String WEIGHT = "[weight]";
-    public static final String MIDPOINT = "[midpoint]";
-    public static final String PLAYERNAME = "[playername]";
-    public static final String RANGE = "[range]";
-    public static final String COUNTDOWN = "[countdown]";
-    public static final String PLAYER_LIMIT = "[player-limit]";
-    public static final String DEATHMATCHRADIUS = "[deathmatch-radius]";
-    public static final String DEATHMATCHTIME = "[deathmatch-time]";
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+
+public class CreateDeathmatchBorderTask implements SurvivalGameTask {
+    @Override
+    public void execute(SurvivalGame game) throws TaskException {
+
+        World world = Bukkit.getWorld(game.getWorldName().get());
+        if (world == null) return;
+
+        WorldBorder border = world.getWorldBorder();
+        if (border == null) return;
+
+        border.reset();
+        border.setCenter(game.getCenter().get());
+        border.setSize(game.getDeathmatchRadius().get());
+    }
 }

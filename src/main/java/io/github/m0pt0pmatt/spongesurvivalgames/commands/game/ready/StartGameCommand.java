@@ -67,10 +67,22 @@ public class StartGameCommand extends ReadyCommand {
         } catch (NoBoundsException e) {
             Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have bounds assigned to it.");
             return false;
+        } catch (NoCenterException e) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a center assigned to it.");
+            return false;
+        } catch (NoDeathmatchRadiusException e) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a deathmatch radius assigned to it.");
+            return false;
+        } catch (NoDeathmatchTimeException e) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a deathmatch time assigned to it.");
+            return false;
         } catch (NoPlayerException e) {
             Bukkit.getLogger().warning(e.getDescription());
             return false;
         } catch (TaskException e) {
+            Bukkit.getLogger().warning(e.getMessage());
+            return false;
+        } catch (SurvivalGameException e) {
             Bukkit.getLogger().warning(e.getMessage());
             return false;
         }
