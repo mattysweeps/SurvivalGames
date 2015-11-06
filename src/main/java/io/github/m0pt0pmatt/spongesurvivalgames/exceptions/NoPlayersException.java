@@ -23,35 +23,11 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
-import java.util.Map;
-
-/**
- * Command to set a game to the READY state
- */
-public class ReadyGameCommand extends StoppedCommand {
-
+public class NoPlayersException extends SurvivalGameException {
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
-
-        if (!super.execute(sender, arguments)) {
-            return false;
-        }
-
-        try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).ready();
-        } catch (TaskException e) {
-            Bukkit.getLogger().warning(e.getMessage());
-            return false;
-        }
-        Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now set to READY.");
-
-        return true;
+    public String getDescription() {
+        return "No players present";
     }
 }

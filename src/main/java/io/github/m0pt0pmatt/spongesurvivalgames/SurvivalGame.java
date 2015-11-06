@@ -56,14 +56,15 @@ public class SurvivalGame {
             new Vector(0, -1, 0)
     ));
     private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
-            new ResetLootGeneratorTask(),
-            new CreateCenterChestsTask(),
-            new FillChestsTask(),
             new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new ReadyPlayerTask(),
             new CreateCountdownTask()
+    ));
+    private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
+            new ResetLootGeneratorTask(),
+            new FillChestsTask()
     ));
     private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
             new DespawnPlayersTask()
@@ -84,11 +85,14 @@ public class SurvivalGame {
         return lootGenerator;
     }
 
-    public void ready() {
+    public void ready() throws TaskException {
         state = SurvivalGameState.READY;
+
+        //Execute each task
+        executeTasks(readyTasks);
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException {
+    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException, NoPlayersException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -105,6 +109,7 @@ public class SurvivalGame {
         if (!config.getYMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
+        if (playerUUIDs.size() < 1) throw new NoPlayersException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;

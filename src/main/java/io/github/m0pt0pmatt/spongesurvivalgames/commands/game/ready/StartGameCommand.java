@@ -70,6 +70,9 @@ public class StartGameCommand extends ReadyCommand {
         } catch (TaskException e) {
             Bukkit.getLogger().warning(e.getMessage());
             return false;
+        } catch (NoPlayersException e) {
+            Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not any players.");
+            return false;
         }
 
         Bukkit.getLogger().info("Survival Game \"" + id + "\" is now RUNNING.");
