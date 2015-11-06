@@ -57,7 +57,7 @@ public class SurvivalGame {
     ));
     private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
             new ResetLootGeneratorTask(),
-            new CreateCenterChestsTask(),
+            //new CreateCenterChestsTask(),
             new FillChestsTask(),
             new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
