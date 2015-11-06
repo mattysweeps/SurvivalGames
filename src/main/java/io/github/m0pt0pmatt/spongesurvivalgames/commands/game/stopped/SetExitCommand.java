@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.Bukkit;
@@ -46,17 +47,17 @@ public class SetExitCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.WORLDNAME)) {
+        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
             Bukkit.getLogger().warning("World name was not present.");
             return false;
         }
-        String worldName = arguments.get(CommandKeywords.WORLDNAME);
+        String worldName = arguments.get(CommandArgs.WORLDNAME);
 
 
-        String xString = arguments.get(CommandKeywords.X);
-        String yString = arguments.get(CommandKeywords.Y);
-        String zString = arguments.get(CommandKeywords.Z);
-        if (!arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X)) {
+        String xString = arguments.get(CommandArgs.X);
+        String yString = arguments.get(CommandArgs.Y);
+        String zString = arguments.get(CommandArgs.Z);
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
             Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
             return false;
         }

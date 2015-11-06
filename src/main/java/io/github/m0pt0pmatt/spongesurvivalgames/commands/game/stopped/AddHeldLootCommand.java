@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
@@ -52,12 +53,12 @@ public class AddHeldLootCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.LOOT)) {
+        if (!arguments.containsKey(CommandArgs.WEIGHT)) {
             Bukkit.getLogger().warning("No loot weight specified");
             return false;
         }
 
-        String weightString = arguments.get(CommandKeywords.WEIGHT);
+        String weightString = arguments.get(CommandArgs.WEIGHT);
 
         Double weight;
         try {

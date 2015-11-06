@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeCountdownTimeException;
 import org.bukkit.Bukkit;
@@ -45,11 +46,11 @@ public class SetCountdownCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.COUNTDOWN)) {
+        if (!arguments.containsKey(CommandArgs.COUNTDOWN)) {
             Bukkit.getLogger().warning("No Countdown time specified");
             return false;
         }
-        String countdownTimeString = arguments.get(CommandKeywords.COUNTDOWN);
+        String countdownTimeString = arguments.get(CommandArgs.COUNTDOWN);
 
         int countdownTime;
         try {

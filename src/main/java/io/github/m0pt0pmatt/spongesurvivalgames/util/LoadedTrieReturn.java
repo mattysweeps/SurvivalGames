@@ -23,37 +23,16 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Command to create a new game
- */
-public class CreateGameCommand extends SurvivalGamesCommand {
-
-    @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
-
-        if (!arguments.containsKey(CommandArgs.ID)) {
-            Bukkit.getLogger().warning("Survival Game ID is not present.");
-            return false;
-        }
-        String id = arguments.get(CommandArgs.ID);
-
-        if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            Bukkit.getLogger().warning("Survival Game ID already exists.");
-            return false;
-        }
-
-        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
-        Bukkit.getLogger().info("Survival Game \"" + id + "\" created.");
-
-        return true;
-    }
+public class LoadedTrieReturn<A, B> {
+    public Map<A, A> leftoverMap = new HashMap<>();
+    public B data = null;
+    public A[] leftovers = null;
+    public List<A> matched = new LinkedList<>();
 }

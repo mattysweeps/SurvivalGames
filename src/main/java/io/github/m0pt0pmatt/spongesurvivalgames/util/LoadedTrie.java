@@ -67,15 +67,11 @@ public class LoadedTrie<T, D> {
         add(list, null, data);
     }
 
-    /**
-     * Attempts to traverse the trie
-     *
-     * @param input           The input sequence for traversing the trie.
-     * @param leftovers Any mismatched Ts are stored in this map. the key is the expected value, and the value was the actual input. Note that, since this is a Map, duplicates are erased
-     * @return The data if a leaf node was reached, null otherwise
-     */
-    public D match(T[] input, Map<T, T> leftovers) {
-        if (input == null) return null;
+    public LoadedTrieReturn<T, D> match(T[] input) {
+
+        LoadedTrieReturn<T, D> trieReturn = new LoadedTrieReturn<>();
+
+        if (input == null) return trieReturn;
 
         Node current = first;
         int i;
@@ -84,19 +80,22 @@ public class LoadedTrie<T, D> {
         for (i = 0; i < input.length; i++) {
             if (current.children.containsKey(input[i])) {
                 current = current.children.get(input[i]);
+                trieReturn.matched.add(input[i]);
             } else {
                 break;
             }
         }
 
-        if (current == null) return null;
+        if (current == null) return trieReturn;
 
         //Collect leftovers
         for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++){
-            leftovers.put(current.leftovers[j], input[i]);
+            trieReturn.leftoverMap.put(current.leftovers[j], input[i]);
         }
 
-        return current.data;
+        trieReturn.data = current.data;
+        trieReturn.leftovers = current.leftovers;
+        return trieReturn;
     }
 
     /**
@@ -136,4 +135,5 @@ public class LoadedTrie<T, D> {
         D data = null;
         T[] leftovers = null;
     }
+
 }

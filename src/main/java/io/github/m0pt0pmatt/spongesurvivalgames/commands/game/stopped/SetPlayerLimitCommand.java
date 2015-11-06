@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -44,11 +45,11 @@ public class SetPlayerLimitCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.PLAYER_LIMIT)) {
+        if (!arguments.containsKey(CommandArgs.PLAYER_LIMIT)) {
             Bukkit.getLogger().warning("Player limit was not present.");
             return false;
         }
-        String playerLimitString = arguments.get(CommandKeywords.PLAYER_LIMIT);
+        String playerLimitString = arguments.get(CommandArgs.PLAYER_LIMIT);
 
         int playerLimit;
         try {

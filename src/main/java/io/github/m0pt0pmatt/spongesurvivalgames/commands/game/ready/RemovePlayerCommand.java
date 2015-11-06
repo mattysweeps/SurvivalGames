@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,11 +46,11 @@ public class RemovePlayerCommand extends ReadyCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.PLAYERNAME)) {
+        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
             Bukkit.getLogger().warning("Player name is not present.");
             return false;
         }
-        String playerName = arguments.get(CommandKeywords.PLAYERNAME);
+        String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
         Player player = Bukkit.getServer().getPlayer(playerName);
         if (player == null) {

@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,23 +46,23 @@ public class SetBoundsCommand extends StoppedCommand {
         }
 
         if (
-                !arguments.containsKey(CommandKeywords.XMIN) ||
-                        !arguments.containsKey(CommandKeywords.XMAX) ||
-                        !arguments.containsKey(CommandKeywords.YMIN) ||
-                        !arguments.containsKey(CommandKeywords.YMAX) ||
-                        !arguments.containsKey(CommandKeywords.ZMIN) ||
-                        !arguments.containsKey(CommandKeywords.ZMAX)
+                !arguments.containsKey(CommandArgs.XMIN) ||
+                        !arguments.containsKey(CommandArgs.XMAX) ||
+                        !arguments.containsKey(CommandArgs.YMIN) ||
+                        !arguments.containsKey(CommandArgs.YMAX) ||
+                        !arguments.containsKey(CommandArgs.ZMIN) ||
+                        !arguments.containsKey(CommandArgs.ZMAX)
                 ) {
             Bukkit.getLogger().warning("Missing one or more bounds.");
             return false;
         }
 
-        String xMinString = arguments.get(CommandKeywords.XMIN);
-        String yMinString = arguments.get(CommandKeywords.YMIN);
-        String zMinString = arguments.get(CommandKeywords.ZMIN);
-        String xMaxString = arguments.get(CommandKeywords.XMAX);
-        String yMaxString = arguments.get(CommandKeywords.YMAX);
-        String zMaxString = arguments.get(CommandKeywords.ZMAX);
+        String xMinString = arguments.get(CommandArgs.XMIN);
+        String yMinString = arguments.get(CommandArgs.YMIN);
+        String zMinString = arguments.get(CommandArgs.ZMIN);
+        String xMaxString = arguments.get(CommandArgs.XMAX);
+        String yMaxString = arguments.get(CommandArgs.YMAX);
+        String zMaxString = arguments.get(CommandArgs.ZMAX);
 
         int xMin, xMax, yMin, yMax, zMin, zMax;
         try {

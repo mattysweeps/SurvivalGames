@@ -29,6 +29,8 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrieReturn;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,12 +50,22 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
             strings[i] = strings[i].toLowerCase();
         }
 
-        SurvivalGamesCommand cmd = BukkitSurvivalGamesPlugin.commandTrie.match(strings, arguments);
-        if (cmd == null) {
+        LoadedTrieReturn<String, SurvivalGamesCommand> trieReturn = BukkitSurvivalGamesPlugin.commandTrie.match(strings);
+
+        if (trieReturn.data == null) {
             Bukkit.getLogger().warning("No command found");
             return false;
         }
 
-        return cmd.execute(commandSender, arguments);
+        if (!trieReturn.data.execute(commandSender, arguments)){
+            StringBuilder builder = new StringBuilder();
+            builder.append("Usage: /ssg");
+            trieReturn.matched.forEach(string -> builder.append(" ").append(string));
+            for (String string: trieReturn.leftovers) builder.append(" ").append(string);
+            commandSender.sendMessage(builder.toString());
+            return false;
+        }
+
+        return true;
     }
 }
