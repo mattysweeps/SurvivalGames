@@ -47,6 +47,7 @@ public class ReadyPlayerTask implements SurvivalGameTask {
                     player.setFoodLevel(20);
                     player.setSaturation(player.getFoodLevel());
                     player.setExhaustion(player.getFoodLevel());
+                    player.getInventory().clear();
                 });
     }
 }
