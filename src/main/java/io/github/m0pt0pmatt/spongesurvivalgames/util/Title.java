@@ -65,7 +65,7 @@ public final class Title {
     }
 
     public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, ChatColor subtitleColor) {
-    	displayTitle(player, titleText, subtitleText, defaultColor, defaultColor, defaultTime, defaultTime);
+    	displayTitle(player, titleText, subtitleText, titleColor, subtitleColor, defaultTime, defaultTime);
     }
     
     
