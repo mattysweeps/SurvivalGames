@@ -44,7 +44,7 @@ public class DeleteGameCommand extends StoppedCommand {
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.remove(id);
-        Bukkit.getLogger().info("Survival Game \"" + id + "\" deleted.");
+       sender.sendMessage("Survival Game \"" + id + "\" deleted.");
 
         return true;
     }

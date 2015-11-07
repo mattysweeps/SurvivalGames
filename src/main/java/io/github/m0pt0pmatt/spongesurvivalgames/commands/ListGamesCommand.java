@@ -39,9 +39,9 @@ public class ListGamesCommand extends SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        Bukkit.getLogger().info("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
+       sender.sendMessage("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
         for (Map.Entry<String, SurvivalGame> entry : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            Bukkit.getLogger().info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
+           sender.sendMessage("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
         }
 
         return true;

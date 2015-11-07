@@ -47,10 +47,10 @@ public class ReadyGameCommand extends StoppedCommand {
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).ready();
         } catch (TaskException e) {
-            Bukkit.getLogger().warning(e.getMessage());
+           sender.sendMessage(e.getMessage());
             return false;
         }
-        Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now set to READY.");
+       sender.sendMessage("Survival Game \"" + id + "\" is now set to READY.");
 
         return true;
     }

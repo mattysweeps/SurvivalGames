@@ -50,7 +50,7 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
         LoadedTrieReturn<String, SurvivalGamesCommand> trieReturn = BukkitSurvivalGamesPlugin.commandTrie.match(strings);
 
         if (trieReturn.data == null) {
-            Bukkit.getLogger().warning("No command found");
+            commandSender.sendMessage("No command found");
             return false;
         }
 

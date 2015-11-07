@@ -44,18 +44,18 @@ public class CreateGameCommand extends SurvivalGamesCommand {
     	}
     	
         if (!arguments.containsKey(CommandArgs.ID)) {
-            Bukkit.getLogger().warning("Survival Game ID is not present.");
+           sender.sendMessage("Survival Game ID is not present.");
             return false;
         }
         String id = arguments.get(CommandArgs.ID);
 
         if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            Bukkit.getLogger().warning("Survival Game ID already exists.");
+           sender.sendMessage("Survival Game ID already exists.");
             return false;
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
-        Bukkit.getLogger().info("Survival Game \"" + id + "\" created.");
+       sender.sendMessage("Survival Game \"" + id + "\" created.");
 
         return true;
     }

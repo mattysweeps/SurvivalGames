@@ -46,7 +46,7 @@ public class SetWorldCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-            Bukkit.getLogger().warning("World name was not present.");
+           sender.sendMessage("World name was not present.");
             return false;
         }
 
@@ -55,11 +55,11 @@ public class SetWorldCommand extends StoppedCommand {
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("World \"" + worldName + "\" does not exist.");
+           sender.sendMessage("World \"" + worldName + "\" does not exist.");
             return false;
         }
 
-        Bukkit.getLogger().info("World for game \"" + id + "\" is set to \"" + worldName + "\".");
+       sender.sendMessage("World for game \"" + id + "\" is set to \"" + worldName + "\".");
         return true;
     }
 }

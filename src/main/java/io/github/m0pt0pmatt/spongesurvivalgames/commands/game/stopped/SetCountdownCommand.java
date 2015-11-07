@@ -46,7 +46,7 @@ public class SetCountdownCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.COUNTDOWN)) {
-            Bukkit.getLogger().warning("No Countdown time specified");
+           sender.sendMessage("No Countdown time specified");
             return false;
         }
         String countdownTimeString = arguments.get(CommandArgs.COUNTDOWN);
@@ -55,18 +55,18 @@ public class SetCountdownCommand extends StoppedCommand {
         try {
             countdownTime = Integer.parseInt(countdownTimeString);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Unable to convert String to Integer");
+           sender.sendMessage("Unable to convert String to Integer");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);
         } catch (NegativeNumberException e) {
-            Bukkit.getLogger().warning("Negative countdown times are not valid");
+            sender.sendMessage("Negative countdown times are not valid");
             return false;
         }
 
-        Bukkit.getLogger().info("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+       sender.sendMessage("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
         return true;
     }
 }

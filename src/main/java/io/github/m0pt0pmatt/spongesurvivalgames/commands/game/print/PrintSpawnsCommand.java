@@ -47,9 +47,9 @@ public class PrintSpawnsCommand extends GameCommand {
         }
 
         Set<Vector> spawnLocations = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
-        Bukkit.getLogger().info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
+       sender.sendMessage("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
         for (Vector spawnLocation : spawnLocations) {
-            Bukkit.getLogger().info(spawnLocation.toString());
+           sender.sendMessage(spawnLocation.toString());
         }
 
         return true;

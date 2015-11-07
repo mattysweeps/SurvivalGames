@@ -47,11 +47,11 @@ public class PrintWorldCommand extends GameCommand {
 
         Optional<String> worldName = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getWorldName();
         if (!worldName.isPresent()) {
-            Bukkit.getLogger().warning("Game: \"" + id + "\", No World set.");
+           sender.sendMessage("Game: \"" + id + "\", No World set.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
         return true;
     }
 }

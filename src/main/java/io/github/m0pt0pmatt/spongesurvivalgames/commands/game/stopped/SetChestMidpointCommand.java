@@ -46,7 +46,7 @@ public class SetChestMidpointCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.MIDPOINT)) {
-            Bukkit.getLogger().warning("Chest midpoint was not present.");
+           sender.sendMessage("Chest midpoint was not present.");
             return false;
         }
 
@@ -56,18 +56,18 @@ public class SetChestMidpointCommand extends StoppedCommand {
         try {
             midpoint = Double.parseDouble(chestMidpoint);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Unable to convert String to Double");
+           sender.sendMessage("Unable to convert String to Double");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
         } catch (NegativeNumberException e) {
-            Bukkit.getLogger().warning("Chest midpoint cannot be negative.");
+            sender.sendMessage("Chest midpoint cannot be negative.");
             return false;
         }
 
-        Bukkit.getLogger().info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
+        sender.sendMessage("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
         return true;
     }
 }

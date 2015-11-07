@@ -43,7 +43,7 @@ public class SetChestRangeCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.RANGE)) {
-            Bukkit.getLogger().warning("Chest range was not present.");
+           sender.sendMessage("Chest range was not present.");
             return false;
         }
         String chestRange = arguments.get(CommandArgs.RANGE);
@@ -52,18 +52,18 @@ public class SetChestRangeCommand extends StoppedCommand {
         try {
             range = Double.parseDouble(chestRange);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Unable to convert String to Double");
+           sender.sendMessage("Unable to convert String to Double");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
         } catch (NegativeNumberException e) {
-            Bukkit.getLogger().warning("Chest range cannot be negative.");
+            sender.sendMessage("Chest range cannot be negative.");
             return false;
         }
 
-        Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");
+        sender.sendMessage("Chest range for game \"" + id + "\" set to " + range + ".");
         return true;
     }
 }

@@ -44,11 +44,11 @@ public class PrintChestRangeCommand extends GameCommand {
 
         Optional<Double> chestRange = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getChestRange();
         if (!chestRange.isPresent()) {
-            Bukkit.getLogger().warning("Game: \"" + id + "\", No Chest Range set.");
+           sender.sendMessage("Game: \"" + id + "\", No Chest Range set.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Chest Range: \"" + chestRange.get() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", Chest Range: \"" + chestRange.get() + "\".");
         return true;
     }
 }

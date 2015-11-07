@@ -44,7 +44,7 @@ public class PrintCountdownCommand extends GameCommand {
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
         return true;
     }
 }

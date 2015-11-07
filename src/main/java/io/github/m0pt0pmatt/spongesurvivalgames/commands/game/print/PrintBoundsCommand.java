@@ -58,11 +58,11 @@ public class PrintBoundsCommand extends GameCommand {
                 !yMin.isPresent() || !yMax.isPresent() ||
                 !zMin.isPresent() || !zMax.isPresent()) {
 
-            Bukkit.getLogger().warning("Game \"" + id + "\" is missing at least one bound");
+           sender.sendMessage("Game \"" + id + "\" is missing at least one bound");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", xMin" + xMin + ", xMax" + xMax + ", yMin" + yMin + ", yMax" + yMax + ", zMin" + zMin + ", zMax:" + zMax);
+       sender.sendMessage("Game: \"" + id + "\", xMin" + xMin + ", xMax" + xMax + ", yMin" + yMin + ", yMax" + yMax + ", zMin" + zMin + ", zMax:" + zMax);
         return true;
     }
 }

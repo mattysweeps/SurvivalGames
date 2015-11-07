@@ -46,7 +46,7 @@ public abstract class StoppedCommand extends GameCommand {
         }
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.STOPPED)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
+           sender.sendMessage("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
             return false;
         }
 
