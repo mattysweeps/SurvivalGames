@@ -30,7 +30,10 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -367,6 +370,7 @@ public class SurvivalGame {
                     },
                     200);
             winner.sendMessage("Congratulations! You won!");
+            Title.displayTitle(winner, "You Win!", "", ChatColor.DARK_GREEN, ChatColor.MAGIC, 30, 100);
         }
 
         Bukkit.getScheduler().runTaskLater(
