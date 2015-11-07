@@ -49,6 +49,13 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
         if (list == null) return new LinkedList<>();
         List<String> lowerCase = new ArrayList<>(list.size());
         list.forEach(st -> lowerCase.add(st.toLowerCase()));
-        return lowerCase;
+
+        if (strings[strings.length - 1].length() == 0){
+            return lowerCase;
+        }
+
+        return lowerCase.stream()
+                .filter(string -> string.startsWith(strings[strings.length - 1]))
+                .collect(Collectors.toList());
     }
 }
