@@ -50,7 +50,10 @@ public class CreateCountdownTask implements SurvivalGameTask {
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
-                    () -> player.sendMessage("Go!"),
+                    () -> {
+                    	player.sendMessage("Go!");
+                        game.checkWin();
+                    },
                     20L * game.getCountdownTime().get()
             );
         });

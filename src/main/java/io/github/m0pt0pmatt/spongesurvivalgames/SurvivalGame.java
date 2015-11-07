@@ -129,9 +129,6 @@ public class SurvivalGame {
 
         //Execute each task
         executeTasks(startTasks);
-
-        //Check if the game is over as soon as it starts
-        checkWin();
     }
 
     public void stop() throws TaskException {
@@ -340,7 +337,7 @@ public class SurvivalGame {
         checkWin();
     }
 
-    private void checkWin() {
+    public void checkWin() {
 
         if (playerUUIDs.size() > 1) {
             return;
