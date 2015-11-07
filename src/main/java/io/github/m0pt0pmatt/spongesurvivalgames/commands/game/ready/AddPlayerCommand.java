@@ -81,6 +81,8 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
 
+        player.setScoreboard(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard());
+
         commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
         return true;
     }

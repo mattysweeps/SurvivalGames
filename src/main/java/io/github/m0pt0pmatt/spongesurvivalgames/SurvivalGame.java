@@ -34,6 +34,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -85,6 +88,17 @@ public class SurvivalGame {
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private LootGenerator lootGenerator = new LootGenerator();
+    private Scoreboard playersScoreboard;
+
+    public SurvivalGame(){
+        playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = playersScoreboard.registerNewObjective("lobby", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
+    public Scoreboard getLobbyScoreboard(){
+        return playersScoreboard;
+    }
 
     public SurvivalGameState getState() {
         return state;
