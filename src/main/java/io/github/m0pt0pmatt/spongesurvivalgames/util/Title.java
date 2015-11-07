@@ -50,8 +50,8 @@ public final class Title {
 
     private static final String[] titleCommands = new String[]{
             "title " + playerToken + " times 10 0 10",
-            "title dove_bren subtitle {text:\"" + subtitleToken + "\",color:\"" + subtitleColorToken + "\"}",
-            "title dove_bren title {text:\"" + titleToken + "\",color:\"" + titleColorToken + "\"}"
+            "title " + playerToken + " subtitle {text:\"" + subtitleToken + "\",color:\"" + subtitleColorToken + "\"}",
+            "title " + playerToken + " title {text:\"" + titleToken + "\",color:\"" + titleColorToken + "\"}"
     };
 
     public static void displayTitle(Player player, String titleText, String subtitleText) {
