@@ -66,7 +66,8 @@ public class SurvivalGame {
             new RotatePlayersTask(),
             new ReadyPlayerTask(),
             new CreateCountdownTask(),
-            new CreateScoreboardTask()
+            new CreateScoreboardTask(),
+            new CreateWorldBoarderTask()
     ));
     private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
             new ResetLootGeneratorTask(),
