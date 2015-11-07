@@ -47,25 +47,25 @@ public class StartGameCommand extends ReadyCommand {
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).start();
         } catch (NotEnoughSpawnPointsException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have enough spawn points.");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have enough spawn points.");
             return false;
         } catch (NoExitLocationException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have an exit location.");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have an exit location.");
             return false;
         } catch (WorldNotSetException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have a world assigned to it.");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have a world assigned to it.");
             return false;
         } catch (NoWorldException e) {
-           sender.sendMessage("Survival Game \"" + id + "\"'s world does not exist.");
+            sender.sendMessage("Survival Game \"" + id + "\"'s world does not exist.");
             return false;
         } catch (NoChestRangeException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have a chest range assigned to it");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have a chest range assigned to it");
             return false;
         } catch (NoChestMidpointException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
             return false;
         } catch (NoBoundsException e) {
-           sender.sendMessage("Survival Game \"" + id + "\" does not have bounds assigned to it.");
+            sender.sendMessage("Survival Game \"" + id + "\" does not have bounds assigned to it.");
             return false;
         } catch (NoCenterException e) {
             Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a center assigned to it.");
@@ -77,17 +77,17 @@ public class StartGameCommand extends ReadyCommand {
             Bukkit.getLogger().warning("Survival Game \"" + id + "\" does not have a deathmatch time assigned to it.");
             return false;
         } catch (NoPlayerException e) {
-           sender.sendMessage(e.getDescription());
+            sender.sendMessage(e.getDescription());
             return false;
         } catch (TaskException e) {
-           sender.sendMessage(e.getMessage());
+            sender.sendMessage(e.getMessage());
             return false;
         } catch (SurvivalGameException e) {
             Bukkit.getLogger().warning(e.getMessage());
             return false;
         }
 
-       sender.sendMessage("Survival Game \"" + id + "\" is now RUNNING.");
+        sender.sendMessage("Survival Game \"" + id + "\" is now RUNNING.");
         return true;
     }
 }

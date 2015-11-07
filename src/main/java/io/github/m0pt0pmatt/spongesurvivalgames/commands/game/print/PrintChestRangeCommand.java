@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -44,11 +43,11 @@ public class PrintChestRangeCommand extends GameCommand {
 
         Optional<Double> chestRange = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getChestRange();
         if (!chestRange.isPresent()) {
-           sender.sendMessage("Game: \"" + id + "\", No Chest Range set.");
+            sender.sendMessage("Game: \"" + id + "\", No Chest Range set.");
             return false;
         }
 
-       sender.sendMessage("Game: \"" + id + "\", Chest Range: \"" + chestRange.get() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", Chest Range: \"" + chestRange.get() + "\".");
         return true;
     }
 }

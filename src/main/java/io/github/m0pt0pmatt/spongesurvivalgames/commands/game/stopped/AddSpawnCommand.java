@@ -29,7 +29,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -47,7 +46,7 @@ public class AddSpawnCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
-           sender.sendMessage("Missing one or more axis for coordinates.");
+            sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
         }
         String xString = arguments.get(CommandArgs.X);
@@ -60,20 +59,20 @@ public class AddSpawnCommand extends StoppedCommand {
             y = Integer.parseInt(yString);
             z = Integer.parseInt(zString);
         } catch (NumberFormatException e) {
-           sender.sendMessage("Unable to convert from String to Integer");
+            sender.sendMessage("Unable to convert from String to Integer");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x, y, z);
         } catch (WorldNotSetException e) {
-           sender.sendMessage("No world set. Assign the world first.");
+            sender.sendMessage("No world set. Assign the world first.");
             return false;
         } catch (NoWorldException e) {
-           sender.sendMessage("World does not exist.");
+            sender.sendMessage("World does not exist.");
             return false;
         }
-       sender.sendMessage("Spawn location added for game \"" + id + "\".");
+        sender.sendMessage("Spawn location added for game \"" + id + "\".");
 
         return true;
     }

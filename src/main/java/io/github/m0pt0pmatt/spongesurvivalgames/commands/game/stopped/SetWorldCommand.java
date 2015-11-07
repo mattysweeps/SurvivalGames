@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -46,7 +45,7 @@ public class SetWorldCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-           sender.sendMessage("World name was not present.");
+            sender.sendMessage("World name was not present.");
             return false;
         }
 
@@ -55,11 +54,11 @@ public class SetWorldCommand extends StoppedCommand {
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
         } catch (NoWorldException e) {
-           sender.sendMessage("World \"" + worldName + "\" does not exist.");
+            sender.sendMessage("World \"" + worldName + "\" does not exist.");
             return false;
         }
 
-       sender.sendMessage("World for game \"" + id + "\" is set to \"" + worldName + "\".");
+        sender.sendMessage("World for game \"" + id + "\" is set to \"" + worldName + "\".");
         return true;
     }
 }

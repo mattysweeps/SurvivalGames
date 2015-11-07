@@ -29,7 +29,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,7 +50,7 @@ public class LoadCommand extends GameCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
-           sender.sendMessage("No file name given.");
+            sender.sendMessage("No file name given.");
             return false;
         }
         String fileName = arguments.get(CommandArgs.FILENAME);
@@ -64,7 +63,7 @@ public class LoadCommand extends GameCommand {
         try {
             yaml.load(file);
         } catch (IOException | InvalidConfigurationException e) {
-           sender.sendMessage("Unable to load config file");
+            sender.sendMessage("Unable to load config file");
             return false;
         }
 
@@ -73,7 +72,7 @@ public class LoadCommand extends GameCommand {
         config = serializer.deserialize(yaml);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
-       sender.sendMessage("Config file loaded");
+        sender.sendMessage("Config file loaded");
         return true;
     }
 }

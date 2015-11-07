@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
 
@@ -47,9 +46,9 @@ public class PrintSpawnsCommand extends GameCommand {
         }
 
         Set<Vector> spawnLocations = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
-       sender.sendMessage("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
+        sender.sendMessage("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
         for (Vector spawnLocation : spawnLocations) {
-           sender.sendMessage(spawnLocation.toString());
+            sender.sendMessage(spawnLocation.toString());
         }
 
         return true;

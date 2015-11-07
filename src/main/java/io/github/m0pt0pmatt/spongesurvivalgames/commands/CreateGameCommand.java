@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -39,23 +38,23 @@ public class CreateGameCommand extends SurvivalGamesCommand {
 
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
-    	if(!super.execute(sender, arguments)){
-    		return false;
-    	}
-    	
+        if (!super.execute(sender, arguments)) {
+            return false;
+        }
+
         if (!arguments.containsKey(CommandArgs.ID)) {
-           sender.sendMessage("Survival Game ID is not present.");
+            sender.sendMessage("Survival Game ID is not present.");
             return false;
         }
         String id = arguments.get(CommandArgs.ID);
 
         if (BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-           sender.sendMessage("Survival Game ID already exists.");
+            sender.sendMessage("Survival Game ID already exists.");
             return false;
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
-       sender.sendMessage("Survival Game \"" + id + "\" created.");
+        sender.sendMessage("Survival Game \"" + id + "\" created.");
 
         return true;
     }

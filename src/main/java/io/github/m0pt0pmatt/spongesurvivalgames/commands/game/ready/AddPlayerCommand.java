@@ -50,7 +50,7 @@ public class AddPlayerCommand extends ReadyCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
-           sender.sendMessage("Player name is not present.");
+            sender.sendMessage("Player name is not present.");
             return false;
         }
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
@@ -60,7 +60,7 @@ public class AddPlayerCommand extends ReadyCommand {
         } else {
             Player player = Bukkit.getPlayer(playerName);
             if (player == null) {
-               sender.sendMessage("No such player \"" + playerName + "\".");
+                sender.sendMessage("No such player \"" + playerName + "\".");
                 return false;
             }
             return addPlayer(sender, player);

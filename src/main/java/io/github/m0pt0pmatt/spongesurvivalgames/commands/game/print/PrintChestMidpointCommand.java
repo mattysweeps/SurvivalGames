@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -47,11 +46,11 @@ public class PrintChestMidpointCommand extends GameCommand {
 
         Optional<Double> chestMidpoint = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getChestMidpoint();
         if (!chestMidpoint.isPresent()) {
-           sender.sendMessage("Game: \"" + id + "\", No Chest Midpoint set.");
+            sender.sendMessage("Game: \"" + id + "\", No Chest Midpoint set.");
             return false;
         }
 
-       sender.sendMessage("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
         return true;
     }
 }

@@ -50,7 +50,7 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
         List<String> lowerCase = new ArrayList<>(list.size());
         list.forEach(st -> lowerCase.add(st.toLowerCase()));
 
-        if (strings[strings.length - 1].length() == 0){
+        if (strings[strings.length - 1].length() == 0) {
             return lowerCase;
         }
 
