@@ -25,16 +25,24 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.events;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import java.util.Map;
+
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.Map;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 
 /**
  * Listener class for the plugin.
@@ -50,6 +58,7 @@ public class PlayerEventListener implements Listener {
             if (game.getValue().getState().equals(SurvivalGameState.RUNNING)) {
                 if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Death has occurred inside the game
+                	doDeathDisplay(player.getWorld(), player.getLocation());
                     game.getValue().reportDeath(player.getUniqueId());
                     return;
                 }
@@ -73,4 +82,24 @@ public class PlayerEventListener implements Listener {
             }
         }
     }
+    
+    public void doDeathDisplay(World world, Location location){
+    	Firework firework = world.spawn(location, Firework.class);
+		FireworkMeta fm = firework.getFireworkMeta();
+        fm.addEffect(FireworkEffect.builder()
+            .flicker(false)
+            .trail(true)
+            .with(Type.BALL)
+            .with(Type.BALL_LARGE)
+            .with(Type.STAR)
+            .withColor(Color.YELLOW)
+            .withColor(Color.ORANGE)
+            .withFade(Color.RED)
+            .withFade(Color.PURPLE)
+            .build());
+        fm.setPower(1);
+        firework.setFireworkMeta(fm);
+        
+    }
+    
 }
