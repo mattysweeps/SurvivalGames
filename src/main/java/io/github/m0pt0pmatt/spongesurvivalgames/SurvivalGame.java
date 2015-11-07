@@ -92,6 +92,7 @@ public class SurvivalGame {
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private LootGenerator lootGenerator = new LootGenerator();
     private Scoreboard playersScoreboard;
+    private boolean chestsFilled = false;
 
     public SurvivalGame(){
         playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -140,6 +141,7 @@ public class SurvivalGame {
         if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
         if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
         if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
+        if (!chestsFilled) throw new ChestsNotFinishedException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
@@ -160,6 +162,8 @@ public class SurvivalGame {
 
         // Set the state
         state = SurvivalGameState.STOPPED;
+
+        chestsFilled = false;
     }
 
     public void startDeathMatch() throws SurvivalGameException {
@@ -442,5 +446,9 @@ public class SurvivalGame {
     public void setDeathmatchTime(int deathmatchTime) throws NegativeNumberException {
         if (deathmatchTime < 0) throw new NegativeNumberException();
         config.setDeathmatchTime(deathmatchTime);
+    }
+
+    public void setChestsFilled() {
+        this.chestsFilled = true;
     }
 }

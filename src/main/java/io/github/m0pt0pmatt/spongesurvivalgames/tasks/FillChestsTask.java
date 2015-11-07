@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
@@ -37,6 +38,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -45,6 +47,13 @@ import java.util.Random;
 public class FillChestsTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
+        Bukkit.getScheduler().runTaskAsynchronously(
+                BukkitSurvivalGamesPlugin.plugin,
+                () -> fillChests(game)
+                );
+    }
+
+    private void fillChests(SurvivalGame game){
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 
@@ -82,16 +91,16 @@ public class FillChestsTask implements SurvivalGameTask {
                     );
                     for (int i = 0; i < itemCount; i++) {
 
-                        try {
-                            Loot item = game.getLootGenerator().generate();
-                            if (item != null) inventory.addItem(item.getItem());
-                        } catch (EmptyLootGeneratorException e) {
-                        }
+                        Optional<Loot> item = game.getLootGenerator().generate();
+                        if (item.isPresent()) inventory.addItem(item.get().getItem());
 
                     }
 
                     chest.update();
                 }
         );
+
+        game.setChestsFilled();
+        Bukkit.getLogger().info("Chests have finished populating");
     }
 }
