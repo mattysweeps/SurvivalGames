@@ -69,26 +69,11 @@ public class SurvivalGameConfigSerializer {
         builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
         builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
 
-        List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
+        List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
 
         if (!vectorList.isEmpty()) {
-            for (Map<String, Object> map : vectorList) {
-
-                if (!map.containsKey("X") || !map.containsKey("Y") || !map.containsKey("Z")) {
-                    BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to find correct keys when parsing "
-                            + "spawn list! Skipping...");
-                    continue;
-                }
-
-                try {
-                    builder.addSpawn(new Vector(
-                            (Double) map.get("X"),
-                            (Double) map.get("Y"),
-                            (Double) map.get("Z")));
-                } catch (ClassCastException e) {
-                    BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when reading double "
-                            + "value in spawn location! Skipping...");
-                }
+            for (Vector v : vectorList) {
+            	builder.addSpawn(v);
             }
         }
 
@@ -147,7 +132,7 @@ public class SurvivalGameConfigSerializer {
         EXITWORLD("exitWorld", ""),
         EXIT("exit", new Vector(0, 0, 0)),
         CENTER("center", new Vector(0, 0, 0)),
-        SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
+        SPAWNS("spawns", new LinkedList<Vector>()),
         CHEST_MIDPOINT("chest.midpoint", 0.0),
         CHEST_RANGE("chest.range", 0.0),
         LOOT("loot", new LinkedList<Loot>()),
