@@ -147,7 +147,7 @@ public class SurvivalGame {
     public void stop() throws TaskException {
 
         // Execute force stop tasks if the game is RUNNING
-        if (state.equals(SurvivalGameState.RUNNING)) {
+        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
             executeTasks(forceStopTasks);
         }
 
