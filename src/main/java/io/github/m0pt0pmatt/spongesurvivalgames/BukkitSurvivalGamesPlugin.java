@@ -35,6 +35,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCom
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceDeathmatchCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.SponsorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
@@ -143,6 +144,10 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID},
                 new PrintDeathmatchTimeCommand());
         commandTrie.add(
+                new String[]{CommandKeywords.PRINT, CommandKeywords.SPONSORS},
+                new PrintSponsorsCommand()
+        );
+        commandTrie.add(
                 new String[]{CommandKeywords.ADD, CommandKeywords.SPAWN},
                 new String[]{CommandArgs.ID, CommandArgs.X, CommandArgs.Y, CommandArgs.Z},
                 new AddSpawnCommand());
@@ -230,6 +235,11 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandKeywords.SAVE},
                 new String[]{CommandArgs.ID, CommandArgs.FILENAME},
                 new SaveCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.GIVE, CommandKeywords.SPONSOR},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME, CommandArgs.SPONSOR},
+                new SponsorCommand()
+        );
     }
 
     @Override

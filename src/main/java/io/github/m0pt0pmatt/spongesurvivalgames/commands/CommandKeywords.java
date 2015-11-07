@@ -28,7 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 /**
  * All keywords used when executing commands and when grabbing arguments
  */
-public class CommandKeywords {
+public final class CommandKeywords {
     public static final String CREATE = "create";
     public static final String DELETE = "delete";
     public static final String LIST = "list";
@@ -61,4 +61,7 @@ public class CommandKeywords {
     public static final String DEATHMATCH = "deathmatch";
     public static final String RADIUS = "radius";
     public static final String TIME = "time";
+    public static final String GIVE = "give";
+    public static final String SPONSOR = "sponsor";
+    public static final String SPONSORS = "sponsors";
 }

@@ -23,28 +23,30 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands;
+package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-public final class CommandArgs {
-    public static final String ID = "[id]";
-    public static final String X = "[x]";
-    public static final String Y = "[y]";
-    public static final String Z = "[z]";
-    public static final String WORLDNAME = "[worldname]";
-    public static final String FILENAME = "[filename]";
-    public static final String XMIN = "[xmin]";
-    public static final String XMAX = "[xmax]";
-    public static final String YMIN = "[ymin]";
-    public static final String YMAX = "[ymax]";
-    public static final String ZMIN = "[zmin]";
-    public static final String ZMAX = "[zmax]";
-    public static final String WEIGHT = "[weight]";
-    public static final String MIDPOINT = "[midpoint]";
-    public static final String PLAYERNAME = "[playername]";
-    public static final String RANGE = "[range]";
-    public static final String COUNTDOWN = "[countdown]";
-    public static final String PLAYER_LIMIT = "[player-limit]";
-    public static final String DEATHMATCHRADIUS = "[deathmatch-radius]";
-    public static final String DEATHMATCHTIME = "[deathmatch-time]";
-    public static final String SPONSOR = "[sponsor]";
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OpenInventorySponsor implements Sponsor {
+
+    private List<ItemStack> items;
+
+    public OpenInventorySponsor(List<ItemStack> items){
+        this.items = new ArrayList<>();
+        this.items.addAll(items);
+    }
+
+    @Override
+    public void execute(Player player) {
+        Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
+        items.forEach(inventory::addItem);
+        player.openInventory(inventory);
+    }
 }

@@ -1,44 +1,38 @@
+/*
+ * This file is part of SpongeSurvivalGamesPlugin, licensed under the MIT License (MIT).
+ *
+ * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
+ * Copyright (c) contributors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
 import org.bukkit.entity.Player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-
 /**
- * Wrapper  class for a player who has been appointed as a sponsor.<br />
- * Sponsors have the ability to aid or harm in-game players through a menu of options.
+ * Performs an task for a menu, which targets a player
  * @author Skyler
+ *
  */
-public class Sponsor {
-	
-	//TODO Make a command that appoints people as sponsors
-	
-	private Player player;
-	
-	private SurvivalGame game;
-	
-	private SponsorInventory inv;
-	
-	public Sponsor(SurvivalGame game, Player player) {
-		this.player = player;
-		this.game = game;
-	}
-	
-	public SurvivalGame getGame() {
-		return game;
-	}
-	
-	public Player getPlayer() {
-		return player;
-	}
-	
-	/**
-	 * Sets the inventory stored with this sponsor and displays it to the player.
-	 * @param newInv
-	 */
-	public void setInventory(SponsorInventory newInv) {
-		this.inv = newInv;
-		player.openInventory(
-				inv.getFormattedInventory());
-	}
+public interface Sponsor {
+
+	void execute(Player player);
 }

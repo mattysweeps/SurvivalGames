@@ -42,4 +42,9 @@ public class InvalidIDLookupException extends SurvivalGameException {
 	public String getID() {
 		return idString;
 	}
+
+	@Override
+	public String getDescription() {
+		return null;
+	}
 }
