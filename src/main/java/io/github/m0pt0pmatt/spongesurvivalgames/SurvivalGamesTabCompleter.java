@@ -56,6 +56,7 @@ public class SurvivalGamesTabCompleter implements TabCompleter {
 
         return lowerCase.stream()
                 .filter(string -> string.startsWith(strings[strings.length - 1]))
+                .map(string -> string + " ")
                 .collect(Collectors.toList());
     }
 }
