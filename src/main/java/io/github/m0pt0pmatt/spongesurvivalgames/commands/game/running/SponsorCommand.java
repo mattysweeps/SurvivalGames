@@ -30,7 +30,9 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.StoppedCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsor;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -76,7 +78,7 @@ public class SponsorCommand extends StoppedCommand {
                 20L * 5
                 );
 
-        player.sendMessage("You have been sponsored...");
+        Title.displayTitle(player, "You have been sponsored", "This is either good or bad", ChatColor.BLUE, ChatColor.BLUE, 0, 5);
         sender.sendMessage("Player " + playerName + " has been sponsored.");
         return true;
     }
