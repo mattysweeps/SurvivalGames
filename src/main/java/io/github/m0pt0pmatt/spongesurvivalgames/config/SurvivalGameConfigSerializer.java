@@ -112,29 +112,29 @@ public class SurvivalGameConfigSerializer {
 
         YamlConfiguration config = new YamlConfiguration();
 
-        config.set(Fields.WORLD.getKey(), obj.getWorldName());
-        config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld());
-        config.set(Fields.EXIT.getKey(), obj.getExit());
-        config.set(Fields.CENTER.getKey(), obj.getCenter());
-        config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit());
-        config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime());
+        config.set(Fields.WORLD.getKey(), obj.getWorldName().get());
+        config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld().get());
+        config.set(Fields.EXIT.getKey(), obj.getExit().get());
+        config.set(Fields.CENTER.getKey(), obj.getCenter().get());
+        config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit().get());
+        config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime().get());
 
         config.set(Fields.SPAWNS.getKey(), new ArrayList<>(obj.getSpawns()));
 
-        config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint());
-        config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange());
+        config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint().get());
+        config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange().get());
 
         config.set(Fields.LOOT.getKey(), obj.getLoot());
 
-        config.set(Fields.XMIN.getKey(), obj.getXMin());
-        config.set(Fields.XMAX.getKey(), obj.getXMax());
-        config.set(Fields.YMIN.getKey(), obj.getYMin());
-        config.set(Fields.YMAX.getKey(), obj.getYMax());
-        config.set(Fields.ZMIN.getKey(), obj.getZMin());
-        config.set(Fields.ZMAX.getKey(), obj.getZMax());
+        config.set(Fields.XMIN.getKey(), obj.getXMin().get());
+        config.set(Fields.XMAX.getKey(), obj.getXMax().get());
+        config.set(Fields.YMIN.getKey(), obj.getYMin().get());
+        config.set(Fields.YMAX.getKey(), obj.getYMax().get());
+        config.set(Fields.ZMIN.getKey(), obj.getZMin().get());
+        config.set(Fields.ZMAX.getKey(), obj.getZMax().get());
 
-        config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius());
-        config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime());
+        config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius().get());
+        config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime().get());
 
         return config;
     }
