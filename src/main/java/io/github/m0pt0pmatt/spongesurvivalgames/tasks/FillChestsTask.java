@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -44,7 +44,7 @@ import java.util.Random;
  */
 public class FillChestsTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 

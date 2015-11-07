@@ -111,7 +111,7 @@ public class SurvivalGame {
         return lootGenerator;
     }
 
-    public void ready() throws TaskException {
+    public void ready() throws SurvivalGameException {
         state = SurvivalGameState.READY;
 
         //Execute each task
@@ -148,7 +148,7 @@ public class SurvivalGame {
         executeTasks(startTasks);
     }
 
-    public void stop() throws TaskException {
+    public void stop() throws SurvivalGameException {
 
         // Execute force stop tasks if the game is RUNNING
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
@@ -162,7 +162,7 @@ public class SurvivalGame {
         state = SurvivalGameState.STOPPED;
     }
 
-    public void startDeathMatch() throws TaskException {
+    public void startDeathMatch() throws SurvivalGameException {
         if (!state.equals(SurvivalGameState.DEATHMATCH)) {
             state = SurvivalGameState.DEATHMATCH;
 
@@ -182,20 +182,20 @@ public class SurvivalGame {
     private void beginDeathMatch() {
         try {
             executeTasks(deathmatchTasks);
-        } catch (TaskException e) {
+        } catch (SurvivalGameException e) {
             Bukkit.getLogger().warning("Deathmatch task failed: " + e.getDescription());
         }
     }
 
-    private void executeTasks(List<SurvivalGameTask> tasks) throws TaskException {
+    private void executeTasks(List<SurvivalGameTask> tasks) throws SurvivalGameException {
 
         //Execute each task
-        Optional<TaskException> exception = tasks.stream()
+        Optional<SurvivalGameException> exception = tasks.stream()
                 .map(task -> {
                     try {
                         task.execute(this);
                         return null;
-                    } catch (TaskException e) {
+                    } catch (SurvivalGameException e) {
                         return e;
                     }
                 })
@@ -378,7 +378,7 @@ public class SurvivalGame {
                 () -> {
                     try {
                         stop();
-                    } catch (TaskException e) {
+                    } catch (SurvivalGameException e) {
                         e.printStackTrace();
                     }
                 },

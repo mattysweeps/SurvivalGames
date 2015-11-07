@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -37,7 +37,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 public class CreateScoreboardTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
 

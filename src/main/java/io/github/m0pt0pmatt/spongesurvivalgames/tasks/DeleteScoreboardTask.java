@@ -27,13 +27,13 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 public class DeleteScoreboardTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(
                 player -> player.setScoreboard(manager.getMainScoreboard()) //Hopefully this works

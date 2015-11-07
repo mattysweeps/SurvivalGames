@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.GameMode;
 
 /**
@@ -35,7 +35,7 @@ import org.bukkit.GameMode;
  */
 public class ReadyPlayerTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
 
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
                 .forEach(player -> {

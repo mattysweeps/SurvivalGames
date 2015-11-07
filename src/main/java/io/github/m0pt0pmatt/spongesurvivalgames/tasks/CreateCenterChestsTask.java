@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -36,7 +36,7 @@ import org.bukkit.util.Vector;
  */
 public class CreateCenterChestsTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
         Location center = game.getCenter().get();
         center.add(new Vector(1, 0, 0)).getBlock().setType(Material.CHEST);
         center.add(new Vector(-1, 0, 0)).getBlock().setType(Material.CHEST);

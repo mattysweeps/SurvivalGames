@@ -79,9 +79,6 @@ public class StartGameCommand extends ReadyCommand {
         } catch (NoPlayerException e) {
             sender.sendMessage(e.getDescription());
             return false;
-        } catch (TaskException e) {
-            sender.sendMessage(e.getMessage());
-            return false;
         } catch (SurvivalGameException e) {
             Bukkit.getLogger().warning(e.getMessage());
             return false;
