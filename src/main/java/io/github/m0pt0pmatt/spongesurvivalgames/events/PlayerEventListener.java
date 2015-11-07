@@ -101,7 +101,7 @@ public class PlayerEventListener implements Listener {
             .withFade(Color.RED)
             .withFade(Color.PURPLE)
             .build());
-        fm.setPower(1);
+        fm.setPower(2);
         firework.setFireworkMeta(fm);
         
     }
