@@ -232,6 +232,11 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 .filter((player) -> player != null)
                 .collect(Collectors.toSet());
     }
+    
+    @Override
+    public void onLoad() {
+    	getDataFolder().mkdirs();
+    }
 
     @Override
     public void onEnable() {
