@@ -55,8 +55,7 @@ public class SurvivalGame {
             new Vector(0, 1, 1),
             new Vector(0, 0, -1),
             new Vector(0, 1, -1),
-            new Vector(0, 2, 0),
-            new Vector(0, -1, 0)
+            new Vector(0, 2, 0)
     ));
     private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
             new CreateCageSnapshotsTask(),
