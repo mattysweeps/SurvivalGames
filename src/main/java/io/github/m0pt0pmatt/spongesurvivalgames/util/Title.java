@@ -37,6 +37,8 @@ import org.bukkit.entity.Player;
 public final class Title {
 
     private static final ChatColor defaultColor = ChatColor.DARK_GREEN;
+    
+    private static final int defaultTime = 10;
 
     private static final String playerToken = "[PLAYER]";
 
@@ -47,9 +49,13 @@ public final class Title {
     private static final String titleColorToken = "[TITLECOLOR]";
 
     private static final String subtitleColorToken = "[SUBTITLECOLOR]";
+    
+    private static final String timeInTickToken = "[TIMEIN]";
+    
+    private static final String timeOutTickToken = "[TIMEOUT]";
 
     private static final String[] titleCommands = new String[]{
-            "title " + playerToken + " times 10 0 10",
+            "title " + playerToken + " times " + timeInTickToken + " 0 " + timeOutTickToken,
             "title " + playerToken + " subtitle {text:\"" + subtitleToken + "\",color:\"" + subtitleColorToken + "\"}",
             "title " + playerToken + " title {text:\"" + titleToken + "\",color:\"" + titleColorToken + "\"}"
     };
@@ -59,6 +65,12 @@ public final class Title {
     }
 
     public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, ChatColor subtitleColor) {
+    	displayTitle(player, titleText, subtitleText, defaultColor, defaultColor, defaultTime, defaultTime);
+    }
+    
+    
+    public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, 
+    		ChatColor subtitleColor, int timeIn, int timeOut){
         for (String command : titleCommands) {
 
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
@@ -67,6 +79,8 @@ public final class Title {
                             .replace(subtitleToken, subtitleText)
                             .replace(titleColorToken, titleColor.name().toLowerCase())
                             .replace(subtitleColorToken, subtitleColor.name().toLowerCase())
+                            .replace(timeInTickToken, timeIn + "")
+                            .replace(timeOutTickToken, timeOut + "")
             );
 
         }
