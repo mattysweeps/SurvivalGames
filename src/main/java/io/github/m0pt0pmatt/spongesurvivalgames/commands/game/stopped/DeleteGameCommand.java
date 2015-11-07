@@ -26,7 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -44,7 +43,7 @@ public class DeleteGameCommand extends StoppedCommand {
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.remove(id);
-        Bukkit.getLogger().info("Survival Game \"" + id + "\" deleted.");
+        sender.sendMessage("Survival Game \"" + id + "\" deleted.");
 
         return true;
     }

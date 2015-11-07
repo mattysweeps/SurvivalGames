@@ -27,12 +27,27 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.bukkit.Location;
 
+import java.util.Optional;
+
+/**
+ * Task for rotating the players towards the center location
+ */
 public class RotatePlayersTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) {
+
+        Optional<Location> center = game.getCenter();
+
+        if (!center.isPresent()) {
+            return;
+        }
+
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
-            //TODO: compute real rotation
+
+            //TODO: This is probably completely wrong. I'm on a plane
+            player.getLocation().setDirection(center.get().toVector());
         });
     }
 }

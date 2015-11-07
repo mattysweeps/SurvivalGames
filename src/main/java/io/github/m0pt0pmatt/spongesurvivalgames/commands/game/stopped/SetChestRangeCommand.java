@@ -26,12 +26,11 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
-import org.bukkit.Bukkit;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class SetChestRangeCommand extends StoppedCommand {
 
@@ -42,17 +41,28 @@ public class SetChestRangeCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.RANGE)) {
-            Bukkit.getLogger().warning("Chest range was not present.");
+        if (!arguments.containsKey(CommandArgs.RANGE)) {
+            sender.sendMessage("Chest range was not present.");
             return false;
         }
-        String chestRange = arguments.get(CommandKeywords.RANGE);
+        String chestRange = arguments.get(CommandArgs.RANGE);
 
-        //TODO: Sanity check
-        Double range = Double.parseDouble(chestRange);
+        Double range;
+        try {
+            range = Double.parseDouble(chestRange);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert String to Double");
+            return false;
+        }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
-        Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");
+        try {
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
+        } catch (NegativeNumberException e) {
+            sender.sendMessage("Chest range cannot be negative.");
+            return false;
+        }
+
+        sender.sendMessage("Chest range for game \"" + id + "\" set to " + range + ".");
         return true;
     }
 }

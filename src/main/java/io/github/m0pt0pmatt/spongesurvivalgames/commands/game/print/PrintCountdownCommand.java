@@ -27,11 +27,13 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
+/**
+ * Command to print the countdown seconds for a game
+ */
 public class PrintCountdownCommand extends GameCommand {
 
     @Override
@@ -41,7 +43,7 @@ public class PrintCountdownCommand extends GameCommand {
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
         return true;
     }
 }

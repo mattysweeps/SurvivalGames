@@ -26,14 +26,12 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to add a spawn location to a game
@@ -47,29 +45,34 @@ public class AddSpawnCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X)) {
-            Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
         }
-        String xString = arguments.get(CommandKeywords.X);
-        String yString = arguments.get(CommandKeywords.Y);
-        String zString = arguments.get(CommandKeywords.Z);
+        String xString = arguments.get(CommandArgs.X);
+        String yString = arguments.get(CommandArgs.Y);
+        String zString = arguments.get(CommandArgs.Z);
 
-        //TODO: Add sanity check
-        int x = Integer.parseInt(xString);
-        int y = Integer.parseInt(yString);
-        int z = Integer.parseInt(zString);
+        int x, y, z;
+        try {
+            x = Integer.parseInt(xString);
+            y = Integer.parseInt(yString);
+            z = Integer.parseInt(zString);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert from String to Integer");
+            return false;
+        }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x, y, z);
         } catch (WorldNotSetException e) {
-            Bukkit.getLogger().warning("No world set. Assign the world first.");
+            sender.sendMessage("No world set. Assign the world first.");
             return false;
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("World does not exist.");
+            sender.sendMessage("World does not exist.");
             return false;
         }
-        Bukkit.getLogger().info("Spawn location added for game \"" + id + "\".");
+        sender.sendMessage("Spawn location added for game \"" + id + "\".");
 
         return true;
     }

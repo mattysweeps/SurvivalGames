@@ -32,5 +32,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 public enum SurvivalGameState {
     STOPPED,
     READY,
-    RUNNING
+    RUNNING,
+    DEATHMATCH
 }

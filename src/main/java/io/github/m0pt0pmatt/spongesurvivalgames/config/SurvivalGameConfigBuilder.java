@@ -25,10 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.util.Vector;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-
+/**
+ * Builder Pattern for SurvivalGameConfigs
+ */
 public class SurvivalGameConfigBuilder {
 
     private final SurvivalGameConfig config;
@@ -91,33 +93,43 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder xMin(Integer xMin){
+    public SurvivalGameConfigBuilder xMin(Integer xMin) {
         config.setXMin(xMin);
         return this;
     }
 
-    public SurvivalGameConfigBuilder xMax(Integer xMax){
+    public SurvivalGameConfigBuilder xMax(Integer xMax) {
         config.setXMax(xMax);
         return this;
     }
 
-    public SurvivalGameConfigBuilder yMin(Integer yMin){
+    public SurvivalGameConfigBuilder yMin(Integer yMin) {
         config.setYMin(yMin);
         return this;
     }
 
-    public SurvivalGameConfigBuilder yMax(Integer yMax){
+    public SurvivalGameConfigBuilder yMax(Integer yMax) {
         config.setYMax(yMax);
         return this;
     }
 
-    public SurvivalGameConfigBuilder zMin(Integer zMin){
+    public SurvivalGameConfigBuilder zMin(Integer zMin) {
         config.setZMin(zMin);
         return this;
     }
 
-    public SurvivalGameConfigBuilder zMax(Integer zMax){
+    public SurvivalGameConfigBuilder zMax(Integer zMax) {
         config.setZMax(zMax);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder deathmatchRadius(Integer deathmatchRadius) {
+        config.setDeathmatchRadius(deathmatchRadius);
+        return this;
+    }
+
+    public SurvivalGameConfigBuilder deathmatchTime(Integer deathmatchTime) {
+        config.setDeathmatchTime(deathmatchTime);
         return this;
     }
 }

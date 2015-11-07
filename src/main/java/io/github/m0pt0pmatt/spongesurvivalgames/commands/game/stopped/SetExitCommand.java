@@ -26,13 +26,11 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Command to set the exit location for a game
@@ -47,34 +45,39 @@ public class SetExitCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandKeywords.WORLDNAME)) {
-            Bukkit.getLogger().warning("World name was not present.");
+        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
+            sender.sendMessage("World name was not present.");
             return false;
         }
-        String worldName = arguments.get(CommandKeywords.WORLDNAME);
+        String worldName = arguments.get(CommandArgs.WORLDNAME);
 
 
-        String xString = arguments.get(CommandKeywords.X);
-        String yString = arguments.get(CommandKeywords.Y);
-        String zString = arguments.get(CommandKeywords.Z);
-        if (!arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X) || !arguments.containsKey(CommandKeywords.X)) {
-            Bukkit.getLogger().warning("Missing one or more axis for coordinates.");
+        String xString = arguments.get(CommandArgs.X);
+        String yString = arguments.get(CommandArgs.Y);
+        String zString = arguments.get(CommandArgs.Z);
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
         }
 
-        //TODO: Add sanity check
-        int x = Integer.parseInt(xString);
-        int y = Integer.parseInt(yString);
-        int z = Integer.parseInt(zString);
+        int x, y, z;
+        try {
+            x = Integer.parseInt(xString);
+            y = Integer.parseInt(yString);
+            z = Integer.parseInt(zString);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert from String to Integer");
+            return false;
+        }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName, x, y, z);
         } catch (NoWorldException e) {
-            Bukkit.getLogger().warning("No such world \"" + worldName + "\".");
+            sender.sendMessage("No such world \"" + worldName + "\".");
             return false;
         }
 
-        Bukkit.getLogger().info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
+        sender.sendMessage("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
         return true;
     }
 }

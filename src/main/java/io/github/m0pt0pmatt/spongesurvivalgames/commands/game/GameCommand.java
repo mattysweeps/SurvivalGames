@@ -26,13 +26,11 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * GameCommands require the name of the game as the first argument
@@ -44,15 +42,15 @@ public abstract class GameCommand extends SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-        if (!arguments.containsKey(CommandKeywords.ID)) {
-            Bukkit.getLogger().warning("Survival Game ID is not present.");
+        if (!arguments.containsKey(CommandArgs.ID)) {
+            sender.sendMessage("Survival Game ID is not present.");
             return false;
         }
 
-        id = arguments.get(CommandKeywords.ID);
+        id = arguments.get(CommandArgs.ID);
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            Bukkit.getLogger().warning("No Survival Game has specified ID \"" + id + "\".");
+            sender.sendMessage("No Survival Game has specified ID \"" + id + "\".");
             return false;
         }
 

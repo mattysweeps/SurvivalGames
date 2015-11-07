@@ -36,6 +36,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Task for teleporting players
+ */
 public class SpawnPlayersTask implements SurvivalGameTask {
 
     @Override

@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -46,7 +45,7 @@ public abstract class StoppedCommand extends GameCommand {
         }
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.STOPPED)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
+            sender.sendMessage("Survival Game \"" + id + "\" must be in a STOPPED state for this command.");
             return false;
         }
 

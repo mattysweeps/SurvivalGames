@@ -23,33 +23,19 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.events;
+package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
+public class NoPlayerException extends SurvivalGameException {
 
-import java.util.Map;
+    private String desc;
 
-public class PlayerDeathEventListener implements Listener {
+    public NoPlayerException(String description) {
+        this.desc = description;
+    }
 
-    public void onPlayerDeath(PlayerDeathEvent event) {
-
-        Player player = event.getEntity();
-
-        for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            if (game.getValue().getState().equals(SurvivalGameState.RUNNING)) {
-                if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
-                    //Death has occurred inside the game
-                    game.getValue().reportDeath(player.getUniqueId());
-                    return;
-                }
-            }
-        }
-
+    @Override
+    public String getDescription() {
+        return desc;
     }
 
 }

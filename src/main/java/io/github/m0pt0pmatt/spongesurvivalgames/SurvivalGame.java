@@ -27,11 +27,19 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -41,45 +49,7 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    //TODO make these fields STATIC (surroundingVectors, etc) to save some space
-
-    private class exitTask implements Runnable {
-
-        private Player player;
-
-        public exitTask(Player player) {
-            this.player = player;
-        }
-
-        public void run() {
-            if (!player.isOnline()) {
-                return;
-            }
-
-            player.teleport(getExit().get());
-        }
-    }
-
-    private class stopTask implements Runnable {
-
-        private SurvivalGame game;
-
-        public stopTask(SurvivalGame game) {
-            this.game = game;
-        }
-
-        public void run() {
-            try {
-                game.stop();
-            } catch (TaskException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private final Set<UUID> playerUUIDs = new HashSet<>();
-    private final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
+    private static final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
             new Vector(1, 0, 0),
             new Vector(1, 1, 0),
             new Vector(-1, 0, 0),
@@ -88,43 +58,76 @@ public class SurvivalGame {
             new Vector(0, 1, 1),
             new Vector(0, 0, -1),
             new Vector(0, 1, -1),
-            new Vector(0, 2, 0),
-            new Vector(0, -1, 0)
+            new Vector(0, 2, 0)
     ));
-    private final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+    private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+            new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
-            new SetGameModeTask(),
-            new CreateCageSnapshotsTask(),
-            new CreateCenterChestsTask(),
-            new FillChestsTask(),
-            new CreateCountdownTask()
+            new ReadyPlayerTask(),
+            new CreateCountdownTask(),
+            new CreateScoreboardTask()
     ));
-    private final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
-            new DespawnPlayersTask()
+    private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
+            new ResetLootGeneratorTask(),
+            new FillChestsTask()
     ));
-    private final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
+    private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
+            new DespawnPlayersTask(),
+            new DeleteScoreboardTask(),
+            new ClearWorldBoarderTask()
+    ));
+    private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
     ));
-
+    private static final List<SurvivalGameTask> deathmatchTasks = new LinkedList<>(Arrays.asList(
+            new CreateCageSnapshotsTask(),
+            new SpawnPlayersTask(),
+            new RotatePlayersTask(),
+            new CreateCountdownTask(),
+            new CreateDeathmatchBorderTask()
+    ));
+    private final Set<UUID> playerUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
+    private LootGenerator lootGenerator = new LootGenerator();
+    private Scoreboard playersScoreboard;
+    private boolean chestsFilled = false;
+
+    public SurvivalGame(){
+        playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = playersScoreboard.registerNewObjective("lobby", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
+    public Scoreboard getLobbyScoreboard(){
+        return playersScoreboard;
+    }
 
     public SurvivalGameState getState() {
         return state;
     }
 
-    public void ready() {
-        state = SurvivalGameState.READY;
+    public LootGenerator getLootGenerator() {
+        return lootGenerator;
     }
 
-    public void start() throws WorldNotSetException, NoWorldException, NotEnoughSpawnPointsException, NoExitLocationException, TaskException, NoChestMidpointException, NoChestRangeException, NoBoundsException {
+    public void ready() throws SurvivalGameException {
+        state = SurvivalGameState.READY;
+
+        //Execute each task
+        executeTasks(readyTasks);
+    }
+
+    public void start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
-        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
+                (playerUUIDs.size(), config.getSpawns().size());
+        if (playerUUIDs.isEmpty()) throw new NoPlayerException("No players when starting game!");
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
@@ -134,21 +137,23 @@ public class SurvivalGame {
         if (!config.getYMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
-
+        if (!config.getCenter().isPresent()) throw new NoCenterException();
+        if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
+        if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
+        if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
+        if (!chestsFilled) throw new ChestsNotFinishedException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
 
         //Execute each task
         executeTasks(startTasks);
-
-        checkWin();
     }
 
-    public void stop() throws TaskException {
+    public void stop() throws SurvivalGameException {
 
         // Execute force stop tasks if the game is RUNNING
-        if (state.equals(SurvivalGameState.RUNNING)) {
+        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
             executeTasks(forceStopTasks);
         }
 
@@ -157,16 +162,44 @@ public class SurvivalGame {
 
         // Set the state
         state = SurvivalGameState.STOPPED;
+
+        chestsFilled = false;
     }
 
-    private void executeTasks(List<SurvivalGameTask> tasks) throws TaskException {
+    public void startDeathMatch() throws SurvivalGameException {
+        if (!state.equals(SurvivalGameState.DEATHMATCH)) {
+            state = SurvivalGameState.DEATHMATCH;
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    this::beginDeathMatch,
+                    20L * config.getDeathmatchTime().get()
+            );
+
+            BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
+                    player -> player.sendMessage("Deathmatch starting in " + config.getDeathmatchTime().get() + " seconds.")
+            );
+
+        }
+    }
+
+    private void beginDeathMatch() {
+        try {
+            executeTasks(deathmatchTasks);
+        } catch (SurvivalGameException e) {
+            Bukkit.getLogger().warning("Deathmatch task failed: " + e.getDescription());
+        }
+    }
+
+    private void executeTasks(List<SurvivalGameTask> tasks) throws SurvivalGameException {
+
         //Execute each task
-        Optional<TaskException> exception = tasks.stream()
+        Optional<SurvivalGameException> exception = tasks.stream()
                 .map(task -> {
                     try {
                         task.execute(this);
                         return null;
-                    } catch (TaskException e) {
+                    } catch (SurvivalGameException e) {
                         return e;
                     }
                 })
@@ -178,9 +211,9 @@ public class SurvivalGame {
     }
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
-
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
-        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw new PlayerLimitReachedException();
+        if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
+                new PlayerLimitReachedException(config.getPlayerLimit().get());
 
         playerUUIDs.add(player);
     }
@@ -190,9 +223,10 @@ public class SurvivalGame {
     }
 
     public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
+        if (!config.getWorldName().isPresent()) throw new NoWorldNameException(
+                "World for map empty when trying to set up center location!");
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
 
         config.setCenter(new Vector(x, y, z));
     }
@@ -200,7 +234,7 @@ public class SurvivalGame {
     public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
 
         config.getSpawns().add(new Vector(x, y, z));
     }
@@ -211,21 +245,20 @@ public class SurvivalGame {
 
     public void setWorld(String worldName) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(worldName);
 
         config.setWorldName(world.getName());
     }
 
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException();
+        if (world == null) throw new NoWorldException(worldName);
 
         config.setExit(new Vector(x, y, z));
         config.setExitWorld(worldName);
     }
 
     public Optional<Location> getCenter() {
-
         Optional<Vector> center = config.getCenter();
         if (!center.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -252,7 +285,6 @@ public class SurvivalGame {
     }
 
     public Optional<Location> getExit() {
-
         Optional<Vector> exit = config.getExit();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -266,8 +298,8 @@ public class SurvivalGame {
         return config.getCountdownTime();
     }
 
-    public void setCountdownTime(int countdownTime) throws NegativeCountdownTimeException {
-        if (countdownTime < 0) throw new NegativeCountdownTimeException();
+    public void setCountdownTime(int countdownTime) throws NegativeNumberException {
+        if (countdownTime < 0) throw new NegativeNumberException();
         config.setCountdownTime(countdownTime);
     }
 
@@ -291,7 +323,8 @@ public class SurvivalGame {
         return config.getChestMidpoint();
     }
 
-    public void setChestMidpoint(Double chestMidpoint) {
+    public void setChestMidpoint(Double chestMidpoint) throws NegativeNumberException {
+        if (chestMidpoint < 0) throw new NegativeNumberException();
         config.setChestMidpoint(chestMidpoint);
     }
 
@@ -299,7 +332,8 @@ public class SurvivalGame {
         return config.getChestRange();
     }
 
-    public void setChestRange(Double chestRange) {
+    public void setChestRange(Double chestRange) throws NegativeNumberException {
+        if (chestRange < 0) throw new NegativeNumberException();
         config.setChestRange(chestRange);
     }
 
@@ -313,14 +347,18 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null) {
-            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                    new exitTask(player), 1);
+            Bukkit.getScheduler().runTaskLater(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        if (player.isOnline()) player.teleport(getExit().get());
+                    },
+                    10);
         }
 
         checkWin();
     }
 
-    private void checkWin() {
+    public void checkWin() {
 
         if (playerUUIDs.size() > 1) {
             return;
@@ -329,13 +367,88 @@ public class SurvivalGame {
         UUID winnerUUID = playerUUIDs.stream().findFirst().get();
         Player winner = Bukkit.getServer().getPlayer(winnerUUID);
         if (winner != null) {
-            Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                    new exitTask(winner), 200);
+            Bukkit.getScheduler().runTaskLater(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        if (winner.isOnline()) winner.teleport(getExit().get());
+                    },
+                    200);
             winner.sendMessage("Congratulations! You won!");
+            Title.displayTitle(winner, "You Win!", "", ChatColor.DARK_GREEN, ChatColor.MAGIC, 30, 100);
         }
 
-        Bukkit.getScheduler().runTaskLater(BukkitSurvivalGamesPlugin.plugin,
-                new stopTask(this), 200);
+        Bukkit.getScheduler().runTaskLater(
+                BukkitSurvivalGamesPlugin.plugin,
+                () -> {
+                    try {
+                        stop();
+                    } catch (SurvivalGameException e) {
+                        e.printStackTrace();
+                    }
+                },
+                200);
+    }
 
+    public void setBounds(int xMin, int xMax, int yMin, int yMax, int zMin, int zMax) {
+        config.setXMin(Math.min(xMin, xMax));
+        config.setXMax(Math.max(xMin, xMax));
+        config.setYMin(Math.min(yMin, yMax));
+        config.setYMax(Math.max(yMin, yMax));
+        config.setZMin(Math.min(zMin, zMax));
+        config.setZMax(Math.max(zMin, zMax));
+    }
+
+    public Optional<Integer> getXMin() {
+        return config.getXMin();
+    }
+
+    public Optional<Integer> getXMax() {
+        return config.getXMax();
+    }
+
+    public Optional<Integer> getYMin() {
+        return config.getYMin();
+    }
+
+    public Optional<Integer> getYMax() {
+        return config.getYMax();
+    }
+
+    public Optional<Integer> getZMin() {
+        return config.getZMin();
+    }
+
+    public Optional<Integer> getZMax() {
+        return config.getZMax();
+    }
+
+    public List<Loot> getLoot() {
+        return config.getLoot();
+    }
+
+    public void addLoot(Loot loot) {
+        if (loot != null) config.getLoot().add(loot);
+    }
+
+    public Optional<Integer> getDeathmatchRadius() {
+        return config.getDeathmatchRadius();
+    }
+
+    public void setDeathmatchRadius(int deathmatchRadius) throws NegativeNumberException {
+        if (deathmatchRadius < 0) throw new NegativeNumberException();
+        config.setDeathmatchRadius(deathmatchRadius);
+    }
+
+    public Optional<Integer> getDeathmatchTime() {
+        return config.getDeathmatchTime();
+    }
+
+    public void setDeathmatchTime(int deathmatchTime) throws NegativeNumberException {
+        if (deathmatchTime < 0) throw new NegativeNumberException();
+        config.setDeathmatchTime(deathmatchTime);
+    }
+
+    public void setChestsFilled() {
+        this.chestsFilled = true;
     }
 }

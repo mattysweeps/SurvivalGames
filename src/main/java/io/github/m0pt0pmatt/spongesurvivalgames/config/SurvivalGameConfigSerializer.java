@@ -26,59 +26,22 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.util.Vector;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-
+/**
+ * Class to Serialize and DeSerialize a SurvivalGameConfig
+ */
 public class SurvivalGameConfigSerializer {
 
-
-    private enum Fields {
-
-        WORLD("world", ""),
-        PLAYERLIMIT("playerLimit", 16),
-        COUNTDOWNTIME("countdownTime", 30),
-        EXITWORLD("exit.world", ""),
-        EXIT("exit", new Vector(0, 0, 0)),
-        CENTER("center", new Vector(0, 0, 0)),
-        SPAWNS("spawns", new LinkedList<Map<String, Double>>()),
-        CHEST_MIDPOINT("chest.midpoint", 0.0),
-        CHEST_RANGE("chest.range", 0.0),
-        LOOT("loot", new LinkedList<ItemStack>()),
-        XMIN("xmin", 0),
-        XMAX("xmax", 0),
-        YMIN("ymin", 0),
-        YMAX("ymax", 0),
-        ZMIN("zmin", 0),
-        ZMAX("zmax", 0)
-        ;
-
-        private String key;
-
-        private Object def;
-
-        private Fields(String key, Object def) {
-            this.key = key;
-            this.def = def;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Object getDefault() {
-            return def;
-        }
-    }
 
     @SuppressWarnings("unchecked")
     public SurvivalGameConfig deserialize(ConfigurationSection config) {
@@ -103,27 +66,14 @@ public class SurvivalGameConfigSerializer {
         builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
         builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
 
-        List<Map<String, Object>> vectorList = (List<Map<String, Object>>) config.getList(Fields.SPAWNS.getKey(), (List<?>) Fields.SPAWNS.getDefault());
+        builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
+        builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
+
+        List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<Vector>) Fields.SPAWNS.getDefault());
 
         if (!vectorList.isEmpty()) {
-            for (Map<String, Object> map : vectorList) {
-
-                if (!map.containsKey("X") || !map.containsKey("Y") || !map.containsKey("Z")) {
-                    BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to find correct keys when parsing "
-                            + "spawn list! Skipping...");
-                    continue;
-                }
-
-                try {
-                    builder.addSpawn(new Vector(
-                            (Double) map.get("X"),
-                            (Double) map.get("Y"),
-                            (Double) map.get("Z")));
-                } catch (ClassCastException e) {
-                    BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when reading double "
-                            + "value in spawn location! Skipping...");
-                    continue;
-                }
+            for (Vector v : vectorList) {
+            	builder.addSpawn(v);
             }
         }
 
@@ -147,27 +97,69 @@ public class SurvivalGameConfigSerializer {
 
         YamlConfiguration config = new YamlConfiguration();
 
-        config.set(Fields.WORLD.getKey(), obj.getWorldName());
-        config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld());
-        config.set(Fields.EXIT.getKey(), obj.getExit());
-        config.set(Fields.CENTER.getKey(), obj.getCenter());
-        config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit());
-        config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime());
+        config.set(Fields.WORLD.getKey(), obj.getWorldName().get());
+        config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld().get());
+        config.set(Fields.EXIT.getKey(), obj.getExit().get());
+        config.set(Fields.CENTER.getKey(), obj.getCenter().get());
+        config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit().get());
+        config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime().get());
 
         config.set(Fields.SPAWNS.getKey(), new ArrayList<>(obj.getSpawns()));
 
-        config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint());
-        config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange());
+        config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint().get());
+        config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange().get());
 
         config.set(Fields.LOOT.getKey(), obj.getLoot());
 
-        config.set(Fields.XMIN.getKey(), obj.getXMin());
-        config.set(Fields.XMAX.getKey(), obj.getXMax());
-        config.set(Fields.YMIN.getKey(), obj.getYMin());
-        config.set(Fields.YMAX.getKey(), obj.getYMax());
-        config.set(Fields.ZMIN.getKey(), obj.getZMin());
-        config.set(Fields.ZMAX.getKey(), obj.getZMax());
+        config.set(Fields.XMIN.getKey(), obj.getXMin().get());
+        config.set(Fields.XMAX.getKey(), obj.getXMax().get());
+        config.set(Fields.YMIN.getKey(), obj.getYMin().get());
+        config.set(Fields.YMAX.getKey(), obj.getYMax().get());
+        config.set(Fields.ZMIN.getKey(), obj.getZMin().get());
+        config.set(Fields.ZMAX.getKey(), obj.getZMax().get());
+
+        config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius().get());
+        config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime().get());
 
         return config;
+    }
+
+    private enum Fields {
+
+        WORLD("world", ""),
+        PLAYERLIMIT("playerLimit", 16),
+        COUNTDOWNTIME("countdownTime", 30),
+        EXITWORLD("exitWorld", ""),
+        EXIT("exit", new Vector(0, 0, 0)),
+        CENTER("center", new Vector(0, 0, 0)),
+        SPAWNS("spawns", new LinkedList<Vector>()),
+        CHEST_MIDPOINT("chest.midpoint", 0.0),
+        CHEST_RANGE("chest.range", 0.0),
+        LOOT("loot", new LinkedList<Loot>()),
+        XMIN("xmin", 0),
+        XMAX("xmax", 0),
+        YMIN("ymin", 0),
+        YMAX("ymax", 0),
+        ZMIN("zmin", 0),
+        ZMAX("zmax", 0),
+        DEATHMATCHRADIUS("deathmatchRadius", 100),
+        DEATHMATCHTIME("deathmatchTime", 60);
+
+        private String key;
+
+        private Object def;
+
+        Fields(String key, Object def) {
+            this.key = key;
+            this.def = def;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public Object getDefault() {
+            return def;
+        }
     }
 }

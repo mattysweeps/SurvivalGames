@@ -29,19 +29,34 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Tab completer for the plugin
+ */
 public class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        for (int i= 0; i < strings.length; i++){
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = strings[i].toLowerCase();
         }
 
         List<String> list = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(strings);
         if (list == null) return new LinkedList<>();
-        return list;
+        List<String> lowerCase = new ArrayList<>(list.size());
+        list.forEach(st -> lowerCase.add(st.toLowerCase()));
+
+        if (strings[strings.length - 1].length() == 0) {
+            return lowerCase;
+        }
+
+        return lowerCase.stream()
+                .filter(string -> string.startsWith(strings[strings.length - 1]))
+                .map(string -> string + " ")
+                .collect(Collectors.toList());
     }
 }

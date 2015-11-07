@@ -26,18 +26,21 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 
+/**
+ * Command to save a configuration for a game
+ */
 public class SaveCommand extends GameCommand {
+
+    private static final SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
 
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
@@ -46,26 +49,23 @@ public class SaveCommand extends GameCommand {
             return false;
         }
 
-        String fileName = arguments.get(CommandKeywords.FILENAME);
-        if (!arguments.containsKey(CommandKeywords.FILENAME)) {
-            Bukkit.getLogger().warning("No file name given.");
+        String fileName = arguments.get(CommandArgs.FILENAME);
+        if (!arguments.containsKey(CommandArgs.FILENAME)) {
+            sender.sendMessage("No file name given.");
             return false;
         }
 
-        File file = new File(fileName);
-        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer(); //TODO Static?
-        YamlConfiguration config;
-
-        config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
+        YamlConfiguration config = serializer.serialize(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig());
 
         try {
             config.save(file);
         } catch (IOException e) {
-            Bukkit.getLogger().warning("Unable to save config file");
+            sender.sendMessage("Unable to save config file");
             return false;
         }
 
-        Bukkit.getLogger().info("Config saved");
+        sender.sendMessage("Config saved");
         return false;
     }
 }

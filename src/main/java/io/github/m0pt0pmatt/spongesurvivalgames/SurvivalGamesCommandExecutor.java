@@ -26,29 +26,38 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrieReturn;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Command Executor for the plugin
+ */
 public class SurvivalGamesCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        Map<String, String> arguments = new HashMap<>();
-
-        for (int i= 0; i < strings.length; i++){
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = strings[i].toLowerCase();
         }
 
-        SurvivalGamesCommand cmd = BukkitSurvivalGamesPlugin.commandTrie.match(strings, arguments);
-        if (cmd == null){
+        LoadedTrieReturn<String, SurvivalGamesCommand> trieReturn = BukkitSurvivalGamesPlugin.commandTrie.match(strings);
+
+        if (trieReturn.data == null) {
+            commandSender.sendMessage("No command found");
             return false;
         }
 
-        return cmd.execute(commandSender, arguments);
+        if (!trieReturn.data.execute(commandSender, trieReturn.leftoverMap)) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Usage: /ssg");
+            trieReturn.matched.forEach(string -> builder.append(" ").append(string));
+            for (String string : trieReturn.leftovers) builder.append(" ").append(string);
+            commandSender.sendMessage(builder.toString());
+        }
+
+        return true;
     }
 }

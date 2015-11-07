@@ -27,13 +27,15 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Command to print the exit location of a game
+ */
 public class PrintExitCommand extends GameCommand {
 
     @Override
@@ -45,11 +47,11 @@ public class PrintExitCommand extends GameCommand {
 
         Optional<Location> exit = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getExit();
         if (!exit.isPresent()) {
-            Bukkit.getLogger().info("Game: \"" + id + "\", No Exit Location.");
+            sender.sendMessage("Game: \"" + id + "\", No Exit Location.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
         return true;
     }
 }

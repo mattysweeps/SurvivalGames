@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
@@ -48,11 +47,11 @@ public class PrintCenterCommand extends GameCommand {
 
         Optional<Location> centerLocation = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCenter();
         if (!centerLocation.isPresent()) {
-            Bukkit.getLogger().info("Game: \"" + id + "\", No Center Location.");
+            sender.sendMessage("Game: \"" + id + "\", No Center Location.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
         return true;
     }
 }

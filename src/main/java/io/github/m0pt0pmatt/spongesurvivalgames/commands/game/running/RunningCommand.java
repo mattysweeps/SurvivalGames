@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -45,8 +44,9 @@ public abstract class RunningCommand extends GameCommand {
             return false;
         }
 
-        if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.RUNNING)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
+        if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.RUNNING) &&
+                !BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.DEATHMATCH)) {
+            sender.sendMessage("Survival Game \"" + id + "\" must be in a RUNNING state for this command.");
             return false;
         }
 

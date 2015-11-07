@@ -27,12 +27,18 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
+/**
+ * Task for counting down the starting time
+ */
 public class CreateCountdownTask implements SurvivalGameTask {
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public void execute(SurvivalGame game) throws SurvivalGameException {
 
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
             for (int i = game.getCountdownTime().get(); i > 0; i--) {
@@ -40,14 +46,22 @@ public class CreateCountdownTask implements SurvivalGameTask {
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(
                         BukkitSurvivalGamesPlugin.plugin,
-                        () -> player.sendMessage(Integer.toString(j)),
+                        () -> {
+                            //player.sendMessage(Integer.toString(j)),
+                            Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
+                                    ChatColor.MAGIC);
+                        },
                         20L * (game.getCountdownTime().get() - i)
                 );
             }
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
-                    () -> player.sendMessage("Go!"),
+                    () -> {
+                        //player.sendMessage(Integer.toString(j)),
+                        Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
+                        game.checkWin();
+                    },
                     20L * game.getCountdownTime().get()
             );
         });

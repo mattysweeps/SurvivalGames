@@ -23,7 +23,31 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-public class TaskException extends SurvivalGameException {
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import org.bukkit.GameMode;
+
+/**
+ * Task for resetting the players' food and health levels
+ */
+public class ReadyPlayerTask implements SurvivalGameTask {
+    @Override
+    public void execute(SurvivalGame game) throws SurvivalGameException {
+
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+                .forEach(player -> {
+
+                    //TODO: Make sure these are valid
+                    player.setGameMode(GameMode.ADVENTURE);
+                    player.setMaxHealth(20);
+                    player.setHealth(player.getMaxHealth());
+                    player.setFoodLevel(20);
+                    player.setSaturation(player.getFoodLevel());
+                    player.setExhaustion(player.getFoodLevel());
+                    player.getInventory().clear();
+                });
+    }
 }
