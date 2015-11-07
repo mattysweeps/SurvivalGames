@@ -51,6 +51,8 @@ public class PlayerEventListener implements Listener {
                 if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Death has occurred inside the game
                     game.getValue().reportDeath(player.getUniqueId());
+                    
+                    player.setBedSpawnLocation(game.getValue().getExit().get(), true);
                     return;
                 }
             }
