@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -39,9 +38,9 @@ public class ListGamesCommand extends SurvivalGamesCommand {
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
-       sender.sendMessage("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
+        sender.sendMessage("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
         for (Map.Entry<String, SurvivalGame> entry : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-           sender.sendMessage("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
+            sender.sendMessage("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
         }
 
         return true;

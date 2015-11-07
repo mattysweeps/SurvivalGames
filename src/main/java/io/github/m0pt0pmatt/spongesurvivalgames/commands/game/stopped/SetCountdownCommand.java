@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -46,7 +45,7 @@ public class SetCountdownCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.COUNTDOWN)) {
-           sender.sendMessage("No Countdown time specified");
+            sender.sendMessage("No Countdown time specified");
             return false;
         }
         String countdownTimeString = arguments.get(CommandArgs.COUNTDOWN);
@@ -55,7 +54,7 @@ public class SetCountdownCommand extends StoppedCommand {
         try {
             countdownTime = Integer.parseInt(countdownTimeString);
         } catch (NumberFormatException e) {
-           sender.sendMessage("Unable to convert String to Integer");
+            sender.sendMessage("Unable to convert String to Integer");
             return false;
         }
 
@@ -66,7 +65,7 @@ public class SetCountdownCommand extends StoppedCommand {
             return false;
         }
 
-       sender.sendMessage("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+        sender.sendMessage("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
         return true;
     }
 }

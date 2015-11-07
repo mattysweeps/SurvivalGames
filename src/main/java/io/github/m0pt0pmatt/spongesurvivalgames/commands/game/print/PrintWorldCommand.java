@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -47,11 +46,11 @@ public class PrintWorldCommand extends GameCommand {
 
         Optional<String> worldName = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getWorldName();
         if (!worldName.isPresent()) {
-           sender.sendMessage("Game: \"" + id + "\", No World set.");
+            sender.sendMessage("Game: \"" + id + "\", No World set.");
             return false;
         }
 
-       sender.sendMessage("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
+        sender.sendMessage("Game: \"" + id + "\", World: \"" + worldName.get() + "\".");
         return true;
     }
 }

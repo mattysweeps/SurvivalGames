@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -52,7 +51,7 @@ public class SaveCommand extends GameCommand {
 
         String fileName = arguments.get(CommandArgs.FILENAME);
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
-           sender.sendMessage("No file name given.");
+            sender.sendMessage("No file name given.");
             return false;
         }
 
@@ -62,11 +61,11 @@ public class SaveCommand extends GameCommand {
         try {
             config.save(file);
         } catch (IOException e) {
-           sender.sendMessage("Unable to save config file");
+            sender.sendMessage("Unable to save config file");
             return false;
         }
 
-       sender.sendMessage("Config saved");
+        sender.sendMessage("Config saved");
         return false;
     }
 }

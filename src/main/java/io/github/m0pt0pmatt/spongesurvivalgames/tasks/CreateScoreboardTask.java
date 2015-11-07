@@ -30,7 +30,10 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 public class CreateScoreboardTask implements SurvivalGameTask {
     @Override

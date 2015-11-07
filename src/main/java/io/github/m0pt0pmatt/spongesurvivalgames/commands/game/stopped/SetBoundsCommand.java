@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -52,7 +51,7 @@ public class SetBoundsCommand extends StoppedCommand {
                         !arguments.containsKey(CommandArgs.ZMIN) ||
                         !arguments.containsKey(CommandArgs.ZMAX)
                 ) {
-           sender.sendMessage("Missing one or more bounds.");
+            sender.sendMessage("Missing one or more bounds.");
             return false;
         }
 
@@ -72,12 +71,12 @@ public class SetBoundsCommand extends StoppedCommand {
             yMax = Integer.parseInt(yMaxString);
             zMax = Integer.parseInt(zMaxString);
         } catch (NumberFormatException e) {
-           sender.sendMessage("Unable to convert from String to Integer");
+            sender.sendMessage("Unable to convert from String to Integer");
             return false;
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, yMin, yMax, zMin, zMax);
-       sender.sendMessage("Bounds set for game \"" + id + "\".");
+        sender.sendMessage("Bounds set for game \"" + id + "\".");
 
         return true;
     }

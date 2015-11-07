@@ -25,19 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 /**
  * Task for counting down the starting time
  */
 public class CreateCountdownTask implements SurvivalGameTask {
-	
+
     @Override
     public void execute(SurvivalGame game) throws TaskException {
 
@@ -48,9 +47,9 @@ public class CreateCountdownTask implements SurvivalGameTask {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(
                         BukkitSurvivalGamesPlugin.plugin,
                         () -> {
-                        	//player.sendMessage(Integer.toString(j)),
-                        	Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN, 
-                        			ChatColor.MAGIC);
+                            //player.sendMessage(Integer.toString(j)),
+                            Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
+                                    ChatColor.MAGIC);
                         },
                         20L * (game.getCountdownTime().get() - i)
                 );
@@ -59,9 +58,9 @@ public class CreateCountdownTask implements SurvivalGameTask {
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                    	//player.sendMessage(Integer.toString(j)),
-                    	Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
-                    	game.checkWin();
+                        //player.sendMessage(Integer.toString(j)),
+                        Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
+                        game.checkWin();
                     },
                     20L * game.getCountdownTime().get()
             );
