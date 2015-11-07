@@ -279,7 +279,7 @@ public class SurvivalGame {
     }
 
     public void setCountdownTime(int countdownTime) throws NegativeNumberException {
-        if (countdownTime < 0) throw new NegativeNumberException(countdownTime);
+        if (countdownTime < 0) throw new NegativeNumberException();
         config.setCountdownTime(countdownTime);
     }
 
@@ -303,7 +303,8 @@ public class SurvivalGame {
         return config.getChestMidpoint();
     }
 
-    public void setChestMidpoint(Double chestMidpoint) {
+    public void setChestMidpoint(Double chestMidpoint) throws NegativeNumberException {
+        if (chestMidpoint < 0) throw new NegativeNumberException();
         config.setChestMidpoint(chestMidpoint);
     }
 
@@ -311,7 +312,8 @@ public class SurvivalGame {
         return config.getChestRange();
     }
 
-    public void setChestRange(Double chestRange) {
+    public void setChestRange(Double chestRange) throws NegativeNumberException {
+        if (chestRange < 0) throw new NegativeNumberException();
         config.setChestRange(chestRange);
     }
 
@@ -412,7 +414,7 @@ public class SurvivalGame {
     }
 
     public void setDeathmatchRadius(int deathmatchRadius) throws NegativeNumberException {
-        if (deathmatchRadius < 0) throw new NegativeNumberException(deathmatchRadius);
+        if (deathmatchRadius < 0) throw new NegativeNumberException();
         config.setDeathmatchRadius(deathmatchRadius);
     }
 
@@ -421,7 +423,7 @@ public class SurvivalGame {
     }
 
     public void setDeathmatchTime(int deathmatchTime) throws NegativeNumberException {
-        if (deathmatchTime < 0) throw new NegativeNumberException(deathmatchTime);
+        if (deathmatchTime < 0) throw new NegativeNumberException();
         config.setDeathmatchTime(deathmatchTime);
     }
 }

@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -55,7 +56,13 @@ public class SetChestRangeCommand extends StoppedCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
+        try {
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestRange(range);
+        } catch (NegativeNumberException e) {
+            Bukkit.getLogger().warning("Chest range cannot be negative.");
+            return false;
+        }
+
         Bukkit.getLogger().info("Chest range for game \"" + id + "\" set to " + range + ".");
         return true;
     }
