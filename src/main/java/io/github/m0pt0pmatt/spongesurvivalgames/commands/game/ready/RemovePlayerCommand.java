@@ -58,6 +58,8 @@ public class RemovePlayerCommand extends ReadyCommand {
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removePlayer(player.getUniqueId());
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+
         sender.sendMessage("Player \"" + playerName + "\" removed from survival game \"" + id + "\".");
 
         return true;
