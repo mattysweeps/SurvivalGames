@@ -60,14 +60,16 @@ public class SurvivalGame {
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new ReadyPlayerTask(),
-            new CreateCountdownTask()
+            new CreateCountdownTask(),
+            new CreateScoreboardTask()
     ));
     private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
             new ResetLootGeneratorTask(),
             new FillChestsTask()
     ));
-    private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Collections.singletonList(
-            new DespawnPlayersTask()
+    private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
+            new DespawnPlayersTask(),
+            new DeleteScoreboardTask()
     ));
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
