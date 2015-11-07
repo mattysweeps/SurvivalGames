@@ -55,8 +55,7 @@ public class SurvivalGame {
             new Vector(0, 1, 1),
             new Vector(0, 0, -1),
             new Vector(0, 1, -1),
-            new Vector(0, 2, 0),
-            new Vector(0, -1, 0)
+            new Vector(0, 2, 0)
     ));
     private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
             new CreateCageSnapshotsTask(),
@@ -72,7 +71,8 @@ public class SurvivalGame {
     ));
     private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
             new DespawnPlayersTask(),
-            new DeleteScoreboardTask()
+            new DeleteScoreboardTask(),
+            new ClearWorldBoarderTask()
     ));
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
@@ -148,7 +148,7 @@ public class SurvivalGame {
     public void stop() throws TaskException {
 
         // Execute force stop tasks if the game is RUNNING
-        if (state.equals(SurvivalGameState.RUNNING)) {
+        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
             executeTasks(forceStopTasks);
         }
 
