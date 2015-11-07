@@ -37,6 +37,6 @@ public class ClearWorldBoarderTask implements SurvivalGameTask {
         World world = Bukkit.getWorld(game.getWorldName().get());
         if (world == null) return;
 
-        world.getWorldBorder().setSize(-1);
+        world.getWorldBorder().setSize(60000000);
     }
 }

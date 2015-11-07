@@ -30,8 +30,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
 
@@ -81,7 +84,9 @@ public class AddPlayerCommand extends ReadyCommand {
             return false;
         }
 
-        player.setScoreboard(BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard());
+        Scoreboard board = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard();
+        player.setScoreboard(board);
+        board.getObjective(DisplaySlot.SIDEBAR).getScore(player.getName()).setScore(0);
 
         commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
         return true;
