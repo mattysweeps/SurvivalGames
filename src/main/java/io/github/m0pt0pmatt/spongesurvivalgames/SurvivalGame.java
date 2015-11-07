@@ -71,7 +71,8 @@ public class SurvivalGame {
     ));
     private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
             new DespawnPlayersTask(),
-            new DeleteScoreboardTask()
+            new DeleteScoreboardTask(),
+            new ClearWorldBoarderTask()
     ));
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
