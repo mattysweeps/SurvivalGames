@@ -39,7 +39,10 @@ public class CreateGameCommand extends SurvivalGamesCommand {
 
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
-
+    	if(!super.execute(sender, arguments)){
+    		return false;
+    	}
+    	
         if (!arguments.containsKey(CommandArgs.ID)) {
             Bukkit.getLogger().warning("Survival Game ID is not present.");
             return false;
