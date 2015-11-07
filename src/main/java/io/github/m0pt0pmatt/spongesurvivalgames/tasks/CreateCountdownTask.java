@@ -26,26 +26,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 
 /**
  * Task for counting down the starting time
  */
 public class CreateCountdownTask implements SurvivalGameTask {
-	
-	private static final String playerToken = "[PLAYER]";
-	
-	private static final String timeToken = "[TIME]";
-	
-	private static final String colorToken = "[COLOR]";
-	
-	private static final String[] titleCommands = new String[]{
-			"title " + playerToken + " times 10 0 10",
-			"title dove_bren title {text:\"" + timeToken + "\",color:\"" + colorToken + "\"}"
-	};
 	
     @Override
     public void execute(SurvivalGame game) throws TaskException {
@@ -58,12 +49,8 @@ public class CreateCountdownTask implements SurvivalGameTask {
                         BukkitSurvivalGamesPlugin.plugin,
                         () -> {
                         	//player.sendMessage(Integer.toString(j)),
-                        	for (String command : titleCommands) {
-                        		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), 
-                        				command.replace(playerToken, player.getName())
-                        					.replace(timeToken, j + "")
-                        					.replace(colorToken, j < 4 ? "dark_red" : "dark_green"));
-                        	}
+                        	Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN, 
+                        			ChatColor.MAGIC);
                         },
                         20L * (game.getCountdownTime().get() - i)
                 );
@@ -73,12 +60,7 @@ public class CreateCountdownTask implements SurvivalGameTask {
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
                     	//player.sendMessage(Integer.toString(j)),
-                    	for (String command : titleCommands) {
-                    		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), 
-                    				command.replace(playerToken, player.getName())
-                    					.replace(timeToken, "Go!")
-                    					.replace(colorToken, "dark_red"));
-                    	}
+                    	Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
                     	game.checkWin();
                     },
                     20L * game.getCountdownTime().get()
