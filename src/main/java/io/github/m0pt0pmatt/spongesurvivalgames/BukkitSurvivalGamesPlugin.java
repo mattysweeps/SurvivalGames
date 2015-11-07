@@ -39,6 +39,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrieReturn;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -66,6 +67,10 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         BukkitSurvivalGamesPlugin.plugin = this;
 
         //Register all commands
+        registerCommands();
+    }
+
+    private void registerCommands(){
         commandTrie.add(
                 new String[]{CommandKeywords.CREATE},
                 new String[]{CommandArgs.ID},

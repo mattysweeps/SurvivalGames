@@ -43,8 +43,6 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        Map<String, String> arguments = new HashMap<>();
-
         for (int i = 0; i < strings.length; i++) {
             strings[i] = strings[i].toLowerCase();
         }
@@ -56,13 +54,12 @@ public class SurvivalGamesCommandExecutor implements CommandExecutor {
             return false;
         }
 
-        if (!trieReturn.data.execute(commandSender, arguments)) {
+        if (!trieReturn.data.execute(commandSender, trieReturn.leftoverMap)) {
             StringBuilder builder = new StringBuilder();
             builder.append("Usage: /ssg");
             trieReturn.matched.forEach(string -> builder.append(" ").append(string));
             for (String string : trieReturn.leftovers) builder.append(" ").append(string);
             commandSender.sendMessage(builder.toString());
-            return false;
         }
 
         return true;

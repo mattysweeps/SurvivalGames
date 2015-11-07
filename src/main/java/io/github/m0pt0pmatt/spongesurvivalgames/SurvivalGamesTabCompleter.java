@@ -32,6 +32,7 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tab completer for the plugin
