@@ -52,7 +52,7 @@ public class SaveCommand extends GameCommand {
 
         String fileName = arguments.get(CommandArgs.FILENAME);
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
-            Bukkit.getLogger().warning("No file name given.");
+           sender.sendMessage("No file name given.");
             return false;
         }
 
@@ -62,11 +62,11 @@ public class SaveCommand extends GameCommand {
         try {
             config.save(file);
         } catch (IOException e) {
-            Bukkit.getLogger().warning("Unable to save config file");
+           sender.sendMessage("Unable to save config file");
             return false;
         }
 
-        Bukkit.getLogger().info("Config saved");
+       sender.sendMessage("Config saved");
         return false;
     }
 }

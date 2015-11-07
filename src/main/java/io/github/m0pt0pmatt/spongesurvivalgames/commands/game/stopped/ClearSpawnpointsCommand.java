@@ -44,7 +44,7 @@ public class ClearSpawnpointsCommand extends StoppedCommand {
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).clearSpawnLocations();
-        Bukkit.getLogger().info("Spawn locations cleared for game \"" + id + "\".");
+       sender.sendMessage("Spawn locations cleared for game \"" + id + "\".");
 
         return true;
     }

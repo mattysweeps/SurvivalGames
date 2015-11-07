@@ -48,11 +48,11 @@ public class PrintExitCommand extends GameCommand {
 
         Optional<Location> exit = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getExit();
         if (!exit.isPresent()) {
-            Bukkit.getLogger().info("Game: \"" + id + "\", No Exit Location.");
+           sender.sendMessage("Game: \"" + id + "\", No Exit Location.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
         return true;
     }
 }

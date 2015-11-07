@@ -50,49 +50,47 @@ public class AddPlayerCommand extends ReadyCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
-            Bukkit.getLogger().warning("Player name is not present.");
+           sender.sendMessage("Player name is not present.");
             return false;
         }
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
         if (playerName.equals(allKeyword)) {
-            return addAllPlayers();
+            return addAllPlayers(sender);
         } else {
             Player player = Bukkit.getPlayer(playerName);
             if (player == null) {
-                Bukkit.getLogger().warning("No such player \"" + playerName + "\".");
+               sender.sendMessage("No such player \"" + playerName + "\".");
                 return false;
             }
-            return addPlayer(player);
+            return addPlayer(sender, player);
         }
 
 
     }
 
-    private boolean addPlayer(Player player) {
+    private boolean addPlayer(CommandSender commandSender, Player player) {
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
         } catch (NoPlayerLimitException e) {
-            Bukkit.getLogger().warning("No player limit sey for game \"" + id + "\".");
+            commandSender.sendMessage("No player limit sey for game \"" + id + "\".");
             e.printStackTrace();
         } catch (PlayerLimitReachedException e) {
-            Bukkit.getLogger().warning("Player limit reached for game \"" + id + "\".");
+            commandSender.sendMessage("Player limit reached for game \"" + id + "\".");
             return false;
         }
 
-        Bukkit.getLogger().info("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
-
+        commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
         return true;
     }
 
-    private boolean addAllPlayers() {
+    private boolean addAllPlayers(CommandSender commandSender) {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            addPlayer(player);
+            addPlayer(commandSender, player);
         });
 
         return true;
     }
-
 
 }

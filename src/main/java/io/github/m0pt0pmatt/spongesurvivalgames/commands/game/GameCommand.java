@@ -44,14 +44,14 @@ public abstract class GameCommand extends SurvivalGamesCommand {
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
         if (!arguments.containsKey(CommandArgs.ID)) {
-            Bukkit.getLogger().warning("Survival Game ID is not present.");
+           sender.sendMessage("Survival Game ID is not present.");
             return false;
         }
 
         id = arguments.get(CommandArgs.ID);
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            Bukkit.getLogger().warning("No Survival Game has specified ID \"" + id + "\".");
+           sender.sendMessage("No Survival Game has specified ID \"" + id + "\".");
             return false;
         }
 

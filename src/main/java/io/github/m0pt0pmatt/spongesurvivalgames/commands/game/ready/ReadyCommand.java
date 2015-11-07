@@ -46,7 +46,7 @@ public abstract class ReadyCommand extends GameCommand {
         }
 
         if (!BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.READY)) {
-            Bukkit.getLogger().warning("Survival Game \"" + id + "\" must be in a READY state for this command.");
+           sender.sendMessage("Survival Game \"" + id + "\" must be in a READY state for this command.");
             return false;
         }
 

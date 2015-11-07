@@ -47,11 +47,11 @@ public class PrintChestMidpointCommand extends GameCommand {
 
         Optional<Double> chestMidpoint = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getChestMidpoint();
         if (!chestMidpoint.isPresent()) {
-            Bukkit.getLogger().warning("Game: \"" + id + "\", No Chest Midpoint set.");
+           sender.sendMessage("Game: \"" + id + "\", No Chest Midpoint set.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
         return true;
     }
 }

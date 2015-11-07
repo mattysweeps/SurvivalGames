@@ -47,11 +47,11 @@ public class PrintPlayerLimitCommand extends GameCommand {
 
         Optional<Integer> playerLimit = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
         if (!playerLimit.isPresent()) {
-            Bukkit.getLogger().warning("Game: \"" + id + "\", Has no player limit set yet.");
+           sender.sendMessage("Game: \"" + id + "\", Has no player limit set yet.");
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
+       sender.sendMessage("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
         return true;
     }
 }

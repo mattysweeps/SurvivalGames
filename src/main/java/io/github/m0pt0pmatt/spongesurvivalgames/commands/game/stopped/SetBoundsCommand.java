@@ -52,7 +52,7 @@ public class SetBoundsCommand extends StoppedCommand {
                         !arguments.containsKey(CommandArgs.ZMIN) ||
                         !arguments.containsKey(CommandArgs.ZMAX)
                 ) {
-            Bukkit.getLogger().warning("Missing one or more bounds.");
+           sender.sendMessage("Missing one or more bounds.");
             return false;
         }
 
@@ -72,12 +72,12 @@ public class SetBoundsCommand extends StoppedCommand {
             yMax = Integer.parseInt(yMaxString);
             zMax = Integer.parseInt(zMaxString);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Unable to convert from String to Integer");
+           sender.sendMessage("Unable to convert from String to Integer");
             return false;
         }
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, yMin, yMax, zMin, zMax);
-        Bukkit.getLogger().info("Bounds set for game \"" + id + "\".");
+       sender.sendMessage("Bounds set for game \"" + id + "\".");
 
         return true;
     }

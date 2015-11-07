@@ -39,12 +39,12 @@ public abstract class SurvivalGamesCommand {
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
         if (sender == null) {
-            Bukkit.getLogger().warning("CommandSender was null");
+           sender.sendMessage("CommandSender was null");
             return false;
         }
 
         if (arguments == null) {
-            Bukkit.getLogger().warning("Argument Map was null");
+           sender.sendMessage("Argument Map was null");
             return false;
         }
 

@@ -51,7 +51,7 @@ public class LoadCommand extends GameCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
-            Bukkit.getLogger().warning("No file name given.");
+           sender.sendMessage("No file name given.");
             return false;
         }
         String fileName = arguments.get(CommandArgs.FILENAME);
@@ -64,7 +64,7 @@ public class LoadCommand extends GameCommand {
         try {
             yaml.load(file);
         } catch (IOException | InvalidConfigurationException e) {
-            Bukkit.getLogger().warning("Unable to load config file");
+           sender.sendMessage("Unable to load config file");
             return false;
         }
 
@@ -73,7 +73,7 @@ public class LoadCommand extends GameCommand {
         config = serializer.deserialize(yaml);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
-        Bukkit.getLogger().info("Config file loaded");
+       sender.sendMessage("Config file loaded");
         return true;
     }
 }

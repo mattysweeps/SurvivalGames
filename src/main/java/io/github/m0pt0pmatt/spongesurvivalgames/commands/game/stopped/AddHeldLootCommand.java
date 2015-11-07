@@ -48,12 +48,12 @@ public class AddHeldLootCommand extends StoppedCommand {
         }
 
         if (!(sender instanceof Player)) {
-            Bukkit.getLogger().warning("Command Sender must be a player");
+           sender.sendMessage("Command Sender must be a player");
             return false;
         }
 
         if (!arguments.containsKey(CommandArgs.WEIGHT)) {
-            Bukkit.getLogger().warning("No loot weight specified");
+           sender.sendMessage("No loot weight specified");
             return false;
         }
 
@@ -63,7 +63,7 @@ public class AddHeldLootCommand extends StoppedCommand {
         try {
             weight = Double.parseDouble(weightString);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Unable to convert from string to double");
+           sender.sendMessage("Unable to convert from string to double");
             return false;
         }
 
@@ -71,7 +71,7 @@ public class AddHeldLootCommand extends StoppedCommand {
 
         ItemStack item = player.getItemInHand();
         if (item == null) {
-            Bukkit.getLogger().warning("No item in hand");
+           sender.sendMessage("No item in hand");
             return false;
         }
 
