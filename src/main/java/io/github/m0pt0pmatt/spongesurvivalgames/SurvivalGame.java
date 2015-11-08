@@ -67,7 +67,7 @@ public class SurvivalGame {
             new ReadyPlayerTask(),
             new CreateCountdownTask(),
             new CreateScoreboardTask(),
-            new CreateWorldBoarderTask()
+            new CreateWorldBorderTask()
     ));
     private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
             new ResetLootGeneratorTask(),
@@ -76,7 +76,7 @@ public class SurvivalGame {
     private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
             new DespawnPlayersTask(),
             new DeleteScoreboardTask(),
-            new ClearWorldBoarderTask()
+            new ClearWorldBorderTask()
     ));
     private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
             new ClearPlayersTask()
