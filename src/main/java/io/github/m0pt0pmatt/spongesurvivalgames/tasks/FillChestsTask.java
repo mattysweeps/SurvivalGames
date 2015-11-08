@@ -36,10 +36,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Task for filling the chests with random loot
@@ -90,13 +87,13 @@ public class FillChestsTask implements SurvivalGameTask {
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
 
-        int taskID = 0;
+        Set<Integer> taskIDs = new HashSet<>();
 
         for (int x = xmin; x < xmax; x += xlength) {
             for (int y = ymin; y < ymax; y += ylength) {
                 for (int z = zmin; z < zmax; z += zlength) {
                     //Do work
-                    taskID = checkBlocks(x, y, z, world);
+                    taskIDs.add(checkBlocks(x, y, z, world));
                     try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
@@ -106,7 +103,18 @@ public class FillChestsTask implements SurvivalGameTask {
             }
         }
 
-        while (Bukkit.getScheduler().isCurrentlyRunning(taskID)) {
+        while (!taskIDs.isEmpty()) {
+
+            Iterator<Integer> i = taskIDs.iterator();
+            while (i.hasNext()){
+
+                int id = i.next();
+
+                if (!Bukkit.getScheduler().isCurrentlyRunning(id)){
+                    i.remove();
+                }
+            }
+
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
