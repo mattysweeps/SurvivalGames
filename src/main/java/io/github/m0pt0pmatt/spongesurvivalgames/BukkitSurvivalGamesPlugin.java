@@ -29,10 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceDeathmatchCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.SponsorCommand;
@@ -211,6 +208,14 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandKeywords.REMOVE, CommandKeywords.PLAYER},
                 new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME},
                 new RemovePlayerCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.ADD, CommandKeywords.SPECTATOR},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME},
+                new AddSpectatorCommand());
+        commandTrie.add(
+                new String[]{CommandKeywords.REMOVE, CommandKeywords.SPECTATOR},
+                new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME},
+                new RemoveSpectatorCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.START},
                 new String[]{CommandArgs.ID},
