@@ -23,32 +23,30 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
 
-/**
- * Command to add a player to a game
- */
-public class AddPlayerCommand extends ReadyCommand {
-
-    private static final String allKeyword = "@a";
-
+public class RemoveSpectatorCommand extends GameCommand {
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
+            return false;
+        }
+
+        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
+
+        if (game.getState().equals(SurvivalGameState.STOPPED)){
+            sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
             return false;
         }
 
@@ -58,44 +56,14 @@ public class AddPlayerCommand extends ReadyCommand {
         }
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
-        if (playerName.equals(allKeyword)) {
-            return addAllPlayers(sender);
-        } else {
-            Player player = Bukkit.getPlayer(playerName);
-            if (player == null) {
-                sender.sendMessage("No such player \"" + playerName + "\".");
-                return false;
-            }
-            return addPlayer(sender, player);
-        }
-    }
-
-    private boolean addPlayer(CommandSender commandSender, Player player) {
-
-        try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
-        } catch (NoPlayerLimitException e) {
-            commandSender.sendMessage("No player limit sey for game \"" + id + "\".");
-            return false;
-        } catch (PlayerLimitReachedException e) {
-            commandSender.sendMessage("Player limit reached for game \"" + id + "\".");
+        Player player = Bukkit.getServer().getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage("No such player \"" + playerName + "\".");
             return false;
         }
 
-        Scoreboard board = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard();
-        player.setScoreboard(board);
-        board.getObjective(DisplaySlot.SIDEBAR).getScore(player.getName()).setScore(0);
-
-        commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removeSpectator(player.getUniqueId());
+        sender.sendMessage("Player \"" + playerName + "\" removed from spectating game \"" + id + "\".");
         return true;
     }
-
-    private boolean addAllPlayers(CommandSender commandSender) {
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            addPlayer(commandSender, player);
-        });
-
-        return true;
-    }
-
 }

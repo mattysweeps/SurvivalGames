@@ -66,6 +66,8 @@ public class SurvivalGame {
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new ReadyPlayerTask(),
+            new SpawnSpectatorsTask(),
+            new ReadySpectatorsTask(),
             new CreateCountdownTask(),
             new CreateScoreboardTask(),
             new CreateWorldBorderTask()
@@ -90,6 +92,7 @@ public class SurvivalGame {
             new CreateDeathmatchBorderTask()
     ));
     private final Set<UUID> playerUUIDs = new HashSet<>();
+    private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private LootGenerator lootGenerator = new LootGenerator();
@@ -360,6 +363,9 @@ public class SurvivalGame {
         for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
         	p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
         }
+        BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
+                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+        );
 
         checkWin();
     }
@@ -456,5 +462,17 @@ public class SurvivalGame {
 
     public void setChestsFilled() {
         this.chestsFilled = true;
+    }
+
+    public void addSpectator(UUID player) {
+        spectatorUUIDs.add(player);
+    }
+
+    public void removeSpectator(UUID player) {
+        spectatorUUIDs.remove(player);
+    }
+
+    public Set<UUID> getSpectatorUUIDs() {
+        return spectatorUUIDs;
     }
 }
