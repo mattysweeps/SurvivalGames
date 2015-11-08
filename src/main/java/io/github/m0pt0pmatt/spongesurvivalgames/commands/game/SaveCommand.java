@@ -66,6 +66,6 @@ public class SaveCommand extends GameCommand {
         }
 
         sender.sendMessage("Config saved");
-        return false;
+        return true;
     }
 }
