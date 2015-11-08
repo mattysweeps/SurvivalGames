@@ -35,8 +35,8 @@ public class SurvivalGameConfigBuilder {
 
     private final SurvivalGameConfig config;
 
-    public SurvivalGameConfigBuilder() {
-        config = new SurvivalGameConfig();
+    public SurvivalGameConfigBuilder(SurvivalGameConfig config) {
+        this.config = config;
     }
 
     public SurvivalGameConfig build() {
@@ -44,92 +44,92 @@ public class SurvivalGameConfigBuilder {
     }
 
     public SurvivalGameConfigBuilder worldName(String worldName) {
-        config.setWorldName(worldName);
+        if (worldName != null)	config.setWorldName(worldName);
         return this;
     }
 
     public SurvivalGameConfigBuilder exitWorld(String exitWorld) {
-        config.setExitWorld(exitWorld);
+    	if (exitWorld != null) config.setExitWorld(exitWorld);
         return this;
     }
 
     public SurvivalGameConfigBuilder exitLocation(Vector exit) {
-        config.setExit(exit);
+    	if (exit != null) config.setExit(exit);
         return this;
     }
 
     public SurvivalGameConfigBuilder centerLocation(Vector center) {
-        config.setCenter(center);
+    	if (center != null) config.setCenter(center);
         return this;
     }
 
     public SurvivalGameConfigBuilder playerLimit(Integer playerLimit) {
-        config.setPlayerLimit(playerLimit);
+    	if (playerLimit != null) config.setPlayerLimit(playerLimit);
         return this;
     }
 
     public SurvivalGameConfigBuilder countdownTime(Integer countdownTime) {
-        config.setCountdownTime(countdownTime);
+    	if (countdownTime != null) config.setCountdownTime(countdownTime);
         return this;
     }
 
     public SurvivalGameConfigBuilder addSpawn(Vector vector) {
-        config.getSpawns().add(vector);
+    	if (vector != null) config.getSpawns().add(vector);
         return this;
     }
 
     public SurvivalGameConfigBuilder chestMidpoint(Double chestMidpoint) {
-        config.setChestMidpoint(chestMidpoint);
+    	if (chestMidpoint != null) config.setChestMidpoint(chestMidpoint);
         return this;
     }
 
     public SurvivalGameConfigBuilder chestRange(Double chestRange) {
-        config.setChestRange(chestRange);
+    	if (chestRange != null) config.setChestRange(chestRange);
         return this;
     }
 
     public SurvivalGameConfigBuilder addLoot(Loot loot) {
-        config.getLoot().add(loot);
+    	if (loot != null) config.getLoot().add(loot);
         return this;
     }
 
     public SurvivalGameConfigBuilder xMin(Integer xMin) {
-        config.setXMin(xMin);
+    	if (xMin != null) config.setXMin(xMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder xMax(Integer xMax) {
-        config.setXMax(xMax);
+    	if (xMax != null) config.setXMax(xMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder yMin(Integer yMin) {
-        config.setYMin(yMin);
+    	if (yMin != null) config.setYMin(yMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder yMax(Integer yMax) {
-        config.setYMax(yMax);
+    	if (yMax != null) config.setYMax(yMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder zMin(Integer zMin) {
-        config.setZMin(zMin);
+    	if (zMin != null) config.setZMin(zMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder zMax(Integer zMax) {
-        config.setZMax(zMax);
+    	if (zMax != null) config.setZMax(zMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder deathmatchRadius(Integer deathmatchRadius) {
-        config.setDeathmatchRadius(deathmatchRadius);
+    	if (deathmatchRadius != null) config.setDeathmatchRadius(deathmatchRadius);
         return this;
     }
 
     public SurvivalGameConfigBuilder deathmatchTime(Integer deathmatchTime) {
-        config.setDeathmatchTime(deathmatchTime);
+    	if (deathmatchTime != null) config.setDeathmatchTime(deathmatchTime);
         return this;
     }
 }

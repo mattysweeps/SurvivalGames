@@ -43,18 +43,69 @@ import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 public class SurvivalGameConfigSerializer {
 
 
-    public SurvivalGameConfig deserialize(ConfigurationSection config, boolean loadDefaults) {
+    public void deserialize(SurvivalGameConfig baseConfig, ConfigurationSection config, boolean loadDefaults) {
     	if (loadDefaults) {
-    		return loadWithDefaults(config);
+    		loadWithDefaults(baseConfig, config);
     	}
     	
-    	return loadWithoutDefaults(config);
+    	loadWithoutDefaults(baseConfig, config);
     }
 
     @SuppressWarnings("unchecked")
-    public SurvivalGameConfig loadWithoutDefaults(ConfigurationSection config) {
+    public void loadWithoutDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
 
-        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
+        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
+
+        builder.worldName(config.getString(Fields.WORLD.getKey(), null));
+
+        builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), null));
+
+        builder.exitLocation(config.getVector(Fields.EXIT.getKey(), null));
+
+        builder.centerLocation(config.getVector(Fields.CENTER.getKey(), null));
+
+        builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), 0));
+
+        builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), 0));
+
+        builder.xMin(config.contains(Fields.XMIN.getKey()) ? config.getInt(Fields.XMIN.getKey()) : null);
+        builder.xMax(config.contains(Fields.XMAX.getKey()) ? config.getInt(Fields.XMAX.getKey()) : null);
+        builder.yMin(config.contains(Fields.YMIN.getKey()) ? config.getInt(Fields.YMIN.getKey()) : null);
+        builder.yMax(config.contains(Fields.YMAX.getKey()) ? config.getInt(Fields.YMAX.getKey()) : null);
+        builder.zMin(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMIN.getKey()) : null);
+        builder.zMax(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMAX.getKey()) : null);
+
+        builder.deathmatchRadius(config.contains(Fields.DEATHMATCHRADIUS.getKey()) ? config.getInt(Fields.DEATHMATCHRADIUS.getKey()) : null);
+        builder.deathmatchTime(config.contains(Fields.DEATHMATCHTIME.getKey()) ? config.getInt(Fields.DEATHMATCHTIME.getKey()) : null);
+
+        List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), new LinkedList<Vector>());
+
+        if (!vectorList.isEmpty()) {
+            for (Vector v : vectorList) {
+            	builder.addSpawn(v);
+            }
+        }
+
+        builder.chestMidpoint(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_MIDPOINT.getKey()) : null);
+
+        builder.chestRange(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_RANGE.getKey()) : (Double) Fields.CHEST_RANGE.getDefault());
+
+        for (Object item : config.getList(Fields.LOOT.getKey(), new LinkedList<Loot>())) {
+            if (!(item instanceof Loot)) {
+                BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
+                        + " List item not a LOOT object! Skipping...");
+                continue;
+            }
+            builder.addLoot((Loot) item);
+        }
+
+        builder.build();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadWithDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
+
+        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
 
         builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
 
@@ -99,58 +150,7 @@ public class SurvivalGameConfigSerializer {
             builder.addLoot((Loot) item);
         }
 
-        return builder.build();
-    }
-
-    @SuppressWarnings("unchecked")
-    public SurvivalGameConfig loadWithDefaults(ConfigurationSection config) {
-
-        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
-
-        builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
-
-        builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault()));
-
-        builder.exitLocation(config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault()));
-
-        builder.centerLocation(config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault()));
-
-        builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()));
-
-        builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()));
-
-        builder.xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()));
-        builder.xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()));
-        builder.yMin(config.getInt(Fields.YMIN.getKey(), (Integer) Fields.YMIN.getDefault()));
-        builder.yMax(config.getInt(Fields.YMAX.getKey(), (Integer) Fields.YMAX.getDefault()));
-        builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
-        builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
-
-        builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
-        builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
-
-        List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<Vector>) Fields.SPAWNS.getDefault());
-
-        if (!vectorList.isEmpty()) {
-            for (Vector v : vectorList) {
-            	builder.addSpawn(v);
-            }
-        }
-
-        builder.chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()));
-
-        builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
-
-        for (Object item : config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault())) {
-            if (!(item instanceof Loot)) {
-                BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
-                        + " List item not a LOOT object! Skipping...");
-                continue;
-            }
-            builder.addLoot((Loot) item);
-        }
-
-        return builder.build();
+        builder.build();
     }
 
     public YamlConfiguration serialize(SurvivalGameConfig obj) {

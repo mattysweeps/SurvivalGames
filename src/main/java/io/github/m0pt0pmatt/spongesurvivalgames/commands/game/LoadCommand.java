@@ -67,17 +67,26 @@ public class LoadCommand extends GameCommand {
             return false;
         }
 
-        boolean overwrite = true;
+        boolean overwrite;
         
-        if (arguments.containsKey(CommandArgs.OVERWRITE) && arguments.get(CommandArgs.OVERWRITE).equalsIgnoreCase("false")) {
+        if (arguments.containsKey(CommandArgs.OVERWRITE) && arguments.get(CommandArgs.OVERWRITE).equalsIgnoreCase("true")) {
+        	overwrite = true;
+        	sender.sendMessage("Loading config and overwriting missing fields with defaults...");
+        } else {
         	overwrite = false;
+        	sender.sendMessage("Loading config and ignoring empty fields...");
         }
         
         SurvivalGameConfig config;
+        if (BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig() == null) {
+        	BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(new SurvivalGameConfig());
+        }
+        
+        config = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig();
 
-        config = serializer.deserialize(yaml, overwrite);
+        serializer.deserialize(config, yaml, overwrite);
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
+        //BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
         sender.sendMessage("Config file loaded");
         return true;
     }
