@@ -31,6 +31,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 
 /**
  * Task for counting down the starting time
@@ -50,6 +51,7 @@ public class CreateCountdownTask implements SurvivalGameTask {
                             //player.sendMessage(Integer.toString(j)),
                             Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
                                     ChatColor.MAGIC);
+                            player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
                         },
                         20L * (game.getCountdownTime().get() - i)
                 );
@@ -60,6 +62,7 @@ public class CreateCountdownTask implements SurvivalGameTask {
                     () -> {
                         //player.sendMessage(Integer.toString(j)),
                         Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
+                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
                         game.checkWin();
                     },
                     20L * game.getCountdownTime().get()

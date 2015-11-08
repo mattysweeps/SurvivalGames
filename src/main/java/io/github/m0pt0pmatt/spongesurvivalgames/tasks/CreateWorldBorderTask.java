@@ -29,14 +29,22 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldBorder;
 
-public class ClearWorldBoarderTask implements SurvivalGameTask {
+public class CreateWorldBorderTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
-
         World world = Bukkit.getWorld(game.getWorldName().get());
         if (world == null) return;
 
-        world.getWorldBorder().setSize(60000000);
+        WorldBorder border = world.getWorldBorder();
+        if (border == null) return;
+
+        border.reset();
+        border.setCenter(game.getCenter().get());
+        border.setSize(Math.max(
+                game.getXMax().get() - game.getXMin().get(),
+                game.getZMax().get() - game.getXMin().get()
+        ));
     }
 }
