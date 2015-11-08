@@ -26,16 +26,16 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 /**
  * Class to Serialize and DeSerialize a SurvivalGameConfig
@@ -43,8 +43,68 @@ import java.util.Map;
 public class SurvivalGameConfigSerializer {
 
 
+    public SurvivalGameConfig deserialize(ConfigurationSection config, boolean loadDefaults) {
+    	if (loadDefaults) {
+    		return loadWithDefaults(config);
+    	}
+    	
+    	return loadWithoutDefaults(config);
+    }
+
     @SuppressWarnings("unchecked")
-    public SurvivalGameConfig deserialize(ConfigurationSection config) {
+    public SurvivalGameConfig loadWithoutDefaults(ConfigurationSection config) {
+
+        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
+
+        builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
+
+        builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault()));
+
+        builder.exitLocation(config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault()));
+
+        builder.centerLocation(config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault()));
+
+        builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()));
+
+        builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()));
+
+        builder.xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()));
+        builder.xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()));
+        builder.yMin(config.getInt(Fields.YMIN.getKey(), (Integer) Fields.YMIN.getDefault()));
+        builder.yMax(config.getInt(Fields.YMAX.getKey(), (Integer) Fields.YMAX.getDefault()));
+        builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
+        builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
+
+        builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
+        builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
+
+        List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<Vector>) Fields.SPAWNS.getDefault());
+
+        if (!vectorList.isEmpty()) {
+            for (Vector v : vectorList) {
+            	builder.addSpawn(v);
+            }
+        }
+
+        builder.chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()));
+
+        builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
+
+        for (Object item : config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault())) {
+            if (!(item instanceof Loot)) {
+                BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
+                        + " List item not a LOOT object! Skipping...");
+                continue;
+            }
+            builder.addLoot((Loot) item);
+        }
+
+        return builder.build();
+    }
+
+    @SuppressWarnings("unchecked")
+    public SurvivalGameConfig loadWithDefaults(ConfigurationSection config) {
+
         SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder();
 
         builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));

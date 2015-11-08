@@ -67,9 +67,15 @@ public class LoadCommand extends GameCommand {
             return false;
         }
 
+        boolean overwrite = true;
+        
+        if (arguments.containsKey(CommandArgs.OVERWRITE) && arguments.get(CommandArgs.OVERWRITE).equalsIgnoreCase("false")) {
+        	overwrite = false;
+        }
+        
         SurvivalGameConfig config;
 
-        config = serializer.deserialize(yaml);
+        config = serializer.deserialize(yaml, overwrite);
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
         sender.sendMessage("Config file loaded");

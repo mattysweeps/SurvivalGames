@@ -229,7 +229,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new ForceDeathmatchCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.LOAD},
-                new String[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new String[]{CommandArgs.ID, CommandArgs.FILENAME, CommandArgs.OVERWRITE},
                 new LoadCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.SAVE},

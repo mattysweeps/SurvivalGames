@@ -47,4 +47,5 @@ public final class CommandArgs {
     public static final String DEATHMATCHRADIUS = "[deathmatch-radius]";
     public static final String DEATHMATCHTIME = "[deathmatch-time]";
     public static final String SPONSOR = "[sponsor]";
+    public static final String OVERWRITE = "[overwrite]";
 }
