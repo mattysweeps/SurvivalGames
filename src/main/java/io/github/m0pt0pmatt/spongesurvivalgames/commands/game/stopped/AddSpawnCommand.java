@@ -25,13 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
+import java.util.Map;
+
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import org.bukkit.command.CommandSender;
-
-import java.util.Map;
 
 /**
  * Command to add a spawn location to a game
@@ -44,15 +47,29 @@ public class AddSpawnCommand extends StoppedCommand {
         if (!super.execute(sender, arguments)) {
             return false;
         }
-
-        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+        String xString;
+        String yString;
+        String zString;
+        
+        if(!arguments.containsKey(CommandArgs.X) && !arguments.containsKey(CommandArgs.X) && !arguments.containsKey(CommandArgs.X)){
+        	if(sender instanceof Player){
+        		Block block = ((Player)sender).getLocation().getBlock();
+        		xString = String.valueOf(block.getX());
+        		yString = String.valueOf(block.getY());
+        		zString = String.valueOf(block.getZ());
+        	}else{
+        		sender.sendMessage("Missing coordinates");
+        		return false;
+        	}
+    	}else if(!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
             sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
+        }else{
+	        xString = arguments.get(CommandArgs.X);
+	        yString = arguments.get(CommandArgs.Y);
+	        zString = arguments.get(CommandArgs.Z);
         }
-        String xString = arguments.get(CommandArgs.X);
-        String yString = arguments.get(CommandArgs.Y);
-        String zString = arguments.get(CommandArgs.Z);
-
+        
         int x, y, z;
         try {
             x = Integer.parseInt(xString);
