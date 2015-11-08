@@ -23,22 +23,19 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import java.util.Map;
 
-/**
- * Command to set the world where the game will be played
- */
-public class SetWorldCommand extends StoppedCommand {
-
+public class RemoveSpectatorCommand extends GameCommand {
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -46,25 +43,27 @@ public class SetWorldCommand extends StoppedCommand {
             return false;
         }
 
-        String worldName;
-        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-        	if(sender instanceof Player){
-        		worldName = ((Player)sender).getWorld().getName();
-        	}else{
-        		sender.sendMessage("World name was not present.");
-        		return false;
-        	}
-        }else{
-        	worldName = arguments.get(CommandArgs.WORLDNAME);
-    	}
-        try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
-        } catch (NoWorldException e) {
-            sender.sendMessage("World \"" + worldName + "\" does not exist.");
+        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
+
+        if (game.getState().equals(SurvivalGameState.STOPPED)){
+            sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
             return false;
         }
 
-        sender.sendMessage("World for game \"" + id + "\" is set to \"" + worldName + "\".");
+        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
+            sender.sendMessage("Player name is not present.");
+            return false;
+        }
+        String playerName = arguments.get(CommandArgs.PLAYERNAME);
+
+        Player player = Bukkit.getServer().getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage("No such player \"" + playerName + "\".");
+            return false;
+        }
+
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removeSpectator(player.getUniqueId());
+        sender.sendMessage("Player \"" + playerName + "\" removed from spectating game \"" + id + "\".");
         return true;
     }
 }

@@ -86,7 +86,7 @@ public class LoadedTrie<T, D> {
             }
         }
 
-        if (current == null) return trieReturn;
+        if (current == null || current.data == null) return trieReturn;
 
         //Collect leftovers
         for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++) {

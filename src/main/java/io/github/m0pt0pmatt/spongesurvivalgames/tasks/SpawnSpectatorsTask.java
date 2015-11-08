@@ -23,48 +23,17 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
-
-import java.util.Map;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 
-/**
- * Command to set the world where the game will be played
- */
-public class SetWorldCommand extends StoppedCommand {
-
+public class SpawnSpectatorsTask implements SurvivalGameTask {
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
-
-        if (!super.execute(sender, arguments)) {
-            return false;
-        }
-
-        String worldName;
-        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-        	if(sender instanceof Player){
-        		worldName = ((Player)sender).getWorld().getName();
-        	}else{
-        		sender.sendMessage("World name was not present.");
-        		return false;
-        	}
-        }else{
-        	worldName = arguments.get(CommandArgs.WORLDNAME);
-    	}
-        try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName);
-        } catch (NoWorldException e) {
-            sender.sendMessage("World \"" + worldName + "\" does not exist.");
-            return false;
-        }
-
-        sender.sendMessage("World for game \"" + id + "\" is set to \"" + worldName + "\".");
-        return true;
+    public void execute(SurvivalGame game) throws SurvivalGameException {
+        BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(
+                spectator -> spectator.teleport(game.getCenter().get())
+        );
     }
 }

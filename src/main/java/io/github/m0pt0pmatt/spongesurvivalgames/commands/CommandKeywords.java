@@ -64,4 +64,5 @@ public final class CommandKeywords {
     public static final String GIVE = "give";
     public static final String SPONSOR = "sponsor";
     public static final String SPONSORS = "sponsors";
+    public static final String SPECTATOR = "spectator";
 }

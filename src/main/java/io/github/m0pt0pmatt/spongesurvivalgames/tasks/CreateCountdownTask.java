@@ -33,6 +33,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * Task for counting down the starting time
  */
@@ -41,14 +45,17 @@ public class CreateCountdownTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
 
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+        Set<UUID> everyone = new HashSet<>();
+        everyone.addAll(game.getPlayerUUIDs());
+        everyone.addAll(game.getSpectatorUUIDs());
+
+        BukkitSurvivalGamesPlugin.getPlayers(everyone).forEach(player -> {
             for (int i = game.getCountdownTime().get(); i > 0; i--) {
                 final int j = i;
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(
                         BukkitSurvivalGamesPlugin.plugin,
                         () -> {
-                            //player.sendMessage(Integer.toString(j)),
                             Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
                                     ChatColor.MAGIC);
                             player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);

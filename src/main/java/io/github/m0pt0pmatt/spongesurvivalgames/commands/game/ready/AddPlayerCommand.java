@@ -68,8 +68,6 @@ public class AddPlayerCommand extends ReadyCommand {
             }
             return addPlayer(sender, player);
         }
-
-
     }
 
     private boolean addPlayer(CommandSender commandSender, Player player) {
@@ -78,7 +76,7 @@ public class AddPlayerCommand extends ReadyCommand {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
         } catch (NoPlayerLimitException e) {
             commandSender.sendMessage("No player limit sey for game \"" + id + "\".");
-            e.printStackTrace();
+            return false;
         } catch (PlayerLimitReachedException e) {
             commandSender.sendMessage("Player limit reached for game \"" + id + "\".");
             return false;

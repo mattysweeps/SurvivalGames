@@ -92,16 +92,13 @@ public class PlayerEventListener implements Listener {
 		FireworkMeta fm = firework.getFireworkMeta();
         fm.addEffect(FireworkEffect.builder()
             .flicker(false)
-            .trail(true)
+            .trail(false)
             .with(Type.BALL)
             .with(Type.BALL_LARGE)
             .with(Type.STAR)
-            .withColor(Color.YELLOW)
-            .withColor(Color.ORANGE)
             .withFade(Color.RED)
-            .withFade(Color.PURPLE)
             .build());
-        fm.setPower(2);
+        fm.setPower(0);
         firework.setFireworkMeta(fm);
     }
     
