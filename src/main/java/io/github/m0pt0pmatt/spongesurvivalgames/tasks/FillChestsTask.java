@@ -25,26 +25,31 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Random;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 /**
  * Task for filling the chests with random loot
  */
 public class FillChestsTask implements SurvivalGameTask {
+	
+	private static final int blockCount = 1000;
+	
+	private static final int sleepTime = 500;
+	
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
         Bukkit.getScheduler().runTaskAsynchronously(
@@ -53,7 +58,7 @@ public class FillChestsTask implements SurvivalGameTask {
                 );
     }
 
-    private void fillChests(SurvivalGame game){
+    private static void fillChests(SurvivalGame game){
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 
@@ -63,44 +68,81 @@ public class FillChestsTask implements SurvivalGameTask {
         int ymax = game.getConfig().getYMax().get();
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
-
+        
         Collection<Block> chests = new ArrayList<>();
+        int count = 0;
+        
         for (int x = xmin; x < xmax; x++) {
             for (int y = ymin; y < ymax; y++) {
                 for (int z = zmin; z < zmax; z++) {
-                    Block block = world.getBlockAt(x, y, z);
-                    if (block.getState() instanceof Chest) {
-                        chests.add(block);
+                	final int fx = x, fy = y, fz = z;
+                    Bukkit.getScheduler().runTask(BukkitSurvivalGamesPlugin.plugin, 
+                    		() -> {
+                    			Block block = world.getBlockAt(fx, fy, fz);
+                    			if (block.getState() instanceof Chest) {
+                    				chests.add(block);
+                    			}
+                    		} 
+                    );
+                    
+                    count++;
+                    if (count >= blockCount) {
+                    	System.out.println("Sleeping...");
+                    	try {
+							Thread.sleep(sleepTime);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                    	
+                    	count = 0;
                     }
+                	
                 }
             }
         }
-
-        chests.forEach(block -> {
-                    final Random random = new Random();
-                    Chest chest = (Chest) block.getState();
-                    Inventory inventory = chest.getBlockInventory();
-                    inventory.clear();
-
-                    double itemCount = (
-                            game.getChestMidpoint().get() +
-                                    (
-                                            (random.nextDouble() * game.getChestRange().get())
-                                                    * (random.nextDouble() > 0.5 ? 1 : -1)
-                                    )
-                    );
-                    for (int i = 0; i < itemCount; i++) {
-
-                        Optional<Loot> item = game.getLootGenerator().generate();
-                        if (item.isPresent()) inventory.addItem(item.get().getItem());
-
-                    }
-
-                    chest.update();
-                }
-        );
-
-        game.setChestsFilled();
-        Bukkit.getLogger().info("Chests have finished populating");
+        
+        Bukkit.getScheduler().runTask(BukkitSurvivalGamesPlugin.plugin, 
+	        	new Runnable() {
+	        		public void run() {
+	        			
+	        	        
+	        			
+	        			chests.forEach(block -> 
+	        			
+	        			{
+	        				final Random random = new Random();
+		                    Chest chest = (Chest) block.getState();
+		                    Inventory inventory = chest.getBlockInventory();
+		                    inventory.clear();
+		                    double itemCount = (
+		                        game.getChestMidpoint().get() +
+		                                (
+		                                        (random.nextDouble() * game.getChestRange().get())
+		                                                * (random.nextDouble() > 0.5 ? 1 : -1)
+		                                )
+			                );
+			                for (int i = 0; i < itemCount; i++) {
+			                    Optional<Loot> item = game.getLootGenerator().generate();
+			                    if (item.isPresent()) inventory.addItem(item.get().getItem());
+			
+			                }
+			                chest.update();
+	        			}
+		
+	        			
+	        					
+	        			);
+	
+	        	        game.setChestsFilled();
+	        	        Bukkit.getLogger().info("Chests have finished populating");
+	        		}
+	        	}
+	        	
+	        	
+	        	
+	        	
+	        );
+         
     }
 }
