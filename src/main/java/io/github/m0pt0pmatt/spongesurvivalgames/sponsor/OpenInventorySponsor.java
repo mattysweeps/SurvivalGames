@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -48,5 +49,6 @@ public class OpenInventorySponsor implements Sponsor {
         Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
         items.forEach(inventory::addItem);
         player.openInventory(inventory);
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, (float) 1.0, (float) 1.75);
     }
 }
