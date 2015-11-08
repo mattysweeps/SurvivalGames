@@ -103,7 +103,6 @@ public class PlayerEventListener implements Listener {
             .build());
         fm.setPower(2);
         firework.setFireworkMeta(fm);
-        
     }
     
 }
