@@ -26,7 +26,9 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.AddSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.RemoveSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.*;

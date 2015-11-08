@@ -363,6 +363,9 @@ public class SurvivalGame {
         for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
         	p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
         }
+        BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
+                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+        );
 
         checkWin();
     }
