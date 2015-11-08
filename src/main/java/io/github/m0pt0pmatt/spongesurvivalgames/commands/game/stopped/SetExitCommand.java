@@ -48,12 +48,18 @@ public class SetExitCommand extends StoppedCommand {
             return false;
         }
 
+        String worldName;
         if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-            sender.sendMessage("World name was not present.");
-            return false;
+        	if(sender instanceof Player){
+        		worldName = ((Player)sender).getWorld().getName();
+        	}else{
+	            sender.sendMessage("World name was not present.");
+	            return false;
+        	}
+        }else{
+        	worldName = arguments.get(CommandArgs.WORLDNAME);
         }
-        String worldName = arguments.get(CommandArgs.WORLDNAME);
-
+        
         String xString;
         String yString;
         String zString;
