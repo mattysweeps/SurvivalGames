@@ -90,10 +90,7 @@ public class AddPlayerCommand extends ReadyCommand {
     }
 
     private boolean addAllPlayers(CommandSender commandSender) {
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            addPlayer(commandSender, player);
-        });
-
+        Bukkit.getOnlinePlayers().forEach(player -> addPlayer(commandSender, player));
         return true;
     }
 
