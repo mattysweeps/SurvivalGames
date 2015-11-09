@@ -37,7 +37,7 @@ import org.bukkit.entity.Player;
 public final class Title {
 
     private static final ChatColor defaultColor = ChatColor.DARK_GREEN;
-    
+
     private static final int defaultTime = 10;
 
     private static final String playerToken = "[PLAYER]";
@@ -49,9 +49,9 @@ public final class Title {
     private static final String titleColorToken = "[TITLECOLOR]";
 
     private static final String subtitleColorToken = "[SUBTITLECOLOR]";
-    
+
     private static final String timeInTickToken = "[TIMEIN]";
-    
+
     private static final String timeOutTickToken = "[TIMEOUT]";
 
     private static final String[] titleCommands = new String[]{
@@ -65,12 +65,12 @@ public final class Title {
     }
 
     public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, ChatColor subtitleColor) {
-    	displayTitle(player, titleText, subtitleText, titleColor, subtitleColor, defaultTime, defaultTime);
+        displayTitle(player, titleText, subtitleText, titleColor, subtitleColor, defaultTime, defaultTime);
     }
-    
-    
-    public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, 
-    		ChatColor subtitleColor, int timeIn, int timeOut){
+
+
+    public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor,
+                                    ChatColor subtitleColor, int timeIn, int timeOut) {
         for (String command : titleCommands) {
 
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),

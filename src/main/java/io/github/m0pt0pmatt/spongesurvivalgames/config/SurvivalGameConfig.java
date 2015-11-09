@@ -191,8 +191,8 @@ public class SurvivalGameConfig {
     public void setDeathmatchTime(Integer deathmatchTime) {
         this.deathmatchTime = deathmatchTime;
     }
-    
+
     public List<Vector> getChestLocations() {
-    	return chests;
+        return chests;
     }
 }

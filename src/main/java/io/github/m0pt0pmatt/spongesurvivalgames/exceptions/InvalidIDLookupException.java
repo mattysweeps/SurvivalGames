@@ -29,22 +29,22 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  * Exception generated when a lookup of an ID or lookup based on an ID has failed
  */
 public class InvalidIDLookupException extends SurvivalGameException {
-	
-	private String idString;
-	
-	/**
-	 * @param ID A string representation of the ID that generated the error
-	 */
-	public InvalidIDLookupException(String ID) {
-		this.idString = ID;
-	}
-	
-	public String getID() {
-		return idString;
-	}
 
-	@Override
-	public String getDescription() {
-		return null;
-	}
+    private String idString;
+
+    /**
+     * @param ID A string representation of the ID that generated the error
+     */
+    public InvalidIDLookupException(String ID) {
+        this.idString = ID;
+    }
+
+    public String getID() {
+        return idString;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 }

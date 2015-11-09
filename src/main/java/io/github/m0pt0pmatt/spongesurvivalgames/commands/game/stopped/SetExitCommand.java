@@ -25,15 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import java.util.Map;
 
 /**
  * Command to set the exit location for a game
@@ -50,35 +49,35 @@ public class SetExitCommand extends StoppedCommand {
 
         String worldName;
         if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
-        	if(sender instanceof Player){
-        		worldName = ((Player)sender).getWorld().getName();
-        	}else{
-	            sender.sendMessage("World name was not present.");
-	            return false;
-        	}
-        }else{
-        	worldName = arguments.get(CommandArgs.WORLDNAME);
+            if (sender instanceof Player) {
+                worldName = ((Player) sender).getWorld().getName();
+            } else {
+                sender.sendMessage("World name was not present.");
+                return false;
+            }
+        } else {
+            worldName = arguments.get(CommandArgs.WORLDNAME);
         }
-        
+
         String xString;
         String yString;
         String zString;
-        
-        if(!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)){
-        	if(sender instanceof Player){
-        		Block block = ((Player)sender).getLocation().getBlock();
-        		xString = String.valueOf(block.getX());
-        		yString = String.valueOf(block.getY());
-        		zString = String.valueOf(block.getZ());
-        	}else{
-        		sender.sendMessage("Missing coordinates");
-        		return false;
-        	}
-        }else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            if (sender instanceof Player) {
+                Block block = ((Player) sender).getLocation().getBlock();
+                xString = String.valueOf(block.getX());
+                yString = String.valueOf(block.getY());
+                zString = String.valueOf(block.getZ());
+            } else {
+                sender.sendMessage("Missing coordinates");
+                return false;
+            }
+        } else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
             sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
-        }else{
-        	xString = arguments.get(CommandArgs.X);
+        } else {
+            xString = arguments.get(CommandArgs.X);
             yString = arguments.get(CommandArgs.Y);
             zString = arguments.get(CommandArgs.Z);
         }

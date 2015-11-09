@@ -29,24 +29,24 @@ import org.bukkit.entity.Player;
 
 /**
  * Restores a player's health when executed.
- * @author Skyler
  *
+ * @author Skyler
  */
 public class RestoreHungerSponsor implements Sponsor {
-	
-	private static final String healMessage = "You're hunger has been eased by a sponsor!";
-	
-	@Override
-	public void execute(Player player) {
-		if (player == null || !player.isOnline()) {
-			return;
-		}
-		
-		//Set player's food level to full, exhaustion down, saturation full (best condition)
-		player.setFoodLevel(20);
-		player.setExhaustion(0f);
-		player.setSaturation(20f);
-		
-		player.sendMessage(healMessage);
-	}
+
+    private static final String healMessage = "You're hunger has been eased by a sponsor!";
+
+    @Override
+    public void execute(Player player) {
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        //Set player's food level to full, exhaustion down, saturation full (best condition)
+        player.setFoodLevel(20);
+        player.setExhaustion(0f);
+        player.setSaturation(20f);
+
+        player.sendMessage(healMessage);
+    }
 }

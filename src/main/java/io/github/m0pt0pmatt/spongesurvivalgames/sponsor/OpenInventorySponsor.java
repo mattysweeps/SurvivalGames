@@ -39,7 +39,7 @@ public class OpenInventorySponsor implements Sponsor {
 
     private List<ItemStack> items;
 
-    public OpenInventorySponsor(List<ItemStack> items){
+    public OpenInventorySponsor(List<ItemStack> items) {
         this.items = new ArrayList<>();
         this.items.addAll(items);
     }

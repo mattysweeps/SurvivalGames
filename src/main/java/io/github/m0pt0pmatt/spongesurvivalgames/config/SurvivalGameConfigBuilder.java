@@ -44,98 +44,98 @@ public class SurvivalGameConfigBuilder {
     }
 
     public SurvivalGameConfigBuilder worldName(String worldName) {
-        if (worldName != null)	config.setWorldName(worldName);
+        if (worldName != null) config.setWorldName(worldName);
         return this;
     }
 
     public SurvivalGameConfigBuilder exitWorld(String exitWorld) {
-    	if (exitWorld != null) config.setExitWorld(exitWorld);
+        if (exitWorld != null) config.setExitWorld(exitWorld);
         return this;
     }
 
     public SurvivalGameConfigBuilder exitLocation(Vector exit) {
-    	if (exit != null) config.setExit(exit);
+        if (exit != null) config.setExit(exit);
         return this;
     }
 
     public SurvivalGameConfigBuilder centerLocation(Vector center) {
-    	if (center != null) config.setCenter(center);
+        if (center != null) config.setCenter(center);
         return this;
     }
 
     public SurvivalGameConfigBuilder playerLimit(Integer playerLimit) {
-    	if (playerLimit != null) config.setPlayerLimit(playerLimit);
+        if (playerLimit != null) config.setPlayerLimit(playerLimit);
         return this;
     }
 
     public SurvivalGameConfigBuilder countdownTime(Integer countdownTime) {
-    	if (countdownTime != null) config.setCountdownTime(countdownTime);
+        if (countdownTime != null) config.setCountdownTime(countdownTime);
         return this;
     }
 
     public SurvivalGameConfigBuilder addSpawn(Vector vector) {
-    	if (vector != null) config.getSpawns().add(vector);
+        if (vector != null) config.getSpawns().add(vector);
         return this;
     }
 
     public SurvivalGameConfigBuilder chestMidpoint(Double chestMidpoint) {
-    	if (chestMidpoint != null) config.setChestMidpoint(chestMidpoint);
+        if (chestMidpoint != null) config.setChestMidpoint(chestMidpoint);
         return this;
     }
 
     public SurvivalGameConfigBuilder chestRange(Double chestRange) {
-    	if (chestRange != null) config.setChestRange(chestRange);
+        if (chestRange != null) config.setChestRange(chestRange);
         return this;
     }
 
     public SurvivalGameConfigBuilder addLoot(Loot loot) {
-    	if (loot != null) config.getLoot().add(loot);
+        if (loot != null) config.getLoot().add(loot);
         return this;
     }
 
     public SurvivalGameConfigBuilder xMin(Integer xMin) {
-    	if (xMin != null) config.setXMin(xMin);
+        if (xMin != null) config.setXMin(xMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder xMax(Integer xMax) {
-    	if (xMax != null) config.setXMax(xMax);
+        if (xMax != null) config.setXMax(xMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder yMin(Integer yMin) {
-    	if (yMin != null) config.setYMin(yMin);
+        if (yMin != null) config.setYMin(yMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder yMax(Integer yMax) {
-    	if (yMax != null) config.setYMax(yMax);
+        if (yMax != null) config.setYMax(yMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder zMin(Integer zMin) {
-    	if (zMin != null) config.setZMin(zMin);
+        if (zMin != null) config.setZMin(zMin);
         return this;
     }
 
     public SurvivalGameConfigBuilder zMax(Integer zMax) {
-    	if (zMax != null) config.setZMax(zMax);
+        if (zMax != null) config.setZMax(zMax);
         return this;
     }
 
     public SurvivalGameConfigBuilder deathmatchRadius(Integer deathmatchRadius) {
-    	if (deathmatchRadius != null) config.setDeathmatchRadius(deathmatchRadius);
+        if (deathmatchRadius != null) config.setDeathmatchRadius(deathmatchRadius);
         return this;
     }
 
     public SurvivalGameConfigBuilder deathmatchTime(Integer deathmatchTime) {
-    	if (deathmatchTime != null) config.setDeathmatchTime(deathmatchTime);
+        if (deathmatchTime != null) config.setDeathmatchTime(deathmatchTime);
         return this;
     }
-    
+
     public SurvivalGameConfigBuilder addChestLocation(Vector v) {
-    	if (v != null) config.getChestLocations().add(v);
-    	return this;
+        if (v != null) config.getChestLocations().add(v);
+        return this;
     }
-    
+
 }

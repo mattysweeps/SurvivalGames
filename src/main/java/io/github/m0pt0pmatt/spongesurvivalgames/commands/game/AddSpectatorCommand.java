@@ -47,7 +47,7 @@ public class AddSpectatorCommand extends GameCommand {
 
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
 
-        if (game.getState().equals(SurvivalGameState.STOPPED)){
+        if (game.getState().equals(SurvivalGameState.STOPPED)) {
             sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
             return false;
         }
@@ -66,7 +66,7 @@ public class AddSpectatorCommand extends GameCommand {
 
         BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpectator(player.getUniqueId());
 
-        if (game.getState().equals(SurvivalGameState.RUNNING) || game.getState().equals(SurvivalGameState.DEATHMATCH)){
+        if (game.getState().equals(SurvivalGameState.RUNNING) || game.getState().equals(SurvivalGameState.DEATHMATCH)) {
             player.teleport(game.getCenter().get());
             player.setGameMode(GameMode.SPECTATOR);
         }

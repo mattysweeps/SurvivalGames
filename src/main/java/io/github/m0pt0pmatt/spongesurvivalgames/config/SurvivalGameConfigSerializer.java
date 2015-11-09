@@ -26,16 +26,15 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.util.Vector;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Class to Serialize and DeSerialize a SurvivalGameConfig
@@ -44,11 +43,11 @@ public class SurvivalGameConfigSerializer {
 
 
     public void deserialize(SurvivalGameConfig baseConfig, ConfigurationSection config, boolean loadDefaults) {
-    	if (loadDefaults) {
-    		loadWithDefaults(baseConfig, config);
-    	}
-    	
-    	loadWithoutDefaults(baseConfig, config);
+        if (loadDefaults) {
+            loadWithDefaults(baseConfig, config);
+        }
+
+        loadWithoutDefaults(baseConfig, config);
     }
 
     @SuppressWarnings("unchecked")
@@ -82,7 +81,7 @@ public class SurvivalGameConfigSerializer {
 
         if (!vectorList.isEmpty()) {
             for (Vector v : vectorList) {
-            	builder.addSpawn(v);
+                builder.addSpawn(v);
             }
         }
 
@@ -98,13 +97,13 @@ public class SurvivalGameConfigSerializer {
             }
             builder.addLoot((Loot) item);
         }
-        
+
         vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
 
         if (!vectorList.isEmpty()) {
-        	for (Vector v : vectorList) {
-        		builder.addChestLocation(v);
-        	}
+            for (Vector v : vectorList) {
+                builder.addChestLocation(v);
+            }
         }
 
         builder.build();
@@ -141,7 +140,7 @@ public class SurvivalGameConfigSerializer {
 
         if (!vectorList.isEmpty()) {
             for (Vector v : vectorList) {
-            	builder.addSpawn(v);
+                builder.addSpawn(v);
             }
         }
 
@@ -157,15 +156,15 @@ public class SurvivalGameConfigSerializer {
             }
             builder.addLoot((Loot) item);
         }
-        
+
         vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
 
         if (!vectorList.isEmpty()) {
-        	for (Vector v : vectorList) {
-        		builder.addChestLocation(v);
-        	}
+            for (Vector v : vectorList) {
+                builder.addChestLocation(v);
+            }
         }
-        
+
         builder.build();
     }
 
@@ -196,7 +195,7 @@ public class SurvivalGameConfigSerializer {
 
         config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius().get());
         config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime().get());
-        
+
         config.set(Fields.CHESTS.getKey(), obj.getChestLocations());
 
         return config;

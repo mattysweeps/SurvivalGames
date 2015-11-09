@@ -25,13 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-
-import org.bukkit.command.CommandSender;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 public class SetDeathmatchTimeCommand extends StoppedCommand {
     @Override
@@ -42,7 +41,7 @@ public class SetDeathmatchTimeCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.DEATHMATCHTIME)) {
-        	sender.sendMessage("No deathmatch time specified");
+            sender.sendMessage("No deathmatch time specified");
             return false;
         }
         String deathmatchTimeString = arguments.get(CommandArgs.DEATHMATCHTIME);
@@ -51,14 +50,14 @@ public class SetDeathmatchTimeCommand extends StoppedCommand {
         try {
             deathmatchTime = Integer.parseInt(deathmatchTimeString);
         } catch (NumberFormatException e) {
-        	sender.sendMessage("Unable to convert String to Integer");
+            sender.sendMessage("Unable to convert String to Integer");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setDeathmatchTime(deathmatchTime);
         } catch (NegativeNumberException e) {
-        	sender.sendMessage("Negative deathmatch times are not valid");
+            sender.sendMessage("Negative deathmatch times are not valid");
             return false;
         }
 

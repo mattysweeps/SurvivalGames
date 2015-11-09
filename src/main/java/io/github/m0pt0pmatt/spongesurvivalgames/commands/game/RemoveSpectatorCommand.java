@@ -45,7 +45,7 @@ public class RemoveSpectatorCommand extends GameCommand {
 
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
 
-        if (game.getState().equals(SurvivalGameState.STOPPED)){
+        if (game.getState().equals(SurvivalGameState.STOPPED)) {
             sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
             return false;
         }

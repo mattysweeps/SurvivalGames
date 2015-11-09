@@ -25,13 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import java.util.Map;
-
-import org.bukkit.command.CommandSender;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 public class SetDeathmatchRadiusCommand extends StoppedCommand {
     @Override
@@ -42,7 +41,7 @@ public class SetDeathmatchRadiusCommand extends StoppedCommand {
         }
 
         if (!arguments.containsKey(CommandArgs.DEATHMATCHRADIUS)) {
-        	sender.sendMessage("No deathmatch radius specified");
+            sender.sendMessage("No deathmatch radius specified");
             return false;
         }
         String deathmatchRadiusString = arguments.get(CommandArgs.DEATHMATCHRADIUS);
@@ -51,14 +50,14 @@ public class SetDeathmatchRadiusCommand extends StoppedCommand {
         try {
             deathmatchRadius = Integer.parseInt(deathmatchRadiusString);
         } catch (NumberFormatException e) {
-        	sender.sendMessage("Unable to convert String to Integer");
+            sender.sendMessage("Unable to convert String to Integer");
             return false;
         }
 
         try {
             BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setDeathmatchRadius(deathmatchRadius);
         } catch (NegativeNumberException e) {
-        	sender.sendMessage("Negative deathmatch radius is not valid");
+            sender.sendMessage("Negative deathmatch radius is not valid");
             return false;
         }
 

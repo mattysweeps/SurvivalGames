@@ -29,22 +29,22 @@ import org.bukkit.entity.Player;
 
 /**
  * Restores a player's health when executed.
- * @author Skyler
  *
+ * @author Skyler
  */
 public class RestoreHealthSponsor implements Sponsor {
-	
-	private static final String healMessage = "You're health has been restored by a sponsor!";
-	
-	@Override
-	public void execute(Player player) {
-		if (player == null || !player.isOnline()) {
-			return;
-		}
-		
-		player.setHealth(player.getMaxHealth());
-		player.sendMessage(healMessage);
-	}
 
-	
+    private static final String healMessage = "You're health has been restored by a sponsor!";
+
+    @Override
+    public void execute(Player player) {
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        player.setHealth(player.getMaxHealth());
+        player.sendMessage(healMessage);
+    }
+
+
 }

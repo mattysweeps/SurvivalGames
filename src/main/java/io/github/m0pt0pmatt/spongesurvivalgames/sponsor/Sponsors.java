@@ -30,7 +30,8 @@ import java.util.*;
 public final class Sponsors {
 
     private static Map<String, Sponsor> sponsors = new TreeMap<>();
-    static{
+
+    static {
         sponsors.put("restore-health", new RestoreHealthSponsor());
         sponsors.put("restore-hunger", new RestoreHungerSponsor());
         sponsors.put("give-light-armor", new OpenInventorySponsor(Collections.singletonList(SponsorItems.LIGHTARMOR)));
@@ -45,7 +46,7 @@ public final class Sponsors {
         sponsors.put("give-food3", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD3)));
     }
 
-    public static Optional<Sponsor> get(String name){
+    public static Optional<Sponsor> get(String name) {
         Sponsor sponsor = sponsors.get(name);
         return sponsor == null ? Optional.empty() : Optional.of(sponsor);
     }

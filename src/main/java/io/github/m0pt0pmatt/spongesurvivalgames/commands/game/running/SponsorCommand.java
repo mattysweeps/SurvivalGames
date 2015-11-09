@@ -48,26 +48,26 @@ public class SponsorCommand extends StoppedCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandArgs.SPONSOR)){
+        if (!arguments.containsKey(CommandArgs.SPONSOR)) {
             sender.sendMessage("No Sponsor was given");
             return false;
         }
         String sponsorName = arguments.get(CommandArgs.SPONSOR);
 
         Optional<Sponsor> sponsor = Sponsors.get(sponsorName);
-        if (!sponsor.isPresent()){
+        if (!sponsor.isPresent()) {
             sender.sendMessage("The sponsor \"" + sponsorName + "\" does not exist");
             return false;
         }
 
-        if (!arguments.containsKey(CommandArgs.PLAYERNAME)){
+        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
             sender.sendMessage("No Playername was given");
             return false;
         }
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
         Player player = Bukkit.getPlayer(playerName);
-        if (player == null){
+        if (player == null) {
             sender.sendMessage("Player \"" + playerName + "\" is not a valid player");
             return false;
         }
@@ -76,7 +76,7 @@ public class SponsorCommand extends StoppedCommand {
                 BukkitSurvivalGamesPlugin.plugin,
                 () -> sponsor.get().execute(player),
                 20L * 5
-                );
+        );
 
         Title.displayTitle(player, "You have been sponsored", "This is either good or bad", ChatColor.BLUE, ChatColor.BLUE, 0, 5);
         sender.sendMessage("Player " + playerName + " has been sponsored.");

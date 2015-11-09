@@ -31,12 +31,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -99,13 +94,13 @@ public class SurvivalGame {
     private Scoreboard playersScoreboard;
     private boolean chestsFilled = false;
 
-    public SurvivalGame(){
+    public SurvivalGame() {
         playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = playersScoreboard.registerNewObjective("lobby", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
-    public Scoreboard getLobbyScoreboard(){
+    public Scoreboard getLobbyScoreboard() {
         return playersScoreboard;
     }
 
@@ -118,12 +113,12 @@ public class SurvivalGame {
     }
 
     public void ready() throws SurvivalGameException {
-        
+
         if (config.getChestLocations().isEmpty())
-        	throw new NoChestsException();
-        
+            throw new NoChestsException();
+
         state = SurvivalGameState.READY;
-        
+
         //Execute each task
         executeTasks(readyTasks);
     }
@@ -363,9 +358,9 @@ public class SurvivalGame {
                     },
                     10);
         }
-        
+
         for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
-        	p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
+            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
         }
         BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
                 s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)

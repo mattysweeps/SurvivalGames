@@ -25,8 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.events;
 
-import java.util.Map;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
@@ -40,9 +41,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import java.util.Map;
 
 /**
  * Listener class for the plugin.
@@ -56,12 +55,12 @@ public class PlayerEventListener implements Listener {
 
         for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
             if (game.getValue().getState().equals(SurvivalGameState.RUNNING) ||
-            		game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
+                    game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
                 if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Death has occurred inside the game
-                	doDeathDisplay(player.getWorld(), player.getLocation());
+                    doDeathDisplay(player.getWorld(), player.getLocation());
                     game.getValue().reportDeath(player.getUniqueId());
-                    
+
                     player.setBedSpawnLocation(game.getValue().getExit().get(), true);
                     return;
                 }
@@ -77,7 +76,7 @@ public class PlayerEventListener implements Listener {
 
         for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
             if (game.getValue().getState().equals(SurvivalGameState.RUNNING) ||
-            		game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
+                    game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
                 if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Player has quit in the middle of a match
                     game.getValue().reportDeath(player.getUniqueId());
@@ -86,20 +85,20 @@ public class PlayerEventListener implements Listener {
             }
         }
     }
-    
-    public void doDeathDisplay(World world, Location location){
-    	Firework firework = world.spawn(location, Firework.class);
-		FireworkMeta fm = firework.getFireworkMeta();
+
+    public void doDeathDisplay(World world, Location location) {
+        Firework firework = world.spawn(location, Firework.class);
+        FireworkMeta fm = firework.getFireworkMeta();
         fm.addEffect(FireworkEffect.builder()
-            .flicker(false)
-            .trail(false)
-            .with(Type.BALL)
-            .with(Type.BALL_LARGE)
-            .with(Type.STAR)
-            .withFade(Color.RED)
-            .build());
+                .flicker(false)
+                .trail(false)
+                .with(Type.BALL)
+                .with(Type.BALL_LARGE)
+                .with(Type.STAR)
+                .withFade(Color.RED)
+                .build());
         fm.setPower(0);
         firework.setFireworkMeta(fm);
     }
-    
+
 }

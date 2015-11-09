@@ -29,10 +29,10 @@ import org.bukkit.entity.Player;
 
 /**
  * Performs an task for a menu, which targets a player
- * @author Skyler
  *
+ * @author Skyler
  */
 public interface Sponsor {
 
-	void execute(Player player);
+    void execute(Player player);
 }

@@ -29,7 +29,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
-
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,22 +51,22 @@ public class SetCenterLocationCommand extends StoppedCommand {
         String xString;
         String yString;
         String zString;
-        
-        if(!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)){
-        	if(sender instanceof Player){
-        		Block block = ((Player)sender).getLocation().getBlock();
-        		xString = String.valueOf(block.getX());
-        		yString = String.valueOf(block.getY());
-        		zString = String.valueOf(block.getZ());
-        	}else{
-        		sender.sendMessage("Missing coordinates");
-        		return false;
-        	}
-        }else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            if (sender instanceof Player) {
+                Block block = ((Player) sender).getLocation().getBlock();
+                xString = String.valueOf(block.getX());
+                yString = String.valueOf(block.getY());
+                zString = String.valueOf(block.getZ());
+            } else {
+                sender.sendMessage("Missing coordinates");
+                return false;
+            }
+        } else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
             sender.sendMessage("Missing one or more axis for coordinates.");
             return false;
-        }else{
-        	xString = arguments.get(CommandArgs.X);
+        } else {
+            xString = arguments.get(CommandArgs.X);
             yString = arguments.get(CommandArgs.Y);
             zString = arguments.get(CommandArgs.Z);
         }
