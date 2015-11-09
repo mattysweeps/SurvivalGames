@@ -119,7 +119,10 @@ public class SurvivalGame {
 
     public void ready() throws SurvivalGameException {
         state = SurvivalGameState.READY;
-
+        
+        if (config.getChestLocations() == null || config.getChestLocations().isEmpty())
+        	throw new NoChestsException();
+        
         //Execute each task
         executeTasks(readyTasks);
     }

@@ -25,18 +25,29 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 /**
  * Task for filling the chests with random loot
@@ -52,31 +63,7 @@ public class FillChestsTask implements SurvivalGameTask {
 
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
-        Bukkit.getScheduler().runTaskAsynchronously(
-                BukkitSurvivalGamesPlugin.plugin,
-                () -> fillChests(game)
-        );
-    }
-
-    private int checkBlocks(final int x, final int y, final int z, World world) {
-        BukkitTask task = Bukkit.getScheduler().runTask(BukkitSurvivalGamesPlugin.plugin,
-                () -> {
-                    for (int cx = x; cx < xlength; cx++) {
-                        for (int cy = y; cy < ylength; cy++) {
-                            for (int cz = z; cz < zlength; cz++) {
-                                Block block = world.getBlockAt(cx, cy, cz);
-                                if (block.getState() instanceof Chest) {
-                                    chests.add(block);
-                                }
-                            }
-                        }
-                    }
-                }
-        );
-        return task.getTaskId();
-    }
-
-    private void fillChests(SurvivalGame game) {
+    	
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
 
@@ -86,67 +73,33 @@ public class FillChestsTask implements SurvivalGameTask {
         int ymax = game.getConfig().getYMax().get();
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
-
-        Set<Integer> taskIDs = new HashSet<>();
-
-        for (int x = xmin; x < xmax; x += xlength) {
-            for (int y = ymin; y < ymax; y += ylength) {
-                for (int z = zmin; z < zmax; z += zlength) {
-                    //Do work
-                    taskIDs.add(checkBlocks(x, y, z, world));
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        while (!taskIDs.isEmpty()) {
-
-            Iterator<Integer> i = taskIDs.iterator();
-            while (i.hasNext()){
-
-                int id = i.next();
-
-                if (!Bukkit.getScheduler().isCurrentlyRunning(id)){
-                    i.remove();
-                }
-            }
-
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Bukkit.getScheduler().runTask(BukkitSurvivalGamesPlugin.plugin,
-                () -> {
-                    chests.forEach(block -> {
-                                final Random random = new Random();
-                                Chest chest = (Chest) block.getState();
-                                Inventory inventory = chest.getBlockInventory();
-                                inventory.clear();
-                                double itemCount = (
-                                        game.getChestMidpoint().get() +
-                                                (
-                                                        (random.nextDouble() * game.getChestRange().get())
-                                                                * (random.nextDouble() > 0.5 ? 1 : -1)
-                                                )
-                                );
-                                for (int i = 0; i < itemCount; i++) {
-                                    Optional<Loot> item = game.getLootGenerator().generate();
-                                    if (item.isPresent()) inventory.addItem(item.get().getItem());
-                                }
-                                chest.update();
-                            }
-                    );
-                    game.setChestsFilled();
-                    Bukkit.getLogger().info("Chests have finished populating");
-                }
-        );
-
+        
+        List<Chest> chests = new LinkedList<Chest>();
+        
+        int count = 0;
+        
+    	for (int x = game.getConfig().getXMin().get(); x < xmax; x += 16) {
+    	        for (int z = game.getConfig().getZMin().get(); z < zmax; z += 16) {
+    	                    
+    	                    Chunk chunk = world.getChunkAt(x, z);
+    	                    for (BlockState e : chunk.getTileEntities()) {
+    	                    	if (e instanceof Chest) {
+    	                    		chests.add((Chest) e);
+    	                    	}
+    	                    }
+    	                    		 
+    	                   
+    	                    
+    	                    count++;
+    	                	if (count % 1000 == 0) {
+    	                		System.out.println(count);
+    	                	}
+    	      }
+    	}
+    	
+    	
+    	
     }
+
+    
 }

@@ -132,4 +132,10 @@ public class SurvivalGameConfigBuilder {
     	if (deathmatchTime != null) config.setDeathmatchTime(deathmatchTime);
         return this;
     }
+    
+    public SurvivalGameConfigBuilder addChestLocation(Vector v) {
+    	if (v != null) config.getChestLocations().add(v);
+    	return this;
+    }
+    
 }

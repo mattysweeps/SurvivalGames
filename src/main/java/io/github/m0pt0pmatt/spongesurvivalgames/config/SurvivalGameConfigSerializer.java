@@ -98,6 +98,14 @@ public class SurvivalGameConfigSerializer {
             }
             builder.addLoot((Loot) item);
         }
+        
+        vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
+
+        if (!vectorList.isEmpty()) {
+        	for (Vector v : vectorList) {
+        		builder.addChestLocation(v);
+        	}
+        }
 
         builder.build();
     }
@@ -149,7 +157,15 @@ public class SurvivalGameConfigSerializer {
             }
             builder.addLoot((Loot) item);
         }
+        
+        vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
 
+        if (!vectorList.isEmpty()) {
+        	for (Vector v : vectorList) {
+        		builder.addChestLocation(v);
+        	}
+        }
+        
         builder.build();
     }
 
@@ -180,6 +196,8 @@ public class SurvivalGameConfigSerializer {
 
         config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius().get());
         config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime().get());
+        
+        config.set(Fields.CHESTS.getKey(), obj.getChestLocations());
 
         return config;
     }
@@ -203,7 +221,8 @@ public class SurvivalGameConfigSerializer {
         ZMIN("zmin", 0),
         ZMAX("zmax", 0),
         DEATHMATCHRADIUS("deathmatchRadius", 100),
-        DEATHMATCHTIME("deathmatchTime", 60);
+        DEATHMATCHTIME("deathmatchTime", 60),
+        CHESTS("chests", new LinkedList<Vector>());
 
         private String key;
 
