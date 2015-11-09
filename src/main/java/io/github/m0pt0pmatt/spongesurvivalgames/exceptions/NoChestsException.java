@@ -26,8 +26,9 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoChestsException extends SurvivalGameException {
+	
     @Override
     public String getDescription() {
-        return "No Center location set";
+        return "No Chests have been defined for the game!";
     }
 }

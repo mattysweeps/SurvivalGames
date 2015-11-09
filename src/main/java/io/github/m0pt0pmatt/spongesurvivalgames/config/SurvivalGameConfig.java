@@ -54,7 +54,7 @@ public class SurvivalGameConfig {
     private Integer zMax;
     private Integer deathmatchRadius;
     private Integer deathmatchTime;
-    private Set<Vector> chests;
+    private List<Vector> chests = new LinkedList<Vector>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
@@ -192,7 +192,7 @@ public class SurvivalGameConfig {
         this.deathmatchTime = deathmatchTime;
     }
     
-    public Set<Vector> getChestLocations() {
+    public List<Vector> getChestLocations() {
     	return chests;
     }
 }

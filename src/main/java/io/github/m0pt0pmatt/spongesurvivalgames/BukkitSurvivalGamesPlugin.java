@@ -239,6 +239,10 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID, CommandArgs.FILENAME, CommandArgs.OVERWRITE},
                 new LoadCommand());
         commandTrie.add(
+                new String[]{CommandKeywords.CHEST},
+                new String[]{CommandArgs.ID},
+                new GetChestsCommand());
+        commandTrie.add(
                 new String[]{CommandKeywords.SAVE},
                 new String[]{CommandArgs.ID, CommandArgs.FILENAME},
                 new SaveCommand());

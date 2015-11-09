@@ -25,26 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitTask;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
@@ -54,52 +43,49 @@ import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
  */
 public class FillChestsTask implements SurvivalGameTask {
 
-    private static final int sleepTime = 500;
-    private static final int xlength = 100;
-    private static final int ylength = 256;
-    private static final int zlength = 100;
-
-    private final Collection<Block> chests = new ArrayList<>();
-
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
     	
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
+    	
+    	game.getConfig().getChestLocations().forEach(chestVector -> 
+		
+		{
+			final Random random = new Random();
+			
+			Block block = world.getBlockAt(chestVector.getBlockX(), chestVector.getBlockY(), chestVector.getBlockZ());
+            if (block instanceof Chest) {
+            	Chest chest = (Chest) block;
+    			
+                Inventory inventory = chest.getBlockInventory();
+                inventory.clear();
+                double itemCount = (
+                    game.getChestMidpoint().get() +
+                            (
+                                    (random.nextDouble() * game.getChestRange().get())
+                                            * (random.nextDouble() > 0.5 ? 1 : -1)
+                            )
+                );
+                for (int i = 0; i < itemCount; i++) {
+                    Optional<Loot> item = game.getLootGenerator().generate();
+                    if (item.isPresent()) inventory.addItem(item.get().getItem());
 
-        int xmin = game.getConfig().getXMin().get();
-        int xmax = game.getConfig().getXMax().get();
-        int ymin = game.getConfig().getYMin().get();
-        int ymax = game.getConfig().getYMax().get();
-        int zmin = game.getConfig().getZMin().get();
-        int zmax = game.getConfig().getZMax().get();
-        
-        List<Chest> chests = new LinkedList<Chest>();
-        
-        int count = 0;
-        
-    	for (int x = game.getConfig().getXMin().get(); x < xmax; x += 16) {
-    	        for (int z = game.getConfig().getZMin().get(); z < zmax; z += 16) {
-    	                    
-    	                    Chunk chunk = world.getChunkAt(x, z);
-    	                    for (BlockState e : chunk.getTileEntities()) {
-    	                    	if (e instanceof Chest) {
-    	                    		chests.add((Chest) e);
-    	                    	}
-    	                    }
-    	                    		 
-    	                   
-    	                    
-    	                    count++;
-    	                	if (count % 1000 == 0) {
-    	                		System.out.println(count);
-    	                	}
-    	      }
-    	}
-    	
-    	
-    	
-    }
+                }
+                chest.update();
+    		}
+            else
+            	System.out.println("Unable to locate chest at " + chestVector);
+            	
+            }
+
+	
+	
+        );
+
+        game.setChestsFilled();
+        Bukkit.getLogger().info("Chests have finished populating");
+	}
 
     
 }
