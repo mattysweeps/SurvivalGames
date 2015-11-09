@@ -28,6 +28,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.Optional;
 
@@ -45,9 +47,11 @@ public class RotatePlayersTask implements SurvivalGameTask {
         }
 
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
-
-            //TODO: This is probably completely wrong. I'm on a plane
-            player.getLocation().setDirection(center.get().toVector());
+            Vector direction = player.getLocation().toVector().subtract(center.get().toVector()).normalize();
+            Location newLocation = player.getLocation().clone();
+            newLocation.setYaw(180 - (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ())));
+            newLocation.setPitch(90 - (float) Math.toDegrees(Math.acos(direction.getY())));
+            player.teleport(newLocation);
         });
     }
 }
