@@ -93,10 +93,16 @@ public class GetChestsCommand extends StoppedCommand {
         
         int count = 0;
         
+        Chunk lastChunk = null;
+        
     	for (int x = game.getConfig().getXMin().get(); x < xmax; x += 16) {
     	        for (int z = game.getConfig().getZMin().get(); z < zmax; z += 16) {
     	                    
-    	                    Chunk chunk = world.getChunkAt(x/16, z/16);
+    	                    Chunk chunk = world.getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16));
+    	                    
+    	                    if (lastChunk != null && lastChunk.equals(chunk)) {
+    	                    	System.out.println("Chunks are equal!");
+    	                    }
     	                    for (BlockState e : chunk.getTileEntities()) {
     	                    	if (e instanceof Chest) {
     	                    		chests.add((Chest) e);
@@ -108,6 +114,7 @@ public class GetChestsCommand extends StoppedCommand {
     	                	if (count % 1000 == 0) {
     	                		sender.sendMessage("Finished chunks 1 - " + count);
     	                	}
+    	                	lastChunk = chunk;
     	      }
     	}
     	
