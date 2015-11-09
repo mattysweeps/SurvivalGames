@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class LoadedTrieReturn<T, D> {
     public final Map<T, T> leftoverMap = new HashMap<>();
-    public D data = null;
-    public T[] leftovers = null;
+    public D data;
+    public T[] leftovers;
     public final List<T> matched = new LinkedList<>();
 }
