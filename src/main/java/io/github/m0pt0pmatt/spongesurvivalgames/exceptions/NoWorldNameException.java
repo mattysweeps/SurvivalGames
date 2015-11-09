@@ -34,7 +34,7 @@ public class NoWorldNameException extends SurvivalGameException {
      * Here, the description is expected to give information about exactly what world was expected, or
      * for what a world name was needed.
      *
-     * @param description
+     * @param description the description
      */
     public NoWorldNameException(String description) {
         this.description = description;
