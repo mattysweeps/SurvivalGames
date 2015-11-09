@@ -46,8 +46,6 @@ public class SetBoundsCommand extends StoppedCommand {
         if (
                 !arguments.containsKey(CommandArgs.XMIN) ||
                         !arguments.containsKey(CommandArgs.XMAX) ||
-                        !arguments.containsKey(CommandArgs.YMIN) ||
-                        !arguments.containsKey(CommandArgs.YMAX) ||
                         !arguments.containsKey(CommandArgs.ZMIN) ||
                         !arguments.containsKey(CommandArgs.ZMAX)
                 ) {
@@ -56,26 +54,22 @@ public class SetBoundsCommand extends StoppedCommand {
         }
 
         String xMinString = arguments.get(CommandArgs.XMIN);
-        String yMinString = arguments.get(CommandArgs.YMIN);
         String zMinString = arguments.get(CommandArgs.ZMIN);
         String xMaxString = arguments.get(CommandArgs.XMAX);
-        String yMaxString = arguments.get(CommandArgs.YMAX);
         String zMaxString = arguments.get(CommandArgs.ZMAX);
 
         int xMin, xMax, yMin, yMax, zMin, zMax;
         try {
             xMin = Integer.parseInt(xMinString);
-            yMin = Integer.parseInt(yMinString);
             zMin = Integer.parseInt(zMinString);
             xMax = Integer.parseInt(xMaxString);
-            yMax = Integer.parseInt(yMaxString);
             zMax = Integer.parseInt(zMaxString);
         } catch (NumberFormatException e) {
             sender.sendMessage("Unable to convert from String to Integer");
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, yMin, yMax, zMin, zMax);
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, zMin, zMax);
         sender.sendMessage("Bounds set for game \"" + id + "\".");
 
         return true;

@@ -48,20 +48,17 @@ public class PrintBoundsCommand extends GameCommand {
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
         Optional<Integer> xMin = game.getXMin();
         Optional<Integer> xMax = game.getXMax();
-        Optional<Integer> yMin = game.getYMin();
-        Optional<Integer> yMax = game.getYMax();
         Optional<Integer> zMin = game.getZMin();
         Optional<Integer> zMax = game.getZMax();
 
         if (!xMin.isPresent() || !xMax.isPresent() ||
-                !yMin.isPresent() || !yMax.isPresent() ||
                 !zMin.isPresent() || !zMax.isPresent()) {
 
             sender.sendMessage("Game \"" + id + "\" is missing at least one bound");
             return false;
         }
 
-        sender.sendMessage("Game: \"" + id + "\", xMin" + xMin + ", xMax" + xMax + ", yMin" + yMin + ", yMax" + yMax + ", zMin" + zMin + ", zMax:" + zMax);
+        sender.sendMessage("Game: \"" + id + "\", xMin" + xMin + ", xMax" + xMax + ", zMin" + zMin + ", zMax:" + zMax);
         return true;
     }
 }

@@ -187,7 +187,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new SetWorldCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.SET, CommandKeywords.BOUNDS},
-                new String[]{CommandArgs.ID, CommandArgs.XMIN, CommandArgs.XMAX, CommandArgs.YMIN, CommandArgs.YMAX, CommandArgs.ZMIN, CommandArgs.ZMAX},
+                new String[]{CommandArgs.ID, CommandArgs.XMIN, CommandArgs.XMAX, CommandArgs.ZMIN, CommandArgs.ZMAX},
                 new SetBoundsCommand());
         commandTrie.add(
                 new String[]{CommandKeywords.SET, CommandKeywords.DEATHMATCH, CommandKeywords.RADIUS},

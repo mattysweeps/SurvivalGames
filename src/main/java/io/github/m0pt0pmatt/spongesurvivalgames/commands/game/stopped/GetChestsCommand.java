@@ -83,8 +83,6 @@ public class GetChestsCommand extends StoppedCommand {
 
         int xmin = game.getConfig().getXMin().get();
         int xmax = game.getConfig().getXMax().get();
-        int ymin = game.getConfig().getYMin().get();
-        int ymax = game.getConfig().getYMax().get();
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
 
@@ -94,8 +92,8 @@ public class GetChestsCommand extends StoppedCommand {
 
         Chunk lastChunk = null;
 
-        for (int x = game.getConfig().getXMin().get(); x < xmax; x += 16) {
-            for (int z = game.getConfig().getZMin().get(); z < zmax; z += 16) {
+        for (int x = xmin; x < xmax; x += 16) {
+            for (int z = zmin; z < zmax; z += 16) {
 
                 Chunk chunk = world.getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16));
 

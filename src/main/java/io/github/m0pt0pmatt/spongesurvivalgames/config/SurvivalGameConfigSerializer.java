@@ -69,8 +69,6 @@ public class SurvivalGameConfigSerializer {
 
         builder.xMin(config.contains(Fields.XMIN.getKey()) ? config.getInt(Fields.XMIN.getKey()) : null);
         builder.xMax(config.contains(Fields.XMAX.getKey()) ? config.getInt(Fields.XMAX.getKey()) : null);
-        builder.yMin(config.contains(Fields.YMIN.getKey()) ? config.getInt(Fields.YMIN.getKey()) : null);
-        builder.yMax(config.contains(Fields.YMAX.getKey()) ? config.getInt(Fields.YMAX.getKey()) : null);
         builder.zMin(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMIN.getKey()) : null);
         builder.zMax(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMAX.getKey()) : null);
 
@@ -128,8 +126,6 @@ public class SurvivalGameConfigSerializer {
 
         builder.xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()));
         builder.xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()));
-        builder.yMin(config.getInt(Fields.YMIN.getKey(), (Integer) Fields.YMIN.getDefault()));
-        builder.yMax(config.getInt(Fields.YMAX.getKey(), (Integer) Fields.YMAX.getDefault()));
         builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
         builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
 
@@ -188,8 +184,6 @@ public class SurvivalGameConfigSerializer {
 
         config.set(Fields.XMIN.getKey(), obj.getXMin().get());
         config.set(Fields.XMAX.getKey(), obj.getXMax().get());
-        config.set(Fields.YMIN.getKey(), obj.getYMin().get());
-        config.set(Fields.YMAX.getKey(), obj.getYMax().get());
         config.set(Fields.ZMIN.getKey(), obj.getZMin().get());
         config.set(Fields.ZMAX.getKey(), obj.getZMax().get());
 
@@ -215,8 +209,6 @@ public class SurvivalGameConfigSerializer {
         LOOT("loot", new LinkedList<Loot>()),
         XMIN("xmin", 0),
         XMAX("xmax", 0),
-        YMIN("ymin", 0),
-        YMAX("ymax", 0),
         ZMIN("zmin", 0),
         ZMAX("zmax", 0),
         DEATHMATCHRADIUS("deathmatchRadius", 100),

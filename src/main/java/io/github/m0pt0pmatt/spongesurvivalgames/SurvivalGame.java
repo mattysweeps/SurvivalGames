@@ -137,8 +137,6 @@ public class SurvivalGame {
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
         if (!config.getXMin().isPresent()) throw new NoBoundsException();
         if (!config.getXMax().isPresent()) throw new NoBoundsException();
-        if (!config.getYMin().isPresent()) throw new NoBoundsException();
-        if (!config.getYMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
         if (!config.getCenter().isPresent()) throw new NoCenterException();
@@ -400,11 +398,9 @@ public class SurvivalGame {
                 200);
     }
 
-    public void setBounds(int xMin, int xMax, int yMin, int yMax, int zMin, int zMax) {
+    public void setBounds(int xMin, int xMax, int zMin, int zMax) {
         config.setXMin(Math.min(xMin, xMax));
         config.setXMax(Math.max(xMin, xMax));
-        config.setYMin(Math.min(yMin, yMax));
-        config.setYMax(Math.max(yMin, yMax));
         config.setZMin(Math.min(zMin, zMax));
         config.setZMax(Math.max(zMin, zMax));
     }
@@ -415,14 +411,6 @@ public class SurvivalGame {
 
     public Optional<Integer> getXMax() {
         return config.getXMax();
-    }
-
-    public Optional<Integer> getYMin() {
-        return config.getYMin();
-    }
-
-    public Optional<Integer> getYMax() {
-        return config.getYMax();
     }
 
     public Optional<Integer> getZMin() {

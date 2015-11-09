@@ -103,16 +103,6 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder yMin(Integer yMin) {
-        if (yMin != null) config.setYMin(yMin);
-        return this;
-    }
-
-    public SurvivalGameConfigBuilder yMax(Integer yMax) {
-        if (yMax != null) config.setYMax(yMax);
-        return this;
-    }
-
     public SurvivalGameConfigBuilder zMin(Integer zMin) {
         if (zMin != null) config.setZMin(zMin);
         return this;

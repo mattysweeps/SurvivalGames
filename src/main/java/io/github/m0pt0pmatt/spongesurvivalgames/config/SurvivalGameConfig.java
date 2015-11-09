@@ -48,8 +48,6 @@ public class SurvivalGameConfig {
     private List<Loot> loot = new ArrayList<>();
     private Integer xMin;
     private Integer xMax;
-    private Integer yMin;
-    private Integer yMax;
     private Integer zMin;
     private Integer zMax;
     private Integer deathmatchRadius;
@@ -142,22 +140,6 @@ public class SurvivalGameConfig {
 
     public void setXMax(Integer xMax) {
         this.xMax = xMax;
-    }
-
-    public Optional<Integer> getYMin() {
-        return yMin == null ? Optional.empty() : Optional.of(yMin);
-    }
-
-    public void setYMin(Integer yMin) {
-        this.yMin = yMin;
-    }
-
-    public Optional<Integer> getYMax() {
-        return yMax == null ? Optional.empty() : Optional.of(yMax);
-    }
-
-    public void setYMax(Integer yMax) {
-        this.yMax = yMax;
     }
 
     public Optional<Integer> getZMin() {

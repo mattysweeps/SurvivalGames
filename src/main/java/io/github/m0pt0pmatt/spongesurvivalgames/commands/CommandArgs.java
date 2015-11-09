@@ -34,8 +34,6 @@ public final class CommandArgs {
     public static final String FILENAME = "[filename]";
     public static final String XMIN = "[xmin]";
     public static final String XMAX = "[xmax]";
-    public static final String YMIN = "[ymin]";
-    public static final String YMAX = "[ymax]";
     public static final String ZMIN = "[zmin]";
     public static final String ZMAX = "[zmax]";
     public static final String WEIGHT = "[weight]";
