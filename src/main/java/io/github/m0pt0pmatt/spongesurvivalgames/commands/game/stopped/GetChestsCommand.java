@@ -86,7 +86,7 @@ public class GetChestsCommand extends StoppedCommand {
         int zmin = game.getConfig().getZMin().get();
         int zmax = game.getConfig().getZMax().get();
 
-        List<Chest> chests = new LinkedList<Chest>();
+        List<Chest> chests = new LinkedList<>();
 
         int count = 0;
 
