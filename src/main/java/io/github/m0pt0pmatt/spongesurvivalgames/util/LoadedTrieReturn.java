@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LoadedTrieReturn<T, D> {
-    public Map<T, T> leftoverMap = new HashMap<>();
+    public final Map<T, T> leftoverMap = new HashMap<>();
     public D data = null;
     public T[] leftovers = null;
-    public List<T> matched = new LinkedList<>();
+    public final List<T> matched = new LinkedList<>();
 }

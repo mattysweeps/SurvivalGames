@@ -30,7 +30,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  */
 public class NoWorldException extends SurvivalGameException {
 
-    private String worldName;
+    private final String worldName;
 
     public NoWorldException(String worldName) {
         this.worldName = worldName;

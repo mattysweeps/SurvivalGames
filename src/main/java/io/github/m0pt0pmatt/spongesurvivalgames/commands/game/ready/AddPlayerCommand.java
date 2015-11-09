@@ -58,7 +58,8 @@ public class AddPlayerCommand extends ReadyCommand {
         String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
         if (playerName.equals(allKeyword)) {
-            return addAllPlayers(sender);
+            addAllPlayers(sender);
+            return true;
         } else {
             Player player = Bukkit.getPlayer(playerName);
             if (player == null) {
@@ -89,9 +90,8 @@ public class AddPlayerCommand extends ReadyCommand {
         return true;
     }
 
-    private boolean addAllPlayers(CommandSender commandSender) {
+    private void addAllPlayers(CommandSender commandSender) {
         Bukkit.getOnlinePlayers().forEach(player -> addPlayer(commandSender, player));
-        return true;
     }
 
 }

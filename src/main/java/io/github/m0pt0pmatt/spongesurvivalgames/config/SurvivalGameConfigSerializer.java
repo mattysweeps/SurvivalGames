@@ -78,9 +78,7 @@ public class SurvivalGameConfigSerializer {
         List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), new LinkedList<Vector>());
 
         if (!vectorList.isEmpty()) {
-            for (Vector v : vectorList) {
-                builder.addSpawn(v);
-            }
+            vectorList.forEach(builder::addSpawn);
         }
 
         builder.chestMidpoint(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_MIDPOINT.getKey()) : null);
@@ -99,9 +97,7 @@ public class SurvivalGameConfigSerializer {
         vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
 
         if (!vectorList.isEmpty()) {
-            for (Vector v : vectorList) {
-                builder.addChestLocation(v);
-            }
+            vectorList.forEach(builder::addChestLocation);
         }
 
         builder.build();
@@ -135,9 +131,7 @@ public class SurvivalGameConfigSerializer {
         List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<Vector>) Fields.SPAWNS.getDefault());
 
         if (!vectorList.isEmpty()) {
-            for (Vector v : vectorList) {
-                builder.addSpawn(v);
-            }
+            vectorList.forEach(builder::addSpawn);
         }
 
         builder.chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()));
@@ -156,9 +150,7 @@ public class SurvivalGameConfigSerializer {
         vectorList = (List<Vector>) config.getList(Fields.CHESTS.getKey(), (List<?>) Fields.CHESTS.getDefault());
 
         if (!vectorList.isEmpty()) {
-            for (Vector v : vectorList) {
-                builder.addChestLocation(v);
-            }
+            vectorList.forEach(builder::addChestLocation);
         }
 
         builder.build();
@@ -215,9 +207,9 @@ public class SurvivalGameConfigSerializer {
         DEATHMATCHTIME("deathmatchTime", 60),
         CHESTS("chests", new LinkedList<Vector>());
 
-        private String key;
+        private final String key;
 
-        private Object def;
+        private final Object def;
 
         Fields(String key, Object def) {
             this.key = key;

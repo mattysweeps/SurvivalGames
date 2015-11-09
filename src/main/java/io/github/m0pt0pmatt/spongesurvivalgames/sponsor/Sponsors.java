@@ -29,7 +29,7 @@ import java.util.*;
 
 public final class Sponsors {
 
-    private static Map<String, Sponsor> sponsors = new TreeMap<>();
+    private static final Map<String, Sponsor> sponsors = new TreeMap<>();
 
     static {
         sponsors.put("restore-health", new RestoreHealthSponsor());

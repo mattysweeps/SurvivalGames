@@ -90,8 +90,8 @@ public class SurvivalGame {
     private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
-    private LootGenerator lootGenerator = new LootGenerator();
-    private Scoreboard playersScoreboard;
+    private final LootGenerator lootGenerator = new LootGenerator();
+    private final Scoreboard playersScoreboard;
     private boolean chestsFilled = false;
 
     public SurvivalGame() {
@@ -131,7 +131,7 @@ public class SurvivalGame {
         if (world == null) throw new NoWorldException(config.getWorldName().get());
         if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
                 (playerUUIDs.size(), config.getSpawns().size());
-        if (playerUUIDs.isEmpty()) throw new NoPlayerException("No players when starting game!");
+        if (playerUUIDs.isEmpty()) throw new NoPlayerException();
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
@@ -168,7 +168,7 @@ public class SurvivalGame {
         chestsFilled = false;
     }
 
-    public void startDeathMatch() throws SurvivalGameException {
+    public void startDeathMatch() {
         if (!state.equals(SurvivalGameState.DEATHMATCH)) {
             state = SurvivalGameState.DEATHMATCH;
 
@@ -181,7 +181,6 @@ public class SurvivalGame {
             BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
                     player -> player.sendMessage("Deathmatch starting in " + config.getDeathmatchTime().get() + " seconds.")
             );
-
         }
     }
 
@@ -225,8 +224,7 @@ public class SurvivalGame {
     }
 
     public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new NoWorldNameException(
-                "World for map empty when trying to set up center location!");
+        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
 

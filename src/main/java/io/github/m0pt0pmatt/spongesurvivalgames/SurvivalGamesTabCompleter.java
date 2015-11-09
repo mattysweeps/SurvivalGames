@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 /**
  * Tab completer for the plugin
  */
-public class SurvivalGamesTabCompleter implements TabCompleter {
+class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 

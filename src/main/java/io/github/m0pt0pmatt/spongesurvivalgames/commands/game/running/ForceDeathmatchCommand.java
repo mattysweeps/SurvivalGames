@@ -40,13 +40,7 @@ public class ForceDeathmatchCommand extends RunningCommand {
             return false;
         }
 
-        try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).startDeathMatch();
-        } catch (SurvivalGameException e) {
-            Bukkit.getLogger().warning(e.getMessage());
-            return false;
-        }
-
+        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).startDeathMatch();
         Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now starting a DEATHMATCH.");
         return true;
     }

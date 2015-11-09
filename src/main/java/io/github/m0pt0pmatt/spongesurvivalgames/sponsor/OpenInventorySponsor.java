@@ -37,7 +37,7 @@ import java.util.List;
 
 public class OpenInventorySponsor implements Sponsor {
 
-    private List<ItemStack> items;
+    private final List<ItemStack> items;
 
     public OpenInventorySponsor(List<ItemStack> items) {
         this.items = new ArrayList<>();

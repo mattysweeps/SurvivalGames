@@ -27,10 +27,10 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoPlayerException extends SurvivalGameException {
 
-    private String desc;
+    private final String desc;
 
-    public NoPlayerException(String description) {
-        this.desc = description;
+    public NoPlayerException() {
+        this.desc = "No players when starting game!";
     }
 
     @Override

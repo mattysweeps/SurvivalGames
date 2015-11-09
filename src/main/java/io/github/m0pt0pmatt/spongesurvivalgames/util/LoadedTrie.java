@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class LoadedTrie<T, D> {
 
-    private Node first = new Node();
+    private final Node first = new Node();
 
     /**
      * Adds a new branch to the trie
@@ -131,7 +131,7 @@ public class LoadedTrie<T, D> {
     }
 
     private class Node {
-        Map<T, Node> children = new HashMap<>();
+        final Map<T, Node> children = new HashMap<>();
         D data = null;
         T[] leftovers = null;
     }

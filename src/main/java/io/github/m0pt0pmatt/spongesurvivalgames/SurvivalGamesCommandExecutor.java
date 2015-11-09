@@ -34,7 +34,7 @@ import org.bukkit.command.CommandSender;
 /**
  * Command Executor for the plugin
  */
-public class SurvivalGamesCommandExecutor implements CommandExecutor {
+class SurvivalGamesCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {

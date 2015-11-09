@@ -30,7 +30,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
  */
 public class PlayerLimitReachedException extends SurvivalGameException {
 
-    private int max;
+    private final int max;
 
     public PlayerLimitReachedException(int max) {
         this.max = max;

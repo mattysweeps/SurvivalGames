@@ -42,17 +42,17 @@ public class SurvivalGameConfig {
     private Vector center;
     private Integer playerLimit;
     private Integer countdownTime;
-    private Set<Vector> spawns = new HashSet<>();
+    private final Set<Vector> spawns = new HashSet<>();
     private Double chestMidpoint;
     private Double chestRange;
-    private List<Loot> loot = new ArrayList<>();
+    private final List<Loot> loot = new ArrayList<>();
     private Integer xMin;
     private Integer xMax;
     private Integer zMin;
     private Integer zMax;
     private Integer deathmatchRadius;
     private Integer deathmatchTime;
-    private List<Vector> chests = new LinkedList<Vector>();
+    private final List<Vector> chests = new LinkedList<>();
 
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);

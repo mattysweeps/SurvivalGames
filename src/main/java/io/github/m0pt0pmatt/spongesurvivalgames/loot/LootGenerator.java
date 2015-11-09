@@ -37,8 +37,8 @@ import java.util.Random;
  */
 public class LootGenerator {
 
-    private static Random rand = new Random();
-    private List<Loot> loot = new ArrayList<>();
+    private static final Random rand = new Random();
+    private final List<Loot> loot = new ArrayList<>();
     private double weight = 0;
 
     /**
