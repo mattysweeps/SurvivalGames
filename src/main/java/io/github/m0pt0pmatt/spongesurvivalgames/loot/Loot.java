@@ -62,8 +62,8 @@ public class Loot implements ConfigurationSerializable {
     /**
      * Uses the passed configuration map to instantiate a new piece of loot.
      *
-     * @param configMap
-     * @return
+     * @param configMap The config map
+     * @return The loot object
      */
     public static Loot valueOf(Map<String, Object> configMap) {
         Loot loot = new Loot();
@@ -78,7 +78,7 @@ public class Loot implements ConfigurationSerializable {
      */
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("weight", weight);
         map.put("item", item);
