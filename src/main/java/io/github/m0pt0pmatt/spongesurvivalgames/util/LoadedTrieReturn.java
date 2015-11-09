@@ -30,9 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class LoadedTrieReturn<A, B> {
-    public Map<A, A> leftoverMap = new HashMap<>();
-    public B data = null;
-    public A[] leftovers = null;
-    public List<A> matched = new LinkedList<>();
+public class LoadedTrieReturn<T, D> {
+    public Map<T, T> leftoverMap = new HashMap<>();
+    public D data = null;
+    public T[] leftovers = null;
+    public List<T> matched = new LinkedList<>();
 }
