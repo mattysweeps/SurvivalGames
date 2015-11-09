@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.loot;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.EmptyLootGeneratorException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +61,6 @@ public class LootGenerator {
      * Generates a random piece of loot from the supplied loot.
      *
      * @return A newly generated piece of loot, or <i>null</i> on error
-     * @throws EmptyLootGeneratorException when the list of loot items is empty
      */
     public Optional<Loot> generate() {
         if (loot.isEmpty()) {
