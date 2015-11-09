@@ -33,7 +33,7 @@ public abstract class SurvivalGameException extends Exception {
     /**
      * Presents a verbal but concise description of what caused the exception
      *
-     * @return
+     * @return the description for the event
      */
     public abstract String getDescription();
 }
