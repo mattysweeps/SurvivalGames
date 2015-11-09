@@ -58,7 +58,7 @@ public class SetBoundsCommand extends StoppedCommand {
         String xMaxString = arguments.get(CommandArgs.XMAX);
         String zMaxString = arguments.get(CommandArgs.ZMAX);
 
-        int xMin, xMax, yMin, yMax, zMin, zMax;
+        int xMin, xMax, zMin, zMax;
         try {
             xMin = Integer.parseInt(xMinString);
             zMin = Integer.parseInt(zMinString);
