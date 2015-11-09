@@ -40,13 +40,12 @@ public class ReadyPlayerTask implements SurvivalGameTask {
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
                 .forEach(player -> {
 
-                    //TODO: Make sure these are valid
                     player.setGameMode(GameMode.ADVENTURE);
                     player.setMaxHealth(20);
                     player.setHealth(player.getMaxHealth());
                     player.setFoodLevel(20);
                     player.setSaturation(player.getFoodLevel());
-                    player.setExhaustion(player.getFoodLevel());
+                    player.setExhaustion(0);
                     player.getInventory().clear();
                 });
     }
