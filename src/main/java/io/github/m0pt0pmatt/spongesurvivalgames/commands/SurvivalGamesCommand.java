@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -38,7 +39,7 @@ public abstract class SurvivalGamesCommand {
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
         if (sender == null) {
-            sender.sendMessage("CommandSender was null");
+            Bukkit.getLogger().warning("CommandSender was null");
             return false;
         }
 
