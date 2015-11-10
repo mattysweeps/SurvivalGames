@@ -196,22 +196,9 @@ public class SurvivalGame {
     }
 
     private void executeTasks(List<SurvivalGameTask> tasks) throws SurvivalGameException {
-
-        //Execute each task
-        Optional<SurvivalGameException> exception = tasks.stream()
-                .map(task -> {
-                    try {
-                        task.execute(this);
-                        return null;
-                    } catch (SurvivalGameException e) {
-                        return e;
-                    }
-                })
-                .filter(e -> e != null)
-                .findFirst();
-
-        //Throw the first caught exception
-        if (exception.isPresent()) throw exception.get();
+        for (SurvivalGameTask task: tasks){
+            task.execute(this);
+        }
     }
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
