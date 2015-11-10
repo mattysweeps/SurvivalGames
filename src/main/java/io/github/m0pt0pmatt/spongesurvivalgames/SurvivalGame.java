@@ -106,7 +106,7 @@ public class SurvivalGame {
         return lootGenerator;
     }
 
-    public void ready() throws SurvivalGameException {
+    public boolean ready() throws SurvivalGameException {
 
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
@@ -114,10 +114,10 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
 
         //Execute each task
-        executeTasks(readyTasks);
+        return executeTasks(readyTasks);
     }
 
-    public void start() throws SurvivalGameException {
+    public boolean start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -143,23 +143,22 @@ public class SurvivalGame {
         state = SurvivalGameState.RUNNING;
 
         //Execute each task
-        executeTasks(startTasks);
+        return executeTasks(startTasks);
     }
 
-    public void stop() {
+    public boolean stop() {
 
         // Execute force stop tasks if the game is RUNNING
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
             executeTasks(forceStopTasks);
         }
 
-        // Execute the rest of the tasks
-        executeTasks(stopTasks);
-
         // Set the state
         state = SurvivalGameState.STOPPED;
 
         chestsFilled = false;
+
+        return executeTasks(stopTasks);
     }
 
     public void startDeathMatch() {
@@ -182,10 +181,11 @@ public class SurvivalGame {
         executeTasks(deathmatchTasks);
     }
 
-    private void executeTasks(List<SurvivalGameTask> tasks) {
+    private boolean executeTasks(List<SurvivalGameTask> tasks) {
         for (SurvivalGameTask task : tasks) {
-            if (!task.execute(this)) break;
+            if (!task.execute(this)) return false;
         }
+        return true;
     }
 
     public void reportDeath(UUID playerUUID) {
