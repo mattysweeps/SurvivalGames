@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import com.google.common.collect.Sets;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
@@ -190,6 +189,37 @@ public class SurvivalGame {
         }
     }
 
+    public void reportDeath(UUID playerUUID) {
+        if (!playerUUIDs.contains(playerUUID)) {
+            //unregistered player
+            return;
+        }
+
+        playerUUIDs.remove(playerUUID);
+
+        Player player = Bukkit.getServer().getPlayer(playerUUID);
+        if (player != null) {
+            Bukkit.getScheduler().runTaskLater(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        if (player.isOnline()) player.teleport(getExit().get());
+                    },
+                    10);
+        }
+
+        for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
+            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
+        }
+        BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
+                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+        );
+
+        try {
+            executeTasks(checkWinTask);
+        } catch (SurvivalGameException ignored) {
+        }
+    }
+
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
         if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
@@ -310,38 +340,6 @@ public class SurvivalGame {
     public void setChestRange(Double chestRange) throws NegativeNumberException {
         if (chestRange < 0) throw new NegativeNumberException();
         config.setChestRange(chestRange);
-    }
-
-    public void reportDeath(UUID playerUUID) {
-        if (!playerUUIDs.contains(playerUUID)) {
-            //unregistered player
-            return;
-        }
-
-        playerUUIDs.remove(playerUUID);
-
-        Player player = Bukkit.getServer().getPlayer(playerUUID);
-        if (player != null) {
-            Bukkit.getScheduler().runTaskLater(
-                    BukkitSurvivalGamesPlugin.plugin,
-                    () -> {
-                        if (player.isOnline()) player.teleport(getExit().get());
-                    },
-                    10);
-        }
-
-        for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
-            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
-        }
-        BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
-                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
-        );
-
-        try {
-            executeTasks(checkWinTask);
-        } catch (SurvivalGameException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setBounds(int xMin, int xMax, int zMin, int zMax) {
