@@ -58,7 +58,13 @@ public class CheckWinTask implements SurvivalGameTask {
 
         Bukkit.getScheduler().runTaskLater(
                 BukkitSurvivalGamesPlugin.plugin,
-                game::stop,
+                () -> {
+                    try {
+                        game.stop();
+                    } catch (SurvivalGameException e) {
+                        Bukkit.getLogger().warning(e.getDescription());
+                    }
+                },
                 200);
         return true;
     }
