@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
+import com.google.common.collect.Sets;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
@@ -35,10 +36,25 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
+import java.util.Set;
+
 /**
  * Task for creating the player cage which surronds a player at the start of the match
  */
 public class CreateCageSnapshotsTask implements SurvivalGameTask {
+
+    private static final Set<Vector> surroundingVectors = Sets.newHashSet(
+            new Vector(1, 0, 0),
+            new Vector(1, 1, 0),
+            new Vector(-1, 0, 0),
+            new Vector(-1, 1, 0),
+            new Vector(0, 0, 1),
+            new Vector(0, 1, 1),
+            new Vector(0, 0, -1),
+            new Vector(0, 1, -1),
+            new Vector(0, 2, 0)
+    );
+
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
         for (Vector spawn : game.getSpawns()) {
@@ -48,13 +64,11 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
 
             Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
-            game.getSurroundingVectors().stream()
-                    .forEach(vector -> location.clone().add(vector).getBlock().setType(Material.BARRIER));
+            surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.BARRIER));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
-                    () -> game.getSurroundingVectors().stream()
-                            .forEach(vector -> location.clone().add(vector).getBlock().setType(Material.AIR)),
+                    () -> surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.AIR)),
                     20L * game.getCountdownTime().get()
             );
         }

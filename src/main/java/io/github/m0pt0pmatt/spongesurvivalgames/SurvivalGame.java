@@ -45,17 +45,6 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private static final Set<Vector> surroundingVectors = Sets.newHashSet (
-            new Vector(1, 0, 0),
-            new Vector(1, 1, 0),
-            new Vector(-1, 0, 0),
-            new Vector(-1, 1, 0),
-            new Vector(0, 0, 1),
-            new Vector(0, 1, 1),
-            new Vector(0, 0, -1),
-            new Vector(0, 1, -1),
-            new Vector(0, 2, 0)
-    );
     private static final List<SurvivalGameTask> startTasks = Arrays.asList(
             new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
@@ -295,10 +284,6 @@ public class SurvivalGame {
 
     public Set<UUID> getPlayerUUIDs() {
         return playerUUIDs;
-    }
-
-    public Set<Vector> getSurroundingVectors() {
-        return surroundingVectors;
     }
 
     public SurvivalGameConfig getConfig() {
