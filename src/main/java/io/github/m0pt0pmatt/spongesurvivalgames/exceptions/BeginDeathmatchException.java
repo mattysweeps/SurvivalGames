@@ -25,9 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
-public class ReadyException extends SurvivalGameException {
+public class BeginDeathmatchException extends SurvivalGameException {
     @Override
     public String getDescription() {
-        return "Error while readying";
+        return "Error starting deathmatch";
     }
 }
