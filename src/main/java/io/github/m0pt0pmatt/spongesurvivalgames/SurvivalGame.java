@@ -25,12 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import com.google.common.collect.Sets;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -45,7 +45,7 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private static final Set<Vector> surroundingVectors = new HashSet<>(Arrays.asList(
+    private static final Set<Vector> surroundingVectors = Sets.newHashSet (
             new Vector(1, 0, 0),
             new Vector(1, 1, 0),
             new Vector(-1, 0, 0),
@@ -55,8 +55,8 @@ public class SurvivalGame {
             new Vector(0, 0, -1),
             new Vector(0, 1, -1),
             new Vector(0, 2, 0)
-    ));
-    private static final List<SurvivalGameTask> startTasks = new LinkedList<>(Arrays.asList(
+    );
+    private static final List<SurvivalGameTask> startTasks = Arrays.asList(
             new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
@@ -66,26 +66,29 @@ public class SurvivalGame {
             new CreateCountdownTask(),
             new CreateScoreboardTask(),
             new CreateWorldBorderTask()
-    ));
-    private static final List<SurvivalGameTask> readyTasks = new LinkedList<>(Arrays.asList(
+    );
+    private static final List<SurvivalGameTask> readyTasks = Arrays.asList(
             new ResetLootGeneratorTask(),
             new FillChestsTask()
-    ));
-    private static final List<SurvivalGameTask> forceStopTasks = new LinkedList<>(Arrays.asList(
+    );
+    private static final List<SurvivalGameTask> forceStopTasks = Arrays.asList(
             new DespawnPlayersTask(),
             new DeleteScoreboardTask(),
             new ClearWorldBorderTask()
-    ));
-    private static final List<SurvivalGameTask> stopTasks = new LinkedList<>(Collections.singletonList(
+    );
+    private static final List<SurvivalGameTask> stopTasks = Collections.singletonList(
             new ClearPlayersTask()
-    ));
-    private static final List<SurvivalGameTask> deathmatchTasks = new LinkedList<>(Arrays.asList(
+    );
+    private static final List<SurvivalGameTask> deathmatchTasks = Arrays.asList(
             new CreateCageSnapshotsTask(),
             new SpawnPlayersTask(),
             new RotatePlayersTask(),
             new CreateCountdownTask(),
             new CreateDeathmatchBorderTask()
-    ));
+    );
+    public static final List<SurvivalGameTask> checkWinTask = Collections.singletonList(
+            new CheckWinTask()
+    );
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private SurvivalGameState state = SurvivalGameState.STOPPED;
@@ -362,38 +365,11 @@ public class SurvivalGame {
                 s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
         );
 
-        checkWin();
-    }
-
-    public void checkWin() {
-
-        if (playerUUIDs.size() > 1) {
-            return;
+        try {
+            executeTasks(checkWinTask);
+        } catch (SurvivalGameException e) {
+            e.printStackTrace();
         }
-
-        UUID winnerUUID = playerUUIDs.stream().findFirst().get();
-        Player winner = Bukkit.getServer().getPlayer(winnerUUID);
-        if (winner != null) {
-            Bukkit.getScheduler().runTaskLater(
-                    BukkitSurvivalGamesPlugin.plugin,
-                    () -> {
-                        if (winner.isOnline()) winner.teleport(getExit().get());
-                    },
-                    200);
-            winner.sendMessage("Congratulations! You won!");
-            Title.displayTitle(winner, "You Win!", "", ChatColor.DARK_GREEN, ChatColor.MAGIC, 30, 100);
-        }
-
-        Bukkit.getScheduler().runTaskLater(
-                BukkitSurvivalGamesPlugin.plugin,
-                () -> {
-                    try {
-                        stop();
-                    } catch (SurvivalGameException e) {
-                        e.printStackTrace();
-                    }
-                },
-                200);
     }
 
     public void setBounds(int xMin, int xMax, int zMin, int zMax) {

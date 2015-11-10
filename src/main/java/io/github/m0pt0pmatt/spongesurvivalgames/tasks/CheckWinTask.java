@@ -31,52 +31,40 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-/**
- * Task for counting down the starting time
- */
-public class CreateCountdownTask implements SurvivalGameTask {
-
+public class CheckWinTask implements SurvivalGameTask {
     @Override
     public void execute(SurvivalGame game) throws SurvivalGameException {
 
-        Set<UUID> everyone = new HashSet<>();
-        everyone.addAll(game.getPlayerUUIDs());
-        everyone.addAll(game.getSpectatorUUIDs());
+        if (game.getPlayerUUIDs().size() > 1) {
+            return;
+        }
 
-        BukkitSurvivalGamesPlugin.getPlayers(everyone).forEach(player -> {
-            for (int i = game.getCountdownTime().get(); i > 0; i--) {
-                final int j = i;
-
-                Bukkit.getScheduler().scheduleSyncDelayedTask(
-                        BukkitSurvivalGamesPlugin.plugin,
-                        () -> {
-                            Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
-                                    ChatColor.MAGIC);
-                            player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
-                        },
-                        20L * (game.getCountdownTime().get() - i)
-                );
-            }
-
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
+        UUID winnerUUID = game.getPlayerUUIDs().stream().findFirst().get();
+        Player winner = Bukkit.getServer().getPlayer(winnerUUID);
+        if (winner != null) {
+            Bukkit.getScheduler().runTaskLater(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                        //player.sendMessage(Integer.toString(j)),
-                        Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
-                        try {
-                            new CheckWinTask().execute(game);
-                        } catch (SurvivalGameException ignored) {
-                        }
+                        if (winner.isOnline()) winner.teleport(game.getExit().get());
                     },
-                    20L * game.getCountdownTime().get()
-            );
-        });
+                    200);
+            winner.sendMessage("Congratulations! You won!");
+            Title.displayTitle(winner, "You Win!", "", ChatColor.DARK_GREEN, ChatColor.MAGIC, 30, 100);
+        }
+
+        Bukkit.getScheduler().runTaskLater(
+                BukkitSurvivalGamesPlugin.plugin,
+                () -> {
+                    try {
+                        game.stop();
+                    } catch (SurvivalGameException e) {
+                        e.printStackTrace();
+                    }
+                },
+                200);
     }
 }
