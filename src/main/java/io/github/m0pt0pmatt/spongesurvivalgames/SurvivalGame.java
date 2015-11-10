@@ -30,7 +30,10 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -74,7 +77,7 @@ public class SurvivalGame {
             new CreateCountdownTask(),
             new CreateDeathmatchBorderTask()
     );
-    public static final List<SurvivalGameTask> checkWinTask = Collections.singletonList(
+    private static final List<SurvivalGameTask> checkWinTask = Collections.singletonList(
             new CheckWinTask()
     );
     private final Set<UUID> playerUUIDs = new HashSet<>();
@@ -184,7 +187,7 @@ public class SurvivalGame {
     }
 
     private void executeTasks(List<SurvivalGameTask> tasks) throws SurvivalGameException {
-        for (SurvivalGameTask task: tasks){
+        for (SurvivalGameTask task : tasks) {
             task.execute(this);
         }
     }

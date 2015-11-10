@@ -30,7 +30,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public final class SponsorItems {
+final class SponsorItems {
 
     public static final ItemStack LIGHTARMOR = new ItemStack(Material.LEATHER_CHESTPLATE);
     public static final ItemStack MEDIUMARMOR = new ItemStack(Material.CHAINMAIL_CHESTPLATE);

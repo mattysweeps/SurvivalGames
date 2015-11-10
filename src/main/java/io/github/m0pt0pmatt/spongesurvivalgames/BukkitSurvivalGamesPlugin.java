@@ -258,7 +258,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        if (!getDataFolder().mkdirs()){
+        if (!getDataFolder().mkdirs()) {
             Bukkit.getLogger().warning("Unable to make plugin folder");
         }
     }
