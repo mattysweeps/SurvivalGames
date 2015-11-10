@@ -106,7 +106,7 @@ public class SurvivalGame {
         return lootGenerator;
     }
 
-    public boolean ready() throws SurvivalGameException {
+    public void ready() throws SurvivalGameException {
 
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
@@ -114,10 +114,10 @@ public class SurvivalGame {
         state = SurvivalGameState.READY;
 
         //Execute each task
-        return executeTasks(readyTasks);
+        if (!executeTasks(readyTasks)) throw new ReadyException();
     }
 
-    public boolean start() throws SurvivalGameException {
+    public void start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
@@ -143,10 +143,10 @@ public class SurvivalGame {
         state = SurvivalGameState.RUNNING;
 
         //Execute each task
-        return executeTasks(startTasks);
+        if (!executeTasks(startTasks)) throw new StartException();
     }
 
-    public boolean stop() {
+    public void stop() throws SurvivalGameException{
 
         // Execute force stop tasks if the game is RUNNING
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
@@ -158,16 +158,22 @@ public class SurvivalGame {
 
         chestsFilled = false;
 
-        return executeTasks(stopTasks);
+        if (!executeTasks(stopTasks)) throw new StopException();
     }
 
-    public void startDeathMatch() {
+    public void startDeathMatch() throws SurvivalGameException {
         if (!state.equals(SurvivalGameState.DEATHMATCH)) {
             state = SurvivalGameState.DEATHMATCH;
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
-                    this::beginDeathMatch,
+                    () -> {
+                        try {
+                            beginDeathMatch();
+                        } catch (SurvivalGameException e) {
+                            Bukkit.getLogger().warning(e.getDescription());
+                        }
+                    },
                     20L * config.getDeathmatchTime().get()
             );
 
@@ -177,8 +183,8 @@ public class SurvivalGame {
         }
     }
 
-    private void beginDeathMatch() {
-        executeTasks(deathmatchTasks);
+    private void beginDeathMatch() throws SurvivalGameException {
+        if (!executeTasks(deathmatchTasks)) throw new BeginDeathmatchException();
     }
 
     private boolean executeTasks(List<SurvivalGameTask> tasks) {

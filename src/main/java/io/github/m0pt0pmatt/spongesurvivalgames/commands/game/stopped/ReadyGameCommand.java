@@ -49,8 +49,8 @@ public class ReadyGameCommand extends StoppedCommand {
             sender.sendMessage(e.getDescription());
             return false;
         }
-        sender.sendMessage("Survival Game \"" + id + "\" is now set to READY.");
 
+        sender.sendMessage("Survival Game \"" + id + "\" is now set to READY.");
         return true;
     }
 }

@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -39,7 +40,12 @@ public class ForceDeathmatchCommand extends RunningCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).startDeathMatch();
+        try {
+            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).startDeathMatch();
+        } catch (SurvivalGameException e) {
+            sender.sendMessage(e.getDescription());
+        }
+
         Bukkit.getLogger().warning("Survival Game \"" + id + "\" is now starting a DEATHMATCH.");
         return true;
     }
