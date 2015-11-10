@@ -37,12 +37,12 @@ import java.util.Optional;
  */
 public class RotatePlayersTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) {
+    public boolean execute(SurvivalGame game) {
 
         Optional<Location> center = game.getCenter();
 
         if (!center.isPresent()) {
-            return;
+            return false;
         }
 
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
@@ -52,5 +52,6 @@ public class RotatePlayersTask implements SurvivalGameTask {
             newLocation.setPitch(90 - (float) Math.toDegrees(Math.acos(direction.getY())));
             player.teleport(newLocation);
         });
+        return true;
     }
 }

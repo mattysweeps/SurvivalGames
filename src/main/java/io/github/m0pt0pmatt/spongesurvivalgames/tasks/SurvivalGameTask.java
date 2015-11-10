@@ -26,12 +26,11 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 
 /**
  * Interface for doing work for a Survival Game
  */
 public interface SurvivalGameTask {
 
-    void execute(SurvivalGame game) throws SurvivalGameException;
+    boolean execute(SurvivalGame game);
 }

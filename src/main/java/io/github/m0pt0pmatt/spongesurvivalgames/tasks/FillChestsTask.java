@@ -26,7 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -43,10 +42,11 @@ import java.util.Random;
 public class FillChestsTask implements SurvivalGameTask {
 
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
 
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
+        if (world == null) return false;
 
         game.getConfig().getChestLocations().forEach(chestVector ->
 
@@ -82,6 +82,7 @@ public class FillChestsTask implements SurvivalGameTask {
 
         game.setChestsFilled();
         Bukkit.getLogger().info("Chests have finished populating");
+        return true;
     }
 
 

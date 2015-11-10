@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,7 +42,7 @@ import java.util.UUID;
 public class CreateCountdownTask implements SurvivalGameTask {
 
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
 
         Set<UUID> everyone = new HashSet<>();
         everyone.addAll(game.getPlayerUUIDs());
@@ -67,16 +66,13 @@ public class CreateCountdownTask implements SurvivalGameTask {
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                        //player.sendMessage(Integer.toString(j)),
                         Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
-                        try {
-                            new CheckWinTask().execute(game);
-                        } catch (SurvivalGameException ignored) {
-                        }
+                        new CheckWinTask().execute(game);
                     },
                     20L * game.getCountdownTime().get()
             );
         });
+        return true;
     }
 }

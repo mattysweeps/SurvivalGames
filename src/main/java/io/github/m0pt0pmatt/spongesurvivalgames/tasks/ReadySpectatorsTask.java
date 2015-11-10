@@ -27,12 +27,12 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.GameMode;
 
 public class ReadySpectatorsTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(s -> s.setGameMode(GameMode.SPECTATOR));
+        return true;
     }
 }

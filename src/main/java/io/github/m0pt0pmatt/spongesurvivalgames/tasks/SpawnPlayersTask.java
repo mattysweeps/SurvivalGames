@@ -42,8 +42,7 @@ import java.util.Set;
 public class SpawnPlayersTask implements SurvivalGameTask {
 
     @Override
-    public void execute(SurvivalGame game) {
-
+    public boolean execute(SurvivalGame game) {
         Set<Vector> spawnLocations = new HashSet<>();
         spawnLocations.addAll(game.getSpawns());
         Iterator<Vector> spawnIterator = spawnLocations.iterator();
@@ -54,5 +53,6 @@ public class SpawnPlayersTask implements SurvivalGameTask {
                     Location location = new Location(world, spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
                     player.teleport(location.add(0.5, 0, 0.5));
                 });
+        return true;
     }
 }

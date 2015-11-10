@@ -26,17 +26,17 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class ClearWorldBorderTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
 
         World world = Bukkit.getWorld(game.getWorldName().get());
-        if (world == null) return;
+        if (world == null) return false;
 
         world.getWorldBorder().setSize(60000000);
+        return true;
     }
 }

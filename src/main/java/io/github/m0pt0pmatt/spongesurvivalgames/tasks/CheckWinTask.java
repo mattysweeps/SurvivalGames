@@ -37,10 +37,10 @@ import java.util.UUID;
 
 public class CheckWinTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
 
         if (game.getPlayerUUIDs().size() > 1) {
-            return;
+            return true;
         }
 
         UUID winnerUUID = game.getPlayerUUIDs().stream().findFirst().get();
@@ -58,13 +58,8 @@ public class CheckWinTask implements SurvivalGameTask {
 
         Bukkit.getScheduler().runTaskLater(
                 BukkitSurvivalGamesPlugin.plugin,
-                () -> {
-                    try {
-                        game.stop();
-                    } catch (SurvivalGameException e) {
-                        e.printStackTrace();
-                    }
-                },
+                game::stop,
                 200);
+        return true;
     }
 }

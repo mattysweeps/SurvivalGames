@@ -28,8 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 import com.google.common.collect.Sets;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,11 +54,11 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
     );
 
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
         for (Vector spawn : game.getSpawns()) {
 
             World world = Bukkit.getServer().getWorld(game.getWorldName().get());
-            if (world == null) throw new NoWorldException(game.getWorldName().get());
+            if (world == null) return false;
 
             Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
@@ -72,5 +70,6 @@ public class CreateCageSnapshotsTask implements SurvivalGameTask {
                     20L * game.getCountdownTime().get()
             );
         }
+        return true;
     }
 }

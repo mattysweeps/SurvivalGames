@@ -26,23 +26,23 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 
 public class CreateDeathmatchBorderTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws SurvivalGameException {
+    public boolean execute(SurvivalGame game) {
 
         World world = Bukkit.getWorld(game.getWorldName().get());
-        if (world == null) return;
+        if (world == null) return false;
 
         WorldBorder border = world.getWorldBorder();
-        if (border == null) return;
+        if (border == null) return false;
 
         border.reset();
         border.setCenter(game.getCenter().get());
         border.setSize(game.getDeathmatchRadius().get());
+        return true;
     }
 }

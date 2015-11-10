@@ -146,7 +146,7 @@ public class SurvivalGame {
         executeTasks(startTasks);
     }
 
-    public void stop() throws SurvivalGameException {
+    public void stop() {
 
         // Execute force stop tasks if the game is RUNNING
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
@@ -179,16 +179,12 @@ public class SurvivalGame {
     }
 
     private void beginDeathMatch() {
-        try {
-            executeTasks(deathmatchTasks);
-        } catch (SurvivalGameException e) {
-            Bukkit.getLogger().warning("Deathmatch task failed: " + e.getDescription());
-        }
+        executeTasks(deathmatchTasks);
     }
 
-    private void executeTasks(List<SurvivalGameTask> tasks) throws SurvivalGameException {
+    private void executeTasks(List<SurvivalGameTask> tasks) {
         for (SurvivalGameTask task : tasks) {
-            task.execute(this);
+            if (!task.execute(this)) break;
         }
     }
 
@@ -217,10 +213,7 @@ public class SurvivalGame {
                 s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
         );
 
-        try {
-            executeTasks(checkWinTask);
-        } catch (SurvivalGameException ignored) {
-        }
+        executeTasks(checkWinTask);
     }
 
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
