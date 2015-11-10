@@ -54,8 +54,8 @@ public class FillChestsTask implements SurvivalGameTask {
                     final Random random = new Random();
 
                     Block block = world.getBlockAt(chestVector.getBlockX(), chestVector.getBlockY(), chestVector.getBlockZ());
-                    if (block instanceof Chest) {
-                        Chest chest = (Chest) block;
+                    if (block.getState() instanceof Chest) {
+                        Chest chest = (Chest) block.getState();
 
                         Inventory inventory = chest.getBlockInventory();
                         inventory.clear();
@@ -73,7 +73,7 @@ public class FillChestsTask implements SurvivalGameTask {
                         }
                         chest.update();
                     } else
-                        System.out.println("Unable to locate chest at " + chestVector);
+                        System.out.println("Unable to locate chest at " + chestVector.getBlockX() + ", " + chestVector.getBlockY() + ", " + chestVector.getBlockZ());
 
                 }
 
