@@ -26,17 +26,20 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class SpawnEntitySponsor implements Sponsor{
 	//radius of spawns will be distanceFromPlayer + donutRadius
 	private final int distanceFromPlayer = 5;//start the mobs at least 5 blocks away from the player
-	private final int donutRadius = 5 ;//and at most 10 blocks away from the player
+	private final int donutRadius = 15;//and at most 20 blocks away from the player
 	
 	private EntityType mobType;
 	private int numMobs;
@@ -60,21 +63,30 @@ public class SpawnEntitySponsor implements Sponsor{
 			Location spawnLocation = new Location(player.getWorld(), playerLocation.getX()+x, playerLocation.getY(), playerLocation.getZ()+z);
 			
 			//make sure the location we want to spawn is valid.
-			while(canSpawn(spawnLocation)== false){
+			int attempts=0;
+			while(canSpawn(spawnLocation)== false && attempts < 20){
 				spawnLocation.add(0, 1, 0);
 			}
+			if(attempts >= 20){
+				i--;
+				continue;
+			}
 			
-			spawnMob(spawnLocation);
+			player.getWorld().spawnEntity(spawnLocation, this.mobType);
 		}
-	}
-
-	private void spawnMob(Location location) {
-		location.getWorld().spawnEntity(location, this.mobType);
 	}
 	
 	private boolean canSpawn(Location location){
-		if(location.getBlock().getType() == Material.AIR)
-			return true;
-		return false;
+		final Material[] spawnHere = {Material.AIR, Material.TORCH, Material.SIGN, 
+				Material.STATIONARY_WATER, Material.LONG_GRASS, Material.YELLOW_FLOWER, 
+				Material.RED_ROSE, Material.DEAD_BUSH, Material.VINE};
+		Block block = location.getBlock();
+		int height = 2;
+		for(int i=0; i<height; i++){
+			if(!Arrays.asList(spawnHere).contains(block.getType())) 
+				return false;
+			block = block.getRelative(BlockFace.UP);
+		}
+		return true;
 	}
 }
