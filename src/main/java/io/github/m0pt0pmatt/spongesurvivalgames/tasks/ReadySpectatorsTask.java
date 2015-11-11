@@ -32,7 +32,7 @@ import org.bukkit.GameMode;
 public class ReadySpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(s -> s.setGameMode(GameMode.SPECTATOR));
+        BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(s -> s.setGameMode(GameMode.SPECTATOR));
         return true;
     }
 }
