@@ -122,7 +122,6 @@ public class SurvivalGame {
         if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
         if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
         if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
-        if (!chestsFilled) throw new ChestsNotFinishedException();
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
 
@@ -140,6 +139,8 @@ public class SurvivalGame {
                 (playerUUIDs.size(), config.getSpawns().size());
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (!chestsFilled) throw new ChestsNotFinishedException();
+
         // Set the state
         state = SurvivalGameState.RUNNING;
 
