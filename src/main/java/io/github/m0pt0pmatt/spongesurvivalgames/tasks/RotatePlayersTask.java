@@ -45,8 +45,8 @@ public class RotatePlayersTask implements SurvivalGameTask {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
-            Vector direction = player.getLocation().toVector().subtract(center.get().toVector()).normalize();
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+            Vector direction = player.getLocation().toVector().subtract(center.get().toVector().add(new Vector(0.5, 0, 0.5))).normalize();
             Location newLocation = player.getLocation().clone();
             newLocation.setYaw(180 - (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ())));
             newLocation.setPitch(90 - (float) Math.toDegrees(Math.acos(direction.getY())));
