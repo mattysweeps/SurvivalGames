@@ -107,7 +107,8 @@ public class SurvivalGame {
     }
 
     public void ready() throws SurvivalGameException {
-
+        if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
+        if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
 
@@ -127,8 +128,6 @@ public class SurvivalGame {
                 (playerUUIDs.size(), config.getSpawns().size());
         if (playerUUIDs.isEmpty()) throw new NoPlayerException();
         if (!config.getExit().isPresent()) throw new NoExitLocationException();
-        if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
-        if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
         if (!config.getXMin().isPresent()) throw new NoBoundsException();
         if (!config.getXMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
