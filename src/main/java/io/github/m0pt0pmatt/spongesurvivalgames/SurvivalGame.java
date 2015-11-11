@@ -211,6 +211,8 @@ public class SurvivalGame {
                         if (player.isOnline()) player.teleport(getExit().get());
                     },
                     10);
+            player.getScoreboard().resetScores(player.getName());
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
 
         for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
