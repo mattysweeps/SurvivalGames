@@ -37,6 +37,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCom
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceDeathmatchCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.RefillChestsCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.SponsorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
@@ -253,6 +254,11 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandKeywords.GIVE, CommandKeywords.SPONSOR},
                 new String[]{CommandArgs.ID, CommandArgs.PLAYERNAME, CommandArgs.SPONSOR},
                 new SponsorCommand()
+        );
+        commandTrie.add(
+                new String[]{CommandKeywords.REFILL, CommandKeywords.CHESTS},
+                new String[]{CommandArgs.ID},
+                new RefillChestsCommand()
         );
     }
 

@@ -23,23 +23,16 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import org.bukkit.Bukkit;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
 
-/**
- * Command to remove a player from a game
- */
-public class RemovePlayerCommand extends ReadyCommand {
-
+public class RefillChestsCommand extends RunningCommand {
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -47,26 +40,11 @@ public class RemovePlayerCommand extends ReadyCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
-            sender.sendMessage("Player name is not present.");
+        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
+        if (!new FillChestsTask().execute(game)){
+            sender.sendMessage("An error happened while trying to refill chests");
             return false;
         }
-        String playerName = arguments.get(CommandArgs.PLAYERNAME);
-
-        Player player = Bukkit.getServer().getPlayer(playerName);
-        if (player == null) {
-            sender.sendMessage("No such player \"" + playerName + "\".");
-            return false;
-        }
-
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removePlayer(player.getUniqueId());
-
-        Scoreboard board = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard();
-        board.resetScores(player.getName());
-        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-
-        sender.sendMessage("Player \"" + playerName + "\" removed from survival game \"" + id + "\".");
-
         return true;
     }
 }

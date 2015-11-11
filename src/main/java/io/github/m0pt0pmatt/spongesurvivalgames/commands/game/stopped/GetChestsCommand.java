@@ -33,10 +33,12 @@ import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Command to scrape the entire bounds and get all the chests
@@ -54,9 +56,18 @@ public class GetChestsCommand extends StoppedCommand {
 
         game.getConfig().getChestLocations().clear();
 
-        int x, z;
-        x = game.getConfig().getXMax().get() - game.getConfig().getXMin().get();
-        z = game.getConfig().getZMax().get() - game.getConfig().getZMin().get();
+
+        Optional<Integer> xmin = game.getConfig().getXMin();
+        Optional<Integer> zmin = game.getConfig().getZMin();
+        Optional<Integer> xmax = game.getConfig().getXMax();
+        Optional<Integer> zmax = game.getConfig().getZMax();
+        if (!xmin.isPresent() || !zmin.isPresent() || !xmax.isPresent() || !zmax.isPresent()){
+            sender.sendMessage("Bounds not set! Set the bounds first");
+            return false;
+        }
+
+        int x = xmax.get() - xmin.get();
+        int z = zmax.get() - zmin.get();
 
         x = x / 16;
         z = z / 16;
@@ -101,11 +112,13 @@ public class GetChestsCommand extends StoppedCommand {
                     System.out.println("Chunks are equal!");
                 }
                 for (BlockState e : chunk.getTileEntities()) {
+                    if (e instanceof InventoryHolder){
+                        ((InventoryHolder) e).getInventory().clear();
+                    }
                     if (e instanceof Chest) {
                         chests.add((Chest) e);
                     }
                 }
-
 
                 count++;
                 if (count % 1000 == 0) {

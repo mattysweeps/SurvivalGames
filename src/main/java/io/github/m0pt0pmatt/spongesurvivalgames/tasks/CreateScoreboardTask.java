@@ -48,6 +48,7 @@ public class CreateScoreboardTask implements SurvivalGameTask {
                 player -> {
                     player.setScoreboard(board);
                     player.setStatistic(Statistic.PLAYER_KILLS, 0);
+                    objective.getScore(player.getName()).setScore(0);
                 }
         );
 
