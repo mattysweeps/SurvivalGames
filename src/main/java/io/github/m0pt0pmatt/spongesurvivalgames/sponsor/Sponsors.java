@@ -27,6 +27,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
 import java.util.*;
 
+import org.bukkit.potion.PotionEffectType;
+
 public final class Sponsors {
 
     private static final Map<String, Sponsor> sponsors = new TreeMap<>();
@@ -44,6 +46,11 @@ public final class Sponsors {
         sponsors.put("give-food", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD1)));
         sponsors.put("give-food2", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD2)));
         sponsors.put("give-food3", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD3)));
+        sponsors.put("give-wither", new StatusEffectSponsor(PotionEffectType.WITHER, 5, 1));
+        sponsors.put("give-blindness",new StatusEffectSponsor(PotionEffectType.BLINDNESS, 10, 1));
+        sponsors.put("give-poison1", new StatusEffectSponsor(PotionEffectType.POISON,5,1));
+        sponsors.put("give-poison2", new StatusEffectSponsor(PotionEffectType.POISON,5,2));
+        sponsors.put("give-nausea", new StatusEffectSponsor(PotionEffectType.CONFUSION,20,1));
     }
 
     public static Optional<Sponsor> get(String name) {
