@@ -109,6 +109,7 @@ public class SurvivalGame {
     public void ready() throws SurvivalGameException {
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
+        if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
 
