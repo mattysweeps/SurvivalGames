@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
@@ -62,8 +63,11 @@ public class GetChestsCommand extends StoppedCommand {
         Optional<Integer> xmax = game.getConfig().getXMax();
         Optional<Integer> zmax = game.getConfig().getZMax();
         if (!xmin.isPresent() || !zmin.isPresent() || !xmax.isPresent() || !zmax.isPresent()){
-            sender.sendMessage("Bounds not set! Set the bounds first");
+            sender.sendMessage(ChatColor.RED + "Bounds not set! Set the bounds first");
             return false;
+        }
+        if (!game.getConfig().getWorldName().isPresent()) {
+        	sender.sendMessage(ChatColor.RED + "The world name is not set. Please set the world name first.");
         }
 
         int x = xmax.get() - xmin.get();
@@ -91,6 +95,11 @@ public class GetChestsCommand extends StoppedCommand {
     private List<Chest> getChests(SurvivalGame game, CommandSender sender) {
         String worldName = game.getWorldName().get();
         World world = Bukkit.getServer().getWorld(worldName);
+        
+        if (world == null) {
+        	sender.sendMessage(ChatColor.RED + "Cannot find world " + worldName);
+        	return new LinkedList<Chest>();
+        }
 
         int xmin = game.getConfig().getXMin().get();
         int xmax = game.getConfig().getXMax().get();
