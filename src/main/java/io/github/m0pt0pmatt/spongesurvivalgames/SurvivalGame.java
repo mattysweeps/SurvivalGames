@@ -110,6 +110,19 @@ public class SurvivalGame {
         if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
         if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
+        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
+        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (!config.getExit().isPresent()) throw new NoExitLocationException();
+        if (!config.getXMin().isPresent()) throw new NoBoundsException();
+        if (!config.getXMax().isPresent()) throw new NoBoundsException();
+        if (!config.getZMin().isPresent()) throw new NoBoundsException();
+        if (!config.getZMax().isPresent()) throw new NoBoundsException();
+        if (!config.getCenter().isPresent()) throw new NoCenterException();
+        if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
+        if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
+        if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
+        if (!chestsFilled) throw new ChestsNotFinishedException();
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
 
@@ -122,23 +135,11 @@ public class SurvivalGame {
     public void start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
-        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
-        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (playerUUIDs.isEmpty()) throw new NoPlayerException();
         if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
                 (playerUUIDs.size(), config.getSpawns().size());
-        if (playerUUIDs.isEmpty()) throw new NoPlayerException();
-        if (!config.getExit().isPresent()) throw new NoExitLocationException();
-        if (!config.getXMin().isPresent()) throw new NoBoundsException();
-        if (!config.getXMax().isPresent()) throw new NoBoundsException();
-        if (!config.getZMin().isPresent()) throw new NoBoundsException();
-        if (!config.getZMax().isPresent()) throw new NoBoundsException();
-        if (!config.getCenter().isPresent()) throw new NoCenterException();
-        if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
-        if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
-        if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
-        if (!chestsFilled) throw new ChestsNotFinishedException();
-
+        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
         // Set the state
         state = SurvivalGameState.RUNNING;
 
