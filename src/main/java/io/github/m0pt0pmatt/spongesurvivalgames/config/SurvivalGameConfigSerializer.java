@@ -159,27 +159,41 @@ public class SurvivalGameConfigSerializer {
     public YamlConfiguration serialize(SurvivalGameConfig obj) {
 
         YamlConfiguration config = new YamlConfiguration();
-
+        
+        if (obj.getWorldName().isPresent())
         config.set(Fields.WORLD.getKey(), obj.getWorldName().get());
+        if (obj.getExitWorld().isPresent())
         config.set(Fields.EXITWORLD.getKey(), obj.getExitWorld().get());
+        if (obj.getExit().isPresent())
         config.set(Fields.EXIT.getKey(), obj.getExit().get());
+        if (obj.getCenter().isPresent())
         config.set(Fields.CENTER.getKey(), obj.getCenter().get());
+        if (obj.getPlayerLimit().isPresent())
         config.set(Fields.PLAYERLIMIT.getKey(), obj.getPlayerLimit().get());
+        if (obj.getCountdownTime().isPresent())
         config.set(Fields.COUNTDOWNTIME.getKey(), obj.getCountdownTime().get());
 
         config.set(Fields.SPAWNS.getKey(), new ArrayList<>(obj.getSpawns()));
 
+        if (obj.getChestMidpoint().isPresent())
         config.set(Fields.CHEST_MIDPOINT.getKey(), obj.getChestMidpoint().get());
+        if (obj.getChestRange().isPresent())
         config.set(Fields.CHEST_RANGE.getKey(), obj.getChestRange().get());
 
         config.set(Fields.LOOT.getKey(), obj.getLoot());
 
+        if (obj.getXMin().isPresent())
         config.set(Fields.XMIN.getKey(), obj.getXMin().get());
+        if (obj.getXMax().isPresent())
         config.set(Fields.XMAX.getKey(), obj.getXMax().get());
+        if (obj.getZMin().isPresent())
         config.set(Fields.ZMIN.getKey(), obj.getZMin().get());
+        if (obj.getZMax().isPresent())
         config.set(Fields.ZMAX.getKey(), obj.getZMax().get());
 
+        if (obj.getDeathmatchRadius().isPresent())
         config.set(Fields.DEATHMATCHRADIUS.getKey(), obj.getDeathmatchRadius().get());
+        if (obj.getDeathmatchTime().isPresent())
         config.set(Fields.DEATHMATCHTIME.getKey(), obj.getDeathmatchTime().get());
 
         config.set(Fields.CHESTS.getKey(), obj.getChestLocations());
