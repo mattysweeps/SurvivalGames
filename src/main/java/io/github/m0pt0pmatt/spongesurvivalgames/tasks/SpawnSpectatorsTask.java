@@ -27,12 +27,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.bukkit.Location;
 
 public class SpawnSpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
+        Location spawnPoint = game.getCenter().get().clone().add(0, 10, 0);
         BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(
-                spectator -> spectator.teleport(game.getCenter().get())
+                spectator -> spectator.teleport(spawnPoint)
         );
         return true;
     }
