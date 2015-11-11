@@ -33,6 +33,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -111,6 +112,9 @@ public class GetChestsCommand extends StoppedCommand {
                     System.out.println("Chunks are equal!");
                 }
                 for (BlockState e : chunk.getTileEntities()) {
+                    if (e instanceof InventoryHolder){
+                        ((InventoryHolder) e).getInventory().clear();
+                    }
                     if (e instanceof Chest) {
                         chests.add((Chest) e);
                     }
