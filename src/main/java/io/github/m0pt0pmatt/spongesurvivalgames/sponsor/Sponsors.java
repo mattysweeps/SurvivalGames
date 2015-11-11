@@ -46,6 +46,7 @@ public final class Sponsors {
         sponsors.put("give-food", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD1)));
         sponsors.put("give-food2", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD2)));
         sponsors.put("give-food3", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD3)));
+        sponsors.put("clear-status-effects", new ClearStatusEffectSponsor());
         sponsors.put("give-wither", new StatusEffectSponsor(PotionEffectType.WITHER, 5, 1));
         sponsors.put("give-blindness",new StatusEffectSponsor(PotionEffectType.BLINDNESS, 10, 1));
         sponsors.put("give-poison1", new StatusEffectSponsor(PotionEffectType.POISON,5,1));
