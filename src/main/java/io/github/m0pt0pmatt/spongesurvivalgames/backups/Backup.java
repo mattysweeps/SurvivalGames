@@ -50,7 +50,7 @@ public class Backup implements ConfigurationSerializable {
         YamlConfiguration section = new YamlConfiguration();
         section.createSection("config", (LinkedHashMap<String, Object>) configMap.get("config"));
         SurvivalGameConfig config = new SurvivalGameConfig();
-        serializer.deserialize(config, section, true);
+        serializer.deserialize(config, section.getConfigurationSection("config"), true);
         backup.config = config;
         
         backup.gameState = SurvivalGameState.valueOf((String) configMap.get("state"));
