@@ -26,6 +26,8 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 
 /**
  * A backup of a game.
@@ -295,6 +297,16 @@ public class Backup implements ConfigurationSerializable {
     		player.getInventory().setArmorContents(record.getPlayerArmor());
     		
     		player.teleport(record.getLocation());
+    		
+    		try {
+				game.addPlayer(playerID);
+			} catch (NoPlayerLimitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PlayerLimitReachedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	
     	}
     	
