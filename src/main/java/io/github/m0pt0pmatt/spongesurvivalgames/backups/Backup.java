@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
@@ -14,9 +15,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.util.Vector;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.serializers.InventoryHolder;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 
 /**
  * A backup of a game.
@@ -35,14 +38,38 @@ public class Backup implements ConfigurationSerializable {
 	
     public static Backup valueOf(Map<String, Object> configMap) {
         Backup backup = new Backup();
-
+        
+        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+        ConfigurationSection section = (ConfigurationSection) configMap.get("config");
+        SurvivalGameConfig config = new SurvivalGameConfig();
+        serializer.deserialize(config, section, true);
+        backup.config = config;
+        
+        backup.gameState = SurvivalGameState.valueOf((String) configMap.get("state"));
+        
+        for (String key : configMap.keySet()) {
+        	if (!key.startsWith("player-")) {
+        		continue;
+        	}
+        	
+        	backup.players.put(UUID.fromString(key), 
+        			(PlayerRecord) configMap.get(key));
+        }
+        
         return backup;
     }
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
-
+        
+        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+        map.put("config", serializer.serialize(config));
+        map.put("state", gameState.name());
+        
+        for (UUID id : players.keySet()) {
+        	map.put("player-" + id.toString(), players.get(id));
+        }
 
         return map;
     }
@@ -52,7 +79,7 @@ public class Backup implements ConfigurationSerializable {
      * @author Skyler
      *
      */
-    private static class PlayerRecord implements ConfigurationSerializable {
+    public static class PlayerRecord implements ConfigurationSerializable {
     	
     	public static void registerAliases() {
             //Register this serializable class with some aliases too
@@ -160,8 +187,12 @@ public class Backup implements ConfigurationSerializable {
     
     private Map<UUID, PlayerRecord> players;
     
-    public Backup() {
-    	
+    private Backup() {
+    	players = new HashMap<UUID, PlayerRecord>();
+    }
+    
+    public Backup(SurvivalGame game) {
+    	players = new HashMap<UUID, PlayerRecord>();
     }
 	
 }
