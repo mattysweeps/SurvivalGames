@@ -33,7 +33,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 
 /**
@@ -82,6 +81,7 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
 		}
         
         backup.restore(id);
+        sender.sendMessage("The game has been restored!");
 
         return true;
     }

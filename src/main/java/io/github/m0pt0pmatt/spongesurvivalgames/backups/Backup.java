@@ -3,6 +3,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.backups;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +11,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -42,11 +42,13 @@ public class Backup implements ConfigurationSerializable {
         PlayerRecord.registerAliases();
     }
 	
-    public static Backup valueOf(Map<String, Object> configMap) {
+    @SuppressWarnings("unchecked")
+	public static Backup valueOf(Map<String, Object> configMap) {
         Backup backup = new Backup();
         
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
-        ConfigurationSection section = (ConfigurationSection) configMap.get("config");
+        YamlConfiguration section = new YamlConfiguration();
+        section.createSection("config", (LinkedHashMap<String, Object>) configMap.get("config"));
         SurvivalGameConfig config = new SurvivalGameConfig();
         serializer.deserialize(config, section, true);
         backup.config = config;
@@ -58,7 +60,7 @@ public class Backup implements ConfigurationSerializable {
         		continue;
         	}
         	
-        	backup.players.put(UUID.fromString(key), 
+        	backup.players.put(UUID.fromString(key.substring(7)), //start at 7 to get rid of player- 
         			(PlayerRecord) configMap.get(key));
         }
         
@@ -94,7 +96,8 @@ public class Backup implements ConfigurationSerializable {
             ConfigurationSerialization.registerClass(PlayerRecord.class, "BACKUP");
         }
     	
-        public static PlayerRecord valueOf(Map<String, Object> configMap) {
+        @SuppressWarnings("unchecked")
+		public static PlayerRecord valueOf(Map<String, Object> configMap) {
         	
         	UUID id = UUID.fromString((String) configMap.get("holderID"));
         	Player player = Bukkit.getPlayer(id);
@@ -102,15 +105,37 @@ public class Backup implements ConfigurationSerializable {
         	if (player == null) {
         		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
         				"Unable to fetch player for restored inventory: " + id);
-        		return new PlayerRecord(null, 0, 0, null);
+        		return new PlayerRecord(null, null, 0, 0, null);
         	}
         	
-        	@SuppressWarnings("unchecked")
-			List<ItemStack> items = (List<ItemStack>) configMap.get("inventory");
-        	ItemStack[] inv = (ItemStack[]) items.toArray();
+        	int index = 0;
+        	ItemStack[] inv = new ItemStack[36];
+        	for (Object o : (List<Object>) configMap.get("inventory")) {
+        		if (o == null) {
+        			inv[index] = null;
+        			index++;
+        			continue;
+        		}
+        		
+        		inv[index] = (ItemStack) o;
+        		index++;
+        	}
         	
-        	int health = (int) configMap.get("health"),
-        			maxHealth = (int) configMap.get("maxHealth");
+        	ItemStack[] armor = new ItemStack[4];
+        	index = 0;
+        	for (Object o : (List<Object>) configMap.get("armor")) {
+        		if (o == null) {
+        			armor[index] = null;
+        			index++;
+        			continue;
+        		}
+        		
+        		armor[index] = (ItemStack) o;
+        		index++;
+        	}
+        	
+        	double health = (double) configMap.get("health"),
+        			maxHealth = (double) configMap.get("maxHealth");
         	
         	String worldName = (String) configMap.get("worldname");
         	World world = Bukkit.getWorld(worldName);
@@ -118,14 +143,14 @@ public class Backup implements ConfigurationSerializable {
         	if (world == null) {
         		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
         				"Unable to get world: " + worldName);
-        		return new PlayerRecord(null, 0, 0, null);        		
+        		return new PlayerRecord(null, null, 0, 0, null);        		
         	}
         	
         	Vector offset = (Vector) configMap.get("pos");
         	
         	Location loc = new Location(world, offset.getX(), offset.getY(), offset.getZ());
         	
-        	PlayerRecord record = new PlayerRecord(inv, health, maxHealth, loc);
+        	PlayerRecord record = new PlayerRecord(inv, armor, health, maxHealth, loc);
             return record;
         }
 
@@ -134,6 +159,7 @@ public class Backup implements ConfigurationSerializable {
             Map<String, Object> map = new HashMap<>();
             
             map.put("inventory", Lists.newArrayList(inventory));
+            map.put("armor", Lists.newArrayList(armor));
             map.put("holderID", id.toString());
             map.put("health", playerHealth);
             map.put("maxHealth", playerMaxHealth);
@@ -148,6 +174,8 @@ public class Backup implements ConfigurationSerializable {
         
     	private ItemStack[] inventory;
     	
+    	private ItemStack[] armor;
+    	
     	private double playerHealth;
     	
     	private double playerMaxHealth;
@@ -157,13 +185,15 @@ public class Backup implements ConfigurationSerializable {
     	public PlayerRecord(Player player) {
     		id = player.getUniqueId();
     		inventory = player.getInventory().getContents();
+    		armor = player.getInventory().getArmorContents();
     		playerHealth = player.getHealth();
     		playerMaxHealth = player.getMaxHealth();
     		location = player.getLocation();
     	}
     	
-    	public PlayerRecord(ItemStack[] inventory, double health, double maxHealth, Location location) {
+    	public PlayerRecord(ItemStack[] inventory, ItemStack[] armor, double health, double maxHealth, Location location) {
     		this.inventory = inventory;
+    		this.armor = armor;
     		playerHealth = health;
     		playerMaxHealth = maxHealth;
     		this.location = location;
@@ -171,6 +201,10 @@ public class Backup implements ConfigurationSerializable {
 
 		public ItemStack[] getPlayerInventory() {
 			return inventory;
+		}
+		
+		public ItemStack[] getPlayerArmor() {
+			return armor;
 		}
 
 		public double getPlayerHealth() {

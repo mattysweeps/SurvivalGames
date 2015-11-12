@@ -113,7 +113,7 @@ public class SurvivalGame {
      * @param state
      */
     public void setState(SurvivalGameState state) {
-    	
+    	this.state = state;
     }
 
     public LootGenerator getLootGenerator() {
