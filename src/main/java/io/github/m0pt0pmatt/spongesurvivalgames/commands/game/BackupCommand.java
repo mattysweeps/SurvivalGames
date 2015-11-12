@@ -59,7 +59,7 @@ public class BackupCommand extends GameCommand {
         	return false;
         }
         
-        if (game.getState() != SurvivalGameState.RUNNING) {
+        if (game.getState() != SurvivalGameState.RUNNING && game.getState() != SurvivalGameState.DEATHMATCH) {
         	sender.sendMessage("You can only backup a game while it's running!");
         	return false;
         }
