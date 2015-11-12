@@ -280,6 +280,10 @@ public class Backup implements ConfigurationSerializable {
     	game.setConfig(config);
     	game.setState(gameState);
     	
+    	if (gameState == SurvivalGameState.RUNNING || gameState == SurvivalGameState.DEATHMATCH) {
+    		game.setTakeBackups(true);
+    	}
+    	
     	for (UUID playerID : players.keySet()) {
     		//try and get the online player.
     		Player player = Bukkit.getPlayer(playerID);

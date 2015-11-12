@@ -486,4 +486,18 @@ public class SurvivalGame {
     public Set<UUID> getSpectatorUUIDs() {
         return spectatorUUIDs;
     }
+    
+    public void setTakeBackups(boolean backups) {
+    	if (backups && (state == SurvivalGameState.RUNNING || state == SurvivalGameState.DEATHMATCH)) {
+	    	if (backupTaker == null) {
+	    		backupTaker = new BackupTaker(this, SurvivalGame.backupTime);
+	    	}
+	    	return;
+    	}
+    	
+    	if (!backups && backupTaker != null) {
+    		backupTaker.cancel();
+    		backupTaker = null;
+    	}
+    }
 }
