@@ -36,10 +36,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.InventoryHolder;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Command to scrape the entire bounds and get all the chests
@@ -55,8 +52,12 @@ public class GetChestsCommand extends StoppedCommand {
 
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
 
-        game.getConfig().getChestLocations().clear();
-
+        Optional<String> worldName = game.getWorldName();
+        if (!worldName.isPresent()){
+            sender.sendMessage("No worldname set!");
+            return false;
+        }
+        World world = Bukkit.getServer().getWorld(worldName.get());
 
         Optional<Integer> xmin = game.getConfig().getXMin();
         Optional<Integer> zmin = game.getConfig().getZMin();
@@ -71,16 +72,34 @@ public class GetChestsCommand extends StoppedCommand {
         	return false;
         }
 
-        int x = xmax.get() - xmin.get();
-        int z = zmax.get() - zmin.get();
-
-        x = x / 16;
-        z = z / 16;
-
-        sender.sendMessage("Bounds include about " + (x * z) + " chunks.");
+        game.getConfig().getChestLocations().clear();
 
         sender.sendMessage("Beginning scrape for chests. This may take a while...");
-        List<Chest> chests = getChests(game, sender);
+
+        Set<Chunk> chunks = new HashSet<>();
+        for (int x = xmin.get() - 16; x < xmax.get() + 16; x += 16) {
+            for (int z = zmin.get() - 16; z < zmax.get() + 16; z += 16) {
+                chunks.add(world.getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16)));
+            }
+        }
+        sender.sendMessage("Found " + chunks.size() + " chunks");
+
+        List<Chest> chests = new LinkedList<>();
+        int count = 0;
+        for (Chunk chunk: chunks) {
+            for (BlockState e : chunk.getTileEntities()) {
+                if (e instanceof InventoryHolder){
+                    ((InventoryHolder) e).getInventory().clear();
+                }
+                if (e instanceof Chest) {
+                    chests.add((Chest) e);
+                }
+            }
+            count++;
+            if (count % 1000 == 0) {
+                sender.sendMessage("Finished chunks 1 - " + count);
+            }
+        }
         sender.sendMessage("Done!");
         sender.sendMessage("Found " + chests.size() + " chests!");
 
@@ -93,51 +112,4 @@ public class GetChestsCommand extends StoppedCommand {
         return true;
     }
 
-    private List<Chest> getChests(SurvivalGame game, CommandSender sender) {
-        String worldName = game.getWorldName().get();
-        World world = Bukkit.getServer().getWorld(worldName);
-        
-        if (world == null) {
-        	sender.sendMessage(ChatColor.RED + "Cannot find world " + worldName);
-        	return new LinkedList<Chest>();
-        }
-
-        int xmin = game.getConfig().getXMin().get();
-        int xmax = game.getConfig().getXMax().get();
-        int zmin = game.getConfig().getZMin().get();
-        int zmax = game.getConfig().getZMax().get();
-
-        List<Chest> chests = new LinkedList<>();
-
-        int count = 0;
-
-        Chunk lastChunk = null;
-
-        for (int x = xmin; x < xmax; x += 16) {
-            for (int z = zmin; z < zmax; z += 16) {
-
-                Chunk chunk = world.getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16));
-
-                if (lastChunk != null && lastChunk.equals(chunk)) {
-                    System.out.println("Chunks are equal!");
-                }
-                for (BlockState e : chunk.getTileEntities()) {
-                    if (e instanceof InventoryHolder){
-                        ((InventoryHolder) e).getInventory().clear();
-                    }
-                    if (e instanceof Chest) {
-                        chests.add((Chest) e);
-                    }
-                }
-
-                count++;
-                if (count % 1000 == 0) {
-                    sender.sendMessage("Finished chunks 1 - " + count);
-                }
-                lastChunk = chunk;
-            }
-        }
-
-        return chests;
-    }
 }

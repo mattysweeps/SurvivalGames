@@ -122,10 +122,10 @@ public class SurvivalGame {
         if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
         if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
         if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
-        if (!chestsFilled) throw new ChestsNotFinishedException();
         if (config.getChestLocations().isEmpty())
             throw new NoChestsException();
-
+        if (config.getPlayerLimit().get() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
+                (config.getSpawns().size(), config.getPlayerLimit().get());
         state = SurvivalGameState.READY;
 
         //Execute each task
@@ -136,10 +136,10 @@ public class SurvivalGame {
 
         // Check all prerequisites for starting the game
         if (playerUUIDs.isEmpty()) throw new NoPlayerException();
-        if (playerUUIDs.size() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
-                (playerUUIDs.size(), config.getSpawns().size());
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
+        if (!chestsFilled) throw new ChestsNotFinishedException();
+
         // Set the state
         state = SurvivalGameState.RUNNING;
 

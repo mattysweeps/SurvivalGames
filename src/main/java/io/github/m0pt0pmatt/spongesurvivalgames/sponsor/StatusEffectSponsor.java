@@ -2,6 +2,7 @@
  * This file is part of SpongeSurvivalGamesPlugin, licensed under the MIT License (MIT).
  *
  * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
+ * Copyright (c) Stephanie Martinez <bassclairnetrules@gmail.com>
  * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,16 +24,30 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-public class ReadySpectatorsTask implements SurvivalGameTask {
-    @Override
-    public boolean execute(SurvivalGame game) {
-        BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(s -> s.setGameMode(GameMode.SPECTATOR));
-        return true;
-    }
+public class StatusEffectSponsor implements Sponsor {
+	
+	private static final String effectMessage = "A sponsor has given you ";
+	PotionEffectType type;
+	int duration; 
+	int amplifier;
+	
+	public StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
+		super();
+		this.type = type;
+		this.duration = duration;
+		this.amplifier = amplifier;
+	}
+
+	@Override
+	public void execute(Player player) {
+		player.sendMessage(effectMessage+this.type.toString().toLowerCase());
+		player.addPotionEffect(new PotionEffect(type, duration, amplifier));
+	}
+	
 }
