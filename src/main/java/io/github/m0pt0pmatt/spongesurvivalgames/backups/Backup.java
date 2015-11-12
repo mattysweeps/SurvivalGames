@@ -296,6 +296,10 @@ public class Backup implements ConfigurationSerializable {
     		player.setHealth(record.getPlayerHealth());
     		player.setMaxHealth(record.getPlayerMaxHealth());
     		player.getInventory().setContents(record.getPlayerInventory());
+    		player.getInventory().setArmorContents(record.getPlayerArmor());
+    		
+    		player.teleport(record.getLocation());
+    	
     	}
     	
     	return game;
