@@ -14,7 +14,7 @@ public class BackupTaker extends BukkitRunnable {
 
 	private static final int ticksPerSecond = 20;
 	
-	private static final DateFormat format = new SimpleDateFormat("YYMMMMd-hh-mm-ss");
+	private static final DateFormat format = new SimpleDateFormat("MMMMd_hh-mm-ss");
 	
 	@Override
 	public void run() {
@@ -32,7 +32,7 @@ public class BackupTaker extends BukkitRunnable {
 		}
 		
 		File outFile = new File(backups, 
-				"Backup[" + game.getID() + "] -" + format.format(new Date()));
+				"Backup[" + game.getID() + "]_" + format.format(new Date()) + ".yml");
 		
 		Backup backup = new Backup(game);
 		
