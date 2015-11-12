@@ -3,6 +3,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.backups;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,13 +16,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import com.google.common.collect.Lists;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
-import io.github.m0pt0pmatt.spongesurvivalgames.backups.serializers.InventoryHolder;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 
@@ -103,8 +105,9 @@ public class Backup implements ConfigurationSerializable {
         		return new PlayerRecord(null, 0, 0, null);
         	}
         	
-        	InventoryHolder helper = (InventoryHolder) configMap.get("inventory");
-        	Inventory inv = helper.getInventory(player);
+        	@SuppressWarnings("unchecked")
+			List<ItemStack> items = (List<ItemStack>) configMap.get("inventory");
+        	ItemStack[] inv = (ItemStack[]) items.toArray();
         	
         	int health = (int) configMap.get("health"),
         			maxHealth = (int) configMap.get("maxHealth");
@@ -130,7 +133,7 @@ public class Backup implements ConfigurationSerializable {
         public Map<String, Object> serialize() {
             Map<String, Object> map = new HashMap<>();
             
-            map.put("inventory", new InventoryHolder(playerInventory));
+            map.put("inventory", Lists.newArrayList(inventory));
             map.put("holderID", id.toString());
             map.put("health", playerHealth);
             map.put("maxHealth", playerMaxHealth);
@@ -143,7 +146,7 @@ public class Backup implements ConfigurationSerializable {
     	
         private UUID id;
         
-    	private Inventory playerInventory;
+    	private ItemStack[] inventory;
     	
     	private double playerHealth;
     	
@@ -153,21 +156,21 @@ public class Backup implements ConfigurationSerializable {
     	
     	public PlayerRecord(Player player) {
     		id = player.getUniqueId();
-    		playerInventory = player.getInventory();
+    		inventory = player.getInventory().getContents();
     		playerHealth = player.getHealth();
     		playerMaxHealth = player.getMaxHealth();
     		location = player.getLocation();
     	}
     	
-    	public PlayerRecord(Inventory inventory, double health, double maxHealth, Location location) {
-    		playerInventory = inventory;
+    	public PlayerRecord(ItemStack[] inventory, double health, double maxHealth, Location location) {
+    		this.inventory = inventory;
     		playerHealth = health;
     		playerMaxHealth = maxHealth;
     		this.location = location;
     	}
 
-		public Inventory getPlayerInventory() {
-			return playerInventory;
+		public ItemStack[] getPlayerInventory() {
+			return inventory;
 		}
 
 		public double getPlayerHealth() {
@@ -231,6 +234,37 @@ public class Backup implements ConfigurationSerializable {
     	Backup backup = (Backup) config.get("backup");
     	
     	return backup;
+    }
+    
+    /**
+     * Creates a game and restores it to the state kept by this backup.
+     * @param id The id to give the new game
+     * @return the game made from the backup
+     */
+    public SurvivalGame restore(String id) {
+    	SurvivalGame game = new SurvivalGame();
+    	BukkitSurvivalGamesPlugin.survivalGameMap.put(id, game);
+    	
+    	game.setConfig(config);
+    	game.setState(gameState);
+    	
+    	for (UUID playerID : players.keySet()) {
+    		//try and get the online player.
+    		Player player = Bukkit.getPlayer(playerID);
+    		if (player == null) {
+    			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Couldn't find player for restore: " + playerID);
+    			continue;
+    		}
+    		
+    		//set their inventory, position, health from record
+    		PlayerRecord record = players.get(playerID);
+    		
+    		player.setHealth(record.getPlayerHealth());
+    		player.setMaxHealth(record.getPlayerMaxHealth());
+    		player.getInventory().setContents(record.getPlayerInventory());
+    	}
+    	
+    	return game;
     }
 	
 }

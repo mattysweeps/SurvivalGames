@@ -101,6 +101,20 @@ public class SurvivalGame {
     public SurvivalGameState getState() {
         return state;
     }
+    
+    /**
+     * Sets the game's state.<br />
+     * This method is <b>not for conventional use!</b><br />
+     * To advance the game's state, us the {@link #start()}, {@link #ready()}, and {@link #stop()} commands!<br />
+     * This method does nothing to make certain that the state is valid given the parameters of the game,
+     * perform any of the tasks that usually come with moving through the states, or anything else.<br />
+     * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup Backups}
+     * only!
+     * @param state
+     */
+    public void setState(SurvivalGameState state) {
+    	
+    }
 
     public LootGenerator getLootGenerator() {
         return lootGenerator;
