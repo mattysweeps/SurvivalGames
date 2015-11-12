@@ -317,7 +317,7 @@ public class Backup implements ConfigurationSerializable {
     	return game;
     }
     
-    protected YamlConfiguration asConfig() {
+    public YamlConfiguration asConfig() {
     	YamlConfiguration outcfg = new YamlConfiguration();
     	
     	outcfg.set("backup", this);

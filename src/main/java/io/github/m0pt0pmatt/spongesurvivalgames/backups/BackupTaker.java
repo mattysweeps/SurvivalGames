@@ -18,7 +18,7 @@ public class BackupTaker extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		BukkitSurvivalGamesPlugin.plugin.getLogger().info("Scheduling a backup a game...");
+		BukkitSurvivalGamesPlugin.plugin.getLogger().info("Scheduling a backup of [" + game.getID() + "]...");
 		File backups = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
 		
 		if (!backups.isDirectory()) {

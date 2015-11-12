@@ -25,6 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -324,6 +328,37 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 
         Loot.registerAliases();
         Backup.registerAliases();
+    }
+    
+    @Override
+    public void onDisable() {
+    	File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
+        
+        if (!backupsFolder.isDirectory()) {
+			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
+					+ "for backup folders!\nFile will be deleted!");
+			backupsFolder.delete();
+		}
+		
+		if (!backupsFolder.exists()) {
+			backupsFolder.mkdirs();
+		}
+        
+    	
+    	for (SurvivalGame game : survivalGameMap.values()) {
+    		if (game.getState() == SurvivalGameState.RUNNING || game.getState() == SurvivalGameState.DEATHMATCH) {
+    			getLogger().warning("Taking emergency backup of game: " + game.getID());
+    	        File file = new File(backupsFolder, "EBACKUP[" + game.getID() + "].yml");
+    	        
+    	        Backup backup = new Backup(game);
+    	        YamlConfiguration config = backup.asConfig();
+    	        try {
+    				config.save(file);
+    			} catch (IOException e) {
+    				getLogger().warning(ChatColor.RED + "Error encountered when saving backup!");
+    			}
+    		}
+    	}
     }
 
 }
