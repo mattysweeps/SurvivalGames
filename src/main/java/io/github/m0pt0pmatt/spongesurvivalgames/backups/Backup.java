@@ -3,7 +3,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.backups;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -50,8 +49,9 @@ public class Backup implements ConfigurationSerializable {
         
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
         YamlConfiguration section = new YamlConfiguration();
-        section.createSection("config", (LinkedHashMap<String, Object>) configMap.get("config"));
+        section.createSection("config", (HashMap<String, Object>) configMap.get("config"));
         SurvivalGameConfig config = new SurvivalGameConfig();
+        
         serializer.deserialize(config, section.getConfigurationSection("config"), true);
         backup.config = config;
         

@@ -45,6 +45,7 @@ public class SurvivalGameConfigSerializer {
     public void deserialize(SurvivalGameConfig baseConfig, ConfigurationSection config, boolean loadDefaults) {
         if (loadDefaults) {
             loadWithDefaults(baseConfig, config);
+            return;
         }
 
         loadWithoutDefaults(baseConfig, config);
@@ -121,6 +122,7 @@ public class SurvivalGameConfigSerializer {
                         + " List item not a LOOT object! Skipping...");
                 continue;
             }
+
             builder.addLoot((Loot) item);
         }
 
