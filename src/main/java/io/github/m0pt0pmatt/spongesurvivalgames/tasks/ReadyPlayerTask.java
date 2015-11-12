@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 
 /**
  * Task for resetting the players' food and health levels
@@ -46,8 +47,16 @@ public class ReadyPlayerTask implements SurvivalGameTask {
                     player.setSaturation(player.getFoodLevel());
                     player.setExhaustion(0);
                     player.getInventory().clear();
+                    clearEquipment(player);
                 });
 
         return true;
+    }
+    
+    private void clearEquipment(Player player) {
+    	player.getInventory().setHelmet(null);
+    	player.getInventory().setChestplate(null);
+    	player.getInventory().setLeggings(null);
+    	player.getInventory().setBoots(null);
     }
 }
