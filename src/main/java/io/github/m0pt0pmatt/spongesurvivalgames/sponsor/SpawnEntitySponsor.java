@@ -54,10 +54,10 @@ public class SpawnEntitySponsor implements Sponsor{
 		Random rGen = new Random();
 		for(int i=0; i<this.numMobs; i++){
 			int x = rGen.nextInt(donutRadius)+ distanceFromPlayer;
-			x = rGen.nextInt(2) == 1 ? x*-1 : x;
+			x = rGen.nextInt(2) == 1 ? x * -1 : x;
 			
 			int z = rGen.nextInt(donutRadius)+ distanceFromPlayer;
-			z = rGen.nextInt(2) == 1 ? z*-1 : z;
+			z = rGen.nextInt(2) == 1 ? z * -1 : z;
 			
 			Location playerLocation = player.getLocation();
 			Location spawnLocation = new Location(player.getWorld(), playerLocation.getX()+x, playerLocation.getY(), playerLocation.getZ()+z);
@@ -82,7 +82,7 @@ public class SpawnEntitySponsor implements Sponsor{
 				Material.RED_ROSE, Material.DEAD_BUSH, Material.VINE};
 		Block block = location.getBlock();
 		int height = 2;
-		for(int i=0; i<height; i++){
+		for(int i=0; i < height; i++){
 			if(!Arrays.asList(spawnHere).contains(block.getType())) 
 				return false;
 			block = block.getRelative(BlockFace.UP);
