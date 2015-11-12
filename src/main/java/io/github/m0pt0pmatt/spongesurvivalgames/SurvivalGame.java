@@ -25,11 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -40,12 +43,58 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.backups.BackupTaker;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.BeginDeathmatchException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.ChestsNotFinishedException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoBoundsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoCenterException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestMidpointException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestRangeException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoChestsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoCountdownException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoDeathmatchRadiusException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoDeathmatchTimeException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoExitLocationException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NotEnoughSpawnPointsException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.ReadyException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.StartException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.StopException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CheckWinTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearWorldBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCageSnapshotsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCountdownTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateDeathmatchBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateScoreboardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateWorldBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DeleteScoreboardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DespawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ReadyPlayerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ReadySpectatorsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ResetLootGeneratorTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.RotatePlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnSpectatorsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SurvivalGameTask;
 
 /**
  * represents a Survival Game.
  */
 public class SurvivalGame {
+	
+	private static final int backupTime = 60 * 5; //make a backup every 5 minutes
 
     private static final List<SurvivalGameTask> startTasks = Arrays.asList(
             new CreateCageSnapshotsTask(),
@@ -87,6 +136,7 @@ public class SurvivalGame {
     private final LootGenerator lootGenerator = new LootGenerator();
     private final Scoreboard playersScoreboard;
     private boolean chestsFilled = false;
+    private BackupTaker backupTaker;
 
     public SurvivalGame() {
         playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -159,6 +209,9 @@ public class SurvivalGame {
 
         //Execute each task
         if (!executeTasks(startTasks)) throw new StartException();
+        
+        //Start backups
+        backupTaker = new BackupTaker(this, SurvivalGame.backupTime);
     }
 
     public void stop() throws SurvivalGameException{
@@ -172,6 +225,8 @@ public class SurvivalGame {
         state = SurvivalGameState.STOPPED;
 
         chestsFilled = false;
+        
+        backupTaker.cancel();
 
         if (!executeTasks(stopTasks)) throw new StopException();
     }

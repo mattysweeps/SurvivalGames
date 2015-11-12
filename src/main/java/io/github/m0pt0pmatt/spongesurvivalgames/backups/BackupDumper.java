@@ -13,12 +13,14 @@ public class BackupDumper extends BukkitRunnable {
 
 	@Override
 	public void run() {
+		BukkitSurvivalGamesPlugin.plugin.getLogger().info("Starting backup dump...");
 		try {
 			config.save(outFile);
 		} catch (IOException e) {
 			BukkitSurvivalGamesPlugin.plugin.getLogger().warning(ChatColor.RED 
 					+ "Error encountered when saving backup!");
 		}
+		BukkitSurvivalGamesPlugin.plugin.getLogger().info("finished backup dump!");
 	}
 	
 	private YamlConfiguration config;
@@ -39,9 +41,7 @@ public class BackupDumper extends BukkitRunnable {
 	 * @param outFile
 	 */
 	public static void dumpBackup(Backup backup, File outFile) {
-		BukkitSurvivalGamesPlugin.plugin.getLogger().info("Starting backup dump...");
 		new BackupDumper(backup.asConfig(), outFile);
-		BukkitSurvivalGamesPlugin.plugin.getLogger().info("finished backup dump!");
 	}
 
 }
