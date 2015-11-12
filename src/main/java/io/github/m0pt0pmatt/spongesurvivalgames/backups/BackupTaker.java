@@ -32,7 +32,7 @@ public class BackupTaker extends BukkitRunnable {
 		}
 		
 		File outFile = new File(backups, 
-				"Backup-" + format.format(new Date()));
+				"Backup[" + game.getID() + "] -" + format.format(new Date()));
 		
 		Backup backup = new Backup(game);
 		
