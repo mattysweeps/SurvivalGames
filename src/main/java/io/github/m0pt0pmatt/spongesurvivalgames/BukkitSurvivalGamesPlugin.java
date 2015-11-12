@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.AddSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.BackupCommand;
@@ -284,6 +285,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         getCommand(CommandKeywords.SSG).setTabCompleter(tabCompleter);
 
         Loot.registerAliases();
+        Backup.registerAliases();
     }
 
 }
