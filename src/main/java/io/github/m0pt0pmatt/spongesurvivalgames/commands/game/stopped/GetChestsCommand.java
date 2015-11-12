@@ -68,6 +68,7 @@ public class GetChestsCommand extends StoppedCommand {
         }
         if (!game.getConfig().getWorldName().isPresent()) {
         	sender.sendMessage(ChatColor.RED + "The world name is not set. Please set the world name first.");
+        	return false;
         }
 
         int x = xmax.get() - xmin.get();
