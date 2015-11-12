@@ -4,13 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.util.Vector;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.backups.serializers.InventoryHolder;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 
 /**
@@ -25,6 +30,7 @@ public class Backup implements ConfigurationSerializable {
         ConfigurationSerialization.registerClass(Backup.class);
         ConfigurationSerialization.registerClass(Backup.class, "backup");
         ConfigurationSerialization.registerClass(Backup.class, "BACKUP");
+        PlayerRecord.registerAliases();
     }
 	
     public static Backup valueOf(Map<String, Object> configMap) {
@@ -56,19 +62,56 @@ public class Backup implements ConfigurationSerializable {
         }
     	
         public static PlayerRecord valueOf(Map<String, Object> configMap) {
-        	PlayerRecord record = new PlayerRecord();
-
+        	
+        	UUID id = UUID.fromString((String) configMap.get("holderID"));
+        	Player player = Bukkit.getPlayer(id);
+        	
+        	if (player == null) {
+        		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
+        				"Unable to fetch player for restored inventory: " + id);
+        		return new PlayerRecord(null, 0, 0, null);
+        	}
+        	
+        	InventoryHolder helper = (InventoryHolder) configMap.get("inventory");
+        	Inventory inv = helper.getInventory(player);
+        	
+        	int health = (int) configMap.get("health"),
+        			maxHealth = (int) configMap.get("maxHealth");
+        	
+        	String worldName = (String) configMap.get("worldname");
+        	World world = Bukkit.getWorld(worldName);
+        	
+        	if (world == null) {
+        		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
+        				"Unable to get world: " + worldName);
+        		return new PlayerRecord(null, 0, 0, null);        		
+        	}
+        	
+        	Vector offset = (Vector) configMap.get("pos");
+        	
+        	Location loc = new Location(world, offset.getX(), offset.getY(), offset.getZ());
+        	
+        	PlayerRecord record = new PlayerRecord(inv, health, maxHealth, loc);
             return record;
         }
 
         @Override
         public Map<String, Object> serialize() {
             Map<String, Object> map = new HashMap<>();
-
+            
+            map.put("inventory", new InventoryHolder(playerInventory));
+            map.put("holderID", id.toString());
+            map.put("health", playerHealth);
+            map.put("maxHealth", playerMaxHealth);
+            
+            map.put("worldname", location.getWorld().getName());
+            map.put("pos", new Vector(location.getX(), location.getY(), location.getZ()));
 
             return map;
         }
     	
+        private UUID id;
+        
     	private Inventory playerInventory;
     	
     	private double playerHealth;
@@ -78,6 +121,7 @@ public class Backup implements ConfigurationSerializable {
     	private Location location;
     	
     	public PlayerRecord(Player player) {
+    		id = player.getUniqueId();
     		playerInventory = player.getInventory();
     		playerHealth = player.getHealth();
     		playerMaxHealth = player.getMaxHealth();
