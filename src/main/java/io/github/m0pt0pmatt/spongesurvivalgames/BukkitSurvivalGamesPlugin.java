@@ -25,14 +25,43 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandKeywords;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CreateGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.ListGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.RestoreGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.AddSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.BackupCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.RemoveSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintBoundsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintCenterCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintChestMidpointCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintChestRangeCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintCountdownCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintDeathmatchRadiusCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintDeathmatchTimeCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintExitCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintLootCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintPlayerLimitCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintSpawnsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintSponsorsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print.PrintWorldCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.AddPlayerCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.RemovePlayerCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready.StartGameCommand;
@@ -41,21 +70,25 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceDeath
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.ForceStopGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.RefillChestsCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running.SponsorCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.*;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.AddHeldLootCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.AddSpawnCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.ClearSpawnpointsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.DeleteGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.GetChestsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.ReadyGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetBoundsCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetCenterLocationCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetChestMidpointCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetChestRangeCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetCountdownCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetDeathmatchRadiusCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetDeathmatchTimeCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetExitCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetPlayerLimitCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.SetWorldCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.events.PlayerEventListener;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * SpongeSurvivalGames Sponge Plugin
@@ -267,6 +300,11 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandArgs.ID, CommandArgs.FILENAME},
                 new BackupCommand()
         );
+        commandTrie.add(
+                new String[]{CommandKeywords.RESTORE},
+                new String[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new RestoreGameCommand()
+        );        
     }
 
     @Override
