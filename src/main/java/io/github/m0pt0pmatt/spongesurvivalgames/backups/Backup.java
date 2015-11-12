@@ -274,7 +274,7 @@ public class Backup implements ConfigurationSerializable {
      * @return the game made from the backup
      */
     public SurvivalGame restore(String id) {
-    	SurvivalGame game = new SurvivalGame();
+    	SurvivalGame game = new SurvivalGame(id);
     	BukkitSurvivalGamesPlugin.survivalGameMap.put(id, game);
     	
     	game.setConfig(config);

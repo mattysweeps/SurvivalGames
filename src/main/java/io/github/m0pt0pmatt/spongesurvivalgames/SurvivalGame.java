@@ -137,8 +137,10 @@ public class SurvivalGame {
     private final Scoreboard playersScoreboard;
     private boolean chestsFilled = false;
     private BackupTaker backupTaker;
+    private final String id;
 
-    public SurvivalGame() {
+    public SurvivalGame(String id) {
+    	this.id = id;
         playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = playersScoreboard.registerNewObjective("lobby", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -168,6 +170,10 @@ public class SurvivalGame {
 
     public LootGenerator getLootGenerator() {
         return lootGenerator;
+    }
+    
+    public String getID() {
+    	return id;
     }
 
     public void ready() throws SurvivalGameException {

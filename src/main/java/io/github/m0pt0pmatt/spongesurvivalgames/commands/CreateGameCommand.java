@@ -53,7 +53,7 @@ public class CreateGameCommand extends SurvivalGamesCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame());
+        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame(id));
         sender.sendMessage("Survival Game \"" + id + "\" created.");
 
         return true;
