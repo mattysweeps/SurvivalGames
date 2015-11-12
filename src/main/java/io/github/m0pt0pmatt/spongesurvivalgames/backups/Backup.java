@@ -253,11 +253,7 @@ public class Backup implements ConfigurationSerializable {
     		outputFile.delete();
     	}
     	
-    	YamlConfiguration outcfg = new YamlConfiguration();
-    	
-    	outcfg.set("backup", this);
-    	
-    	outcfg.save(outputFile);
+    	BackupDumper.dumpBackup(this, outputFile);
     }
     
     public static Backup load(File inputFile) throws IOException, InvalidConfigurationException {
@@ -303,6 +299,14 @@ public class Backup implements ConfigurationSerializable {
     	}
     	
     	return game;
+    }
+    
+    protected YamlConfiguration asConfig() {
+    	YamlConfiguration outcfg = new YamlConfiguration();
+    	
+    	outcfg.set("backup", this);
+    	
+    	return outcfg;
     }
 	
 }
