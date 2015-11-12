@@ -70,7 +70,7 @@ public class GetChestsCommand extends StoppedCommand {
         game.getConfig().getChestLocations().clear();
 
         sender.sendMessage("Beginning scrape for chests. This may take a while...");
-        List<Chest> chests = new LinkedList<>();
+
         Set<Chunk> chunks = new HashSet<>();
         for (int x = xmin.get() - 16; x < xmax.get() + 16; x += 16) {
             for (int z = zmin.get() - 16; z < zmax.get() + 16; z += 16) {
@@ -78,6 +78,8 @@ public class GetChestsCommand extends StoppedCommand {
             }
         }
         sender.sendMessage("Found " + chunks.size() + " chunks");
+
+        List<Chest> chests = new LinkedList<>();
         int count = 0;
         for (Chunk chunk: chunks) {
             for (BlockState e : chunk.getTileEntities()) {
