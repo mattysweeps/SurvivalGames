@@ -1,5 +1,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.backups;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -8,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
@@ -193,6 +197,40 @@ public class Backup implements ConfigurationSerializable {
     
     public Backup(SurvivalGame game) {
     	players = new HashMap<UUID, PlayerRecord>();
+    	this.gameState = game.getState();
+    	this.config = game.getConfig();
+    	
+    	for (Player player : BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())) {
+    		players.put(player.getUniqueId(), new PlayerRecord(player));
+    	}
+    }
+    
+    /**
+     * Saves the output to the provided file.<br />
+     * <b>Will erase the file if it already exists before writing</b>
+     * @param outputFile
+     * @throws IOException
+     */
+    public void save(File outputFile) throws IOException {
+    	if (outputFile.exists()) {
+    		outputFile.delete();
+    	}
+    	
+    	YamlConfiguration outcfg = new YamlConfiguration();
+    	
+    	outcfg.set("backup", this);
+    	
+    	outcfg.save(outputFile);
+    }
+    
+    public static Backup load(File inputFile) throws IOException, InvalidConfigurationException {
+    	YamlConfiguration config = new YamlConfiguration();
+    	
+    	config.load(inputFile);
+    	
+    	Backup backup = (Backup) config.get("backup");
+    	
+    	return backup;
     }
 	
 }
