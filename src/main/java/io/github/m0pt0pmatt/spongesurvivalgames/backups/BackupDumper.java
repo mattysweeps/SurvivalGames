@@ -39,7 +39,9 @@ public class BackupDumper extends BukkitRunnable {
 	 * @param outFile
 	 */
 	public static void dumpBackup(Backup backup, File outFile) {
+		BukkitSurvivalGamesPlugin.plugin.getLogger().info("Starting backup dump...");
 		new BackupDumper(backup.asConfig(), outFile);
+		BukkitSurvivalGamesPlugin.plugin.getLogger().info("finished backup dump!");
 	}
 
 }

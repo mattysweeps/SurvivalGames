@@ -34,6 +34,7 @@ import org.bukkit.command.CommandSender;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 
@@ -48,19 +49,24 @@ public class BackupCommand extends GameCommand {
         if (!super.execute(sender, arguments)) {
             return false;
         }
+        
+        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
+        String fileName = arguments.get(CommandArgs.FILENAME);
+
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
+        if (game == null) {
+        	sender.sendMessage(ChatColor.RED + "No game named " + id + " available!");
+        	return false;
+        }
+        
+        if (game.getState() != SurvivalGameState.RUNNING) {
+        	sender.sendMessage("You can only backup a game while it's running!");
+        	return false;
+        }
 
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
             sender.sendMessage("No file name given.");
             return false;
-        }
-        String fileName = arguments.get(CommandArgs.FILENAME);
-
-        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
-        
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
-        if (game == null) {
-        	sender.sendMessage(ChatColor.RED + "No game named " + id + " available!");
-        	return false;
         }
         
         Backup backup = new Backup(game);
@@ -72,7 +78,7 @@ public class BackupCommand extends GameCommand {
             return false;
         }
 
-        sender.sendMessage("Backup file saved");
+        sender.sendMessage("Backup file now saving in the background!");
         return true;
     }
 }
