@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.*;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.AddSpectatorCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.BackupCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.LoadCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.RemoveSpectatorCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.SaveCommand;
@@ -259,6 +260,11 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
                 new String[]{CommandKeywords.REFILL, CommandKeywords.CHESTS},
                 new String[]{CommandArgs.ID},
                 new RefillChestsCommand()
+        );
+        commandTrie.add(
+                new String[]{CommandKeywords.BACKUP},
+                new String[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new BackupCommand()
         );
     }
 

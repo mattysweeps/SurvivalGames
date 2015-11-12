@@ -67,4 +67,5 @@ public final class CommandKeywords {
     public static final String SPECTATOR = "spectator";
     public static final String REFILL = "refill";
     public static final String CHESTS = "chests";
+    public static final String BACKUP = "backup";
 }
