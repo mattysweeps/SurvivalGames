@@ -52,8 +52,20 @@ public class BackupCommand extends GameCommand {
         
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
         String fileName = arguments.get(CommandArgs.FILENAME);
-
-        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
+        File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
+        
+        if (!backupsFolder.isDirectory()) {
+			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
+					+ "for backup folders!\nFile will be deleted!");
+			backupsFolder.delete();
+		}
+		
+		if (!backupsFolder.exists()) {
+			backupsFolder.mkdirs();
+		}
+        
+        File file = new File(backupsFolder, fileName);
+        
         if (game == null) {
         	sender.sendMessage(ChatColor.RED + "No game named " + id + " available!");
         	return false;

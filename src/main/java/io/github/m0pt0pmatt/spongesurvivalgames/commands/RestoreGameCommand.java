@@ -62,7 +62,19 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
         	return false;
         }
         
-        File inFile = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), arguments.get(CommandArgs.FILENAME));
+        File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
+        
+        if (!backupsFolder.isDirectory()) {
+			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
+					+ "for backup folders!\nFile will be deleted!");
+			backupsFolder.delete();
+		}
+		
+		if (!backupsFolder.exists()) {
+			backupsFolder.mkdirs();
+		}
+
+        File inFile = new File(backupsFolder, arguments.get(CommandArgs.FILENAME));
         if (!inFile.exists()) {
         	sender.sendMessage("The file " + arguments.get(CommandArgs.FILENAME) + " does not exists!");
         	return false;
