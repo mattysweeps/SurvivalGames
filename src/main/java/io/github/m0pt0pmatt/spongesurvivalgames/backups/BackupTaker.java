@@ -45,9 +45,9 @@ public class BackupTaker extends BukkitRunnable {
 
     private final SurvivalGame game;
 
-    public BackupTaker(SurvivalGame game, int secondsTillBackup) {
+    public BackupTaker(SurvivalGame game) {
         this.game = game;
-        int ticks = Math.round(secondsTillBackup * ticksPerSecond);
+        int ticks = Math.round(SurvivalGame.backupTime * ticksPerSecond);
         this.runTaskTimer(BukkitSurvivalGamesPlugin.plugin, ticks, ticks);
     }
 

@@ -118,7 +118,6 @@ public class SurvivalGame {
      * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup Backups}
      * only!
      *
-     * @param state
      */
     public void setState(SurvivalGameState state) {
         this.state = state;
@@ -173,7 +172,7 @@ public class SurvivalGame {
         if (!executeTasks(startTasks)) throw new StartException();
 
         //Start backups
-        backupTaker = new BackupTaker(this, SurvivalGame.backupTime);
+        backupTaker = new BackupTaker(this);
     }
 
     public void stop() throws SurvivalGameException {
@@ -466,7 +465,7 @@ public class SurvivalGame {
     public void setTakeBackups(boolean backups) {
         if (backups && (state == SurvivalGameState.RUNNING || state == SurvivalGameState.DEATHMATCH)) {
             if (backupTaker == null) {
-                backupTaker = new BackupTaker(this, SurvivalGame.backupTime);
+                backupTaker = new BackupTaker(this);
             }
             return;
         }

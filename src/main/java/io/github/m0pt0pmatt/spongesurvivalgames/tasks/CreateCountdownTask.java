@@ -55,8 +55,8 @@ class CreateCountdownTask implements SurvivalGameTask {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(
                         BukkitSurvivalGamesPlugin.plugin,
                         () -> {
-                            Title.displayTitle(player, j + "", "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN,
-                                    ChatColor.MAGIC);
+                            Title.displayTitle(player, j + "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN
+                            );
                             player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
                         },
                         20L * (game.getCountdownTime().get() - i)
@@ -66,7 +66,7 @@ class CreateCountdownTask implements SurvivalGameTask {
             Bukkit.getScheduler().scheduleSyncDelayedTask(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                        Title.displayTitle(player, "Go!", "", ChatColor.DARK_RED, ChatColor.MAGIC);
+                        Title.displayTitle(player, "Go!", ChatColor.DARK_RED);
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
                         new CheckWinTask().execute(game);
                     },

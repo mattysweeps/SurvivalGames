@@ -73,7 +73,6 @@ public class Backup implements ConfigurationSerializable {
      * <b>Will erase the file if it already exists before writing</b>
      *
      * @param outputFile The output file
-     * @throws IOException
      */
     public void save(File outputFile) {
         if (outputFile.exists()) {
