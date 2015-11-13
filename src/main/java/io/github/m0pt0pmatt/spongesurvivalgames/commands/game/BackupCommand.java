@@ -75,12 +75,7 @@ public class BackupCommand extends GameCommand {
 
         Backup backup = new Backup(game);
 
-        try {
-            backup.save(file);
-        } catch (IOException e) {
-            sender.sendMessage("Unable to save backup file");
-            return false;
-        }
+        backup.save(file);
 
         sender.sendMessage("Backup file now saving in the background!");
         return true;

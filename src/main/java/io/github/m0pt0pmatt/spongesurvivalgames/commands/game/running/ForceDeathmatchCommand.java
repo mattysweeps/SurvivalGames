@@ -39,11 +39,7 @@ public class ForceDeathmatchCommand extends RunningCommand {
             return false;
         }
 
-        try {
-            game.startDeathMatch();
-        } catch (SurvivalGameException e) {
-            sender.sendMessage(e.getDescription());
-        }
+        game.startDeathMatch();
 
         Bukkit.getLogger().warning("Survival Game \"" + game.getID() + "\" is now starting a DEATHMATCH.");
         return true;

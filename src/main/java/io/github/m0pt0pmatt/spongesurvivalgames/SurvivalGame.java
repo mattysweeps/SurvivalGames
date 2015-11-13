@@ -220,7 +220,7 @@ public class SurvivalGame {
         if (!executeTasks(stopTasks)) throw new StopException();
     }
 
-    public void startDeathMatch() throws SurvivalGameException {
+    public void startDeathMatch() {
         if (!state.equals(SurvivalGameState.DEATHMATCH)) {
             state = SurvivalGameState.DEATHMATCH;
 

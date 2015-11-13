@@ -102,7 +102,7 @@ public class Backup implements ConfigurationSerializable {
      * @param outputFile The output file
      * @throws IOException
      */
-    public void save(File outputFile) throws IOException {
+    public void save(File outputFile) {
     	if (outputFile.exists()) {
     		if (!outputFile.delete()){
 				Bukkit.getLogger().warning("Unable to delete file: " + outputFile.getName());
