@@ -67,14 +67,14 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
         if (!backupsFolder.isDirectory()) {
             BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
                     + "for backup folders!\nFile will be deleted!");
-            if (!backupsFolder.delete()){
+            if (!backupsFolder.delete()) {
                 sender.sendMessage("Cannot delete backups file!");
                 return false;
             }
         }
 
         if (!backupsFolder.exists()) {
-            if (!backupsFolder.mkdirs()){
+            if (!backupsFolder.mkdirs()) {
                 sender.sendMessage("Cannot make directory!");
                 return false;
             }
@@ -104,7 +104,7 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
         }
 
         SurvivalGame game = backup.restore(id);
-        if (game == null){
+        if (game == null) {
             sender.sendMessage("Game was null!");
             return true;
         }

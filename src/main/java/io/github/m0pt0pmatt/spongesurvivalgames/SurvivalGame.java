@@ -117,7 +117,6 @@ public class SurvivalGame {
      * perform any of the tasks that usually come with moving through the states, or anything else.<br />
      * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup Backups}
      * only!
-     *
      */
     public void setState(SurvivalGameState state) {
         this.state = state;

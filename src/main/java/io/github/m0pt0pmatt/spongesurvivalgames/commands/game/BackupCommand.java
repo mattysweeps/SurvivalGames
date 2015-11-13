@@ -57,14 +57,14 @@ public class BackupCommand extends GameCommand {
         if (!backupsFolder.isDirectory()) {
             sender.sendMessage("Found file named 'Backup', but need name "
                     + "for backup folders!\nFile will be deleted!");
-            if (!backupsFolder.delete()){
+            if (!backupsFolder.delete()) {
                 sender.sendMessage("Unable to delete backup file!");
                 return false;
             }
         }
 
         if (!backupsFolder.exists()) {
-            if (!backupsFolder.mkdirs()){
+            if (!backupsFolder.mkdirs()) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to make backups directory!");
                 return false;
             }

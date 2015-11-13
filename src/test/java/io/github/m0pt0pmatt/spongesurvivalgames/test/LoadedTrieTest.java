@@ -23,17 +23,14 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.test;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.junit.Test;
 
-class ResetLootGeneratorTask implements SurvivalGameTask {
-    @Override
-    public boolean execute(SurvivalGame game) {
-        game.getLootGenerator().clearLoot();
-        game.getLoot().forEach(
-                loot -> game.getLootGenerator().addLoot(loot)
-        );
-        return true;
+public class LoadedTrieTest {
+
+    @Test
+    public void testTrie() {
+
     }
 }

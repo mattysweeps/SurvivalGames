@@ -314,13 +314,13 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         if (!backupsFolder.isDirectory()) {
             BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
                     + "for backup folders!\nFile will be deleted!");
-            if (!backupsFolder.delete()){
+            if (!backupsFolder.delete()) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to delete backup file!");
             }
         }
 
         if (!backupsFolder.exists()) {
-            if (!backupsFolder.mkdirs()){
+            if (!backupsFolder.mkdirs()) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to make backups directory!");
             }
         }
