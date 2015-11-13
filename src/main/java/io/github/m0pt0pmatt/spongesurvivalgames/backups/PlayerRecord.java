@@ -46,7 +46,7 @@ import java.util.UUID;
  * @author Skyler
  *
  */
-class PlayerRecord implements ConfigurationSerializable {
+public class PlayerRecord implements ConfigurationSerializable {
 
     public static void registerAliases() {
         //Register this serializable class with some aliases too
