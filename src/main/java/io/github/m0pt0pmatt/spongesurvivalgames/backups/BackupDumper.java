@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 
-public class BackupDumper extends BukkitRunnable {
+class BackupDumper extends BukkitRunnable {
 
 	@Override
 	public void run() {

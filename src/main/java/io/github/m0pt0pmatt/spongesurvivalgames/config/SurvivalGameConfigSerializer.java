@@ -52,7 +52,7 @@ public class SurvivalGameConfigSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    public void loadWithoutDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
+    private void loadWithoutDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
 
         SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
         builder.worldName(config.getString(Fields.WORLD.getKey(), null));
@@ -93,7 +93,7 @@ public class SurvivalGameConfigSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    public void loadWithDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
+    private void loadWithDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
 
         SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
         builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));

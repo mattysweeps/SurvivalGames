@@ -149,7 +149,7 @@ class PlayerRecord implements ConfigurationSerializable {
         location = player.getLocation();
     }
 
-    public PlayerRecord(ItemStack[] inventory, ItemStack[] armor, double health, double maxHealth, Location location) {
+    private PlayerRecord(ItemStack[] inventory, ItemStack[] armor, double health, double maxHealth, Location location) {
         this.inventory = inventory;
         this.armor = armor;
         playerHealth = health;
