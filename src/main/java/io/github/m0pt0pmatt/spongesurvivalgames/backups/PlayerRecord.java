@@ -130,15 +130,15 @@ class PlayerRecord implements ConfigurationSerializable {
 
     private UUID id;
 
-    private ItemStack[] inventory;
+    private final ItemStack[] inventory;
 
-    private ItemStack[] armor;
+    private final ItemStack[] armor;
 
-    private double playerHealth;
+    private final double playerHealth;
 
-    private double playerMaxHealth;
+    private final double playerMaxHealth;
 
-    private Location location;
+    private final Location location;
 
     public PlayerRecord(Player player) {
         id = player.getUniqueId();

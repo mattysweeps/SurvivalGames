@@ -44,7 +44,7 @@ public class BackupTaker extends BukkitRunnable {
 		BackupDumper.dumpBackup(backup, outFile);
 	}
 	
-	private SurvivalGame game;
+	private final SurvivalGame game;
 
 	public BackupTaker(SurvivalGame game, int secondsTillBackup) {
 		this.game = game;

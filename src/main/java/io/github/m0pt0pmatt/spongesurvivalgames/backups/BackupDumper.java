@@ -23,9 +23,9 @@ class BackupDumper extends BukkitRunnable {
 		BukkitSurvivalGamesPlugin.plugin.getLogger().info("finished backup dump!");
 	}
 	
-	private YamlConfiguration config;
+	private final YamlConfiguration config;
 	
-	private File outFile;
+	private final File outFile;
 	
 	private BackupDumper(YamlConfiguration config, File outFile) {
 		this.config = config;

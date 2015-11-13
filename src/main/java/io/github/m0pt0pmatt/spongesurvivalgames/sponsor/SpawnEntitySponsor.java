@@ -41,8 +41,8 @@ public class SpawnEntitySponsor implements Sponsor{
 	private final int distanceFromPlayer = 5;//start the mobs at least 5 blocks away from the player
 	private final int donutRadius = 15;//and at most 20 blocks away from the player
 	
-	private EntityType mobType;
-	private int numMobs;
+	private final EntityType mobType;
+	private final int numMobs;
 	
 	SpawnEntitySponsor(EntityType mobType, int numMobs){
 		this.mobType = mobType;

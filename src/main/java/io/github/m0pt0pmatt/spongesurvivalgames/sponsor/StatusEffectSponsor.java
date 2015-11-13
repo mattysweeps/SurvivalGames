@@ -33,9 +33,9 @@ import org.bukkit.potion.PotionEffectType;
 public class StatusEffectSponsor implements Sponsor {
 	
 	private static final String effectMessage = "A sponsor has given you ";
-	private PotionEffectType type;
-	private int duration;
-	private int amplifier;
+	private final PotionEffectType type;
+	private final int duration;
+	private final int amplifier;
 	
 	public StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
 		super();
