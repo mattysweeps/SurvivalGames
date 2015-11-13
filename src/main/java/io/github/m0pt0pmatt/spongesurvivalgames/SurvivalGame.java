@@ -248,7 +248,10 @@ public class SurvivalGame {
 
     private boolean executeTasks(List<SurvivalGameTask> tasks) {
         for (SurvivalGameTask task : tasks) {
-            if (!task.execute(this)) return false;
+            if (!task.execute(this)){
+                Bukkit.getLogger().warning("Error executing task: " + task.getClass().getName());
+                return false;
+            }
         }
         return true;
     }
