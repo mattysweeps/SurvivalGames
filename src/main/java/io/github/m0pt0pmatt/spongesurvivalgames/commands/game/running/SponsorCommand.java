@@ -39,7 +39,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.Optional;
 
-public class SponsorCommand extends StoppedCommand {
+public class SponsorCommand extends RunningCommand {
 
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
