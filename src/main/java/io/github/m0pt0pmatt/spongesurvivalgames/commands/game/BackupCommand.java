@@ -25,16 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
+import java.io.File;
+import java.util.Map;
+
+import org.bukkit.command.CommandSender;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * Command to backup to a file
@@ -46,6 +45,11 @@ public class BackupCommand extends GameCommand {
 
         if (!super.execute(sender, arguments)) {
             return false;
+        }
+        
+        if (!arguments.containsKey(CommandArgs.FILENAME)) {
+        	sender.sendMessage("You must define a filename!");
+        	return false;
         }
 
         String fileName = arguments.get(CommandArgs.FILENAME);

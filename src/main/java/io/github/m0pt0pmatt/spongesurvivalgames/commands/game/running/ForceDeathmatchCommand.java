@@ -25,11 +25,10 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-
-import java.util.Map;
 
 public class ForceDeathmatchCommand extends RunningCommand {
     @Override
