@@ -64,8 +64,9 @@ public class SpawnEntitySponsor implements Sponsor{
 			
 			//make sure the location we want to spawn is valid.
 			int attempts=0;
-			while(canSpawn(spawnLocation)== false && attempts < 20){
+			while(!canSpawn(spawnLocation) && attempts < 20){
 				spawnLocation.add(0, 1, 0);
+                attempts++;
 			}
 			if(attempts >= 20){
 				i--;
