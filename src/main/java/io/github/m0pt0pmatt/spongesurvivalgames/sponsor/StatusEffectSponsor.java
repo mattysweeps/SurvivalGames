@@ -46,7 +46,7 @@ public class StatusEffectSponsor implements Sponsor {
 
 	@Override
 	public void execute(Player player) {
-		player.sendMessage(effectMessage+this.type.toString().toLowerCase());
+		player.sendMessage(effectMessage+this.type.getName());
 		player.addPotionEffect(new PotionEffect(type, duration, amplifier));
 	}
 	

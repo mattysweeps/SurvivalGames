@@ -58,7 +58,6 @@ public class PlayerEventListener implements Listener {
                     game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
                 if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
                     //Death has occurred inside the game
-                    doDeathDisplay(player.getWorld(), player.getLocation());
                     game.getValue().reportDeath(player.getUniqueId());
 
                     player.setBedSpawnLocation(game.getValue().getExit().get(), true);
@@ -85,21 +84,4 @@ public class PlayerEventListener implements Listener {
             }
         }
     }
-
-    public void doDeathDisplay(World world, Location location) {
-        Firework firework = world.spawn(location, Firework.class);
-        FireworkMeta fm = firework.getFireworkMeta();
-        fm.addEffect(FireworkEffect.builder()
-                .flicker(false)
-                .withColor(Color.RED)
-                .trail(false)
-                .with(Type.BALL)
-                .with(Type.BALL_LARGE)
-                .with(Type.STAR)
-                .withFade(Color.RED)
-                .build());
-        fm.setPower(0);
-        firework.setFireworkMeta(fm);
-    }
-
 }

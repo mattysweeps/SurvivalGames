@@ -39,7 +39,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.Optional;
 
-public class SponsorCommand extends StoppedCommand {
+public class SponsorCommand extends RunningCommand {
 
     @Override
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
@@ -78,7 +78,7 @@ public class SponsorCommand extends StoppedCommand {
                 20L * 5
         );
 
-        Title.displayTitle(player, "You have been sponsored", "This is either good or bad", ChatColor.BLUE, ChatColor.BLUE, 0, 5);
+        Title.displayTitle(player, "You have been sponsored", "This is either good or bad", ChatColor.BLUE, ChatColor.BLUE, 20, 20);
         sender.sendMessage("Player " + playerName + " has been sponsored.");
         return true;
     }

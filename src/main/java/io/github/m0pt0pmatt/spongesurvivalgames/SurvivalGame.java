@@ -35,10 +35,15 @@ import java.util.UUID;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -266,6 +271,7 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null) {
+        	doDeathDisplay(player.getWorld(), player.getLocation());
             Bukkit.getScheduler().runTaskLater(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
@@ -286,6 +292,22 @@ public class SurvivalGame {
         executeTasks(checkWinTask);
     }
 
+    public void doDeathDisplay(World world, Location location) {
+        Firework firework = world.spawn(location, Firework.class);
+        FireworkMeta fm = firework.getFireworkMeta();
+        fm.addEffect(FireworkEffect.builder()
+                .flicker(false)
+                .withColor(Color.RED)
+                .trail(false)
+                .with(Type.BALL)
+                .with(Type.BALL_LARGE)
+                .with(Type.STAR)
+                .withFade(Color.RED)
+                .build());
+        fm.setPower(0);
+        firework.setFireworkMeta(fm);
+    }
+    
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
         if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
@@ -363,7 +385,7 @@ public class SurvivalGame {
         Optional<Vector> exit = config.getExit();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
-        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        World world = Bukkit.getServer().getWorld(config.getExitWorld().get());
         if (world == null) return Optional.empty();
 
         return Optional.of(new Location(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
