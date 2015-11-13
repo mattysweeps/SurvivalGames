@@ -385,7 +385,7 @@ public class SurvivalGame {
         Optional<Vector> exit = config.getExit();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
-        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        World world = Bukkit.getServer().getWorld(config.getExitWorld().get());
         if (world == null) return Optional.empty();
 
         return Optional.of(new Location(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
