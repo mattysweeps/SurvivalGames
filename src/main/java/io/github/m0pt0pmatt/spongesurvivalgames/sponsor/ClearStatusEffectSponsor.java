@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 public class ClearStatusEffectSponsor implements Sponsor{
-	private final String playerMessage = "Sponsor has cleared all of your status effects!";
 	@Override
 	public void execute(Player player) {
+		String playerMessage = "Sponsor has cleared all of your status effects!";
 		player.sendMessage(playerMessage);
 		
 		for(PotionEffect p : player.getActivePotionEffects()){

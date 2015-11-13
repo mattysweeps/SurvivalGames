@@ -37,11 +37,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class SpawnEntitySponsor implements Sponsor{
-	//radius of spawns will be distanceFromPlayer + donutRadius
-	private final int distanceFromPlayer = 5;//start the mobs at least 5 blocks away from the player
-	private final int donutRadius = 15;//and at most 20 blocks away from the player
-	
-	private final EntityType mobType;
+
+    private final EntityType mobType;
 	private final int numMobs;
 	
 	SpawnEntitySponsor(EntityType mobType, int numMobs){
@@ -53,7 +50,9 @@ public class SpawnEntitySponsor implements Sponsor{
 	public void execute(Player player) {
 		Random rGen = new Random();
 		for(int i=0; i<this.numMobs; i++){
-			int x = rGen.nextInt(donutRadius)+ distanceFromPlayer;
+            int distanceFromPlayer = 5;
+            int donutRadius = 15;
+            int x = rGen.nextInt(donutRadius)+ distanceFromPlayer;
 			x = rGen.nextInt(2) == 1 ? x * -1 : x;
 			
 			int z = rGen.nextInt(donutRadius)+ distanceFromPlayer;
