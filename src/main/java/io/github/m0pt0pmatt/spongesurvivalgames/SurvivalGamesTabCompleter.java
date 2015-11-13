@@ -53,38 +53,37 @@ class SurvivalGamesTabCompleter implements TabCompleter {
 
         SurvivalGamesCommand c = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(args, matches);
 
-        if (c == null){
+        if (c == null) {
             // Not a full command
             return filter(strings, matches);
-        }
-        else{
+        } else {
             // A full command
-            if (args.size() < 1){
+            if (args.size() < 1) {
                 return Collections.emptyList();
             }
 
             List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
-            if (args.size() > formalArgs.size()){
+            if (args.size() > formalArgs.size()) {
                 return Collections.emptyList();
             }
 
             CommandArgs formalArg = formalArgs.get(args.size() - 1);
-            switch (formalArg.getType()){
+            switch (formalArg.getType()) {
 
                 case ID:
-                    matches =  getIDs();
+                    matches = getIDs();
                     break;
                 case PLAYER:
-                    matches =  getPlayers();
+                    matches = getPlayers();
                     break;
                 case WORLD:
-                    matches =  getWorlds();
+                    matches = getWorlds();
                     break;
                 case FILE:
-                    matches =  getFiles();
+                    matches = getFiles();
                     break;
                 case SPONSOR:
-                    matches =  getSponsors();
+                    matches = getSponsors();
                     break;
                 case NONE:
                 default:
@@ -95,34 +94,34 @@ class SurvivalGamesTabCompleter implements TabCompleter {
         }
     }
 
-    private List<String> filter(String[] strings, List<String> matches){
+    private List<String> filter(String[] strings, List<String> matches) {
         List<String> list = matches.stream()
                 .map(String::toLowerCase)
                 .filter(string -> string.startsWith(strings[strings.length - 1]))
                 .collect(Collectors.toList());
-        if (list.size() == 1){
+        if (list.size() == 1) {
             return list.stream().map(s -> s + " ").collect(Collectors.toList());
         }
         return list;
     }
 
-    private List<String> getIDs(){
+    private List<String> getIDs() {
         return new ArrayList<>(BukkitSurvivalGamesPlugin.survivalGameMap.keySet());
     }
 
-    private List<String> getPlayers(){
+    private List<String> getPlayers() {
         return Bukkit.getOnlinePlayers().stream().map(OfflinePlayer::getName).collect(Collectors.toList());
     }
 
-    private List<String> getWorlds(){
+    private List<String> getWorlds() {
         return Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList());
     }
 
-    private List<String> getFiles(){
+    private List<String> getFiles() {
         return Arrays.asList(BukkitSurvivalGamesPlugin.plugin.getDataFolder().list());
     }
 
-    private List<String> getSponsors(){
+    private List<String> getSponsors() {
         return new ArrayList<>(Sponsors.listAll());
     }
 }

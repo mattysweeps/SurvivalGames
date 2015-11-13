@@ -43,8 +43,8 @@ import java.util.UUID;
 
 /**
  * Internal helper class to help keep together player information
- * @author Skyler
  *
+ * @author Skyler
  */
 public class PlayerRecord implements ConfigurationSerializable {
 

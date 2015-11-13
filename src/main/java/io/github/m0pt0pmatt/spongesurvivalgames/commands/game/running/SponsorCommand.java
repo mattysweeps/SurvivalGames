@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped.StoppedCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsor;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;

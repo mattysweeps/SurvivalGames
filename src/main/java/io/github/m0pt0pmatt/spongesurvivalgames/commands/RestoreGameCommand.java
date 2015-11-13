@@ -91,7 +91,7 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
             return true;
         }
 
-        if (backup == null){
+        if (backup == null) {
             sender.sendMessage("Load returned null");
             return true;
         }

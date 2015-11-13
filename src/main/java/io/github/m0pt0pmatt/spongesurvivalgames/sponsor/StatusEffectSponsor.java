@@ -31,23 +31,23 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class StatusEffectSponsor implements Sponsor {
-	
-	private static final String effectMessage = "A sponsor has given you ";
-	private final PotionEffectType type;
-	private final int duration;
-	private final int amplifier;
-	
-	public StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
-		super();
-		this.type = type;
-		this.duration = duration;
-		this.amplifier = amplifier;
-	}
 
-	@Override
-	public void execute(Player player) {
-		player.sendMessage(effectMessage+this.type.getName());
-		player.addPotionEffect(new PotionEffect(type, duration, amplifier));
-	}
-	
+    private static final String effectMessage = "A sponsor has given you ";
+    private final PotionEffectType type;
+    private final int duration;
+    private final int amplifier;
+
+    public StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
+        super();
+        this.type = type;
+        this.duration = duration;
+        this.amplifier = amplifier;
+    }
+
+    @Override
+    public void execute(Player player) {
+        player.sendMessage(effectMessage + this.type.getName());
+        player.addPotionEffect(new PotionEffect(type, duration, amplifier));
+    }
+
 }

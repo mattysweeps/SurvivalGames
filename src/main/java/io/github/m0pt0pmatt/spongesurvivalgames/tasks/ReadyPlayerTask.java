@@ -52,11 +52,11 @@ class ReadyPlayerTask implements SurvivalGameTask {
 
         return true;
     }
-    
+
     private void clearEquipment(Player player) {
-    	player.getInventory().setHelmet(null);
-    	player.getInventory().setChestplate(null);
-    	player.getInventory().setLeggings(null);
-    	player.getInventory().setBoots(null);
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
     }
 }

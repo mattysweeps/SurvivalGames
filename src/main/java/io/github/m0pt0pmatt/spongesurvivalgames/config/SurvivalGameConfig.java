@@ -54,11 +54,11 @@ public class SurvivalGameConfig {
     private Integer deathmatchTime;
     private final List<Vector> chests = new LinkedList<>();
 
-    public SurvivalGameConfig(){
+    public SurvivalGameConfig() {
 
     }
 
-    public SurvivalGameConfig(SurvivalGameConfig config){
+    public SurvivalGameConfig(SurvivalGameConfig config) {
         worldName = config.worldName;
         exitWorld = config.exitWorld;
         exit = config.exit;

@@ -25,7 +25,10 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Specialized Trie data structure
@@ -85,7 +88,7 @@ public class LoadedTrie<T, D> {
      */
     public D partialMatch(List<T> input, List<T> output) {
 
-        if (output == null){
+        if (output == null) {
             return null;
         }
 
@@ -106,7 +109,7 @@ public class LoadedTrie<T, D> {
             }
         }
 
-        if (current == null){
+        if (current == null) {
             return null;
         }
 

@@ -46,34 +46,35 @@ public final class CommandArgs {
     public static final CommandArgs DEATHMATCHTIME = new CommandArgs("[deathmatch-time]", ArgTypes.NONE);
     public static final CommandArgs SPONSOR = new CommandArgs("[sponsor]", ArgTypes.SPONSOR);
     public static final CommandArgs OVERWRITE = new CommandArgs("[overwrite]", ArgTypes.NONE);
-    
+
     private final String name;
     private final ArgTypes type;
-    private CommandArgs(String name, ArgTypes type){
+
+    private CommandArgs(String name, ArgTypes type) {
         this.name = name;
         this.type = type;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public ArgTypes getType(){
+
+    public ArgTypes getType() {
         return type;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return name.hashCode();
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return name.equals(o);
     }
 }
