@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
 import org.bukkit.command.CommandSender;
@@ -60,13 +59,13 @@ public class SetChestMidpointCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
+            game.setChestMidpoint(midpoint);
         } catch (NegativeNumberException e) {
             sender.sendMessage("Chest midpoint cannot be negative.");
             return false;
         }
 
-        sender.sendMessage("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
+        sender.sendMessage("Chest midpoint for game \"" + game.getID() + "\" set to " + midpoint + ".");
         return true;
     }
 }

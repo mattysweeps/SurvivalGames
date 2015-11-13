@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.command.CommandSender;
 
@@ -44,13 +43,13 @@ public class ReadyGameCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).ready();
+            game.ready();
         } catch (SurvivalGameException e) {
             sender.sendMessage(e.getDescription());
             return false;
         }
 
-        sender.sendMessage("Survival Game \"" + id + "\" is now set to READY.");
+        sender.sendMessage("Survival Game \"" + game.getID() + "\" is now set to READY.");
         return true;
     }
 }

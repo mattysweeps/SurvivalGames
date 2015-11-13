@@ -25,12 +25,10 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
@@ -59,13 +57,13 @@ public class RemovePlayerCommand extends ReadyCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removePlayer(player.getUniqueId());
+        game.removePlayer(player.getUniqueId());
 
-        Scoreboard board = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard();
+        Scoreboard board = game.getLobbyScoreboard();
         board.resetScores(player.getName());
         player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 
-        sender.sendMessage("Player \"" + playerName + "\" removed from survival game \"" + id + "\".");
+        sender.sendMessage("Player \"" + playerName + "\" removed from survival game \"" + game.getID() + "\".");
 
         return true;
     }

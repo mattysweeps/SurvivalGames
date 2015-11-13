@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import org.bukkit.block.Block;
@@ -93,13 +92,13 @@ public class SetExitCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName, x, y, z);
+            game.setExitLocation(worldName, x, y, z);
         } catch (NoWorldException e) {
             sender.sendMessage("No such world \"" + worldName + "\".");
             return false;
         }
 
-        sender.sendMessage("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
+        sender.sendMessage("Exit location for game \"" + game.getID() + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
         return true;
     }
 }

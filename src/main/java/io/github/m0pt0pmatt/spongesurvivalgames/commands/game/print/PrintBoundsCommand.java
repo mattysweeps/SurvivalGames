@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.command.CommandSender;
 
@@ -45,7 +43,6 @@ public class PrintBoundsCommand extends GameCommand {
             return false;
         }
 
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
         Optional<Integer> xMin = game.getXMin();
         Optional<Integer> xMax = game.getXMax();
         Optional<Integer> zMin = game.getZMin();
@@ -54,11 +51,11 @@ public class PrintBoundsCommand extends GameCommand {
         if (!xMin.isPresent() || !xMax.isPresent() ||
                 !zMin.isPresent() || !zMax.isPresent()) {
 
-            sender.sendMessage("Game \"" + id + "\" is missing at least one bound");
+            sender.sendMessage("Game \"" + game.getID() + "\" is missing at least one bound");
             return false;
         }
 
-        sender.sendMessage("Game: \"" + id + "\", xMin" + xMin + ", xMax" + xMax + ", zMin" + zMin + ", zMax:" + zMax);
+        sender.sendMessage("Game: \"" + game.getID() + "\", xMin" + xMin + ", xMax" + xMax + ", zMin" + zMin + ", zMax:" + zMax);
         return true;
     }
 }

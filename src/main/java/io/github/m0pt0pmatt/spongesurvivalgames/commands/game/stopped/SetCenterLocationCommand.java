@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldNameException;
@@ -82,7 +81,7 @@ public class SetCenterLocationCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCenterLocation(x, y, z);
+            game.setCenterLocation(x, y, z);
         } catch (NoWorldNameException e) {
             sender.sendMessage("No world set. Assign the world first.");
             return false;
@@ -91,7 +90,7 @@ public class SetCenterLocationCommand extends StoppedCommand {
             return false;
         }
 
-        sender.sendMessage("Center location for game \"" + id + "\" set.");
+        sender.sendMessage("Center location for game \"" + game.getID() + "\" set.");
         return true;
     }
 }

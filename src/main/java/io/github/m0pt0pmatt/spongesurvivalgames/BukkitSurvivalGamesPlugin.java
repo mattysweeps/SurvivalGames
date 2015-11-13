@@ -112,6 +112,10 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         registerCommands();
     }
 
+    public static SurvivalGame getGame(String id){
+        return survivalGameMap.get(id);
+    }
+
     /**
      * Helper function to get a set of players from their UUIDs
      *

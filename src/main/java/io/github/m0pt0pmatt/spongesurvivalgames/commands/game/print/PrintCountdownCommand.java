@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.command.CommandSender;
 
@@ -43,7 +42,7 @@ public class PrintCountdownCommand extends GameCommand {
             return false;
         }
 
-        sender.sendMessage("Game: \"" + id + "\", Countdown Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getCountdownTime() + "\".");
+        sender.sendMessage("Game: \"" + game.getID() + "\", Countdown Time: \"" + game.getCountdownTime() + "\".");
         return true;
     }
 }

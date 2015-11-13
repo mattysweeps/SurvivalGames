@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.command.CommandSender;
 
@@ -44,13 +43,13 @@ public class PrintPlayerLimitCommand extends GameCommand {
             return false;
         }
 
-        Optional<Integer> playerLimit = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getPlayerLimit();
+        Optional<Integer> playerLimit = game.getPlayerLimit();
         if (!playerLimit.isPresent()) {
-            sender.sendMessage("Game: \"" + id + "\", Has no player limit set yet.");
+            sender.sendMessage("Game: \"" + game.getID() + "\", Has no player limit set yet.");
             return false;
         }
 
-        sender.sendMessage("Game: \"" + id + "\", Player Limit: \"" + playerLimit.get() + "\".");
+        sender.sendMessage("Game: \"" + game.getID() + "\", Player Limit: \"" + playerLimit.get() + "\".");
         return true;
     }
 }

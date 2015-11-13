@@ -68,7 +68,7 @@ public class SponsorCommand extends StoppedCommand {
 
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
-            sender.sendMessage("Player \"" + playerName + "\" is not a valid player");
+            sender.sendMessage("Player \"" + playerName + "\" is not a valgame.getID() player");
             return false;
         }
 

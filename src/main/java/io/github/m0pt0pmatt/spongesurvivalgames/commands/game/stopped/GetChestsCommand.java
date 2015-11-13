@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -50,10 +48,8 @@ public class GetChestsCommand extends StoppedCommand {
             return false;
         }
 
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
-
         Optional<String> worldName = game.getWorldName();
-        if (!worldName.isPresent()){
+        if (!worldName.isPresent()) {
             sender.sendMessage("No worldname set!");
             return false;
         }
@@ -63,13 +59,13 @@ public class GetChestsCommand extends StoppedCommand {
         Optional<Integer> zmin = game.getConfig().getZMin();
         Optional<Integer> xmax = game.getConfig().getXMax();
         Optional<Integer> zmax = game.getConfig().getZMax();
-        if (!xmin.isPresent() || !zmin.isPresent() || !xmax.isPresent() || !zmax.isPresent()){
+        if (!xmin.isPresent() || !zmin.isPresent() || !xmax.isPresent() || !zmax.isPresent()) {
             sender.sendMessage(ChatColor.RED + "Bounds not set! Set the bounds first");
             return false;
         }
         if (!game.getConfig().getWorldName().isPresent()) {
-        	sender.sendMessage(ChatColor.RED + "The world name is not set. Please set the world name first.");
-        	return false;
+            sender.sendMessage(ChatColor.RED + "The world name is not set. Please set the world name first.");
+            return false;
         }
 
         game.getConfig().getChestLocations().clear();
@@ -86,9 +82,9 @@ public class GetChestsCommand extends StoppedCommand {
 
         List<Chest> chests = new LinkedList<>();
         int count = 0;
-        for (Chunk chunk: chunks) {
+        for (Chunk chunk : chunks) {
             for (BlockState e : chunk.getTileEntities()) {
-                if (e instanceof InventoryHolder){
+                if (e instanceof InventoryHolder) {
                     ((InventoryHolder) e).getInventory().clear();
                 }
                 if (e instanceof Chest) {

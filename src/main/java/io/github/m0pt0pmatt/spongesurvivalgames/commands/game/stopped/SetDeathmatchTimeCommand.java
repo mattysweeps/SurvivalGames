@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
 import org.bukkit.command.CommandSender;
@@ -55,13 +54,13 @@ public class SetDeathmatchTimeCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setDeathmatchTime(deathmatchTime);
+            game.setDeathmatchTime(deathmatchTime);
         } catch (NegativeNumberException e) {
             sender.sendMessage("Negative deathmatch times are not valid");
             return false;
         }
 
-        sender.sendMessage("Game \"" + id + "\" now has a deathmatch time of \"" + deathmatchTime + "\" seconds.");
+        sender.sendMessage("Game \"" + game.getID() + "\" now has a deathmatch time of \"" + deathmatchTime + "\" seconds.");
         return true;
     }
 }

@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import org.bukkit.command.CommandSender;
@@ -38,7 +39,7 @@ import java.util.Map;
  */
 public abstract class GameCommand extends SurvivalGamesCommand {
 
-    protected String id;
+    protected SurvivalGame game;
 
     public boolean execute(CommandSender sender, Map<String, String> arguments) {
 
@@ -47,9 +48,10 @@ public abstract class GameCommand extends SurvivalGamesCommand {
             return false;
         }
 
-        id = arguments.get(CommandArgs.ID);
+        String id = arguments.get(CommandArgs.ID);
+        game = BukkitSurvivalGamesPlugin.getGame(id);
 
-        if (!BukkitSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
+        if (game == null) {
             sender.sendMessage("No Survival Game has specified ID \"" + id + "\".");
             return false;
         }

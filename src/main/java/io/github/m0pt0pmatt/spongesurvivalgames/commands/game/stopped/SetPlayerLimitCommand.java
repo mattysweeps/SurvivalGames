@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import org.bukkit.command.CommandSender;
 
@@ -57,8 +56,8 @@ public class SetPlayerLimitCommand extends StoppedCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit);
-        sender.sendMessage("Player limit for game \"" + id + "\" set to " + playerLimit + ".");
+        game.setPlayerLimit(playerLimit);
+        sender.sendMessage("Player limit for game \"" + game.getID() + "\" set to " + playerLimit + ".");
         return true;
     }
 }

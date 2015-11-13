@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.command.CommandSender;
@@ -76,7 +75,7 @@ public class AddHeldLootCommand extends StoppedCommand {
 
         Loot loot = new Loot(item, weight);
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addLoot(loot);
+        game.addLoot(loot);
 
         return true;
     }

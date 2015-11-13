@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
 import org.bukkit.command.CommandSender;
@@ -59,13 +58,13 @@ public class SetCountdownCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setCountdownTime(countdownTime);
+            game.setCountdownTime(countdownTime);
         } catch (NegativeNumberException e) {
             sender.sendMessage("Negative countdown times are not valid");
             return false;
         }
 
-        sender.sendMessage("Game \"" + id + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
+        sender.sendMessage("Game \"" + game.getID() + "\" now has a countdown timer of \"" + countdownTime + "\" seconds.");
         return true;
     }
 }

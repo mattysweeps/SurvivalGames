@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import org.bukkit.command.CommandSender;
 
@@ -69,8 +68,8 @@ public class SetBoundsCommand extends StoppedCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setBounds(xMin, xMax, zMin, zMax);
-        sender.sendMessage("Bounds set for game \"" + id + "\".");
+        game.setBounds(xMin, xMax, zMin, zMax);
+        sender.sendMessage("Bounds set for game \"" + game.getID() + "\".");
 
         return true;
     }

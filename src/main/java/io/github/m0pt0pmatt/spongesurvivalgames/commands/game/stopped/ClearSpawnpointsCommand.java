@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -42,8 +41,8 @@ public class ClearSpawnpointsCommand extends StoppedCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).clearSpawnLocations();
-        sender.sendMessage("Spawn locations cleared for game \"" + id + "\".");
+        game.clearSpawnLocations();
+        sender.sendMessage("Spawn locations cleared for game \"" + game.getID() + "\".");
 
         return true;
     }

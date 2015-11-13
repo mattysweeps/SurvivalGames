@@ -25,18 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Command to backup to a file
@@ -49,38 +47,37 @@ public class BackupCommand extends GameCommand {
         if (!super.execute(sender, arguments)) {
             return false;
         }
-        
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
+
         String fileName = arguments.get(CommandArgs.FILENAME);
         File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
-        
+
         if (!backupsFolder.isDirectory()) {
-			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
-					+ "for backup folders!\nFile will be deleted!");
-			backupsFolder.delete();
-		}
-		
-		if (!backupsFolder.exists()) {
-			backupsFolder.mkdirs();
-		}
-        
-        File file = new File(backupsFolder, fileName);
-        
-        if (game == null) {
-        	sender.sendMessage(ChatColor.RED + "No game named " + id + " available!");
-        	return false;
+            BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
+                    + "for backup folders!\nFile will be deleted!");
+            backupsFolder.delete();
         }
-        
+
+        if (!backupsFolder.exists()) {
+            backupsFolder.mkdirs();
+        }
+
+        File file = new File(backupsFolder, fileName);
+
+        if (game == null) {
+            sender.sendMessage(ChatColor.RED + "No game named " + game.getID() + " available!");
+            return false;
+        }
+
         if (game.getState() != SurvivalGameState.RUNNING && game.getState() != SurvivalGameState.DEATHMATCH) {
-        	sender.sendMessage("You can only backup a game while it's running!");
-        	return false;
+            sender.sendMessage("You can only backup a game while it's running!");
+            return false;
         }
 
         if (!arguments.containsKey(CommandArgs.FILENAME)) {
             sender.sendMessage("No file name given.");
             return false;
         }
-        
+
         Backup backup = new Backup(game);
 
         try {

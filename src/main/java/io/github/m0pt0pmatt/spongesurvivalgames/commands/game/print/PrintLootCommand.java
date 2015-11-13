@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.command.CommandSender;
@@ -45,8 +44,8 @@ public class PrintLootCommand extends GameCommand {
             return false;
         }
 
-        List<Loot> loot = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLoot();
-        sender.sendMessage("Printing loot for game \"" + id + "\":");
+        List<Loot> loot = game.getLoot();
+        sender.sendMessage("Printing loot for game \"" + game.getID() + "\":");
         for (Loot l : loot) {
             sender.sendMessage("Item: " + l.getItem().toString() + ", Weight: " + l.getWeight());
         }

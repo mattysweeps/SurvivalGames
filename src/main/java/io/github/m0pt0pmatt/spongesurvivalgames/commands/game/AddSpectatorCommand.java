@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import org.bukkit.Bukkit;
@@ -45,10 +43,8 @@ public class AddSpectatorCommand extends GameCommand {
             return false;
         }
 
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
-
         if (game.getState().equals(SurvivalGameState.STOPPED)) {
-            sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
+            sender.sendMessage("Survival Game \"" + game.getID() + "\" cannot be in a STOPPED state for this command.");
             return false;
         }
 
@@ -64,14 +60,14 @@ public class AddSpectatorCommand extends GameCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpectator(player.getUniqueId());
+        game.addSpectator(player.getUniqueId());
 
         if (game.getState().equals(SurvivalGameState.RUNNING) || game.getState().equals(SurvivalGameState.DEATHMATCH)) {
             player.teleport(game.getCenter().get());
             player.setGameMode(GameMode.SPECTATOR);
         }
 
-        sender.sendMessage("Player \"" + player.getName() + "\" added as a spectator to game \"" + id + "\".");
+        sender.sendMessage("Player \"" + player.getName() + "\" added as a spectator to game \"" + game.getID() + "\".");
         return true;
     }
 }

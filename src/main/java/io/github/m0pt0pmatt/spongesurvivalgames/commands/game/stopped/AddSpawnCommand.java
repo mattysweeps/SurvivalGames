@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
@@ -80,7 +79,7 @@ public class AddSpawnCommand extends StoppedCommand {
         }
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x, y, z);
+            game.addSpawnLocation(x, y, z);
         } catch (WorldNotSetException e) {
             sender.sendMessage("No world set. Assign the world first.");
             return false;
@@ -88,7 +87,7 @@ public class AddSpawnCommand extends StoppedCommand {
             sender.sendMessage("World does not exist.");
             return false;
         }
-        sender.sendMessage("Spawn location added for game \"" + id + "\".");
+        sender.sendMessage("Spawn location added for game \"" + game.getID() + "\".");
 
         return true;
     }

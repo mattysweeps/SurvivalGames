@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
@@ -73,20 +72,20 @@ public class AddPlayerCommand extends ReadyCommand {
     private boolean addPlayer(CommandSender commandSender, Player player) {
 
         try {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.getUniqueId());
+            game.addPlayer(player.getUniqueId());
         } catch (NoPlayerLimitException e) {
-            commandSender.sendMessage("No player limit sey for game \"" + id + "\".");
+            commandSender.sendMessage("No player limit sey for game \"" + game.getID() + "\".");
             return false;
         } catch (PlayerLimitReachedException e) {
-            commandSender.sendMessage("Player limit reached for game \"" + id + "\".");
+            commandSender.sendMessage("Player limit reached for game \"" + game.getID() + "\".");
             return false;
         }
 
-        Scoreboard board = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getLobbyScoreboard();
+        Scoreboard board = game.getLobbyScoreboard();
         player.setScoreboard(board);
         board.getObjective(DisplaySlot.SIDEBAR).getScore(player.getName()).setScore(0);
 
-        commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + id + "\".");
+        commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + game.getID() + "\".");
         return true;
     }
 

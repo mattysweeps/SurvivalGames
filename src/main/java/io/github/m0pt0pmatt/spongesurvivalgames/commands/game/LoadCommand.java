@@ -78,15 +78,14 @@ public class LoadCommand extends GameCommand {
         }
 
         SurvivalGameConfig config;
-        if (BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig() == null) {
-            BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(new SurvivalGameConfig());
+        if (game.getConfig() == null) {
+            game.setConfig(new SurvivalGameConfig());
         }
 
-        config = BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getConfig();
+        config = game.getConfig();
 
         serializer.deserialize(config, yaml, overwrite);
 
-        //BukkitSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
         sender.sendMessage("Config file loaded");
         return true;
     }

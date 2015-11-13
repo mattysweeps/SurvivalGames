@@ -25,8 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import org.bukkit.Bukkit;
@@ -43,10 +41,8 @@ public class RemoveSpectatorCommand extends GameCommand {
             return false;
         }
 
-        SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
-
         if (game.getState().equals(SurvivalGameState.STOPPED)) {
-            sender.sendMessage("Survival Game \"" + id + "\" cannot be in a STOPPED state for this command.");
+            sender.sendMessage("Survival Game \"" + game.getID() + "\" cannot be in a STOPPED state for this command.");
             return false;
         }
 
@@ -62,8 +58,8 @@ public class RemoveSpectatorCommand extends GameCommand {
             return false;
         }
 
-        BukkitSurvivalGamesPlugin.survivalGameMap.get(id).removeSpectator(player.getUniqueId());
-        sender.sendMessage("Player \"" + playerName + "\" removed from spectating game \"" + id + "\".");
+        game.removeSpectator(player.getUniqueId());
+        sender.sendMessage("Player \"" + playerName + "\" removed from spectating game \"" + game.getID() + "\".");
         return true;
     }
 }

@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -40,7 +39,7 @@ public class PrintDeathmatchTimeCommand extends GameCommand {
             return false;
         }
 
-        Bukkit.getLogger().info("Game: \"" + id + "\", Deathmatch Time: \"" + BukkitSurvivalGamesPlugin.survivalGameMap.get(id).getDeathmatchTime() + "\".");
+        Bukkit.getLogger().info("Game: \"" + game.getID() + "\", Deathmatch Time: \"" + game.getDeathmatchTime() + "\".");
         return true;
     }
 }
