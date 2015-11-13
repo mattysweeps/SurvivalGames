@@ -347,22 +347,20 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
 		if (!backupsFolder.exists()) {
 			backupsFolder.mkdirs();
 		}
-        
-    	
-    	for (SurvivalGame game : survivalGameMap.values()) {
-    		if (game.getState() == SurvivalGameState.RUNNING || game.getState() == SurvivalGameState.DEATHMATCH) {
-    			getLogger().warning("Taking emergency backup of game: " + game.getID());
-    	        File file = new File(backupsFolder, "EBACKUP[" + game.getID() + "].yml");
-    	        
-    	        Backup backup = new Backup(game);
-    	        YamlConfiguration config = backup.asConfig();
-    	        try {
-    				config.save(file);
-    			} catch (IOException e) {
-    				getLogger().warning(ChatColor.RED + "Error encountered when saving backup!");
-    			}
-    		}
-    	}
+
+
+        survivalGameMap.values().stream().filter(game -> game.getState() == SurvivalGameState.RUNNING || game.getState() == SurvivalGameState.DEATHMATCH).forEach(game -> {
+            getLogger().warning("Taking emergency backup of game: " + game.getID());
+            File file = new File(backupsFolder, "EBACKUP[" + game.getID() + "].yml");
+
+            Backup backup = new Backup(game);
+            YamlConfiguration config = backup.asConfig();
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                getLogger().warning(ChatColor.RED + "Error encountered when saving backup!");
+            }
+        });
     }
 
 }
