@@ -49,7 +49,7 @@ import java.util.*;
  */
 public class SurvivalGame {
 
-    private static final int backupTime = 60 * 5; //make a backup every 5 minutes
+    public static final int backupTime = 60 * 5; //make a backup every 5 minutes
 
     private static final List<SurvivalGameTask> startTasks = Arrays.asList(
             Tasks.CREATE_CAGE,

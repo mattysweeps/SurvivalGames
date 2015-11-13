@@ -39,8 +39,8 @@ import java.util.Map;
  */
 public class Loot implements ConfigurationSerializable {
 
-    private ItemStack item;
-    private double weight;
+    private final ItemStack item;
+    private final double weight;
 
     private Loot() {
         this.weight = 0;

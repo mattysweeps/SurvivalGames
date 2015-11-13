@@ -50,14 +50,11 @@ public class Backup implements ConfigurationSerializable {
     }
 
 
-    private SurvivalGameConfig config;
+    private final SurvivalGameConfig config;
 
-    private SurvivalGameState gameState;
+    private final SurvivalGameState gameState;
 
     private final Map<UUID, PlayerRecord> players = new HashMap<>();
-
-    private Backup() {
-    }
 
     public Backup(SurvivalGame game) {
         this.gameState = game.getState();

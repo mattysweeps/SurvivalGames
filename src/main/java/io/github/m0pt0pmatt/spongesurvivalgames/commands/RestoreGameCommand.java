@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -102,7 +103,13 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
             return true;
         }
 
-        backup.restore(id);
+        SurvivalGame game = backup.restore(id);
+        if (game == null){
+            sender.sendMessage("Game was null!");
+            return true;
+        }
+
+        BukkitSurvivalGamesPlugin.survivalGameMap.put(id, game);
         sender.sendMessage("The game has been restored!");
         return true;
     }
