@@ -39,7 +39,7 @@ import java.util.Set;
 /**
  * Task for creating the player cage which surronds a player at the start of the match
  */
-public class CreateCageSnapshotsTask implements SurvivalGameTask {
+class CreateCageSnapshotsTask implements SurvivalGameTask {
 
     private static final Set<Vector> surroundingVectors = Sets.newHashSet(
             new Vector(1, 0, 0),

@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.Tasks;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ public class RefillChestsCommand extends RunningCommand {
         }
 
         SurvivalGame game = BukkitSurvivalGamesPlugin.survivalGameMap.get(id);
-        if (!new FillChestsTask().execute(game)){
+        if (!Tasks.FILL_CHESTS.execute(game)){
             sender.sendMessage("An error happened while trying to refill chests");
             return false;
         }

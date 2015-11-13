@@ -39,7 +39,7 @@ import java.util.UUID;
 /**
  * Task for counting down the starting time
  */
-public class CreateCountdownTask implements SurvivalGameTask {
+class CreateCountdownTask implements SurvivalGameTask {
 
     @Override
     public boolean execute(SurvivalGame game) {

@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
 /**
  * Task for resetting the players' food and health levels
  */
-public class ReadyPlayerTask implements SurvivalGameTask {
+class ReadyPlayerTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 

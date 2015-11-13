@@ -28,7 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 
-public class DespawnPlayersTask implements SurvivalGameTask {
+class DespawnPlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         if (game.getExit().isPresent()) {

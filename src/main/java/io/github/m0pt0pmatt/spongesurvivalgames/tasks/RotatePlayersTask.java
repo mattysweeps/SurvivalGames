@@ -35,7 +35,7 @@ import java.util.Optional;
 /**
  * Task for rotating the players towards the center location
  */
-public class RotatePlayersTask implements SurvivalGameTask {
+class RotatePlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 

@@ -29,7 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.GameMode;
 
-public class ReadySpectatorsTask implements SurvivalGameTask {
+class ReadySpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(s -> s.setGameMode(GameMode.SPECTATOR));

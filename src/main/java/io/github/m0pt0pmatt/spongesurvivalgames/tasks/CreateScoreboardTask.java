@@ -34,7 +34,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-public class CreateScoreboardTask implements SurvivalGameTask {
+class CreateScoreboardTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();

@@ -29,7 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-public class ClearWorldBorderTask implements SurvivalGameTask {
+class ClearWorldBorderTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 

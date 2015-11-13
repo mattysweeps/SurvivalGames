@@ -39,7 +39,7 @@ import java.util.Random;
 /**
  * Task for filling the chests with random loot
  */
-public class FillChestsTask implements SurvivalGameTask {
+class FillChestsTask implements SurvivalGameTask {
 
     @Override
     public boolean execute(SurvivalGame game) {

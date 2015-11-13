@@ -30,7 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-public class DeleteScoreboardTask implements SurvivalGameTask {
+class DeleteScoreboardTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();

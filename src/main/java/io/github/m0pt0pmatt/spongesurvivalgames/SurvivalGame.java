@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.tasks.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -70,24 +71,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CheckWinTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ClearWorldBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateCountdownTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateDeathmatchBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateScoreboardTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.CreateWorldBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DeleteScoreboardTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.DespawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.FillChestsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ReadyPlayerTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ReadySpectatorsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.ResetLootGeneratorTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.RotatePlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SpawnSpectatorsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.tasks.SurvivalGameTask;
 
 /**
  * represents a Survival Game.
@@ -97,37 +80,37 @@ public class SurvivalGame {
 	private static final int backupTime = 60 * 5; //make a backup every 5 minutes
 
     private static final List<SurvivalGameTask> startTasks = Arrays.asList(
-            new CreateCageSnapshotsTask(),
-            new SpawnPlayersTask(),
-            new RotatePlayersTask(),
-            new ReadyPlayerTask(),
-            new SpawnSpectatorsTask(),
-            new ReadySpectatorsTask(),
-            new CreateCountdownTask(),
-            new CreateScoreboardTask(),
-            new CreateWorldBorderTask()
+            Tasks.CREATE_CAGE,
+            Tasks.SPAWN_PLAYERS,
+            Tasks.ROTATE_PLAYERS,
+            Tasks.READY_PLAYERS,
+            Tasks.SPAWN_SPECTATORS,
+            Tasks.READY_SPECTATORS,
+            Tasks.CREATE_COUNTDOWN,
+            Tasks.CREATE_SCOREBOARD,
+            Tasks.CREATE_WORLD_BORDER
     );
     private static final List<SurvivalGameTask> readyTasks = Arrays.asList(
-            new ResetLootGeneratorTask(),
-            new FillChestsTask()
+            Tasks.RESET_LOOT_GENERATOR,
+            Tasks.FILL_CHESTS
     );
     private static final List<SurvivalGameTask> forceStopTasks = Arrays.asList(
-            new DespawnPlayersTask(),
-            new DeleteScoreboardTask(),
-            new ClearWorldBorderTask()
+            Tasks.DESPAWN_PLAYERS,
+            Tasks.CLEAR_SCOREBOARD,
+            Tasks.CLEAR_WORLD_BORDER
     );
     private static final List<SurvivalGameTask> stopTasks = Collections.singletonList(
-            new ClearPlayersTask()
+            Tasks.CLEAR_PLAYERS
     );
     private static final List<SurvivalGameTask> deathmatchTasks = Arrays.asList(
-            new CreateCageSnapshotsTask(),
-            new SpawnPlayersTask(),
-            new RotatePlayersTask(),
-            new CreateCountdownTask(),
-            new CreateDeathmatchBorderTask()
+            Tasks.CREATE_CAGE,
+            Tasks.SPAWN_PLAYERS,
+            Tasks.ROTATE_PLAYERS,
+            Tasks.CREATE_COUNTDOWN,
+            Tasks.CREATE_DEATHMATCH_BORDER
     );
     private static final List<SurvivalGameTask> checkWinTask = Collections.singletonList(
-            new CheckWinTask()
+            Tasks.CHECK_WIN
     );
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<UUID> spectatorUUIDs = new HashSet<>();

@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class CheckWinTask implements SurvivalGameTask {
+class CheckWinTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 

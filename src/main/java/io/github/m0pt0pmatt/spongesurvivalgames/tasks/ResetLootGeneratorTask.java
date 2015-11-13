@@ -2,7 +2,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 
-public class ResetLootGeneratorTask implements SurvivalGameTask {
+class ResetLootGeneratorTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         game.getLootGenerator().clearLoot();

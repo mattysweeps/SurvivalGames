@@ -30,7 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 
-public class CreateWorldBorderTask implements SurvivalGameTask {
+class CreateWorldBorderTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         World world = Bukkit.getWorld(game.getWorldName().get());
@@ -45,6 +45,7 @@ public class CreateWorldBorderTask implements SurvivalGameTask {
                 game.getXMax().get() - game.getXMin().get(),
                 game.getZMax().get() - game.getXMin().get()
         ));
+
 
         return true;
     }

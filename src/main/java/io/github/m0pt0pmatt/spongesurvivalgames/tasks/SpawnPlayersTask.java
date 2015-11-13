@@ -39,7 +39,7 @@ import java.util.Set;
 /**
  * Task for teleporting players
  */
-public class SpawnPlayersTask implements SurvivalGameTask {
+class SpawnPlayersTask implements SurvivalGameTask {
 
     @Override
     public boolean execute(SurvivalGame game) {

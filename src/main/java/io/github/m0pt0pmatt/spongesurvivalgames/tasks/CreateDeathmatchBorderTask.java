@@ -30,7 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 
-public class CreateDeathmatchBorderTask implements SurvivalGameTask {
+class CreateDeathmatchBorderTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 

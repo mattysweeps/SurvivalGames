@@ -30,7 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 /**
  * Task for clearing players from a game
  */
-public class ClearPlayersTask implements SurvivalGameTask {
+class ClearPlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         game.getPlayerUUIDs().clear();
