@@ -31,6 +31,7 @@ import org.bukkit.util.Vector;
 /**
  * Builder Pattern for SurvivalGameConfigs
  */
+@SuppressWarnings("UnusedReturnValue")
 public class SurvivalGameConfigBuilder {
 
     private final SurvivalGameConfig config;

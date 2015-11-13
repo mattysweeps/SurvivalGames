@@ -54,21 +54,21 @@ public class SurvivalGameConfigSerializer {
     @SuppressWarnings("unchecked")
     private void loadWithoutDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
 
-        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
-        builder.worldName(config.getString(Fields.WORLD.getKey(), null));
-        builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), null));
-        builder.exitLocation(config.getVector(Fields.EXIT.getKey(), null));
-        builder.centerLocation(config.getVector(Fields.CENTER.getKey(), null));
-        builder.playerLimit(config.contains(Fields.PLAYERLIMIT.getKey()) ? config.getInt(Fields.PLAYERLIMIT.getKey()) : null);
-        builder.countdownTime(config.contains(Fields.COUNTDOWNTIME.getKey()) ? config.getInt(Fields.COUNTDOWNTIME.getKey()) : null);
-        builder.xMin(config.contains(Fields.XMIN.getKey()) ? config.getInt(Fields.XMIN.getKey()) : null);
-        builder.xMax(config.contains(Fields.XMAX.getKey()) ? config.getInt(Fields.XMAX.getKey()) : null);
-        builder.zMin(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMIN.getKey()) : null);
-        builder.zMax(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMAX.getKey()) : null);
-        builder.deathmatchRadius(config.contains(Fields.DEATHMATCHRADIUS.getKey()) ? config.getInt(Fields.DEATHMATCHRADIUS.getKey()) : null);
-        builder.deathmatchTime(config.contains(Fields.DEATHMATCHTIME.getKey()) ? config.getInt(Fields.DEATHMATCHTIME.getKey()) : null);
-        builder.chestMidpoint(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_MIDPOINT.getKey()) : null);
-        builder.chestRange(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_RANGE.getKey()) : (Double) Fields.CHEST_RANGE.getDefault());
+        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig)
+        .worldName(config.getString(Fields.WORLD.getKey(), null))
+        .exitWorld(config.getString(Fields.EXITWORLD.getKey(), null))
+        .exitLocation(config.getVector(Fields.EXIT.getKey(), null))
+        .centerLocation(config.getVector(Fields.CENTER.getKey(), null))
+        .playerLimit(config.contains(Fields.PLAYERLIMIT.getKey()) ? config.getInt(Fields.PLAYERLIMIT.getKey()) : null)
+        .countdownTime(config.contains(Fields.COUNTDOWNTIME.getKey()) ? config.getInt(Fields.COUNTDOWNTIME.getKey()) : null)
+        .xMin(config.contains(Fields.XMIN.getKey()) ? config.getInt(Fields.XMIN.getKey()) : null)
+        .xMax(config.contains(Fields.XMAX.getKey()) ? config.getInt(Fields.XMAX.getKey()) : null)
+        .zMin(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMIN.getKey()) : null)
+        .zMax(config.contains(Fields.ZMIN.getKey()) ? config.getInt(Fields.ZMAX.getKey()) : null)
+        .deathmatchRadius(config.contains(Fields.DEATHMATCHRADIUS.getKey()) ? config.getInt(Fields.DEATHMATCHRADIUS.getKey()) : null)
+        .deathmatchTime(config.contains(Fields.DEATHMATCHTIME.getKey()) ? config.getInt(Fields.DEATHMATCHTIME.getKey()) : null)
+        .chestMidpoint(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_MIDPOINT.getKey()) : null)
+        .chestRange(config.contains(Fields.CHEST_MIDPOINT.getKey()) ? config.getDouble(Fields.CHEST_RANGE.getKey()) : (Double) Fields.CHEST_RANGE.getDefault());
 
         List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), new LinkedList<Vector>());
         if (!vectorList.isEmpty()) {
@@ -95,21 +95,21 @@ public class SurvivalGameConfigSerializer {
     @SuppressWarnings("unchecked")
     private void loadWithDefaults(SurvivalGameConfig baseConfig, ConfigurationSection config) {
 
-        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig);
-        builder.worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()));
-        builder.exitWorld(config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault()));
-        builder.exitLocation(config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault()));
-        builder.centerLocation(config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault()));
-        builder.playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()));
-        builder.countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()));
-        builder.xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()));
-        builder.xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()));
-        builder.zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()));
-        builder.zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()));
-        builder.deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()));
-        builder.deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()));
-        builder.chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()));
-        builder.chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
+        SurvivalGameConfigBuilder builder = new SurvivalGameConfigBuilder(baseConfig)
+        .worldName(config.getString(Fields.WORLD.getKey(), (String) Fields.WORLD.getDefault()))
+        .exitWorld(config.getString(Fields.EXITWORLD.getKey(), (String) Fields.EXITWORLD.getDefault()))
+        .exitLocation(config.getVector(Fields.EXIT.getKey(), (Vector) Fields.EXIT.getDefault()))
+        .centerLocation(config.getVector(Fields.CENTER.getKey(), (Vector) Fields.CENTER.getDefault()))
+        .playerLimit(config.getInt(Fields.PLAYERLIMIT.getKey(), (Integer) Fields.PLAYERLIMIT.getDefault()))
+        .countdownTime(config.getInt(Fields.COUNTDOWNTIME.getKey(), (Integer) Fields.COUNTDOWNTIME.getDefault()))
+        .xMin(config.getInt(Fields.XMIN.getKey(), (Integer) Fields.XMIN.getDefault()))
+        .xMax(config.getInt(Fields.XMAX.getKey(), (Integer) Fields.XMAX.getDefault()))
+        .zMin(config.getInt(Fields.ZMIN.getKey(), (Integer) Fields.ZMIN.getDefault()))
+        .zMax(config.getInt(Fields.ZMAX.getKey(), (Integer) Fields.ZMAX.getDefault()))
+        .deathmatchRadius(config.getInt(Fields.DEATHMATCHRADIUS.getKey(), (Integer) Fields.DEATHMATCHRADIUS.getDefault()))
+        .deathmatchTime(config.getInt(Fields.DEATHMATCHTIME.getKey(), (Integer) Fields.DEATHMATCHTIME.getDefault()))
+        .chestMidpoint(config.getDouble(Fields.CHEST_MIDPOINT.getKey(), (Double) Fields.CHEST_MIDPOINT.getDefault()))
+        .chestRange(config.getDouble(Fields.CHEST_RANGE.getKey(), (Double) Fields.CHEST_RANGE.getDefault()));
 
         List<Vector> vectorList = (List<Vector>) config.getList(Fields.SPAWNS.getKey(), (List<Vector>) Fields.SPAWNS.getDefault());
         if (!vectorList.isEmpty()) {
