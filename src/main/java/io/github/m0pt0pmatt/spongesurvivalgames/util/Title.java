@@ -36,8 +36,6 @@ import org.bukkit.entity.Player;
  */
 public final class Title {
 
-    private static final ChatColor defaultColor = ChatColor.DARK_GREEN;
-
     private static final int defaultTime = 10;
 
     private static final String playerToken = "[PLAYER]";

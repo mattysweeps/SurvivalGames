@@ -39,6 +39,7 @@ import java.util.Map;
 /**
  * Listener class for the plugin.
  */
+@SuppressWarnings("unused")
 public class PlayerEventListener implements Listener {
 
     @EventHandler
