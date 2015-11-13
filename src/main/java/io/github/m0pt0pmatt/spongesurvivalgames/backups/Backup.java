@@ -84,145 +84,7 @@ public class Backup implements ConfigurationSerializable {
         return map;
     }
     
-    /**
-     * Internal helper class to help keep together player information
-     * @author Skyler
-     *
-     */
-    public static class PlayerRecord implements ConfigurationSerializable {
-    	
-    	public static void registerAliases() {
-            //Register this serializable class with some aliases too
-            ConfigurationSerialization.registerClass(PlayerRecord.class);
-            ConfigurationSerialization.registerClass(PlayerRecord.class, "backup");
-            ConfigurationSerialization.registerClass(PlayerRecord.class, "BACKUP");
-        }
-    	
-        @SuppressWarnings("unchecked")
-		public static PlayerRecord valueOf(Map<String, Object> configMap) {
-        	
-        	UUID id = UUID.fromString((String) configMap.get("holderID"));
-        	Player player = Bukkit.getPlayer(id);
-        	
-        	if (player == null) {
-        		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
-        				"Unable to fetch player for restored inventory: " + id);
-        		return new PlayerRecord(null, null, 0, 0, null);
-        	}
-        	
-        	int index = 0;
-        	ItemStack[] inv = new ItemStack[36];
-        	for (Object o : (List<Object>) configMap.get("inventory")) {
-        		if (o == null) {
-        			inv[index] = null;
-        			index++;
-        			continue;
-        		}
-        		
-        		inv[index] = (ItemStack) o;
-        		index++;
-        	}
-        	
-        	ItemStack[] armor = new ItemStack[4];
-        	index = 0;
-        	for (Object o : (List<Object>) configMap.get("armor")) {
-        		if (o == null) {
-        			armor[index] = null;
-        			index++;
-        			continue;
-        		}
-        		
-        		armor[index] = (ItemStack) o;
-        		index++;
-        	}
-        	
-        	double health = (double) configMap.get("health"),
-        			maxHealth = (double) configMap.get("maxHealth");
-        	
-        	String worldName = (String) configMap.get("worldname");
-        	World world = Bukkit.getWorld(worldName);
-        	
-        	if (world == null) {
-        		BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
-        				"Unable to get world: " + worldName);
-        		return new PlayerRecord(null, null, 0, 0, null);        		
-        	}
-        	
-        	Vector offset = (Vector) configMap.get("pos");
-        	
-        	Location loc = new Location(world, offset.getX(), offset.getY(), offset.getZ());
-        	
-        	PlayerRecord record = new PlayerRecord(inv, armor, health, maxHealth, loc);
-            return record;
-        }
 
-        @Override
-        public Map<String, Object> serialize() {
-            Map<String, Object> map = new HashMap<>();
-            
-            map.put("inventory", Lists.newArrayList(inventory));
-            map.put("armor", Lists.newArrayList(armor));
-            map.put("holderID", id.toString());
-            map.put("health", playerHealth);
-            map.put("maxHealth", playerMaxHealth);
-            
-            map.put("worldname", location.getWorld().getName());
-            map.put("pos", new Vector(location.getX(), location.getY(), location.getZ()));
-
-            return map;
-        }
-    	
-        private UUID id;
-        
-    	private ItemStack[] inventory;
-    	
-    	private ItemStack[] armor;
-    	
-    	private double playerHealth;
-    	
-    	private double playerMaxHealth;
-    	
-    	private Location location;
-    	
-    	public PlayerRecord(Player player) {
-    		id = player.getUniqueId();
-    		inventory = player.getInventory().getContents();
-    		armor = player.getInventory().getArmorContents();
-    		playerHealth = player.getHealth();
-    		playerMaxHealth = player.getMaxHealth();
-    		location = player.getLocation();
-    	}
-    	
-    	public PlayerRecord(ItemStack[] inventory, ItemStack[] armor, double health, double maxHealth, Location location) {
-    		this.inventory = inventory;
-    		this.armor = armor;
-    		playerHealth = health;
-    		playerMaxHealth = maxHealth;
-    		this.location = location;
-    	}
-
-		public ItemStack[] getPlayerInventory() {
-			return inventory;
-		}
-		
-		public ItemStack[] getPlayerArmor() {
-			return armor;
-		}
-
-		public double getPlayerHealth() {
-			return playerHealth;
-		}
-
-		public double getPlayerMaxHealth() {
-			return playerMaxHealth;
-		}
-
-		public Location getLocation() {
-			return location;
-		}
-    	
-    	
-    }
     
     private SurvivalGameConfig config;
     
@@ -231,11 +93,11 @@ public class Backup implements ConfigurationSerializable {
     private Map<UUID, PlayerRecord> players;
     
     private Backup() {
-    	players = new HashMap<UUID, PlayerRecord>();
+    	players = new HashMap<>();
     }
     
     public Backup(SurvivalGame game) {
-    	players = new HashMap<UUID, PlayerRecord>();
+    	players = new HashMap<>();
     	this.gameState = game.getState();
     	this.config = game.getConfig();
     	
