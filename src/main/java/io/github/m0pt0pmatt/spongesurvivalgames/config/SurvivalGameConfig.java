@@ -54,6 +54,30 @@ public class SurvivalGameConfig {
     private Integer deathmatchTime;
     private final List<Vector> chests = new LinkedList<>();
 
+    public SurvivalGameConfig(){
+
+    }
+
+    public SurvivalGameConfig(SurvivalGameConfig config){
+        worldName = config.worldName;
+        exitWorld = config.exitWorld;
+        exit = config.exit;
+        center = config.center;
+        playerLimit = config.playerLimit;
+        countdownTime = config.countdownTime;
+        spawns.addAll(config.spawns);
+        chestMidpoint = config.chestMidpoint;
+        chestRange = config.chestRange;
+        loot.addAll(config.loot);
+        xMin = config.xMin;
+        xMax = config.xMax;
+        zMin = config.zMin;
+        zMax = config.zMax;
+        deathmatchRadius = config.deathmatchRadius;
+        deathmatchTime = config.deathmatchTime;
+        chests.addAll(config.chests);
+    }
+
     public Optional<String> getWorldName() {
         return worldName == null ? Optional.empty() : Optional.of(worldName);
     }

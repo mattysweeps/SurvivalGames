@@ -82,16 +82,14 @@ public class Backup implements ConfigurationSerializable {
     
     private SurvivalGameState gameState;
     
-    private Map<UUID, PlayerRecord> players;
-    
+    private final Map<UUID, PlayerRecord> players = new HashMap<>();
+
     private Backup() {
-    	players = new HashMap<>();
     }
-    
+
     public Backup(SurvivalGame game) {
-    	players = new HashMap<>();
     	this.gameState = game.getState();
-    	this.config = game.getConfig();
+    	this.config = new SurvivalGameConfig(game.getConfig());
     	
     	for (Player player : BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())) {
     		players.put(player.getUniqueId(), new PlayerRecord(player));
