@@ -55,10 +55,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
 
         if (c == null){
             // Not a full command
-            return matches.stream()
-                    .map(String::toLowerCase)
-                    .filter(string -> string.startsWith(strings[strings.length - 1]))
-                    .collect(Collectors.toList());
+            return filter(strings, matches);
         }
         else{
             // A full command
@@ -94,11 +91,19 @@ class SurvivalGamesTabCompleter implements TabCompleter {
                     return Collections.emptyList();
             }
 
-            return matches.stream()
-                    .map(String::toLowerCase)
-                    .filter(string -> string.startsWith(strings[strings.length - 1]))
-                    .collect(Collectors.toList());
+            return filter(strings, matches);
         }
+    }
+
+    private List<String> filter(String[] strings, List<String> matches){
+        List<String> list = matches.stream()
+                .map(String::toLowerCase)
+                .filter(string -> string.startsWith(strings[strings.length - 1]))
+                .collect(Collectors.toList());
+        if (list.size() == 1){
+            return list.stream().map(s -> s + " ").collect(Collectors.toList());
+        }
+        return list;
     }
 
     private List<String> getIDs(){
