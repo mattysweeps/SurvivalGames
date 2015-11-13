@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
@@ -24,11 +25,15 @@ public class BackupTaker extends BukkitRunnable {
 		if (!backups.isDirectory()) {
 			BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
 					+ "for backup folders!\nFile will be deleted!");
-			backups.delete();
+			if (!backups.delete()){
+				Bukkit.getLogger().warning("Unable to delete file: " + backups.getName());
+			}
 		}
 		
 		if (!backups.exists()) {
-			backups.mkdirs();
+			if (!backups.mkdirs()){
+				Bukkit.getLogger().warning("Unable to create backups directory");
+			}
 		}
 		
 		File outFile = new File(backups, 
@@ -40,13 +45,10 @@ public class BackupTaker extends BukkitRunnable {
 	}
 	
 	private SurvivalGame game;
-	
-	private int ticks;
-	
+
 	public BackupTaker(SurvivalGame game, int secondsTillBackup) {
 		this.game = game;
-		ticks = Math.round(secondsTillBackup * ticksPerSecond);
-		
+		int ticks = Math.round(secondsTillBackup * ticksPerSecond);
 		this.runTaskTimer(BukkitSurvivalGamesPlugin.plugin, ticks, ticks);
 	}
 	

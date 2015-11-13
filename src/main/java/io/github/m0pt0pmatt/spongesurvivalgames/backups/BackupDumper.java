@@ -37,8 +37,8 @@ public class BackupDumper extends BukkitRunnable {
 	/**
 	 * Schedules the backup to be written to file.<br />
 	 * This does not run on the main thread, and instead runs async.
-	 * @param backup
-	 * @param outFile
+	 * @param backup The backup object
+	 * @param outFile The file to dump the backup to
 	 */
 	public static void dumpBackup(Backup backup, File outFile) {
 		new BackupDumper(backup.asConfig(), outFile);

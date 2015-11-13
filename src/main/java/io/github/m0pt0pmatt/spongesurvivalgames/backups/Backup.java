@@ -3,30 +3,22 @@ package io.github.m0pt0pmatt.spongesurvivalgames.backups;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
-import com.google.common.collect.Lists;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
 
 /**
  * A backup of a game.
@@ -109,12 +101,14 @@ public class Backup implements ConfigurationSerializable {
     /**
      * Saves the output to the provided file.<br />
      * <b>Will erase the file if it already exists before writing</b>
-     * @param outputFile
+     * @param outputFile The output file
      * @throws IOException
      */
     public void save(File outputFile) throws IOException {
     	if (outputFile.exists()) {
-    		outputFile.delete();
+    		if (!outputFile.delete()){
+				Bukkit.getLogger().warning("Unable to delete file: " + outputFile.getName());
+			}
     	}
     	
     	BackupDumper.dumpBackup(this, outputFile);
@@ -125,9 +119,14 @@ public class Backup implements ConfigurationSerializable {
     	
     	config.load(inputFile);
     	
-    	Backup backup = (Backup) config.get("backup");
-    	
-    	return backup;
+    	Object backup = config.get("backup");
+    	if (backup instanceof Backup){
+			return (Backup) backup;
+		}
+		else{
+			Bukkit.getLogger().warning("Bad backup file: " + inputFile.getName());
+			return null;
+		}
     }
     
     /**
@@ -166,14 +165,9 @@ public class Backup implements ConfigurationSerializable {
     		
     		try {
 				game.addPlayer(playerID);
-			} catch (NoPlayerLimitException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (PlayerLimitReachedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (SurvivalGameException e) {
+				Bukkit.getLogger().warning(e.getDescription());
 			}
-    	
     	}
     	
     	return game;
