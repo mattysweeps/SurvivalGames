@@ -260,7 +260,7 @@ public class SurvivalGame {
         executeTasks(checkWinTask);
     }
 
-    public void doDeathDisplay(World world, Location location) {
+    private void doDeathDisplay(World world, Location location) {
         Firework firework = world.spawn(location, Firework.class);
         FireworkMeta fm = firework.getFireworkMeta();
         fm.addEffect(FireworkEffect.builder()

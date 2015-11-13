@@ -55,10 +55,6 @@ public final class CommandArgs {
         this.type = type;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public ArgTypes getType() {
         return type;
     }
@@ -75,6 +71,6 @@ public final class CommandArgs {
 
     @Override
     public boolean equals(Object o) {
-        return name.equals(o);
+        return (o instanceof String || o instanceof CommandArgs) && name.equals(o);
     }
 }

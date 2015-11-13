@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
@@ -38,7 +39,7 @@ import java.util.Set;
 public class PrintSpawnsCommand extends GameCommand {
 
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

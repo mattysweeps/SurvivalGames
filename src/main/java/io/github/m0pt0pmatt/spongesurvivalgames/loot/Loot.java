@@ -60,20 +60,6 @@ public class Loot implements ConfigurationSerializable {
     }
 
     /**
-     * Uses the passed configuration map to instantiate a new piece of loot.
-     *
-     * @param configMap The config map
-     * @return The loot object
-     */
-    public static Loot valueOf(Map<String, Object> configMap) {
-        Loot loot = new Loot();
-        loot.weight = (double) configMap.get("weight");
-        loot.item = (ItemStack) configMap.get("item");
-
-        return loot;
-    }
-
-    /**
      * Serializes the wrapped loot information to a format that's able to be saved to a configuration file.
      */
     @Override

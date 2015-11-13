@@ -41,7 +41,7 @@ public abstract class GameCommand extends SurvivalGamesCommand {
 
     protected SurvivalGame game;
 
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!arguments.containsKey(CommandArgs.ID)) {
             sender.sendMessage("Survival Game ID is not present.");

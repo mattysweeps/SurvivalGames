@@ -56,42 +56,42 @@ class SurvivalGamesTabCompleter implements TabCompleter {
         if (c == null) {
             // Not a full command
             return filter(strings, matches);
-        } else {
-            // A full command
-            if (args.size() < 1) {
-                return Collections.emptyList();
-            }
-
-            List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
-            if (args.size() > formalArgs.size()) {
-                return Collections.emptyList();
-            }
-
-            CommandArgs formalArg = formalArgs.get(args.size() - 1);
-            switch (formalArg.getType()) {
-
-                case ID:
-                    matches = getIDs();
-                    break;
-                case PLAYER:
-                    matches = getPlayers();
-                    break;
-                case WORLD:
-                    matches = getWorlds();
-                    break;
-                case FILE:
-                    matches = getFiles();
-                    break;
-                case SPONSOR:
-                    matches = getSponsors();
-                    break;
-                case NONE:
-                default:
-                    return Collections.emptyList();
-            }
-
-            return filter(strings, matches);
         }
+
+        // A full command
+        if (args.size() < 1) {
+            return Collections.emptyList();
+        }
+
+        List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
+        if (args.size() > formalArgs.size()) {
+            return Collections.emptyList();
+        }
+
+        CommandArgs formalArg = formalArgs.get(args.size() - 1);
+        switch (formalArg.getType()) {
+
+            case ID:
+                matches = getIDs();
+                break;
+            case PLAYER:
+                matches = getPlayers();
+                break;
+            case WORLD:
+                matches = getWorlds();
+                break;
+            case FILE:
+                matches = getFiles();
+                break;
+            case SPONSOR:
+                matches = getSponsors();
+                break;
+            case NONE:
+            default:
+                return Collections.emptyList();
+        }
+
+        return filter(strings, matches);
     }
 
     private List<String> filter(String[] strings, List<String> matches) {

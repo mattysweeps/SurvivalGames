@@ -40,7 +40,7 @@ import java.util.Map;
 public class BackupCommand extends GameCommand {
 
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;
@@ -55,13 +55,19 @@ public class BackupCommand extends GameCommand {
         File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
 
         if (!backupsFolder.isDirectory()) {
-            BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Found file named 'Backup', but need name "
+            sender.sendMessage("Found file named 'Backup', but need name "
                     + "for backup folders!\nFile will be deleted!");
-            backupsFolder.delete();
+            if (!backupsFolder.delete()){
+                sender.sendMessage("Unable to delete backup file!");
+                return false;
+            }
         }
 
         if (!backupsFolder.exists()) {
-            backupsFolder.mkdirs();
+            if (!backupsFolder.mkdirs()){
+                BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Unable to make backups directory!");
+                return false;
+            }
         }
 
         File file = new File(backupsFolder, fileName);

@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public abstract class SurvivalGamesCommand {
 
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (sender == null) {
             Bukkit.getLogger().warning("CommandSender was null");

@@ -60,10 +60,6 @@ public final class Title {
             "title " + playerToken + " title {text:\"" + titleToken + "\",color:\"" + titleColorToken + "\"}"
     };
 
-    public static void displayTitle(Player player, String titleText, String subtitleText) {
-        displayTitle(player, titleText, subtitleText, defaultColor, defaultColor);
-    }
-
     public static void displayTitle(Player player, String titleText, String subtitleText, ChatColor titleColor, ChatColor subtitleColor) {
         displayTitle(player, titleText, subtitleText, titleColor, subtitleColor, defaultTime, defaultTime);
     }

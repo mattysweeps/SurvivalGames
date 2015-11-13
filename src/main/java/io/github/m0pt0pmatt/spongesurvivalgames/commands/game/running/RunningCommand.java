@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import org.bukkit.command.CommandSender;
 
@@ -37,7 +38,7 @@ import java.util.Map;
 public abstract class RunningCommand extends GameCommand {
 
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

@@ -43,8 +43,9 @@ public class AddPlayerCommand extends ReadyCommand {
 
     private static final String allKeyword = "@a";
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

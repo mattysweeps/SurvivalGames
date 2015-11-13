@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
 import org.bukkit.command.CommandSender;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 public class StopGameCommand extends ReadyCommand {
 
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

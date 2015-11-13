@@ -34,32 +34,6 @@ public class Backup implements ConfigurationSerializable {
         PlayerRecord.registerAliases();
     }
 
-    @SuppressWarnings("unchecked")
-    public static Backup valueOf(Map<String, Object> configMap) {
-        Backup backup = new Backup();
-
-        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
-        YamlConfiguration section = new YamlConfiguration();
-        section.createSection("config", (HashMap<String, Object>) configMap.get("config"));
-        SurvivalGameConfig config = new SurvivalGameConfig();
-
-        serializer.deserialize(config, section.getConfigurationSection("config"), true);
-        backup.config = config;
-
-        backup.gameState = SurvivalGameState.valueOf((String) configMap.get("state"));
-
-        for (String key : configMap.keySet()) {
-            if (!key.startsWith("player-")) {
-                continue;
-            }
-
-            backup.players.put(UUID.fromString(key.substring(7)), //start at 7 to get rid of player-
-                    (PlayerRecord) configMap.get(key));
-        }
-
-        return backup;
-    }
-
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

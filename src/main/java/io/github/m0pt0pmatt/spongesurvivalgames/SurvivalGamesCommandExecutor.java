@@ -55,7 +55,7 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
         }
 
         //Gather arguments
-        Map<String, String> argumentMap = new HashMap<>();
+        Map<CommandArgs, String> argumentMap = new HashMap<>();
         List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
         if (formalArgs == null) {
             formalArgs = new LinkedList<>();
@@ -72,7 +72,7 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
         }
 
         for (int i = 0; i < args.size() && i < formalArgs.size(); i++) {
-            argumentMap.put(formalArgs.get(i).getName(), args.get(i));
+            argumentMap.put(formalArgs.get(i), args.get(i));
         }
 
         if (!c.execute(commandSender, argumentMap)) {

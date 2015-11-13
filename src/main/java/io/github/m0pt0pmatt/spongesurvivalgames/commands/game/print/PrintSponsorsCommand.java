@@ -25,6 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,7 @@ import java.util.Map;
 public class PrintSponsorsCommand extends SurvivalGamesCommand {
 
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

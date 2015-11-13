@@ -55,63 +55,6 @@ public class PlayerRecord implements ConfigurationSerializable {
         ConfigurationSerialization.registerClass(PlayerRecord.class, "BACKUP");
     }
 
-    @SuppressWarnings("unchecked")
-    public static PlayerRecord valueOf(Map<String, Object> configMap) {
-
-        UUID id = UUID.fromString((String) configMap.get("holderID"));
-        Player player = Bukkit.getPlayer(id);
-
-        if (player == null) {
-            BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
-                    "Unable to fetch player for restored inventory: " + id);
-            return new PlayerRecord(null, null, 0, 0, null);
-        }
-
-        int index = 0;
-        ItemStack[] inv = new ItemStack[36];
-        for (Object o : (List<Object>) configMap.get("inventory")) {
-            if (o == null) {
-                inv[index] = null;
-                index++;
-                continue;
-            }
-
-            inv[index] = (ItemStack) o;
-            index++;
-        }
-
-        ItemStack[] armor = new ItemStack[4];
-        index = 0;
-        for (Object o : (List<Object>) configMap.get("armor")) {
-            if (o == null) {
-                armor[index] = null;
-                index++;
-                continue;
-            }
-
-            armor[index] = (ItemStack) o;
-            index++;
-        }
-
-        double health = (double) configMap.get("health"),
-                maxHealth = (double) configMap.get("maxHealth");
-
-        String worldName = (String) configMap.get("worldname");
-        World world = Bukkit.getWorld(worldName);
-
-        if (world == null) {
-            BukkitSurvivalGamesPlugin.plugin.getLogger().warning(
-                    "Unable to get world: " + worldName);
-            return new PlayerRecord(null, null, 0, 0, null);
-        }
-
-        Vector offset = (Vector) configMap.get("pos");
-
-        Location loc = new Location(world, offset.getX(), offset.getY(), offset.getZ());
-
-        return new PlayerRecord(inv, armor, health, maxHealth, loc);
-    }
-
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

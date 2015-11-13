@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class RemoveSpectatorCommand extends GameCommand {
     @Override
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         if (!super.execute(sender, arguments)) {
             return false;

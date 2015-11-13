@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public class ListGamesCommand extends SurvivalGamesCommand {
 
-    public boolean execute(CommandSender sender, Map<String, String> arguments) {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
         sender.sendMessage("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
         for (Map.Entry<String, SurvivalGame> entry : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
