@@ -25,10 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Specialized Trie data structure
@@ -47,7 +44,7 @@ public class LoadedTrie<T, D> {
      * @param list The new branch to be added
      * @param data The data to store at the end of the branch
      */
-    public void add(T[] list, T[] leftovers, D data) {
+    public void add(T[] list, D data) {
         if (list == null) return;
 
         Node current = first;
@@ -60,80 +57,67 @@ public class LoadedTrie<T, D> {
         }
 
         current.data = data;
-        current.leftovers = leftovers;
     }
 
-    public void add(T[] list, D data) {
-        add(list, null, data);
-    }
+    public D match(List<T> input) {
 
-    public LoadedTrieReturn<T, D> match(T[] input) {
-
-        LoadedTrieReturn<T, D> trieReturn = new LoadedTrieReturn<>();
-
-        if (input == null) return trieReturn;
+        if (input == null) return null;
 
         Node current = first;
-        int i;
 
         //Traverse the trie while we get true matches
-        for (i = 0; i < input.length; i++) {
-            if (current.children.containsKey(input[i])) {
-                current = current.children.get(input[i]);
-                trieReturn.matched.add(input[i]);
+        for (Iterator<T> i = input.iterator(); i.hasNext(); i.remove()) {
+            T data = i.next();
+            if (current.children.containsKey(data)) {
+                current = current.children.get(data);
             } else {
                 break;
             }
         }
 
-        if (current == null || current.data == null) return trieReturn;
+        if (current == null || current.data == null) return null;
 
-        //Collect leftovers
-        for (int j = 0; i < input.length && j < current.leftovers.length; i++, j++) {
-            trieReturn.leftoverMap.put(current.leftovers[j], input[i]);
-        }
-
-        trieReturn.data = current.data;
-        trieReturn.leftovers = current.leftovers;
-        return trieReturn;
+        return current.data;
     }
 
     /**
      * Returns all the possible immediate suffixes available after following a branch
-     *
-     * @param list the input sequence for traversing the trie
-     * @return List of the next Ts for the given input
      */
-    public List<T> partialMatch(T[] list) {
-        List<T> output = new LinkedList<>();
+    public D partialMatch(List<T> input, List<T> output) {
 
-        if (list == null || list.length < 1) {
+        if (output == null){
+            return null;
+        }
+
+        if (input == null || input.size() < 1) {
             output.addAll(first.children.keySet());
-            return output;
+            return null;
         }
 
         Node current = first;
 
         //Traverse the trie while we get true matches
-        for (T t : list) {
-            if (current.children.containsKey(t)) {
-                current = current.children.get(t);
+        for (Iterator<T> i = input.iterator(); i.hasNext(); i.remove()) {
+            T data = i.next();
+            if (current.children.containsKey(data)) {
+                current = current.children.get(data);
             } else {
                 break;
             }
         }
 
-        if (current != null) {
-            output.addAll(current.children.keySet());
+        if (current == null){
+            return null;
         }
 
-        return output;
+        output.addAll(current.children.keySet());
+        return current.data;
+
     }
 
     private class Node {
         final Map<T, Node> children = new HashMap<>();
         D data = null;
-        T[] leftovers = null;
     }
 
 }

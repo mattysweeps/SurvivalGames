@@ -25,11 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrieReturn;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Command Executor for the plugin
@@ -39,25 +42,51 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = strings[i].toLowerCase();
-        }
 
-        LoadedTrieReturn<String, SurvivalGamesCommand> trieReturn = BukkitSurvivalGamesPlugin.commandTrie.match(strings);
+        List<String> args = new ArrayList<>(strings.length);
+        Collections.addAll(args, strings);
+        args = args.parallelStream().map(String::toLowerCase).collect(Collectors.toList());
 
-        if (trieReturn.data == null) {
+        //Gather command
+        SurvivalGamesCommand c = BukkitSurvivalGamesPlugin.commandTrie.match(args);
+        if (c == null) {
             commandSender.sendMessage("No command found");
             return false;
         }
 
-        if (!trieReturn.data.execute(commandSender, trieReturn.leftoverMap)) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Usage: /ssg");
-            trieReturn.matched.forEach(string -> builder.append(" ").append(string));
-            for (String string : trieReturn.leftovers) builder.append(" ").append(string);
-            commandSender.sendMessage(builder.toString());
+        //Gather arguments
+        Map<String, String> argumentMap = new HashMap<>();
+        List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
+        if (formalArgs == null) {
+            formalArgs = new LinkedList<>();
+        }
+
+        if (args.size() > formalArgs.size()){
+            commandSender.sendMessage("Too many arguments");
+            sendUsageMessage(commandSender, formalArgs);
+            return true;
+        }
+        else if (args.size() < formalArgs.size()){
+            commandSender.sendMessage("Not enough arguments");
+            sendUsageMessage(commandSender, formalArgs);
+            return true;
+        }
+
+        for (int i = 0; i < args.size() && i < formalArgs.size(); i++){
+            argumentMap.put(formalArgs.get(i).getName(), args.get(i));
+        }
+
+        if (!c.execute(commandSender, argumentMap)) {
+            sendUsageMessage(commandSender, formalArgs);
         }
 
         return true;
+    }
+
+    private void sendUsageMessage(CommandSender commandSender, List<CommandArgs> formalArgs) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Usage: /ssg");
+        formalArgs.stream().map(a -> " " + a).forEach(builder::append);
+        commandSender.sendMessage(builder.toString());
     }
 }

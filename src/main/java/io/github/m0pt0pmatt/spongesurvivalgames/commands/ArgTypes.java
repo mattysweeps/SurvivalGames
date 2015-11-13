@@ -25,5 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-public class ArgTypes {
+public enum ArgTypes {
+    ID,
+    PLAYER,
+    WORLD,
+    FILE,
+    SPONSOR,
+    NONE
 }

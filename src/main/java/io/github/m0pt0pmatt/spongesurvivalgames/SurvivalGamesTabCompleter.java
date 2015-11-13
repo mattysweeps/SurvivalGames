@@ -25,13 +25,17 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,22 +45,79 @@ class SurvivalGamesTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = strings[i].toLowerCase();
+        List<String> args = new ArrayList<>(strings.length);
+        Collections.addAll(args, strings);
+        args = args.parallelStream().map(String::toLowerCase).collect(Collectors.toList());
+
+        List<String> matches = new LinkedList<>();
+
+        SurvivalGamesCommand c = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(args, matches);
+
+        if (c == null){
+            // Not a full command
+            return matches.stream()
+                    .map(String::toLowerCase)
+                    .filter(string -> string.startsWith(strings[strings.length - 1]))
+                    .collect(Collectors.toList());
         }
+        else{
+            // A full command
+            if (args.size() < 1){
+                return Collections.emptyList();
+            }
 
-        List<String> list = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(strings);
-        if (list == null) return new LinkedList<>();
-        List<String> lowerCase = new ArrayList<>(list.size());
-        list.forEach(st -> lowerCase.add(st.toLowerCase()));
+            List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
+            if (args.size() > formalArgs.size()){
+                return Collections.emptyList();
+            }
 
-        if (strings[strings.length - 1].length() == 0) {
-            return lowerCase;
+            CommandArgs formalArg = formalArgs.get(args.size() - 1);
+            switch (formalArg.getType()){
+
+                case ID:
+                    matches =  getIDs();
+                    break;
+                case PLAYER:
+                    matches =  getPlayers();
+                    break;
+                case WORLD:
+                    matches =  getWorlds();
+                    break;
+                case FILE:
+                    matches =  getFiles();
+                    break;
+                case SPONSOR:
+                    matches =  getSponsors();
+                    break;
+                case NONE:
+                default:
+                    return Collections.emptyList();
+            }
+
+            return matches.stream()
+                    .map(String::toLowerCase)
+                    .filter(string -> string.startsWith(strings[strings.length - 1]))
+                    .collect(Collectors.toList());
         }
+    }
 
-        return lowerCase.stream()
-                .filter(string -> string.startsWith(strings[strings.length - 1]))
-                .map(string -> string + " ")
-                .collect(Collectors.toList());
+    private List<String> getIDs(){
+        return new ArrayList<>(BukkitSurvivalGamesPlugin.survivalGameMap.keySet());
+    }
+
+    private List<String> getPlayers(){
+        return Bukkit.getOnlinePlayers().stream().map(OfflinePlayer::getName).collect(Collectors.toList());
+    }
+
+    private List<String> getWorlds(){
+        return Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList());
+    }
+
+    private List<String> getFiles(){
+        return Arrays.asList(BukkitSurvivalGamesPlugin.plugin.getDataFolder().list());
+    }
+
+    private List<String> getSponsors(){
+        return new ArrayList<>(Sponsors.listAll());
     }
 }
