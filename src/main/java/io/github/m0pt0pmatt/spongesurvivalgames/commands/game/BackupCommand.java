@@ -63,11 +63,6 @@ public class BackupCommand extends GameCommand {
 
         File file = new File(backupsFolder, fileName);
 
-        if (game == null) {
-            sender.sendMessage(ChatColor.RED + "No game named " + game.getID() + " available!");
-            return false;
-        }
-
         if (game.getState() != SurvivalGameState.RUNNING && game.getState() != SurvivalGameState.DEATHMATCH) {
             sender.sendMessage("You can only backup a game while it's running!");
             return false;

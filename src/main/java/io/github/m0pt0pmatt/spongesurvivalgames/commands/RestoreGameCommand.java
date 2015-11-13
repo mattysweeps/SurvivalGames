@@ -91,9 +91,13 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
             return true;
         }
 
+        if (backup == null){
+            sender.sendMessage("Load returned null");
+            return true;
+        }
+
         backup.restore(id);
         sender.sendMessage("The game has been restored!");
-
         return true;
     }
 }
