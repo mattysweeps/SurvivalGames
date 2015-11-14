@@ -50,10 +50,9 @@ public class PlayerEventListener implements Listener {
         for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
             if (game.getValue().getState().equals(SurvivalGameState.RUNNING) ||
                     game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
-                if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
+                if (game.getValue().getPlayerUUIDs().contains(player.getUniqueId())) {
                     //Death has occurred inside the game
                     game.getValue().reportDeath(player.getUniqueId());
-
                     player.setBedSpawnLocation(game.getValue().getExit().get(), true);
                     return;
                 }
@@ -68,7 +67,7 @@ public class PlayerEventListener implements Listener {
         Player player = event.getPlayer();
 
         for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            if (game.getValue().getWorldName().get().equals(player.getLocation().getWorld().getName())) {
+            if (game.getValue().getPlayerUUIDs().contains(player.getUniqueId())) {
                 //Player has quit in the middle of a match
                 game.getValue().reportDeath(player.getUniqueId());
                 return;
