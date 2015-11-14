@@ -61,16 +61,6 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
             formalArgs = new LinkedList<>();
         }
 
-        if (args.size() > formalArgs.size()) {
-            commandSender.sendMessage("Too many arguments");
-            sendUsageMessage(commandSender, formalArgs);
-            return true;
-        } else if (args.size() < formalArgs.size()) {
-            commandSender.sendMessage("Not enough arguments");
-            sendUsageMessage(commandSender, formalArgs);
-            return true;
-        }
-
         for (int i = 0; i < args.size() && i < formalArgs.size(); i++) {
             argumentMap.put(formalArgs.get(i), args.get(i));
         }
