@@ -51,12 +51,66 @@ import java.util.UUID;
  */
 public class Backup implements ConfigurationSerializable {
 
+    private SurvivalGameConfig config;
+    private SurvivalGameState gameState;
+    private final Map<UUID, PlayerRecord> players = new HashMap<>();
+
+    private Backup() {
+    }
+
+    public Backup(SurvivalGame game) {
+        this.gameState = game.getState();
+        this.config = new SurvivalGameConfig(game.getConfig());
+
+        for (Player player : BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())) {
+            players.put(player.getUniqueId(), new PlayerRecord(player));
+        }
+    }
+
     public static void registerAliases() {
         //Register this serializable class with some aliases too
         ConfigurationSerialization.registerClass(Backup.class);
         ConfigurationSerialization.registerClass(Backup.class, "backup");
         ConfigurationSerialization.registerClass(Backup.class, "BACKUP");
         PlayerRecord.registerAliases();
+    }
+
+    public static Backup load(File inputFile) throws IOException, InvalidConfigurationException {
+        YamlConfiguration config = new YamlConfiguration();
+
+        config.load(inputFile);
+
+        Object backup = config.get("backup");
+        if (backup instanceof Backup) {
+            return (Backup) backup;
+        } else {
+            Bukkit.getLogger().warning("Bad backup file: " + inputFile.getName());
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Backup valueOf(Map<String, Object> configMap) {
+        Backup backup = new Backup();
+        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+        YamlConfiguration section = new YamlConfiguration();
+        section.createSection("config", (HashMap<String, Object>) configMap.get("config"));
+        SurvivalGameConfig config = new SurvivalGameConfig();
+
+        serializer.deserialize(config, section.getConfigurationSection("config"), true);
+        backup.config = config;
+        backup.gameState = SurvivalGameState.valueOf((String) configMap.get("state"));
+
+        for (String key : configMap.keySet()) {
+            if (!key.startsWith("player-")) {
+                continue;
+            }
+
+            backup.players.put(UUID.fromString(key.substring(7)), //start at 7 to get rid of player-
+                    (PlayerRecord) configMap.get(key));
+        }
+
+        return backup;
     }
 
     @Override
@@ -74,22 +128,6 @@ public class Backup implements ConfigurationSerializable {
         return map;
     }
 
-
-    private final SurvivalGameConfig config;
-
-    private final SurvivalGameState gameState;
-
-    private final Map<UUID, PlayerRecord> players = new HashMap<>();
-
-    public Backup(SurvivalGame game) {
-        this.gameState = game.getState();
-        this.config = new SurvivalGameConfig(game.getConfig());
-
-        for (Player player : BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())) {
-            players.put(player.getUniqueId(), new PlayerRecord(player));
-        }
-    }
-
     /**
      * Saves the output to the provided file.<br />
      * <b>Will erase the file if it already exists before writing</b>
@@ -104,20 +142,6 @@ public class Backup implements ConfigurationSerializable {
         }
 
         BackupDumper.dumpBackup(this, outputFile);
-    }
-
-    public static Backup load(File inputFile) throws IOException, InvalidConfigurationException {
-        YamlConfiguration config = new YamlConfiguration();
-
-        config.load(inputFile);
-
-        Object backup = config.get("backup");
-        if (backup instanceof Backup) {
-            return (Backup) backup;
-        } else {
-            Bukkit.getLogger().warning("Bad backup file: " + inputFile.getName());
-            return null;
-        }
     }
 
     /**

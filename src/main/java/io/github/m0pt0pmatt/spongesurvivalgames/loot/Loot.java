@@ -39,8 +39,8 @@ import java.util.Map;
  */
 public class Loot implements ConfigurationSerializable {
 
-    private final ItemStack item;
-    private final double weight;
+    private ItemStack item;
+    private double weight;
 
     private Loot() {
         this.weight = 0;
@@ -70,6 +70,20 @@ public class Loot implements ConfigurationSerializable {
         map.put("item", item);
 
         return map;
+    }
+
+    /**
+     * Uses the passed configuration map to instantiate a new piece of loot.
+     *
+     * @param configMap The config map
+     * @return The loot object
+     */
+    public static Loot valueOf(Map<String, Object> configMap) {
+        Loot loot = new Loot();
+        loot.weight = (double) configMap.get("weight");
+        loot.item = (ItemStack) configMap.get("item");
+
+        return loot;
     }
 
     public ItemStack getItem() {
