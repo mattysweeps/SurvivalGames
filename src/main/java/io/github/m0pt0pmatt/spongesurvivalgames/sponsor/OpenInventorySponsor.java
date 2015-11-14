@@ -33,6 +33,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class OpenInventorySponsor implements Sponsor {
@@ -46,9 +47,26 @@ public class OpenInventorySponsor implements Sponsor {
 
     @Override
     public void execute(Player player) {
-        Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
-        items.forEach(inventory::addItem);
-        player.openInventory(inventory);
+
+        List<ItemStack> copyList = new ArrayList<>(items);
+        int originalSize = copyList.size();
+
+        for (Iterator<ItemStack> i = copyList.iterator(); i.hasNext(); i.remove()){
+            if (player.getInventory().firstEmpty() != -1){
+                player.getInventory().all(i.next());
+            }
+        }
+
+        if (originalSize > copyList.size()){
+            player.sendMessage("Items were put in your inventory!");
+        }
+
+        if (copyList.size() > 0){
+            Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
+            items.forEach(inventory::addItem);
+            player.openInventory(inventory);
+        }
+
         player.playSound(player.getLocation(), Sound.LEVEL_UP, (float) 1.0, (float) 1.75);
     }
 }
