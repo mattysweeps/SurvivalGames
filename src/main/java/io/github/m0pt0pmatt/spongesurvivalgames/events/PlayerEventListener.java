@@ -26,16 +26,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.events;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.Map;
 
 /**
  * Listener class for the plugin.
@@ -47,43 +45,42 @@ public class PlayerEventListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
-        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
-                game -> {
-                    if (game.getState().equals(SurvivalGameState.RUNNING) ||
-                            game.getState().equals(SurvivalGameState.DEATHMATCH)) {
-                        if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
-                            //Death has occurred inside the game
-                            game.reportDeath(player.getUniqueId());
-                            player.setBedSpawnLocation(game.getExit().get(), true);
-                        }
-                    }
-                }
-        );
+        BukkitSurvivalGamesPlugin.survivalGameMap.values()
+                .parallelStream()
+                .filter( g -> g.getState().equals(SurvivalGameState.RUNNING) || g.getState().equals(SurvivalGameState.DEATHMATCH))
+                .filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
+                .forEach(g -> {
+                    g.reportDeath(player.getUniqueId());
+                    player.setBedSpawnLocation(g.getExit().get(), true);
+                });
     }
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
-                game -> {
-                    if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
-                        //Player has quit in the middle of a match
-                        game.reportDeath(player.getUniqueId());
-                    }
-                }
-        );
+        BukkitSurvivalGamesPlugin.survivalGameMap.values()
+                .parallelStream()
+                .filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
+                .forEach(g -> g.reportDeath(player.getUniqueId()));
     }
 
+    @EventHandler
     public void onPlayerUseBed(PlayerBedEnterEvent event){
 
         Player player = event.getPlayer();
-        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
-                game -> {
-                    if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
-                        event.setCancelled(true);
-                    }
-                }
-        );
+        if (BukkitSurvivalGamesPlugin.survivalGameMap.values()
+                .parallelStream()
+                .filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
+                .count() > 0) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void event(PlayerKickEvent event){
+        Player player = event.getPlayer();
+        BukkitSurvivalGamesPlugin.survivalGameMap.values()
+                .parallelStream()
+                .filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
+                .forEach(g -> g.reportDeath(player.getUniqueId()));
     }
 }
