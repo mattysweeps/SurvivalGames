@@ -37,22 +37,22 @@ import java.util.*;
 public class SurvivalGameConfig {
 
     private String worldName;
-    private String exitWorld;
-    private Vector exit;
-    private Vector center;
-    private Integer playerLimit;
-    private Integer countdownTime;
-    private final Set<Vector> spawns = new HashSet<>();
-    private Double chestMidpoint;
-    private Double chestRange;
-    private final List<Loot> loot = new ArrayList<>();
     private Integer xMin;
     private Integer xMax;
     private Integer zMin;
     private Integer zMax;
+    private String exitWorld;
+    private Vector exitVector;
+    private Vector centerVector;
+    private Integer playerLimit;
+    private Integer countdownTime;
+    private Double chestMidpoint;
+    private Double chestRange;
     private Integer deathmatchRadius;
     private Integer deathmatchTime;
-    private final List<Vector> chests = new LinkedList<>();
+    private final Set<Vector> spawns = new HashSet<>();
+    private final Set<Loot> loot = new HashSet<>();
+    private final Set<Vector> chests = new HashSet<>();
 
     public SurvivalGameConfig() {
 
@@ -60,21 +60,21 @@ public class SurvivalGameConfig {
 
     public SurvivalGameConfig(SurvivalGameConfig config) {
         worldName = config.worldName;
-        exitWorld = config.exitWorld;
-        exit = config.exit;
-        center = config.center;
-        playerLimit = config.playerLimit;
-        countdownTime = config.countdownTime;
-        spawns.addAll(config.spawns);
-        chestMidpoint = config.chestMidpoint;
-        chestRange = config.chestRange;
-        loot.addAll(config.loot);
         xMin = config.xMin;
         xMax = config.xMax;
         zMin = config.zMin;
         zMax = config.zMax;
+        exitWorld = config.exitWorld;
+        exitVector = config.exitVector;
+        centerVector = config.centerVector;
+        playerLimit = config.playerLimit;
+        countdownTime = config.countdownTime;
+        chestMidpoint = config.chestMidpoint;
+        chestRange = config.chestRange;
         deathmatchRadius = config.deathmatchRadius;
         deathmatchTime = config.deathmatchTime;
+        spawns.addAll(config.spawns);
+        loot.addAll(config.loot);
         chests.addAll(config.chests);
     }
 
@@ -84,70 +84,6 @@ public class SurvivalGameConfig {
 
     public void setWorldName(String worldName) {
         this.worldName = worldName;
-    }
-
-    public Optional<String> getExitWorld() {
-        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
-    }
-
-    public void setExitWorld(String exitWorld) {
-        this.exitWorld = exitWorld;
-    }
-
-    public Optional<Vector> getExit() {
-        return exit == null ? Optional.empty() : Optional.of(exit);
-    }
-
-    public void setExit(Vector exit) {
-        this.exit = exit;
-    }
-
-    public Optional<Vector> getCenter() {
-        return center == null ? Optional.empty() : Optional.of(center);
-    }
-
-    public void setCenter(Vector center) {
-        this.center = center;
-    }
-
-    public Optional<Integer> getPlayerLimit() {
-        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
-    }
-
-    public void setPlayerLimit(Integer playerLimit) {
-        this.playerLimit = playerLimit;
-    }
-
-    public Optional<Integer> getCountdownTime() {
-        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
-    }
-
-    public void setCountdownTime(Integer countdownTime) {
-        this.countdownTime = countdownTime;
-    }
-
-    public Set<Vector> getSpawns() {
-        return spawns;
-    }
-
-    public Optional<Double> getChestMidpoint() {
-        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
-    }
-
-    public void setChestMidpoint(Double chestMidpoint) {
-        this.chestMidpoint = chestMidpoint;
-    }
-
-    public Optional<Double> getChestRange() {
-        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
-    }
-
-    public void setChestRange(Double chestRange) {
-        this.chestRange = chestRange;
-    }
-
-    public List<Loot> getLoot() {
-        return loot;
     }
 
     public Optional<Integer> getXMin() {
@@ -182,6 +118,62 @@ public class SurvivalGameConfig {
         this.zMax = zMax;
     }
 
+    public Optional<String> getExitWorld() {
+        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
+    }
+
+    public void setExitWorld(String exitWorld) {
+        this.exitWorld = exitWorld;
+    }
+
+    public Optional<Vector> getExitVector() {
+        return exitVector == null ? Optional.empty() : Optional.of(exitVector);
+    }
+
+    public void setExitVector(Vector exitVector) {
+        this.exitVector = exitVector;
+    }
+
+    public Optional<Vector> getCenterVector() {
+        return centerVector == null ? Optional.empty() : Optional.of(centerVector);
+    }
+
+    public void setCenterVector(Vector centerVector) {
+        this.centerVector = centerVector;
+    }
+
+    public Optional<Integer> getPlayerLimit() {
+        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
+    }
+
+    public void setPlayerLimit(Integer playerLimit) {
+        this.playerLimit = playerLimit;
+    }
+
+    public Optional<Integer> getCountdownTime() {
+        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
+    }
+
+    public void setCountdownTime(Integer countdownTime) {
+        this.countdownTime = countdownTime;
+    }
+
+    public Optional<Double> getChestMidpoint() {
+        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
+    }
+
+    public void setChestMidpoint(Double chestMidpoint) {
+        this.chestMidpoint = chestMidpoint;
+    }
+
+    public Optional<Double> getChestRange() {
+        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
+    }
+
+    public void setChestRange(Double chestRange) {
+        this.chestRange = chestRange;
+    }
+
     public Optional<Integer> getDeathmatchRadius() {
         return deathmatchRadius == null ? Optional.empty() : Optional.of(deathmatchRadius);
     }
@@ -198,7 +190,15 @@ public class SurvivalGameConfig {
         this.deathmatchTime = deathmatchTime;
     }
 
-    public List<Vector> getChestLocations() {
+    public Set<Vector> getSpawns() {
+        return spawns;
+    }
+
+    public Set<Loot> getLoot() {
+        return loot;
+    }
+
+    public Set<Vector> getChestLocations() {
         return chests;
     }
 }

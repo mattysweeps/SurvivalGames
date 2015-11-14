@@ -84,50 +84,22 @@ public class SurvivalGame {
     private static final List<SurvivalGameTask> checkWinTask = Collections.singletonList(
             Tasks.CHECK_WIN
     );
-    private final Set<UUID> playerUUIDs = new HashSet<>();
-    private final Set<UUID> spectatorUUIDs = new HashSet<>();
+
+    private final String id;
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
+    private final Set<UUID> playerUUIDs = new HashSet<>();
+    private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private final LootGenerator lootGenerator = new LootGenerator();
-    private final Scoreboard playersScoreboard;
     private boolean chestsFilled = false;
+    private final Scoreboard playersScoreboard;
     private BackupTaker backupTaker;
-    private final String id;
 
     public SurvivalGame(String id) {
         this.id = id;
         playersScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = playersScoreboard.registerNewObjective("lobby", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-
-    public Scoreboard getLobbyScoreboard() {
-        return playersScoreboard;
-    }
-
-    public SurvivalGameState getState() {
-        return state;
-    }
-
-    /**
-     * Sets the game's state.<br />
-     * This method is <b>not for conventional use!</b><br />
-     * To advance the game's state, us the {@link #start()}, {@link #ready()}, and {@link #stop()} commands!<br />
-     * This method does nothing to make certain that the state is valid given the parameters of the game,
-     * perform any of the tasks that usually come with moving through the states, or anything else.<br />
-     * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup Backups}
-     * only!
-     */
-    public void setState(SurvivalGameState state) {
-        this.state = state;
-    }
-
-    public LootGenerator getLootGenerator() {
-        return lootGenerator;
-    }
-
-    public String getID() {
-        return id;
     }
 
     public void ready() throws SurvivalGameException {
@@ -137,12 +109,12 @@ public class SurvivalGame {
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
-        if (!config.getExit().isPresent()) throw new NoExitLocationException();
+        if (!config.getExitVector().isPresent()) throw new NoExitLocationException();
         if (!config.getXMin().isPresent()) throw new NoBoundsException();
         if (!config.getXMax().isPresent()) throw new NoBoundsException();
         if (!config.getZMin().isPresent()) throw new NoBoundsException();
         if (!config.getZMax().isPresent()) throw new NoBoundsException();
-        if (!config.getCenter().isPresent()) throw new NoCenterException();
+        if (!config.getCenterVector().isPresent()) throw new NoCenterException();
         if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
         if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
         if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
@@ -280,6 +252,53 @@ public class SurvivalGame {
         firework.setFireworkMeta(fm);
     }
 
+    public void setTakeBackups(boolean backups) {
+        if (backups && (state == SurvivalGameState.RUNNING || state == SurvivalGameState.DEATHMATCH)) {
+            if (backupTaker == null) {
+                backupTaker = new BackupTaker(this);
+            }
+            return;
+        }
+
+        if (!backups && backupTaker != null) {
+            backupTaker.cancel();
+            backupTaker = null;
+        }
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public SurvivalGameState getState() {
+        return state;
+    }
+
+    /**
+     * Sets the game's state.<br />
+     * This method is <b>not for conventional use!</b><br />
+     * To advance the game's state, us the {@link #start()}, {@link #ready()}, and {@link #stop()} commands!<br />
+     * This method does nothing to make certain that the state is valid given the parameters of the game,
+     * perform any of the tasks that usually come with moving through the states, or anything else.<br />
+     * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backups.Backup Backups}
+     * only!
+     */
+    public void setState(SurvivalGameState state) {
+        this.state = state;
+    }
+
+    public SurvivalGameConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(SurvivalGameConfig config) {
+        this.config = config;
+    }
+
+    public Set<UUID> getPlayerUUIDs() {
+        return playerUUIDs;
+    }
+
     public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
         if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
         if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
@@ -292,24 +311,32 @@ public class SurvivalGame {
         playerUUIDs.remove(player);
     }
 
-    public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
-        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
-
-        config.setCenter(new Vector(x, y, z));
+    public Set<UUID> getSpectatorUUIDs() {
+        return spectatorUUIDs;
     }
 
-    public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
-        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
-
-        config.getSpawns().add(new Vector(x, y, z));
+    public void addSpectator(UUID player) {
+        spectatorUUIDs.add(player);
     }
 
-    public void clearSpawnLocations() {
-        config.getSpawns().clear();
+    public void removeSpectator(UUID player) {
+        spectatorUUIDs.remove(player);
+    }
+
+    public LootGenerator getLootGenerator() {
+        return lootGenerator;
+    }
+
+    public void setChestsFilled() {
+        this.chestsFilled = true;
+    }
+
+    public Scoreboard getLobbyScoreboard() {
+        return playersScoreboard;
+    }
+
+    public Optional<String> getWorldName() {
+        return config.getWorldName();
     }
 
     public void setWorld(String worldName) throws NoWorldException {
@@ -319,16 +346,49 @@ public class SurvivalGame {
         config.setWorldName(world.getName());
     }
 
+    public Optional<Integer> getXMin() {
+        return config.getXMin();
+    }
+
+    public Optional<Integer> getXMax() {
+        return config.getXMax();
+    }
+
+    public Optional<Integer> getZMin() {
+        return config.getZMin();
+    }
+
+    public Optional<Integer> getZMax() {
+        return config.getZMax();
+    }
+
+    public void setBounds(int xMin, int xMax, int zMin, int zMax) {
+        config.setXMin(Math.min(xMin, xMax));
+        config.setXMax(Math.max(xMin, xMax));
+        config.setZMin(Math.min(zMin, zMax));
+        config.setZMax(Math.max(zMin, zMax));
+    }
+
+    public Optional<Location> getExit() {
+        Optional<Vector> exit = config.getExitVector();
+        if (!exit.isPresent()) return Optional.empty();
+        if (!config.getWorldName().isPresent()) return Optional.empty();
+        World world = Bukkit.getServer().getWorld(config.getExitWorld().get());
+        if (world == null) return Optional.empty();
+
+        return Optional.of(new Location(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
+    }
+
     public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
         if (world == null) throw new NoWorldException(worldName);
 
-        config.setExit(new Vector(x, y, z));
+        config.setExitVector(new Vector(x, y, z));
         config.setExitWorld(worldName);
     }
 
     public Optional<Location> getCenter() {
-        Optional<Vector> center = config.getCenter();
+        Optional<Vector> center = config.getCenterVector();
         if (!center.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
@@ -337,8 +397,12 @@ public class SurvivalGame {
         return Optional.of(new Location(world, center.get().getX(), center.get().getY(), center.get().getZ()));
     }
 
-    public Set<Vector> getSpawns() {
-        return config.getSpawns();
+    public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
+        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
+        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
+
+        config.setCenterVector(new Vector(x, y, z));
     }
 
     public Optional<Integer> getPlayerLimit() {
@@ -349,20 +413,6 @@ public class SurvivalGame {
         config.setPlayerLimit(playerLimit);
     }
 
-    public Optional<String> getWorldName() {
-        return config.getWorldName();
-    }
-
-    public Optional<Location> getExit() {
-        Optional<Vector> exit = config.getExit();
-        if (!exit.isPresent()) return Optional.empty();
-        if (!config.getWorldName().isPresent()) return Optional.empty();
-        World world = Bukkit.getServer().getWorld(config.getExitWorld().get());
-        if (world == null) return Optional.empty();
-
-        return Optional.of(new Location(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
-    }
-
     public Optional<Integer> getCountdownTime() {
         return config.getCountdownTime();
     }
@@ -370,18 +420,6 @@ public class SurvivalGame {
     public void setCountdownTime(int countdownTime) throws NegativeNumberException {
         if (countdownTime < 0) throw new NegativeNumberException();
         config.setCountdownTime(countdownTime);
-    }
-
-    public Set<UUID> getPlayerUUIDs() {
-        return playerUUIDs;
-    }
-
-    public SurvivalGameConfig getConfig() {
-        return config;
-    }
-
-    public void setConfig(SurvivalGameConfig config) {
-        this.config = config;
     }
 
     public Optional<Double> getChestMidpoint() {
@@ -402,37 +440,6 @@ public class SurvivalGame {
         config.setChestRange(chestRange);
     }
 
-    public void setBounds(int xMin, int xMax, int zMin, int zMax) {
-        config.setXMin(Math.min(xMin, xMax));
-        config.setXMax(Math.max(xMin, xMax));
-        config.setZMin(Math.min(zMin, zMax));
-        config.setZMax(Math.max(zMin, zMax));
-    }
-
-    public Optional<Integer> getXMin() {
-        return config.getXMin();
-    }
-
-    public Optional<Integer> getXMax() {
-        return config.getXMax();
-    }
-
-    public Optional<Integer> getZMin() {
-        return config.getZMin();
-    }
-
-    public Optional<Integer> getZMax() {
-        return config.getZMax();
-    }
-
-    public List<Loot> getLoot() {
-        return config.getLoot();
-    }
-
-    public void addLoot(Loot loot) {
-        if (loot != null) config.getLoot().add(loot);
-    }
-
     public Optional<Integer> getDeathmatchRadius() {
         return config.getDeathmatchRadius();
     }
@@ -451,33 +458,28 @@ public class SurvivalGame {
         config.setDeathmatchTime(deathmatchTime);
     }
 
-    public void setChestsFilled() {
-        this.chestsFilled = true;
+    public Set<Vector> getSpawns() {
+        return config.getSpawns();
     }
 
-    public void addSpectator(UUID player) {
-        spectatorUUIDs.add(player);
+    public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
+        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
+        World world = Bukkit.getServer().getWorld(config.getWorldName().get());
+        if (world == null) throw new NoWorldException(config.getWorldName().get());
+
+        config.getSpawns().add(new Vector(x, y, z));
     }
 
-    public void removeSpectator(UUID player) {
-        spectatorUUIDs.remove(player);
+    public void clearSpawnLocations() {
+        config.getSpawns().clear();
     }
 
-    public Set<UUID> getSpectatorUUIDs() {
-        return spectatorUUIDs;
+    public Set<Loot> getLoot() {
+        return config.getLoot();
     }
 
-    public void setTakeBackups(boolean backups) {
-        if (backups && (state == SurvivalGameState.RUNNING || state == SurvivalGameState.DEATHMATCH)) {
-            if (backupTaker == null) {
-                backupTaker = new BackupTaker(this);
-            }
-            return;
-        }
-
-        if (!backups && backupTaker != null) {
-            backupTaker.cancel();
-            backupTaker = null;
-        }
+    public void addLoot(Loot loot) {
+        if (loot != null) config.getLoot().add(loot);
     }
+
 }

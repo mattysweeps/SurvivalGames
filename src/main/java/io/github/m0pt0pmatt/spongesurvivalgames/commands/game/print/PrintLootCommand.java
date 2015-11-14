@@ -30,8 +30,8 @@ import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.command.CommandSender;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Command to print the loot of a game
@@ -45,7 +45,7 @@ public class PrintLootCommand extends GameCommand {
             return false;
         }
 
-        List<Loot> loot = game.getLoot();
+        Set<Loot> loot = game.getLoot();
         sender.sendMessage("Printing loot for game \"" + game.getID() + "\":");
         for (Loot l : loot) {
             sender.sendMessage("Item: " + l.getItem().toString() + ", Weight: " + l.getWeight());

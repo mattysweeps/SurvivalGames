@@ -55,12 +55,12 @@ public class SurvivalGameConfigBuilder {
     }
 
     public SurvivalGameConfigBuilder exitLocation(Vector exit) {
-        if (exit != null) config.setExit(exit);
+        if (exit != null) config.setExitVector(exit);
         return this;
     }
 
     public SurvivalGameConfigBuilder centerLocation(Vector center) {
-        if (center != null) config.setCenter(center);
+        if (center != null) config.setCenterVector(center);
         return this;
     }
 
