@@ -57,7 +57,7 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
             return false;
         }
 
-        if (!arguments.containsKey(CommandArgs.FILENAME)) {
+        if (!arguments.containsKey(CommandArgs.BACKUPNAME)) {
             sender.sendMessage("Please specify the filename of the backup");
             return false;
         }
@@ -80,9 +80,9 @@ public class RestoreGameCommand extends SurvivalGamesCommand {
             }
         }
 
-        File inFile = new File(backupsFolder, arguments.get(CommandArgs.FILENAME));
+        File inFile = new File(backupsFolder, arguments.get(CommandArgs.BACKUPNAME));
         if (!inFile.exists()) {
-            sender.sendMessage("The file " + arguments.get(CommandArgs.FILENAME) + " does not exists!");
+            sender.sendMessage("The file " + arguments.get(CommandArgs.BACKUPNAME) + " does not exists!");
             return false;
         }
 

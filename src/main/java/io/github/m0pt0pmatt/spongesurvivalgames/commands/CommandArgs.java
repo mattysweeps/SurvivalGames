@@ -46,6 +46,7 @@ public final class CommandArgs {
     public static final CommandArgs DEATHMATCHTIME = new CommandArgs("[deathmatch-time]", ArgTypes.NONE);
     public static final CommandArgs SPONSOR = new CommandArgs("[sponsor]", ArgTypes.SPONSOR);
     public static final CommandArgs OVERWRITE = new CommandArgs("[overwrite]", ArgTypes.NONE);
+    public static final CommandArgs BACKUPNAME = new CommandArgs("[backupname]", ArgTypes.BACKUP);
 
     private final String name;
     private final ArgTypes type;

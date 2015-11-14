@@ -31,5 +31,6 @@ public enum ArgTypes {
     WORLD,
     FILE,
     SPONSOR,
+    BACKUP,
     NONE
 }

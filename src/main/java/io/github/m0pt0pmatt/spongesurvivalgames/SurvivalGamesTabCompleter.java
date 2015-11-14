@@ -35,6 +35,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,9 @@ class SurvivalGamesTabCompleter implements TabCompleter {
             case SPONSOR:
                 matches = getSponsors();
                 break;
+            case BACKUP:
+                matches = getBackups();
+                break;
             case NONE:
             default:
                 return Collections.emptyList();
@@ -124,4 +128,23 @@ class SurvivalGamesTabCompleter implements TabCompleter {
     private List<String> getSponsors() {
         return new ArrayList<>(Sponsors.listAll());
     }
+
+    private List<String> getBackups() {
+        File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
+
+        if (!backupsFolder.isDirectory()) {
+            if (!backupsFolder.delete()) {
+                return Collections.emptyList();
+            }
+        }
+
+        if (!backupsFolder.exists()) {
+            if (!backupsFolder.mkdirs()) {
+                return Collections.emptyList();
+            }
+        }
+
+        return Arrays.asList(backupsFolder.list());
+    }
+
 }

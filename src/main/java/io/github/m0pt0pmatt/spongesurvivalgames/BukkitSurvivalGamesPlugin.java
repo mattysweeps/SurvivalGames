@@ -283,7 +283,7 @@ public class BukkitSurvivalGamesPlugin extends JavaPlugin {
         );
         registerCommand(
                 new String[]{CommandKeywords.RESTORE},
-                new CommandArgs[]{CommandArgs.ID, CommandArgs.FILENAME},
+                new CommandArgs[]{CommandArgs.ID, CommandArgs.BACKUPNAME},
                 new RestoreGameCommand()
         );
     }
