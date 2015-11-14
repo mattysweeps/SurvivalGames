@@ -30,6 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -40,6 +41,28 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 @SuppressWarnings("unused")
 public class PlayerEventListener implements Listener {
+	
+	@EventHandler
+	public void onPlayerStupid(EntityDamageEvent e) {
+		if (!(e.getEntity() instanceof Player)) {
+			return;
+		}
+		
+		Player player = (Player) e.getEntity();
+		
+		long count = BukkitSurvivalGamesPlugin.survivalGameMap.values().parallelStream()
+        	.filter( g -> g.getState().equals(SurvivalGameState.RUNNING) || g.getState().equals(SurvivalGameState.DEATHMATCH))
+        	.filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
+        	.count();
+		
+		if (count < 1) {
+			e.setCancelled(true);
+		}
+		
+		System.out.print("omffffffffffffffffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuug");
+		
+		
+	}
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
