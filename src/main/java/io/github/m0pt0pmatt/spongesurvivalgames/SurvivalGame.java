@@ -158,7 +158,9 @@ public class SurvivalGame {
 
         chestsFilled = false;
 
-        backupTaker.cancel();
+        if (backupTaker != null){
+            backupTaker.cancel();
+        }
 
         if (!executeTasks(stopTasks)) throw new StopException();
     }
