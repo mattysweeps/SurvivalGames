@@ -32,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Map;
@@ -69,6 +70,18 @@ public class PlayerEventListener implements Listener {
                     if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
                         //Player has quit in the middle of a match
                         game.reportDeath(player.getUniqueId());
+                    }
+                }
+        );
+    }
+
+    public void onPlayerUseBed(PlayerBedEnterEvent event){
+
+        Player player = event.getPlayer();
+        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
+                game -> {
+                    if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
+                        event.setCancelled(true);
                     }
                 }
         );
