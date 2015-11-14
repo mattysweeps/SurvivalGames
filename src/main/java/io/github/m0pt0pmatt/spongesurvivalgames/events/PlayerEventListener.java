@@ -59,8 +59,6 @@ public class PlayerEventListener implements Listener {
 			e.setCancelled(true);
 		}
 		
-		System.out.print("omffffffffffffffffffffuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuug");
-		
 		
 	}
 

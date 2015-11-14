@@ -77,8 +77,6 @@ public class SurvivalGameConfigSerializer {
 
         for (Object item : config.getList(Fields.LOOT.getKey(), new LinkedList<Loot>())) {
 
-            System.out.println("looot");
-
             if (!(item instanceof Loot)) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
                         + " List item not a LOOT object! Skipping...");
@@ -120,8 +118,6 @@ public class SurvivalGameConfigSerializer {
         }
 
         for (Object item : config.getList(Fields.LOOT.getKey(), (List<?>) Fields.LOOT.getDefault())) {
-
-            System.out.println("looot");
 
             if (!(item instanceof Loot)) {
                 BukkitSurvivalGamesPlugin.plugin.getLogger().warning("Error encountered when parsing loot!"
