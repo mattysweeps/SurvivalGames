@@ -44,7 +44,7 @@ class SpawnPlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         Set<Vector> spawnLocations = new HashSet<>();
-        spawnLocations.addAll(game.getSpawns());
+        spawnLocations.addAll(game.getSpawnVectors());
         Iterator<Vector> spawnIterator = spawnLocations.iterator();
         BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
                 .forEach(player -> {

@@ -45,7 +45,7 @@ public class PrintSpawnsCommand extends GameCommand {
             return false;
         }
 
-        Set<Vector> spawnLocations = game.getSpawns();
+        Set<Vector> spawnLocations = game.getSpawnVectors();
         sender.sendMessage("Game: \"" + game.getID() + "\", " + spawnLocations.size() + " Spawn Locations.");
         for (Vector spawnLocation : spawnLocations) {
             sender.sendMessage(spawnLocation.toString());

@@ -55,7 +55,7 @@ class CreateCageSnapshotsTask implements SurvivalGameTask {
 
     @Override
     public boolean execute(SurvivalGame game) {
-        for (Vector spawn : game.getSpawns()) {
+        for (Vector spawn : game.getSpawnVectors()) {
 
             World world = Bukkit.getServer().getWorld(game.getWorldName().get());
             if (world == null) return false;

@@ -49,7 +49,7 @@ class CheckWinTask implements SurvivalGameTask {
             Bukkit.getScheduler().runTaskLater(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                        if (winner.isOnline()) winner.teleport(game.getExit().get());
+                        if (winner.isOnline()) winner.teleport(game.getExitLocation().get());
                     },
                     200);
             winner.sendMessage("Congratulations! You won!");

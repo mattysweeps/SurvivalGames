@@ -79,7 +79,7 @@ public class AddSpawnCommand extends StoppedCommand {
         }
 
         try {
-            game.addSpawnLocation(x, y, z);
+            game.addSpawnVector(x, y, z);
         } catch (WorldNotSetException e) {
             sender.sendMessage("No world set. Assign the world first.");
             return false;

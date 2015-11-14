@@ -45,7 +45,7 @@ public class PrintExitCommand extends GameCommand {
             return false;
         }
 
-        Optional<Location> exit = game.getExit();
+        Optional<Location> exit = game.getExitLocation();
         if (!exit.isPresent()) {
             sender.sendMessage("Game: \"" + game.getID() + "\", No Exit Location.");
             return false;

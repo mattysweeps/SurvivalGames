@@ -38,7 +38,7 @@ class CreateWorldBorderTask implements SurvivalGameTask {
 
         WorldBorder border = world.getWorldBorder();
 
-        border.setCenter(game.getCenter().get());
+        border.setCenter(game.getCenterLocation().get());
         border.setSize(Math.max(
                 Math.abs(game.getXMax().get() - game.getXMin().get()),
                 Math.abs(game.getZMax().get() - game.getZMin().get())

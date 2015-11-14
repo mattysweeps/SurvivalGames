@@ -39,7 +39,7 @@ class RotatePlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 
-        Optional<Location> center = game.getCenter();
+        Optional<Location> center = game.getCenterLocation();
 
         if (!center.isPresent()) {
             return false;

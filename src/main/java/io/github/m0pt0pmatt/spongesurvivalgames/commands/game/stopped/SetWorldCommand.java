@@ -56,7 +56,7 @@ public class SetWorldCommand extends StoppedCommand {
             worldName = arguments.get(CommandArgs.WORLDNAME);
         }
         try {
-            game.setWorld(worldName);
+            game.setWorldName(worldName);
         } catch (NoWorldException e) {
             sender.sendMessage("World \"" + worldName + "\" does not exist.");
             return false;

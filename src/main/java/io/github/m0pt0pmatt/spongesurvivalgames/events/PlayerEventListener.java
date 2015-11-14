@@ -51,7 +51,7 @@ public class PlayerEventListener implements Listener {
                 .filter( g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
                 .forEach(g -> {
                     g.reportDeath(player.getUniqueId());
-                    player.setBedSpawnLocation(g.getExit().get(), true);
+                    player.setBedSpawnLocation(g.getExitLocation().get(), true);
                 });
     }
 

@@ -32,10 +32,10 @@ import org.bukkit.entity.Player;
 class DespawnPlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        if (game.getExit().isPresent()) {
+        if (game.getExitLocation().isPresent()) {
             BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
                     .forEach(player -> {
-                        player.teleport(game.getExit().get());
+                        player.teleport(game.getExitLocation().get());
                         player.getInventory().clear();
                         clearEquipment(player);
                     });

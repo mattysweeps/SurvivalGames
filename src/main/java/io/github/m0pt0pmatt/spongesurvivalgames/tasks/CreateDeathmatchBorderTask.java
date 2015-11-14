@@ -41,7 +41,7 @@ class CreateDeathmatchBorderTask implements SurvivalGameTask {
         if (border == null) return false;
 
         border.reset();
-        border.setCenter(game.getCenter().get());
+        border.setCenter(game.getCenterLocation().get());
         border.setSize(game.getDeathmatchRadius().get());
         return true;
     }

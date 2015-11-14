@@ -42,7 +42,7 @@ public class ClearSpawnpointsCommand extends StoppedCommand {
             return false;
         }
 
-        game.clearSpawnLocations();
+        game.clearSpawnVectors();
         sender.sendMessage("Spawn locations cleared for game \"" + game.getID() + "\".");
 
         return true;

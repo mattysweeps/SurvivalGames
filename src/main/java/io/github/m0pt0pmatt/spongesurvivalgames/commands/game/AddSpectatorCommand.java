@@ -63,7 +63,7 @@ public class AddSpectatorCommand extends GameCommand {
         game.addSpectator(player.getUniqueId());
 
         if (game.getState().equals(SurvivalGameState.RUNNING) || game.getState().equals(SurvivalGameState.DEATHMATCH)) {
-            player.teleport(game.getCenter().get());
+            player.teleport(game.getCenterLocation().get());
             player.setGameMode(GameMode.SPECTATOR);
         }
 

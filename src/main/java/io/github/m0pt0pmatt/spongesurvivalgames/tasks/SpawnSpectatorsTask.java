@@ -32,7 +32,7 @@ import org.bukkit.Location;
 class SpawnSpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        Location spawnPoint = game.getCenter().get().clone().add(0, 10, 0);
+        Location spawnPoint = game.getCenterLocation().get().clone().add(0, 10, 0);
         BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(
                 spectator -> spectator.teleport(spawnPoint)
         );

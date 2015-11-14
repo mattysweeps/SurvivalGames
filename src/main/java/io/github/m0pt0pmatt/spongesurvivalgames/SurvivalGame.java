@@ -212,7 +212,7 @@ public class SurvivalGame {
             Bukkit.getScheduler().runTaskLater(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
-                        if (player.isOnline()) player.teleport(getExit().get());
+                        if (player.isOnline()) player.teleport(getExitLocation().get());
                     },
                     10);
             player.getScoreboard().resetScores(player.getName());
@@ -339,7 +339,7 @@ public class SurvivalGame {
         return config.getWorldName();
     }
 
-    public void setWorld(String worldName) throws NoWorldException {
+    public void setWorldName(String worldName) throws NoWorldException {
         World world = Bukkit.getServer().getWorld(worldName);
         if (world == null) throw new NoWorldException(worldName);
 
@@ -369,7 +369,7 @@ public class SurvivalGame {
         config.setZMax(Math.max(zMin, zMax));
     }
 
-    public Optional<Location> getExit() {
+    public Optional<Location> getExitLocation() {
         Optional<Vector> exit = config.getExitVector();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -387,7 +387,7 @@ public class SurvivalGame {
         config.setExitWorld(worldName);
     }
 
-    public Optional<Location> getCenter() {
+    public Optional<Location> getCenterLocation() {
         Optional<Vector> center = config.getCenterVector();
         if (!center.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
@@ -458,11 +458,11 @@ public class SurvivalGame {
         config.setDeathmatchTime(deathmatchTime);
     }
 
-    public Set<Vector> getSpawns() {
+    public Set<Vector> getSpawnVectors() {
         return config.getSpawns();
     }
 
-    public void addSpawnLocation(int x, int y, int z) throws WorldNotSetException, NoWorldException {
+    public void addSpawnVector(int x, int y, int z) throws WorldNotSetException, NoWorldException {
         if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
         World world = Bukkit.getServer().getWorld(config.getWorldName().get());
         if (world == null) throw new NoWorldException(config.getWorldName().get());
@@ -470,7 +470,7 @@ public class SurvivalGame {
         config.getSpawns().add(new Vector(x, y, z));
     }
 
-    public void clearSpawnLocations() {
+    public void clearSpawnVectors() {
         config.getSpawns().clear();
     }
 

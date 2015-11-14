@@ -45,7 +45,7 @@ public class PrintCenterCommand extends GameCommand {
             return false;
         }
 
-        Optional<Location> centerLocation = game.getCenter();
+        Optional<Location> centerLocation = game.getCenterLocation();
         if (!centerLocation.isPresent()) {
             sender.sendMessage("Game: \"" + game.getID() + "\", No Center Location.");
             return false;
