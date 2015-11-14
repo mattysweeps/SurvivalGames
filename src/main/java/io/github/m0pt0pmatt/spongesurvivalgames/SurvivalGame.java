@@ -248,14 +248,16 @@ public class SurvivalGame {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
 
-        for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
-            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
-        }
-        BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
-                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
-        );
+        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)){
+            for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
+                p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
+            }
+            BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
+                    s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+            );
 
-        executeTasks(checkWinTask);
+            executeTasks(checkWinTask);
+        }
     }
 
     private void doDeathDisplay(World world, Location location) {
