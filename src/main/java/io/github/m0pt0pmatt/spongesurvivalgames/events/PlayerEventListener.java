@@ -46,32 +46,31 @@ public class PlayerEventListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
-
-        for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            if (game.getValue().getState().equals(SurvivalGameState.RUNNING) ||
-                    game.getValue().getState().equals(SurvivalGameState.DEATHMATCH)) {
-                if (game.getValue().getPlayerUUIDs().contains(player.getUniqueId())) {
-                    //Death has occurred inside the game
-                    game.getValue().reportDeath(player.getUniqueId());
-                    player.setBedSpawnLocation(game.getValue().getExit().get(), true);
-                    return;
+        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
+                game -> {
+                    if (game.getState().equals(SurvivalGameState.RUNNING) ||
+                            game.getState().equals(SurvivalGameState.DEATHMATCH)) {
+                        if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
+                            //Death has occurred inside the game
+                            game.reportDeath(player.getUniqueId());
+                            player.setBedSpawnLocation(game.getExit().get(), true);
+                        }
+                    }
                 }
-            }
-        }
-
+        );
     }
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-
-        for (Map.Entry<String, SurvivalGame> game : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            if (game.getValue().getPlayerUUIDs().contains(player.getUniqueId())) {
-                //Player has quit in the middle of a match
-                game.getValue().reportDeath(player.getUniqueId());
-                return;
-            }
-        }
+        BukkitSurvivalGamesPlugin.survivalGameMap.values().forEach(
+                game -> {
+                    if (game.getPlayerUUIDs().contains(player.getUniqueId())) {
+                        //Player has quit in the middle of a match
+                        game.reportDeath(player.getUniqueId());
+                    }
+                }
+        );
     }
 }
