@@ -228,8 +228,8 @@ public class SurvivalGame {
     }
 
     public void reportDeath(UUID playerUUID) {
+
         if (!playerUUIDs.contains(playerUUID)) {
-            //unregistered player
             return;
         }
 
@@ -237,7 +237,6 @@ public class SurvivalGame {
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
         if (player != null) {
-            doDeathDisplay(player.getWorld(), player.getLocation());
             Bukkit.getScheduler().runTaskLater(
                     BukkitSurvivalGamesPlugin.plugin,
                     () -> {
@@ -249,9 +248,14 @@ public class SurvivalGame {
         }
 
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)){
-            for (Player p : BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs)) {
-                p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0);
+
+            if (player != null){
+                doDeathDisplay(player.getWorld(), player.getLocation());
             }
+
+            BukkitSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
+                    p -> p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+            );
             BukkitSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
                     s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
             );
