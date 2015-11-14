@@ -46,7 +46,7 @@ import java.util.UUID;
  *
  * @author Skyler
  */
-class PlayerRecord implements ConfigurationSerializable {
+public class PlayerRecord implements ConfigurationSerializable {
 
     private final ItemStack[] inventory;
     private final ItemStack[] armor;
