@@ -53,7 +53,7 @@ public class OpenInventorySponsor implements Sponsor {
 
         for (Iterator<ItemStack> i = copyList.iterator(); i.hasNext(); i.remove()){
             if (player.getInventory().firstEmpty() != -1){
-                player.getInventory().all(i.next());
+                player.getInventory().addItem(i.next());
             }
         }
 
