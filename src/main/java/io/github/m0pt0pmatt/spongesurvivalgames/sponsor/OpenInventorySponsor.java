@@ -51,9 +51,10 @@ public class OpenInventorySponsor implements Sponsor {
         List<ItemStack> copyList = new ArrayList<>(items);
         int originalSize = copyList.size();
 
-        for (Iterator<ItemStack> i = copyList.iterator(); i.hasNext(); i.remove()){
+        for (Iterator<ItemStack> i = copyList.iterator(); i.hasNext();){
             if (player.getInventory().firstEmpty() != -1){
                 player.getInventory().addItem(i.next());
+                i.remove();
             }
         }
 
@@ -63,7 +64,7 @@ public class OpenInventorySponsor implements Sponsor {
 
         if (copyList.size() > 0){
             Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
-            items.forEach(inventory::addItem);
+            copyList.forEach(inventory::addItem);
             player.openInventory(inventory);
         }
 
