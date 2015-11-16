@@ -25,14 +25,33 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
-public class RotatePlayersTask implements SurvivalGameTask {
+import java.util.Optional;
+
+/**
+ * Task for rotating the players towards the center location
+ */
+class RotatePlayersTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) {
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream().filter(player -> game.getCenter().isPresent()).forEach(player -> {
-            //TODO: compute real rotation
+    public boolean execute(SurvivalGame game) {
+
+        Optional<Location> center = game.getCenterLocation();
+
+        if (!center.isPresent()) {
+            return false;
+        }
+
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+            Vector direction = player.getLocation().toVector().subtract(center.get().toVector().add(new Vector(0.5, 0, 0.5))).normalize();
+            Location newLocation = player.getLocation().clone();
+            newLocation.setYaw(180 - (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ())));
+            newLocation.setPitch(90 - (float) Math.toDegrees(Math.acos(direction.getY())));
+            player.teleport(newLocation);
         });
+        return true;
     }
 }

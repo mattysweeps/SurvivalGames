@@ -25,12 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.*;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.SurvivalGameException;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * Command to set a game to the RUNNING state (start the game)
@@ -38,38 +37,20 @@ import org.spongepowered.api.util.command.args.CommandContext;
 public class StartGameCommand extends ReadyCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).start();
-        } catch (NotEnoughSpawnPointsException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have enough spawn points.");
-            return CommandResult.empty();
-        } catch (NoExitLocationException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have an exit location.");
-            return CommandResult.empty();
-        } catch (WorldNotSetException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a world assigned to it.");
-            return CommandResult.empty();
-        } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\"'s world does not exist.");
-            return CommandResult.empty();
-        } catch (NoChestRangeException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a chest range assigned to it");
-            return CommandResult.empty();
-        } catch (NoChestMidpointException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" does not have a chest midpoint assigned to it.");
-            return CommandResult.empty();
-        } catch (TaskException e) {
-            SpongeSurvivalGamesPlugin.logger.error(e.getMessage());
-            return CommandResult.empty();
+            game.start();
+        } catch (SurvivalGameException e) {
+            sender.sendMessage(e.getDescription());
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Survival Game \"" + id + "\" is now RUNNING.");
-        return CommandResult.success();
+        sender.sendMessage("Survival Game \"" + game.getID() + "\" is now RUNNING.");
+        return true;
     }
 }

@@ -26,11 +26,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
 
-public class ClearPlayersTask implements SurvivalGameTask {
+/**
+ * Task for clearing players from a game
+ */
+class ClearPlayersTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public boolean execute(SurvivalGame game) {
         game.getPlayerUUIDs().clear();
+        return true;
     }
 }

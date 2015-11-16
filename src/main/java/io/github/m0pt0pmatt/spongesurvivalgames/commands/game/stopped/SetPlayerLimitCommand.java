@@ -25,13 +25,10 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import org.bukkit.command.CommandSender;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to set the player limit for a game
@@ -39,20 +36,28 @@ import java.util.Optional;
 public class SetPlayerLimitCommand extends StoppedCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<Integer> playerLimit = args.getOne("playerLimit");
-        if (!playerLimit.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Player limit was not present.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.PLAYER_LIMIT)) {
+            sender.sendMessage("Player limit was not present.");
+            return false;
+        }
+        String playerLimitString = arguments.get(CommandArgs.PLAYER_LIMIT);
+
+        int playerLimit;
+        try {
+            playerLimit = Integer.parseInt(playerLimitString);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert from String to Integer");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setPlayerLimit(playerLimit.get());
-        SpongeSurvivalGamesPlugin.logger.info("Player limit for game \"" + id + "\" set to " + playerLimit.get() + ".");
-        return CommandResult.success();
+        game.setPlayerLimit(playerLimit);
+        sender.sendMessage("Player limit for game \"" + game.getID() + "\" set to " + playerLimit + ".");
+        return true;
     }
 }

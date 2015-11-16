@@ -25,33 +25,33 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Command to print the exit location of a game
+ */
 public class PrintExitCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<Location<World>> exit = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getExit();
+        Optional<Location> exit = game.getExitLocation();
         if (!exit.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", No Exit Location.");
-            return CommandResult.empty();
+            sender.sendMessage("Game: \"" + game.getID() + "\", No Exit Location.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Exit Location: \"" + exit.get() + "\".");
-        return CommandResult.success();
+        sender.sendMessage("Game: \"" + game.getID() + "\", Exit Location: \"" + exit.get() + "\".");
+        return true;
     }
 }

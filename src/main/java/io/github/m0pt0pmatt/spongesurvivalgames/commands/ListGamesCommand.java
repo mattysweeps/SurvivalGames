@@ -25,29 +25,24 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
 /**
  * Command to list all games
  */
-public class ListGamesCommand implements CommandExecutor {
+public class ListGamesCommand extends SurvivalGamesCommand {
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        SpongeSurvivalGamesPlugin.logger.info("There are " + SpongeSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
-        for (Map.Entry<String, SurvivalGame> entry : SpongeSurvivalGamesPlugin.survivalGameMap.entrySet()) {
-            SpongeSurvivalGamesPlugin.logger.info("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
+        sender.sendMessage("There are " + BukkitSurvivalGamesPlugin.survivalGameMap.size() + " Survival Games:");
+        for (Map.Entry<String, SurvivalGame> entry : BukkitSurvivalGamesPlugin.survivalGameMap.entrySet()) {
+            sender.sendMessage("ID: \"" + entry.getKey() + "\", State: " + entry.getValue().getState());
         }
 
-        return CommandResult.success();
+        return true;
     }
 }

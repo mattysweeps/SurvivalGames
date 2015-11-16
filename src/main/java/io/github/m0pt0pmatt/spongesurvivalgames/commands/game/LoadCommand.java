@@ -25,62 +25,68 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.reflect.TypeToken;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Map;
 
+/**
+ * Command to load a configuration for a game
+ */
 public class LoadCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> fileName = args.getOne("fileName");
-        if (!fileName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No file name given.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.FILENAME)) {
+            sender.sendMessage("No file name given.");
+            return false;
         }
+        String fileName = arguments.get(CommandArgs.FILENAME);
 
-        File file = new File(fileName.get());
-        ConfigurationLoader<CommentedConfigurationNode> loader =
-                HoconConfigurationLoader.builder().setFile(file).build();
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
+
         SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+        YamlConfiguration yaml = new YamlConfiguration();
 
-        ConfigurationNode node;
         try {
-            node = loader.load();
-        } catch (IOException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Unable to load config file");
-            return CommandResult.empty();
+            yaml.load(file);
+        } catch (IOException | InvalidConfigurationException e) {
+            sender.sendMessage("Unable to load config file");
+            return false;
+        }
+
+        boolean overwrite;
+
+        if (arguments.containsKey(CommandArgs.OVERWRITE) && arguments.get(CommandArgs.OVERWRITE).equalsIgnoreCase("true")) {
+            overwrite = true;
+            sender.sendMessage("Loading config and overwriting missing fields with defaults...");
+        } else {
+            overwrite = false;
+            sender.sendMessage("Loading config and ignoring empty fields...");
         }
 
         SurvivalGameConfig config;
-        try {
-            config = serializer.deserialize(TypeToken.of(SurvivalGameConfig.class), node);
-        } catch (ObjectMappingException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Mapping error for config file");
-            return CommandResult.empty();
+        if (game.getConfig() == null) {
+            game.setConfig(new SurvivalGameConfig());
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setConfig(config);
-        SpongeSurvivalGamesPlugin.logger.info("Config file loaded");
-        return CommandResult.success();
+        config = game.getConfig();
+
+        serializer.deserialize(config, yaml, overwrite);
+
+        sender.sendMessage("Config file loaded");
+        return true;
     }
 }

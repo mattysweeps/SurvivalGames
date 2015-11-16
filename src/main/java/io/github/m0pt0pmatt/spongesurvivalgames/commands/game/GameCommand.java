@@ -25,39 +25,37 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import org.bukkit.command.CommandSender;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * GameCommands require the name of the game as the first argument
  * The unique name of the game is stored for the use of child commands
  */
-public abstract class GameCommand implements CommandExecutor {
+public abstract class GameCommand extends SurvivalGamesCommand {
 
-    protected String id;
+    protected SurvivalGame game;
 
-    @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        Optional<String> idOptional = args.getOne("id");
-        if (!idOptional.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game ID is not present.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.ID)) {
+            sender.sendMessage("Survival Game ID is not present.");
+            return false;
         }
 
-        id = idOptional.get();
+        String id = arguments.get(CommandArgs.ID);
+        game = BukkitSurvivalGamesPlugin.getGame(id);
 
-        if (!SpongeSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            SpongeSurvivalGamesPlugin.logger.error("No Survival Game has specified ID \"" + id + "\".");
-            return CommandResult.empty();
+        if (game == null) {
+            sender.sendMessage("No Survival Game has specified ID \"" + id + "\".");
+            return false;
         }
 
-        return CommandResult.success();
+        return true;
     }
 }

@@ -25,46 +25,65 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityChest;
-import org.spongepowered.api.block.tileentity.TileEntity;
-import org.spongepowered.api.world.World;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.inventory.Inventory;
 
-import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 
-public class FillChestsTask implements SurvivalGameTask {
+/**
+ * Task for filling the chests with random loot
+ */
+class FillChestsTask implements SurvivalGameTask {
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public boolean execute(SurvivalGame game) {
+
         String worldName = game.getWorldName().get();
-        World world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(worldName).get();
-        Collection<TileEntity> tileEntities = world.getTileEntities();
-        SpongeSurvivalGamesPlugin.logger.info("There are " + tileEntities.size() + " tile entities");
-        tileEntities.forEach(entity -> {
+        World world = Bukkit.getServer().getWorld(worldName);
+        if (world == null) return false;
+
+        game.getConfig().getChestLocations().forEach(chestVector ->
+
+                {
                     final Random random = new Random();
 
-                    //TODO: this code doesn't use the api. Eventually it will need to be changed
-                    if (entity.getType().getTileEntityType().equals(TileEntityChest.class)) {
+                    Block block = world.getBlockAt(chestVector.getBlockX(), chestVector.getBlockY(), chestVector.getBlockZ());
+                    if (block.getState() instanceof Chest) {
+                        Chest chest = (Chest) block.getState();
 
-                        TileEntityChest chest = (TileEntityChest) entity;
-                        chest.clear();
-
+                        Inventory inventory = chest.getBlockInventory();
+                        inventory.clear();
                         double itemCount = (
                                 game.getChestMidpoint().get() +
-                                (
-                                        (random.nextDouble() * game.getChestRange().get())
-                                                * (random.nextDouble() > 0.5 ? 1 : -1)
-                                )
+                                        (
+                                                (random.nextDouble() * game.getChestRange().get())
+                                                        * (random.nextDouble() > 0.5 ? 1 : -1)
+                                        )
                         );
-                        for (int i = 0; i < itemCount; i++){
-                            chest.setInventorySlotContents(i, new net.minecraft.item.ItemStack(Item.getItemById(1)));
-                        }
+                        for (int i = 0; i < itemCount; i++) {
+                            Optional<Loot> item = game.getLootGenerator().generate();
+                            if (item.isPresent()) inventory.addItem(item.get().getItem());
 
-                    }
+                        }
+                        chest.update();
+                    } else
+                        System.out.println("Unable to locate chest at " + chestVector.getBlockX() + ", " + chestVector.getBlockY() + ", " + chestVector.getBlockZ());
+
                 }
+
+
         );
+
+        game.setChestsFilled();
+        Bukkit.getLogger().info("Chests have finished populating");
+        return true;
     }
+
+
 }

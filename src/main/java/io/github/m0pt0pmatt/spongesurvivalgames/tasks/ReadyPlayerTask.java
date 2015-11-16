@@ -25,22 +25,38 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.OfferGameModeException;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.data.DataTransactionResult;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 
-public class SetGameModeTask implements SurvivalGameTask {
+/**
+ * Task for resetting the players' food and health levels
+ */
+class ReadyPlayerTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public boolean execute(SurvivalGame game) {
 
-        if (SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
-                .map(player -> player.offer(Keys.GAME_MODE, GameModes.ADVENTURE))
-                .filter(result -> !result.getType().equals(DataTransactionResult.Type.SUCCESS))
-                .count()
-                > 0) throw new OfferGameModeException();
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+                .forEach(player -> {
+
+                    player.setGameMode(GameMode.ADVENTURE);
+                    player.setMaxHealth(20);
+                    player.setHealth(player.getMaxHealth());
+                    player.setFoodLevel(20);
+                    player.setSaturation(player.getFoodLevel());
+                    player.setExhaustion(0);
+                    player.getInventory().clear();
+                    clearEquipment(player);
+                });
+
+        return true;
+    }
+
+    private void clearEquipment(Player player) {
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
     }
 }

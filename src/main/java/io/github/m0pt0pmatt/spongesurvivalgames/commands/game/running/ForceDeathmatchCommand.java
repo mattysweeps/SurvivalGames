@@ -23,38 +23,25 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.events;
+package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.running;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
-import org.spongepowered.api.entity.EntityTypes;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.DestructEntityEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-public class PlayerDeathEventListener {
+public class ForceDeathmatchCommand extends RunningCommand {
+    @Override
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-    @Listener
-    public void onPlayerDeath(DestructEntityEvent event){
-        if (!event.getTargetEntity().getType().equals(EntityTypes.PLAYER)){
-            return;
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Player player = (Player) event.getTargetEntity();
+        game.startDeathMatch();
 
-        for (Map.Entry<String, SurvivalGame> game: SpongeSurvivalGamesPlugin.survivalGameMap.entrySet()){
-            if (game.getValue().getState().equals(SurvivalGameState.RUNNING)){
-                if (game.getValue().getWorldName().get().equals(event.getTargetEntity().getLocation().getExtent().getName())){
-                    //Death has occurred inside the game
-                    game.getValue().reportDeath(player.getUniqueId());
-                    return;
-                }
-            }
-        }
-
+        Bukkit.getLogger().warning("Survival Game \"" + game.getID() + "\" is now starting a DEATHMATCH.");
+        return true;
     }
-
 }

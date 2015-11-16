@@ -25,15 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,19 +39,19 @@ import java.util.Optional;
 public class PrintCenterCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<Location<World>> centerLocation = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getCenter();
+        Optional<Location> centerLocation = game.getCenterLocation();
         if (!centerLocation.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", No Center Location.");
-            return CommandResult.empty();
+            sender.sendMessage("Game: \"" + game.getID() + "\", No Center Location.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Center Location: \"" + centerLocation.get() + "\".");
-        return CommandResult.success();
+        sender.sendMessage("Game: \"" + game.getID() + "\", Center Location: \"" + centerLocation.get() + "\".");
+        return true;
     }
 }

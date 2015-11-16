@@ -25,40 +25,51 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import com.flowpowered.math.vector.Vector3d;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import com.google.common.collect.Sets;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.block.BlockSnapshot;
-import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
 
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
-public class CreateCageSnapshotsTask implements SurvivalGameTask {
+/**
+ * Task for creating the player cage which surronds a player at the start of the match
+ */
+class CreateCageSnapshotsTask implements SurvivalGameTask {
+
+    private static final Set<Vector> surroundingVectors = Sets.newHashSet(
+            new Vector(1, 0, 0),
+            new Vector(1, 1, 0),
+            new Vector(-1, 0, 0),
+            new Vector(-1, 1, 0),
+            new Vector(0, 0, 1),
+            new Vector(0, 1, 1),
+            new Vector(0, 0, -1),
+            new Vector(0, 1, -1),
+            new Vector(0, 2, 0)
+    );
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
-        for (Vector3d spawn : game.getSpawns()) {
+    public boolean execute(SurvivalGame game) {
+        for (Vector spawn : game.getSpawnVectors()) {
 
-            Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(game.getWorldName().get());
-            Location<World> location = new Location<>(world.get(), spawn);
+            World world = Bukkit.getServer().getWorld(game.getWorldName().get());
+            if (world == null) return false;
 
-            Set<BlockSnapshot> snapshots = game.getSurroundingVectors().stream()
-                    .map(vector -> location.add(vector).createSnapshot())
-                    .collect(Collectors.toSet());
+            Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
-            game.getSurroundingVectors().stream()
-                    .forEach(vector -> location.add(vector).setBlockType(BlockTypes.BARRIER));
+            surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.BARRIER));
 
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
-                    .execute(() -> snapshots.stream()
-                            .forEach(snapshot -> snapshot.restore(true, false)))
-                    .submit(SpongeSurvivalGamesPlugin.plugin);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.AIR)),
+                    20L * game.getCountdownTime().get()
+            );
         }
+        return true;
     }
 }

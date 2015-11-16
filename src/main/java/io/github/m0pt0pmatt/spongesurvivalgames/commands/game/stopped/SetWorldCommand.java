@@ -25,14 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to set the world where the game will be played
@@ -40,26 +38,31 @@ import java.util.Optional;
 public class SetWorldCommand extends StoppedCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> worldName = args.getOne("worldName");
-        if (!worldName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("World name was not present.");
-            return CommandResult.empty();
+        String worldName;
+        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
+            if (sender instanceof Player) {
+                worldName = ((Player) sender).getWorld().getName();
+            } else {
+                sender.sendMessage("World name was not present.");
+                return false;
+            }
+        } else {
+            worldName = arguments.get(CommandArgs.WORLDNAME);
         }
-
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setWorld(worldName.get());
+            game.setWorldName(worldName);
         } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("World \"" + worldName.get() + "\" does not exist.");
-            return CommandResult.empty();
+            sender.sendMessage("World \"" + worldName + "\" does not exist.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("World for game \"" + id + "\" is set to \"" + worldName.get() + "\".");
-        return CommandResult.success();
+        sender.sendMessage("World for game \"" + game.getID() + "\" is set to \"" + worldName + "\".");
+        return true;
     }
 }

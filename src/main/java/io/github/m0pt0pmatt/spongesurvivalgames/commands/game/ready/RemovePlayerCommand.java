@@ -25,14 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to remove a player from a game
@@ -40,27 +39,32 @@ import java.util.Optional;
 public class RemovePlayerCommand extends ReadyCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> playerName = args.getOne("playerName");
-        if (!playerName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Player name is not present.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
+            sender.sendMessage("Player name is not present.");
+            return false;
+        }
+        String playerName = arguments.get(CommandArgs.PLAYERNAME);
+
+        Player player = Bukkit.getServer().getPlayer(playerName);
+        if (player == null) {
+            sender.sendMessage("No such player \"" + playerName + "\".");
+            return false;
         }
 
-        Optional<Player> player = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(playerName.get());
-        if (!player.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No such player \"" + playerName.get() + "\".");
-            return CommandResult.empty();
-        }
+        game.removePlayer(player.getUniqueId());
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).removePlayer(player.get().getUniqueId());
-        SpongeSurvivalGamesPlugin.logger.info("Player \"" + playerName.get() + "\" removed from survival game \"" + id + "\".");
+        Scoreboard board = game.getLobbyScoreboard();
+        board.resetScores(player.getName());
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 
-        return CommandResult.success();
+        sender.sendMessage("Player \"" + playerName + "\" removed from survival game \"" + game.getID() + "\".");
+
+        return true;
     }
 }

@@ -25,14 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import com.flowpowered.math.vector.Vector3d;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
+import org.bukkit.util.Vector;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,18 +39,18 @@ import java.util.Set;
 public class PrintSpawnsCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Set<Vector3d> spawnLocations = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getSpawns();
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", " + spawnLocations.size() + " Spawn Locations.");
-        for (Vector3d spawnLocation : spawnLocations) {
-            SpongeSurvivalGamesPlugin.logger.info(spawnLocation.toString());
+        Set<Vector> spawnLocations = game.getSpawnVectors();
+        sender.sendMessage("Game: \"" + game.getID() + "\", " + spawnLocations.size() + " Spawn Locations.");
+        for (Vector spawnLocation : spawnLocations) {
+            sender.sendMessage(spawnLocation.toString());
         }
 
-        return CommandResult.success();
+        return true;
     }
 }

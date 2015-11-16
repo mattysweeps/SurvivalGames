@@ -26,4 +26,20 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 
 public class NoWorldNameException extends SurvivalGameException {
+
+    private final String description;
+
+    /**
+     * Specifies a description for the exception.<br />
+     * Here, the description is expected to give information about exactly what world was expected, or
+     * for what a world name was needed.
+     */
+    public NoWorldNameException() {
+        this.description = "World for map empty when trying to set up center location!";
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

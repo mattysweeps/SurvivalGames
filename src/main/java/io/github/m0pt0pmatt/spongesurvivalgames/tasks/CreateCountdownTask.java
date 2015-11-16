@@ -25,30 +25,54 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.text.Texts;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 
-import java.util.concurrent.TimeUnit;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
-public class CreateCountdownTask implements SurvivalGameTask {
+/**
+ * Task for counting down the starting time
+ */
+class CreateCountdownTask implements SurvivalGameTask {
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
+    public boolean execute(SurvivalGame game) {
 
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+        Set<UUID> everyone = new HashSet<>();
+        everyone.addAll(game.getPlayerUUIDs());
+        everyone.addAll(game.getSpectatorUUIDs());
+
+        BukkitSurvivalGamesPlugin.getPlayers(everyone).forEach(player -> {
             for (int i = game.getCountdownTime().get(); i > 0; i--) {
                 final int j = i;
-                SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                        .delay(game.getCountdownTime().get() - i, TimeUnit.SECONDS)
-                        .execute(() -> player.sendMessage(Texts.of(j)))
-                        .submit(SpongeSurvivalGamesPlugin.plugin);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(
+                        BukkitSurvivalGamesPlugin.plugin,
+                        () -> {
+                            Title.displayTitle(player, j + "", j < 4 ? ChatColor.DARK_RED : ChatColor.DARK_GREEN
+                            );
+                            player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
+                        },
+                        20L * (game.getCountdownTime().get() - i)
+                );
             }
 
-            SpongeSurvivalGamesPlugin.game.getScheduler().createTaskBuilder()
-                    .delay(game.getCountdownTime().get(), TimeUnit.SECONDS)
-                    .execute(() -> player.sendMessage(Texts.of("Go!")))
-                    .submit(SpongeSurvivalGamesPlugin.plugin);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(
+                    BukkitSurvivalGamesPlugin.plugin,
+                    () -> {
+                        Title.displayTitle(player, "Go!", ChatColor.DARK_RED);
+                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
+                        new CheckWinTask().execute(game);
+                    },
+                    20L * game.getCountdownTime().get()
+            );
         });
+        return true;
     }
 }

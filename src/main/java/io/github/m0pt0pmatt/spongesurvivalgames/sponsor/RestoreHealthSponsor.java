@@ -23,23 +23,28 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import com.flowpowered.math.vector.Vector3d;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
-import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.entity.Player;
 
-public class CreateCenterChestsTask implements SurvivalGameTask {
+/**
+ * Restores a player's health when executed.
+ *
+ * @author Skyler
+ */
+public class RestoreHealthSponsor implements Sponsor {
+
+    private static final String healMessage = "You're health has been restored by a sponsor!";
+
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
-        Location<World> center = game.getCenter().get();
-        center.add(new Vector3d(1, 0, 0)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(-1, 0, 0)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 0, 1)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 0, -1)).setBlockType(BlockTypes.CHEST);
-        center.add(new Vector3d(0, 1, 0)).setBlockType(BlockTypes.CHEST);
+    public void execute(Player player) {
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        player.setHealth(player.getMaxHealth());
+        player.sendMessage(healMessage);
     }
+
+
 }

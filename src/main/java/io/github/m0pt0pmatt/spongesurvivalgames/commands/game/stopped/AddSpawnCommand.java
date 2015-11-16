@@ -25,15 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.WorldNotSetException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to add a spawn location to a game
@@ -41,31 +40,55 @@ import java.util.Optional;
 public class AddSpawnCommand extends StoppedCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
+        }
+        String xString;
+        String yString;
+        String zString;
+
+        if (!arguments.containsKey(CommandArgs.X) && !arguments.containsKey(CommandArgs.X) && !arguments.containsKey(CommandArgs.X)) {
+            if (sender instanceof Player) {
+                Block block = ((Player) sender).getLocation().getBlock();
+                xString = String.valueOf(block.getX());
+                yString = String.valueOf(block.getY());
+                zString = String.valueOf(block.getZ());
+            } else {
+                sender.sendMessage("Missing coordinates");
+                return false;
+            }
+        } else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            sender.sendMessage("Missing one or more axis for coordinates.");
+            return false;
+        } else {
+            xString = arguments.get(CommandArgs.X);
+            yString = arguments.get(CommandArgs.Y);
+            zString = arguments.get(CommandArgs.Z);
         }
 
-        Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("y");
-        Optional<Integer> z = args.getOne("z");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Missing one or more axis for coordinates.");
-            return CommandResult.empty();
+        int x, y, z;
+        try {
+            x = Integer.parseInt(xString);
+            y = Integer.parseInt(yString);
+            z = Integer.parseInt(zString);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert from String to Integer");
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).addSpawnLocation(x.get(), y.get(), z.get());
+            game.addSpawnVector(x, y, z);
         } catch (WorldNotSetException e) {
-            SpongeSurvivalGamesPlugin.logger.error("No world set. Assign the world first.");
-            return CommandResult.empty();
+            sender.sendMessage("No world set. Assign the world first.");
+            return false;
         } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("World does not exist.");
-            return CommandResult.empty();
+            sender.sendMessage("World does not exist.");
+            return false;
         }
-        SpongeSurvivalGamesPlugin.logger.info("Spawn location added for game \"" + id + "\".");
+        sender.sendMessage("Spawn location added for game \"" + game.getID() + "\".");
 
-        return CommandResult.success();
+        return true;
     }
 }

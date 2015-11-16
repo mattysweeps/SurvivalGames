@@ -25,31 +25,34 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import com.flowpowered.math.vector.Vector3d;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
-public class SpawnPlayersTask implements SurvivalGameTask {
+/**
+ * Task for teleporting players
+ */
+class SpawnPlayersTask implements SurvivalGameTask {
 
     @Override
-    public void execute(SurvivalGame game) {
-
-        Set<Vector3d> spawnLocations = new HashSet<>();
-        spawnLocations.addAll(game.getSpawns());
-        Iterator<Vector3d> spawnIterator = spawnLocations.iterator();
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
+    public boolean execute(SurvivalGame game) {
+        Set<Vector> spawnLocations = new HashSet<>();
+        spawnLocations.addAll(game.getSpawnVectors());
+        Iterator<Vector> spawnIterator = spawnLocations.iterator();
+        BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
                 .forEach(player -> {
-                    Vector3d spawnPoint = spawnIterator.next();
-                    Optional<World> world = SpongeSurvivalGamesPlugin.game.getServer().getWorld(game.getWorldName().get());
-                    Location<World> location = new Location<>(world.get(), spawnPoint);
-                    player.setLocation(location.add(0.5, 0, 0.5));
+                    Vector spawnPoint = spawnIterator.next();
+                    World world = Bukkit.getServer().getWorld(game.getWorldName().get());
+                    Location location = new Location(world, spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+                    player.teleport(location.add(0.5, 0, 0.5));
                 });
+        return true;
     }
 }

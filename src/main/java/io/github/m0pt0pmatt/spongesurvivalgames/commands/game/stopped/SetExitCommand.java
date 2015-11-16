@@ -25,14 +25,13 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoWorldException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to set the exit location for a game
@@ -41,34 +40,65 @@ import java.util.Optional;
 public class SetExitCommand extends StoppedCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> worldName = args.getOne("worldName");
-        if (!worldName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("World name was not present.");
-            return CommandResult.empty();
+        String worldName;
+        if (!arguments.containsKey(CommandArgs.WORLDNAME)) {
+            if (sender instanceof Player) {
+                worldName = ((Player) sender).getWorld().getName();
+            } else {
+                sender.sendMessage("World name was not present.");
+                return false;
+            }
+        } else {
+            worldName = arguments.get(CommandArgs.WORLDNAME);
         }
 
-        Optional<Integer> x = args.getOne("x");
-        Optional<Integer> y = args.getOne("y");
-        Optional<Integer> z = args.getOne("z");
-        if (!x.isPresent() || !y.isPresent() || !z.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Missing one or more axis for coordinates.");
-            return CommandResult.empty();
+        String xString;
+        String yString;
+        String zString;
+
+        if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            if (sender instanceof Player) {
+                Block block = ((Player) sender).getLocation().getBlock();
+                xString = String.valueOf(block.getX());
+                yString = String.valueOf(block.getY());
+                zString = String.valueOf(block.getZ());
+            } else {
+                sender.sendMessage("Missing coordinates");
+                return false;
+            }
+        } else if (!arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X) || !arguments.containsKey(CommandArgs.X)) {
+            sender.sendMessage("Missing one or more axis for coordinates.");
+            return false;
+        } else {
+            xString = arguments.get(CommandArgs.X);
+            yString = arguments.get(CommandArgs.Y);
+            zString = arguments.get(CommandArgs.Z);
+        }
+
+        int x, y, z;
+        try {
+            x = Integer.parseInt(xString);
+            y = Integer.parseInt(yString);
+            z = Integer.parseInt(zString);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert from String to Integer");
+            return false;
         }
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setExitLocation(worldName.get(), x.get(), y.get(), z.get());
+            game.setExitLocation(worldName, x, y, z);
         } catch (NoWorldException e) {
-            SpongeSurvivalGamesPlugin.logger.error("No such world \"" + worldName.get() + "\".");
-            return CommandResult.empty();
+            sender.sendMessage("No such world \"" + worldName + "\".");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Exit location for game \"" + id + "\" set to world: " + worldName + " (" + x.get() + "," + y.get() + "," + z.get() + ").");
-        return CommandResult.success();
+        sender.sendMessage("Exit location for game \"" + game.getID() + "\" set to world: " + worldName + " (" + x + "," + y + "," + z + ").");
+        return true;
     }
 }

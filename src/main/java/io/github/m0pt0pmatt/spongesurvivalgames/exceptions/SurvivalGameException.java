@@ -28,5 +28,12 @@ package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
 /**
  * Superclass for all exceptions thrown inside SpongeSurvivalGames
  */
-public class SurvivalGameException extends Exception {
+public abstract class SurvivalGameException extends Exception {
+
+    /**
+     * Presents a verbal but concise description of what caused the exception
+     *
+     * @return the description for the event
+     */
+    public abstract String getDescription();
 }

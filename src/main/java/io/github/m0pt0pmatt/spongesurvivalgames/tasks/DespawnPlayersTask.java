@@ -25,16 +25,28 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.TaskException;
+import org.bukkit.entity.Player;
 
-public class DespawnPlayersTask implements SurvivalGameTask {
+class DespawnPlayersTask implements SurvivalGameTask {
     @Override
-    public void execute(SurvivalGame game) throws TaskException {
-        if (game.getExit().isPresent()) {
-            SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
-                    .forEach(player -> player.setLocation(game.getExit().get()));
+    public boolean execute(SurvivalGame game) {
+        if (game.getExitLocation().isPresent()) {
+            BukkitSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+                    .forEach(player -> {
+                        player.teleport(game.getExitLocation().get());
+                        player.getInventory().clear();
+                        clearEquipment(player);
+                    });
         }
+        return true;
+    }
+
+    private void clearEquipment(Player player) {
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
     }
 }

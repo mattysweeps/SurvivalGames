@@ -25,33 +25,47 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.stopped;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NegativeNumberException;
+import org.bukkit.command.CommandSender;
 
-import java.util.Optional;
+import java.util.Map;
 
+/**
+ * Command to set the chest midpoint value for a game
+ */
 public class SetChestMidpointCommand extends StoppedCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> chestMidpoint = args.getOne("chestMidpoint");
-        if (!chestMidpoint.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Chest midpoint was not present.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.MIDPOINT)) {
+            sender.sendMessage("Chest midpoint was not present.");
+            return false;
         }
 
-        Double midpoint = Double.parseDouble(chestMidpoint.get());
+        String chestMidpoint = arguments.get(CommandArgs.MIDPOINT);
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.get(id).setChestMidpoint(midpoint);
-        SpongeSurvivalGamesPlugin.logger.info("Chest midpoint for game \"" + id + "\" set to " + midpoint + ".");
-        return CommandResult.success();
+        Double midpoint;
+        try {
+            midpoint = Double.parseDouble(chestMidpoint);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Unable to convert String to Double");
+            return false;
+        }
+
+        try {
+            game.setChestMidpoint(midpoint);
+        } catch (NegativeNumberException e) {
+            sender.sendMessage("Chest midpoint cannot be negative.");
+            return false;
+        }
+
+        sender.sendMessage("Chest midpoint for game \"" + game.getID() + "\" set to " + midpoint + ".");
+        return true;
     }
 }

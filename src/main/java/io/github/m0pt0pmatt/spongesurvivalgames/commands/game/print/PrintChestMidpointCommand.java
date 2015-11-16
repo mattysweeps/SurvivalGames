@@ -25,31 +25,32 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Command to print the chest midpoint value for a game
+ */
 public class PrintChestMidpointCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<Double> chestMidpoint = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getChestMidpoint();
+        Optional<Double> chestMidpoint = game.getChestMidpoint();
         if (!chestMidpoint.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", No Chest Midpoint set.");
-            return CommandResult.empty();
+            sender.sendMessage("Game: \"" + game.getID() + "\", No Chest Midpoint set.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
-        return CommandResult.success();
+        sender.sendMessage("Game: \"" + game.getID() + "\", Chest Midpoint: \"" + chestMidpoint.get() + "\".");
+        return true;
     }
 }

@@ -23,7 +23,19 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.exceptions;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-public class OfferGameModeException extends TaskException {
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.bukkit.Location;
+
+class SpawnSpectatorsTask implements SurvivalGameTask {
+    @Override
+    public boolean execute(SurvivalGame game) {
+        Location spawnPoint = game.getCenterLocation().get().clone().add(0, 10, 0);
+        BukkitSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(
+                spectator -> spectator.teleport(spawnPoint)
+        );
+        return true;
+    }
 }

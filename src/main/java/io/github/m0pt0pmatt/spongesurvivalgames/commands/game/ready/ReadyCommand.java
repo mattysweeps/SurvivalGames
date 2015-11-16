@@ -25,13 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
+
+import java.util.Map;
 
 /**
  * ReadyCommands can only be executed if the game is in the READY state
@@ -39,17 +38,17 @@ import org.spongepowered.api.util.command.args.CommandContext;
 public abstract class ReadyCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        if (!SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getState().equals(SurvivalGameState.READY)) {
-            SpongeSurvivalGamesPlugin.logger.error("Survival Game \"" + id + "\" must be in a READY state for this command.");
-            return CommandResult.empty();
+        if (!game.getState().equals(SurvivalGameState.READY)) {
+            sender.sendMessage("Survival Game \"" + game.getID() + "\" must be in a READY state for this command.");
+            return false;
         }
 
-        return CommandResult.success();
+        return true;
     }
 }

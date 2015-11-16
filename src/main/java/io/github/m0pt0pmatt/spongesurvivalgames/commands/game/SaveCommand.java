@@ -25,65 +25,47 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game;
 
-import com.google.common.reflect.TypeToken;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
-import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Map;
 
+/**
+ * Command to save a configuration for a game
+ */
 public class SaveCommand extends GameCommand {
 
+    private static final SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
+
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> fileName = args.getOne("fileName");
-        if (!fileName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No file name given.");
-            return CommandResult.empty();
+        String fileName = arguments.get(CommandArgs.FILENAME);
+        if (!arguments.containsKey(CommandArgs.FILENAME)) {
+            sender.sendMessage("No file name given.");
+            return false;
         }
 
-        File file = new File(fileName.get());
-        ConfigurationLoader<CommentedConfigurationNode> loader =
-                HoconConfigurationLoader.builder().setFile(file).build();
-        SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
-
-        CommentedConfigurationNode node = loader.createEmptyNode(ConfigurationOptions.defaults());
+        File file = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), fileName);
+        YamlConfiguration config = serializer.serialize(game.getConfig());
 
         try {
-            serializer.serialize(
-                    TypeToken.of(SurvivalGameConfig.class),
-                    SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getConfig(),
-                    node
-            );
-        } catch (ObjectMappingException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Mapping exception thrown");
-            return CommandResult.empty();
-        }
-
-        try {
-            loader.save(node);
+            config.save(file);
         } catch (IOException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Unable to save config file");
-            return CommandResult.empty();
+            sender.sendMessage("Unable to save config file");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Config saved");
-        return CommandResult.empty();
+        sender.sendMessage("Config saved");
+        return true;
     }
 }

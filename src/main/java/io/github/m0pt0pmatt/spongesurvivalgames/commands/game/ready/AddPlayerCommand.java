@@ -25,52 +25,73 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.ready;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.NoPlayerLimitException;
 import io.github.m0pt0pmatt.spongesurvivalgames.exceptions.PlayerLimitReachedException;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Command to add a player to a game
  */
 public class AddPlayerCommand extends ReadyCommand {
 
+    private static final String allKeyword = "@a";
+
+    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<String> playerName = args.getOne("playerName");
-        if (!playerName.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Player name is not present.");
-            return CommandResult.empty();
+        if (!arguments.containsKey(CommandArgs.PLAYERNAME)) {
+            sender.sendMessage("Player name is not present.");
+            return false;
         }
+        String playerName = arguments.get(CommandArgs.PLAYERNAME);
 
-        Optional<Player> player = SpongeSurvivalGamesPlugin.game.getServer().getPlayer(playerName.get());
-        if (!player.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("No such player \"" + playerName.get() + "\".");
-            return CommandResult.empty();
+        if (playerName.equals(allKeyword)) {
+            addAllPlayers(sender);
+            return true;
+        } else {
+            Player player = Bukkit.getPlayer(playerName);
+            if (player == null) {
+                sender.sendMessage("No such player \"" + playerName + "\".");
+                return false;
+            }
+            return addPlayer(sender, player);
         }
+    }
+
+    private boolean addPlayer(CommandSender commandSender, Player player) {
 
         try {
-            SpongeSurvivalGamesPlugin.survivalGameMap.get(id).addPlayer(player.get().getUniqueId());
+            game.addPlayer(player.getUniqueId());
         } catch (NoPlayerLimitException e) {
-            SpongeSurvivalGamesPlugin.logger.error("No player limit sey for game \"" + id + "\".");
-            e.printStackTrace();
+            commandSender.sendMessage("No player limit sey for game \"" + game.getID() + "\".");
+            return false;
         } catch (PlayerLimitReachedException e) {
-            SpongeSurvivalGamesPlugin.logger.error("Player limit reached for game \"" + id + "\".");
-            return CommandResult.empty();
+            commandSender.sendMessage("Player limit reached for game \"" + game.getID() + "\".");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Player \"" + playerName.get() + "\" added to survival game \"" + id + "\".");
-        return CommandResult.success();
+        Scoreboard board = game.getLobbyScoreboard();
+        player.setScoreboard(board);
+        board.getObjective(DisplaySlot.SIDEBAR).getScore(player.getName()).setScore(0);
+
+        commandSender.sendMessage("Player \"" + player.getName() + "\" added to survival game \"" + game.getID() + "\".");
+        return true;
     }
+
+    private void addAllPlayers(CommandSender commandSender) {
+        Bukkit.getOnlinePlayers().forEach(player -> addPlayer(commandSender, player));
+    }
+
 }

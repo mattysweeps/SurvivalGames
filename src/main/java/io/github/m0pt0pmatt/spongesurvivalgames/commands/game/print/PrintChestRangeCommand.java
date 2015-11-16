@@ -25,31 +25,29 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.commands.game.print;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.commands.game.GameCommand;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
+import org.bukkit.command.CommandSender;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class PrintChestRangeCommand extends GameCommand {
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 
-        if (!super.execute(src, args).equals(CommandResult.success())) {
-            return CommandResult.empty();
+        if (!super.execute(sender, arguments)) {
+            return false;
         }
 
-        Optional<Double> chestRange = SpongeSurvivalGamesPlugin.survivalGameMap.get(id).getChestRange();
+        Optional<Double> chestRange = game.getChestRange();
         if (!chestRange.isPresent()) {
-            SpongeSurvivalGamesPlugin.logger.error("Game: \"" + id + "\", No Chest Range set.");
-            return CommandResult.empty();
+            sender.sendMessage("Game: \"" + game.getID() + "\", No Chest Range set.");
+            return false;
         }
 
-        SpongeSurvivalGamesPlugin.logger.info("Game: \"" + id + "\", Chest Range: \"" + chestRange.get() + "\".");
-        return CommandResult.success();
+        sender.sendMessage("Game: \"" + game.getID() + "\", Chest Range: \"" + chestRange.get() + "\".");
+        return true;
     }
 }
