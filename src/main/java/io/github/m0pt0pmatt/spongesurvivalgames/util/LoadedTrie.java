@@ -68,7 +68,7 @@ public class LoadedTrie<T, D> {
 
         Node current = first;
 
-        //Traverse the trie while we get true matches
+        // Traverse the trie while we get true matches
         for (Iterator<T> i = input.iterator(); i.hasNext(); i.remove()) {
             T data = i.next();
             if (current.children.containsKey(data)) {
@@ -99,7 +99,7 @@ public class LoadedTrie<T, D> {
 
         Node current = first;
 
-        //Traverse the trie while we get true matches
+        // Traverse the trie while we get true matches
         for (Iterator<T> i = input.iterator(); i.hasNext(); i.remove()) {
             T data = i.next();
             if (current.children.containsKey(data)) {

@@ -26,17 +26,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.spongepowered.api.block.BlockState;
+import org.spongepowered.api.block.BlockType;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.entity.EntityType;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.Arrays;
 import java.util.Random;
 
-public class SpawnEntitySponsor implements Sponsor {
+class SpawnEntitySponsor implements Sponsor {
 
     private final EntityType mobType;
     private final int numMobs;
@@ -58,13 +59,14 @@ public class SpawnEntitySponsor implements Sponsor {
             int z = rGen.nextInt(donutRadius) + distanceFromPlayer;
             z = rGen.nextInt(2) == 1 ? z * -1 : z;
 
-            Location playerLocation = player.getLocation();
-            Location spawnLocation = new Location(player.getWorld(), playerLocation.getX() + x, playerLocation.getY(), playerLocation.getZ() + z);
+            Location<World> playerLocation = player.getLocation();
+
+            Location<World> spawnLocation = new Location<>(playerLocation.getExtent(), playerLocation.getX() + x, playerLocation.getY(), playerLocation.getZ() + z);
 
             //make sure the location we want to spawn is valid.
             int attempts = 0;
             while (!canSpawn(spawnLocation) && attempts < 20) {
-                spawnLocation.add(0, 1, 0);
+                spawnLocation = spawnLocation.add(0, 1, 0);
                 attempts++;
             }
             if (attempts >= 20) {
@@ -72,20 +74,21 @@ public class SpawnEntitySponsor implements Sponsor {
                 continue;
             }
 
-            player.getWorld().spawnEntity(spawnLocation, this.mobType);
+            player.getWorld().createEntity(mobType, spawnLocation.getPosition());
         }
     }
 
     private boolean canSpawn(Location location) {
-        final Material[] spawnHere = {Material.AIR, Material.TORCH, Material.SIGN,
-                Material.STATIONARY_WATER, Material.LONG_GRASS, Material.YELLOW_FLOWER,
-                Material.RED_ROSE, Material.DEAD_BUSH, Material.VINE};
-        Block block = location.getBlock();
+
+        final BlockType[] spawnHere = {BlockTypes.AIR, BlockTypes.TORCH, BlockTypes.STANDING_SIGN,
+            BlockTypes.WATER, BlockTypes.TALLGRASS, BlockTypes.YELLOW_FLOWER,
+            BlockTypes.RED_FLOWER, BlockTypes.DEADBUSH, BlockTypes.VINE};
+
+        BlockState block = location.getBlock();
         int height = 2;
         for (int i = 0; i < height; i++) {
             if (!Arrays.asList(spawnHere).contains(block.getType()))
                 return false;
-            block = block.getRelative(BlockFace.UP);
         }
         return true;
     }

@@ -33,7 +33,6 @@ import java.util.Random;
 /**
  * Class which houses loot and can produce a piece of loot on command
  *
- * @author Skyler
  */
 public class LootGenerator {
 
@@ -83,5 +82,4 @@ public class LootGenerator {
 
         return chosenLoot == null ? Optional.empty() : Optional.of(chosenLoot);
     }
-
 }

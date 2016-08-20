@@ -25,26 +25,27 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.entity.Player;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 
 /**
  * Restores a player's health when executed.
  *
  * @author Skyler
  */
-public class RestoreHealthSponsor implements Sponsor {
+class RestoreHealthSponsor implements Sponsor {
 
-    private static final String healMessage = "You're health has been restored by a sponsor!";
+    private static final Text healMessage = Text.of("You're health has been restored by a sponsor!");
 
     @Override
     public void execute(Player player) {
+
         if (player == null || !player.isOnline()) {
             return;
         }
 
-        player.setHealth(player.getMaxHealth());
+        player.get(Keys.MAX_HEALTH).ifPresent(m -> player.offer(Keys.HEALTH, m));
         player.sendMessage(healMessage);
     }
-
-
 }

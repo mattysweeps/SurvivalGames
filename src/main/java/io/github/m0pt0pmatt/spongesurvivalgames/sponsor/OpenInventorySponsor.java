@@ -25,49 +25,25 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.spongepowered.api.effect.sound.SoundTypes;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class OpenInventorySponsor implements Sponsor {
+
+class OpenInventorySponsor implements Sponsor {
 
     private final List<ItemStack> items;
 
-    public OpenInventorySponsor(List<ItemStack> items) {
-        this.items = new ArrayList<>();
-        this.items.addAll(items);
+    OpenInventorySponsor(List<ItemStack> items) {
+        this.items = new ArrayList<>(items);
     }
 
     @Override
     public void execute(Player player) {
-
-        List<ItemStack> copyList = new ArrayList<>(items);
-        int originalSize = copyList.size();
-
-        for (Iterator<ItemStack> i = copyList.iterator(); i.hasNext();){
-            if (player.getInventory().firstEmpty() != -1){
-                player.getInventory().addItem(i.next());
-                i.remove();
-            }
-        }
-
-        if (originalSize > copyList.size()){
-            player.sendMessage("Items were put in your inventory!");
-        }
-
-        if (copyList.size() > 0){
-            Inventory inventory = Bukkit.createInventory(player, InventoryType.CHEST);
-            copyList.forEach(inventory::addItem);
-            player.openInventory(inventory);
-        }
-
-        player.playSound(player.getLocation(), Sound.LEVEL_UP, (float) 1.0, (float) 1.75);
+        items.forEach(player.getInventory()::offer);
+        player.playSound(SoundTypes.ENTITY_PLAYER_LEVELUP, player.getLocation().getPosition(), 1.0, 1.0, 1.75);
     }
 }

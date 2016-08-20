@@ -25,13 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.SurvivalGamesCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +53,7 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
         args = args.parallelStream().map(String::toLowerCase).collect(Collectors.toList());
 
         //Gather command
-        SurvivalGamesCommand c = BukkitSurvivalGamesPlugin.commandTrie.match(args);
+        SurvivalGamesCommand c = SpongeSurvivalGamesPlugin.commandTrie.match(args);
         if (c == null) {
             commandSender.sendMessage("No command found");
             return false;
@@ -56,7 +61,7 @@ class SurvivalGamesCommandExecutor implements CommandExecutor {
 
         //Gather arguments
         Map<CommandArgs, String> argumentMap = new HashMap<>();
-        List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
+        List<CommandArgs> formalArgs = SpongeSurvivalGamesPlugin.commandArgs.get(c);
         if (formalArgs == null) {
             formalArgs = new LinkedList<>();
         }

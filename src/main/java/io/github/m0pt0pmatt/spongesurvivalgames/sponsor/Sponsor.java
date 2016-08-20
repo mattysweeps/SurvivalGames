@@ -25,7 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.entity.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
 /**
  * Performs an task for a menu, which targets a player

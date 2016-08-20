@@ -25,10 +25,14 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.potion.PotionEffectType;
+import org.spongepowered.api.effect.potion.PotionEffectTypes;
+import org.spongepowered.api.entity.EntityTypes;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 
 public final class Sponsors {
 
@@ -48,14 +52,14 @@ public final class Sponsors {
         sponsors.put("food2", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD2)));
         sponsors.put("food3", new OpenInventorySponsor(Collections.singletonList(SponsorItems.FOOD3)));
         sponsors.put("clear-status-effects", new ClearStatusEffectSponsor());
-        sponsors.put("wither", new StatusEffectSponsor(PotionEffectType.WITHER, 100, 1));
-        sponsors.put("blindness", new StatusEffectSponsor(PotionEffectType.BLINDNESS, 200, 1));
-        sponsors.put("poison1", new StatusEffectSponsor(PotionEffectType.POISON, 100, 1));
-        sponsors.put("poison2", new StatusEffectSponsor(PotionEffectType.POISON, 100, 2));
-        sponsors.put("nausea", new StatusEffectSponsor(PotionEffectType.CONFUSION, 400, 1));
-        sponsors.put("spawn-zombies", new SpawnEntitySponsor(EntityType.ZOMBIE, 10));
-        sponsors.put("spawn-skeletons", new SpawnEntitySponsor(EntityType.SKELETON, 10));
-        sponsors.put("spawn-creepers", new SpawnEntitySponsor(EntityType.CREEPER, 3));
+        sponsors.put("wither", new StatusEffectSponsor(PotionEffectTypes.WITHER, 100, 1));
+        sponsors.put("blindness", new StatusEffectSponsor(PotionEffectTypes.BLINDNESS, 200, 1));
+        sponsors.put("poison1", new StatusEffectSponsor(PotionEffectTypes.POISON, 100, 1));
+        sponsors.put("poison2", new StatusEffectSponsor(PotionEffectTypes.POISON, 100, 2));
+        sponsors.put("nausea", new StatusEffectSponsor(PotionEffectTypes.NAUSEA, 400, 1));
+        sponsors.put("spawn-zombies", new SpawnEntitySponsor(EntityTypes.ZOMBIE, 10));
+        sponsors.put("spawn-skeletons", new SpawnEntitySponsor(EntityTypes.SKELETON, 10));
+        sponsors.put("spawn-creepers", new SpawnEntitySponsor(EntityTypes.CREEPER, 3));
     }
 
     public static Optional<Sponsor> get(String name) {

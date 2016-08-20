@@ -26,18 +26,20 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.spongepowered.api.data.manipulator.mutable.PotionEffectData;
+import org.spongepowered.api.effect.potion.PotionEffect;
+import org.spongepowered.api.effect.potion.PotionEffectType;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 
-public class StatusEffectSponsor implements Sponsor {
+class StatusEffectSponsor implements Sponsor {
 
     private static final String effectMessage = "A sponsor has given you ";
     private final PotionEffectType type;
     private final int duration;
     private final int amplifier;
 
-    public StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
+    StatusEffectSponsor(PotionEffectType type, int duration, int amplifier) {
         super();
         this.type = type;
         this.duration = duration;
@@ -46,8 +48,7 @@ public class StatusEffectSponsor implements Sponsor {
 
     @Override
     public void execute(Player player) {
-        player.sendMessage(effectMessage + this.type.getName());
-        player.addPotionEffect(new PotionEffect(type, duration, amplifier));
+        player.sendMessage(Text.of(effectMessage + this.type.getName()));
+        player.get(PotionEffectData.class).ifPresent(m -> m.addElement(PotionEffect.of(type, duration, amplifier)));
     }
-
 }

@@ -25,8 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.commands.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -36,7 +36,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -52,7 +56,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
 
         List<String> matches = new LinkedList<>();
 
-        SurvivalGamesCommand c = BukkitSurvivalGamesPlugin.commandTrie.partialMatch(args, matches);
+        SurvivalGamesCommand c = SpongeSurvivalGamesPlugin.commandTrie.partialMatch(args, matches);
 
         if (c == null) {
             // Not a full command
@@ -64,7 +68,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
             return Collections.emptyList();
         }
 
-        List<CommandArgs> formalArgs = BukkitSurvivalGamesPlugin.commandArgs.get(c);
+        List<CommandArgs> formalArgs = SpongeSurvivalGamesPlugin.commandArgs.get(c);
         if (args.size() > formalArgs.size()) {
             return Collections.emptyList();
         }
@@ -100,9 +104,9 @@ class SurvivalGamesTabCompleter implements TabCompleter {
 
     private List<String> filter(String[] strings, List<String> matches) {
         List<String> list = matches.stream()
-                .map(String::toLowerCase)
-                .filter(string -> string.startsWith(strings[strings.length - 1]))
-                .collect(Collectors.toList());
+            .map(String::toLowerCase)
+            .filter(string -> string.startsWith(strings[strings.length - 1]))
+            .collect(Collectors.toList());
         if (list.size() == 1) {
             return list.stream().map(s -> s + " ").collect(Collectors.toList());
         }
@@ -110,7 +114,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
     }
 
     private List<String> getIDs() {
-        return new ArrayList<>(BukkitSurvivalGamesPlugin.survivalGameMap.keySet());
+        return new ArrayList<>(SpongeSurvivalGamesPlugin.survivalGameMap.keySet());
     }
 
     private List<String> getPlayers() {
@@ -122,7 +126,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
     }
 
     private List<String> getFiles() {
-        return Arrays.asList(BukkitSurvivalGamesPlugin.plugin.getDataFolder().list());
+        return Arrays.asList(SpongeSurvivalGamesPlugin.plugin.getDataFolder().list());
     }
 
     private List<String> getSponsors() {
@@ -130,7 +134,7 @@ class SurvivalGamesTabCompleter implements TabCompleter {
     }
 
     private List<String> getBackups() {
-        File backupsFolder = new File(BukkitSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
+        File backupsFolder = new File(SpongeSurvivalGamesPlugin.plugin.getDataFolder(), "Backups");
 
         if (!backupsFolder.isDirectory()) {
             if (!backupsFolder.delete()) {

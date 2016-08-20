@@ -24,7 +24,7 @@
 #
 
 name: BukkitSurvivalGames
-main: io.github.m0pt0pmatt.spongesurvivalgames.BukkitSurvivalGamesPlugin
+main: io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin
 version: 1.0
 permissions:
   spongesurvivalgames.admin:

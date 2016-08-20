@@ -25,31 +25,34 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.sponsor;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.effect.potion.PotionEffect;
+import org.spongepowered.api.effect.potion.PotionEffectTypes;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
+
+import java.util.Collections;
 
 final class SponsorItems {
 
-    public static final ItemStack LIGHTARMOR = new ItemStack(Material.LEATHER_CHESTPLATE);
-    public static final ItemStack MEDIUMARMOR = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
-    public static final ItemStack LIGHTSWORD = new ItemStack(Material.WOOD_SWORD);
-    public static final ItemStack MEDIUMSWORD = new ItemStack(Material.IRON_SWORD);
-    public static final ItemStack BOW = new ItemStack(Material.BOW);
-    public static final ItemStack HEALTHPOTION = new ItemStack(Material.POTION, 1, (short) 8229);
-    public static final ItemStack POISONPOTION = new ItemStack(Material.POTION, 1, (short) 16388);
-    public static final ItemStack FOOD1 = new ItemStack(Material.CARROT_ITEM, 5);
-    public static final ItemStack FOOD2 = new ItemStack(Material.BREAD, 5);
-    public static final ItemStack FOOD3 = new ItemStack(Material.COOKED_CHICKEN, 5);
-    public static final ItemStack RESTOREHUNGER = custom(new ItemStack(Material.APPLE), "Restore Hunger", Enchantment.ARROW_INFINITE, 1);
-    public static final ItemStack RESTOREHEALTH = custom(new ItemStack(Material.GOLDEN_APPLE), "Restore Health", Enchantment.ARROW_INFINITE, 1);
+    public static final ItemStack LIGHTARMOR = ItemStack.of(ItemTypes.LEATHER_CHESTPLATE, 0);
+    public static final ItemStack MEDIUMARMOR = ItemStack.of(ItemTypes.CHAINMAIL_CHESTPLATE, 0);
+    public static final ItemStack LIGHTSWORD = ItemStack.of(ItemTypes.WOODEN_SWORD, 0);
+    public static final ItemStack MEDIUMSWORD = ItemStack.of(ItemTypes.IRON_SWORD, 0);
+    public static final ItemStack BOW = ItemStack.of(ItemTypes.BOW, 0);
+    public static final ItemStack HEALTHPOTION = ItemStack.builder()
+        .itemType(ItemTypes.SPLASH_POTION)
+        .add(Keys.POTION_EFFECTS, Collections.singletonList(PotionEffect.of(PotionEffectTypes.HEALTH_BOOST, 1, 10)))
+        .quantity(1)
+        .build();
 
-    private static ItemStack custom(ItemStack item, String name, Enchantment enchantment, int level) {
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        meta.addEnchant(enchantment, level, true);
-        item.setItemMeta(meta);
-        return item;
-    }
+    public static final ItemStack POISONPOTION = ItemStack.builder()
+        .itemType(ItemTypes.SPLASH_POTION)
+        .add(Keys.POTION_EFFECTS, Collections.singletonList(PotionEffect.of(PotionEffectTypes.POISON, 1, 10)))
+        .quantity(1)
+        .build();
+
+    public static final ItemStack FOOD1 = ItemStack.of(ItemTypes.CARROT, 5);
+    public static final ItemStack FOOD2 = ItemStack.of(ItemTypes.BREAD, 5);
+    public static final ItemStack FOOD3 = ItemStack.of(ItemTypes.COOKED_CHICKEN, 5);
 }

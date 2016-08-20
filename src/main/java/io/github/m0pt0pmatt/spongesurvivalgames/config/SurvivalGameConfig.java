@@ -25,10 +25,12 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import com.flowpowered.math.vector.Vector3i;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Config for a Survival Game
@@ -36,23 +38,23 @@ import java.util.*;
  */
 public class SurvivalGameConfig {
 
+    private final Set<Vector3i> spawns = new HashSet<>();
+    private final Set<Loot> loot = new HashSet<>();
+    private final Set<Vector3i> chests = new HashSet<>();
     private String worldName;
     private Integer xMin;
     private Integer xMax;
     private Integer zMin;
     private Integer zMax;
     private String exitWorld;
-    private Vector exitVector;
-    private Vector centerVector;
+    private Vector3i exitVector;
+    private Vector3i centerVector;
     private Integer playerLimit;
     private Integer countdownTime;
     private Double chestMidpoint;
     private Double chestRange;
     private Integer deathmatchRadius;
     private Integer deathmatchTime;
-    private final Set<Vector> spawns = new HashSet<>();
-    private final Set<Loot> loot = new HashSet<>();
-    private final Set<Vector> chests = new HashSet<>();
 
     public SurvivalGameConfig() {
 
@@ -126,19 +128,19 @@ public class SurvivalGameConfig {
         this.exitWorld = exitWorld;
     }
 
-    public Optional<Vector> getExitVector() {
+    public Optional<Vector3i> getExitVector() {
         return exitVector == null ? Optional.empty() : Optional.of(exitVector);
     }
 
-    public void setExitVector(Vector exitVector) {
+    public void setExitVector(Vector3i exitVector) {
         this.exitVector = exitVector;
     }
 
-    public Optional<Vector> getCenterVector() {
+    public Optional<Vector3i> getCenterVector() {
         return centerVector == null ? Optional.empty() : Optional.of(centerVector);
     }
 
-    public void setCenterVector(Vector centerVector) {
+    public void setCenterVector(Vector3i centerVector) {
         this.centerVector = centerVector;
     }
 
@@ -190,7 +192,7 @@ public class SurvivalGameConfig {
         this.deathmatchTime = deathmatchTime;
     }
 
-    public Set<Vector> getSpawns() {
+    public Set<Vector3i> getSpawns() {
         return spawns;
     }
 
@@ -198,7 +200,7 @@ public class SurvivalGameConfig {
         return loot;
     }
 
-    public Set<Vector> getChestLocations() {
+    public Set<Vector3i> getChestLocations() {
         return chests;
     }
 }
