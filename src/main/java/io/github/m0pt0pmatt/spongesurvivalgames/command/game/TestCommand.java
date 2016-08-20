@@ -26,13 +26,12 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import java.util.Arrays;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.ChainedCommandExecutor;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.NotNullCommandExecutor;
 
 public class TestCommand implements CommandExecutor {
 
 
     public static final CommandExecutor CHAINED_COMMAND_EXECUTOR = new ChainedCommandExecutor(Arrays.asList(
-            NotNullCommandExecutor.get(),
+            NotNullCommand.get(),
 
 
 

@@ -26,19 +26,11 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import com.flowpowered.math.vector.Vector3i;
-import io.github.m0pt0pmatt.spongesurvivalgames.backup.BackupTaker;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.SurvivalGameTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.Tasks;
+
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.scoreboard.Scoreboard;
-import org.spongepowered.api.scoreboard.critieria.Criteria;
-import org.spongepowered.api.scoreboard.displayslot.DisplaySlot;
-import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
-import org.spongepowered.api.scoreboard.objective.Objective;
+import org.spongepowered.api.effect.sound.SoundTypes;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -49,7 +41,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.Vector;
+import java.util.concurrent.TimeUnit;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.backup.BackupTaker;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
+import io.github.m0pt0pmatt.spongesurvivalgames.loot.LootGenerator;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.SurvivalGameTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.Tasks;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
+
+import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin.LOGGER;
 
 /**
  * represents a Survival Game.
@@ -96,7 +99,6 @@ public class SurvivalGame {
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private final LootGenerator lootGenerator = new LootGenerator();
-    private final Scoreboard playersScoreboard;
     private SurvivalGameState state = SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private boolean chestsFilled = false;
@@ -104,56 +106,46 @@ public class SurvivalGame {
 
     public SurvivalGame(String id) {
         this.id = id;
-        playersScoreboard = Sponge.getServer().getServerScoreboard().get();
-        Objective objective = playersScoreboard.addObjective(
-            Objective.builder()
-                .name("Lobby")
-                .criterion(Criteria.DUMMY)
-                .build()
-        );
-
-        playersScoreboard.updateDisplaySlot(objective, DisplaySlots.SIDEBAR);
     }
 
     public void ready() throws SurvivalGameException {
-        if (!config.getChestMidpoint().isPresent()) throw new NoChestMidpointException();
-        if (!config.getChestRange().isPresent()) throw new NoChestRangeException();
-        if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
-        if (!config.getWorldName().isPresent()) throw new WorldNotSetException();
-        World world = Sponge.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
-        if (!config.getExitVector().isPresent()) throw new NoExitLocationException();
-        if (!config.getXMin().isPresent()) throw new NoBoundsException();
-        if (!config.getXMax().isPresent()) throw new NoBoundsException();
-        if (!config.getZMin().isPresent()) throw new NoBoundsException();
-        if (!config.getZMax().isPresent()) throw new NoBoundsException();
-        if (!config.getCenterVector().isPresent()) throw new NoCenterException();
-        if (!config.getCountdownTime().isPresent()) throw new NoCountdownException();
-        if (!config.getDeathmatchRadius().isPresent()) throw new NoDeathmatchRadiusException();
-        if (!config.getDeathmatchTime().isPresent()) throw new NoDeathmatchTimeException();
+        if (!config.getChestMidpoint().isPresent()) throw new IllegalArgumentException();
+        if (!config.getChestRange().isPresent()) throw new IllegalArgumentException();
+        if (!config.getPlayerLimit().isPresent()) throw new IllegalArgumentException();
+        if (!config.getWorldName().isPresent()) throw new IllegalArgumentException();
+        World world = Sponge.getServer().getWorld(config.getWorldName().get()).get();
+        if (world == null) throw new IllegalArgumentException(config.getWorldName().get());
+        if (!config.getExitVector().isPresent()) throw new IllegalArgumentException();
+        if (!config.getXMin().isPresent()) throw new IllegalArgumentException();
+        if (!config.getXMax().isPresent()) throw new IllegalArgumentException();
+        if (!config.getZMin().isPresent()) throw new IllegalArgumentException();
+        if (!config.getZMax().isPresent()) throw new IllegalArgumentException();
+        if (!config.getCenterVector().isPresent()) throw new IllegalArgumentException();
+        if (!config.getCountdownTime().isPresent()) throw new IllegalArgumentException();
+        if (!config.getDeathmatchRadius().isPresent()) throw new IllegalArgumentException();
+        if (!config.getDeathmatchTime().isPresent()) throw new IllegalArgumentException();
         if (config.getChestLocations().isEmpty())
-            throw new NoChestsException();
-        if (config.getPlayerLimit().get() > config.getSpawns().size()) throw new NotEnoughSpawnPointsException
-            (config.getSpawns().size(), config.getPlayerLimit().get());
+            throw new IllegalArgumentException();
+        if (config.getPlayerLimit().get() > config.getSpawns().size()) throw new IllegalArgumentException();
         state = SurvivalGameState.READY;
 
         //Execute each task
-        if (!executeTasks(readyTasks)) throw new ReadyException();
+        if (!executeTasks(readyTasks)) throw new IllegalArgumentException();
     }
 
     public void start() throws SurvivalGameException {
 
         // Check all prerequisites for starting the game
-        if (playerUUIDs.isEmpty()) throw new NoPlayerException();
-        World world = Sponge.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
-        if (!chestsFilled) throw new ChestsNotFinishedException();
+        if (playerUUIDs.isEmpty()) throw new IllegalArgumentException();
+        World world = Sponge.getServer().getWorld(config.getWorldName().get()).get();
+        if (world == null) throw new IllegalArgumentException(config.getWorldName().get());
+        if (!chestsFilled) throw new IllegalArgumentException();
 
         // Set the state
         state = SurvivalGameState.RUNNING;
 
         //Execute each task
-        if (!executeTasks(startTasks)) throw new StartException();
+        if (!executeTasks(startTasks)) throw new IllegalArgumentException();
 
         //Start backups
         backupTaker = new BackupTaker(this);
@@ -171,43 +163,39 @@ public class SurvivalGame {
 
         chestsFilled = false;
 
-        if (backupTaker != null) {
-            backupTaker.cancel();
-        }
-
-        if (!executeTasks(stopTasks)) throw new StopException();
+        if (!executeTasks(stopTasks)) throw new IllegalArgumentException();
     }
 
     public void startDeathMatch() {
         if (!state.equals(SurvivalGameState.DEATHMATCH)) {
             state = SurvivalGameState.DEATHMATCH;
 
-            Sponge.getScheduler().scheduleSyncDelayedTask(
-                SpongeSurvivalGamesPlugin.plugin,
-                () -> {
-                    try {
-                        beginDeathMatch();
-                    } catch (SurvivalGameException e) {
-                        Sponge.getLogger().warning(e.getDescription());
-                    }
-                },
-                20L * config.getDeathmatchTime().get()
+            SpongeSurvivalGamesPlugin.executorService.schedule(
+                    () -> {
+                        try {
+                            beginDeathMatch();
+                        } catch (Exception e) {
+                            LOGGER.warn(e.getMessage());
+                        }
+                    },
+                    config.getDeathmatchTime().get(),
+                    TimeUnit.SECONDS
             );
 
-            SpongeSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
-                player -> player.sendMessage("Deathmatch starting in " + config.getDeathmatchTime().get() + " seconds.")
+            Util.getPlayers(playerUUIDs).forEach(
+                player -> player.sendMessage(Text.of("Deathmatch starting in " + config.getDeathmatchTime().get() + " seconds."))
             );
         }
     }
 
     private void beginDeathMatch() throws SurvivalGameException {
-        if (!executeTasks(deathmatchTasks)) throw new BeginDeathmatchException();
+        if (!executeTasks(deathmatchTasks)) throw new IllegalArgumentException();
     }
 
     private boolean executeTasks(List<SurvivalGameTask> tasks) {
         for (SurvivalGameTask task : tasks) {
             if (!task.execute(this)) {
-                Sponge.getLogger().warning("Error executing task: " + task.getClass().getName());
+                LOGGER.info("Error executing task: " + task.getClass().getName());
                 return false;
             }
         }
@@ -222,50 +210,29 @@ public class SurvivalGame {
 
         playerUUIDs.remove(playerUUID);
 
-        Player player = Sponge.getServer().getPlayer(playerUUID);
+        Player player = Sponge.getServer().getPlayer(playerUUID).get();
         if (player != null) {
-            Sponge.getScheduler().runTaskLater(
-                SpongeSurvivalGamesPlugin.plugin,
-                () -> {
-                    if (player.isOnline()) player.teleport(getExitLocation().get());
-                },
-                10);
-            player.getScoreboard().resetScores(player.getName());
-            player.setScoreboard(Sponge.getScoreboardManager().getMainScoreboard());
+            SpongeSurvivalGamesPlugin.executorService.schedule(
+                    () -> {
+                        if (player.isOnline()) player.setLocation(getExitLocation().get());
+                    },
+                    10,
+                    TimeUnit.MILLISECONDS);
         }
 
         if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
 
-            if (player != null) {
-                doDeathDisplay(player.getWorld(), player.getLocation());
-            }
-
-            SpongeSurvivalGamesPlugin.getPlayers(playerUUIDs).forEach(
-                p -> p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+            Util.getPlayers(playerUUIDs).forEach(
+                p -> p.playSound(SoundTypes.ENTITY_LIGHTNING_THUNDER, p.getLocation().getPosition(), 1)
             );
-            SpongeSurvivalGamesPlugin.getPlayers(spectatorUUIDs).forEach(
-                s -> s.playSound(s.getLocation(), Sound.AMBIENCE_THUNDER, 1, 0)
+            Util.getPlayers(spectatorUUIDs).forEach(
+                s -> s.playSound(SoundTypes.ENTITY_LIGHTNING_THUNDER, s.getLocation().getPosition(), 1)
             );
 
             executeTasks(checkWinTask);
         }
     }
 
-    private void doDeathDisplay(World world, Location location) {
-        Firework firework = world.spawn(location, Firework.class);
-        FireworkMeta fm = firework.getFireworkMeta();
-        fm.addEffect(FireworkEffect.builder()
-            .flicker(false)
-            .withColor(Color.RED)
-            .trail(false)
-            .with(Type.BALL)
-            .with(Type.BALL_LARGE)
-            .with(Type.STAR)
-            .withFade(Color.RED)
-            .build());
-        fm.setPower(0);
-        firework.setFireworkMeta(fm);
-    }
 
     public void setTakeBackups(boolean backups) {
         if (backups && (state == SurvivalGameState.RUNNING || state == SurvivalGameState.DEATHMATCH)) {
@@ -276,7 +243,6 @@ public class SurvivalGame {
         }
 
         if (!backups && backupTaker != null) {
-            backupTaker.cancel();
             backupTaker = null;
         }
     }
@@ -314,10 +280,10 @@ public class SurvivalGame {
         return playerUUIDs;
     }
 
-    public void addPlayer(UUID player) throws NoPlayerLimitException, PlayerLimitReachedException {
-        if (!config.getPlayerLimit().isPresent()) throw new NoPlayerLimitException();
+    public void addPlayer(UUID player)  {
+        if (!config.getPlayerLimit().isPresent()) throw new IllegalArgumentException();
         if (playerUUIDs.size() >= config.getPlayerLimit().get()) throw
-            new PlayerLimitReachedException(config.getPlayerLimit().get());
+            new IllegalArgumentException();
 
         playerUUIDs.add(player);
     }
@@ -346,17 +312,13 @@ public class SurvivalGame {
         this.chestsFilled = true;
     }
 
-    public Scoreboard getLobbyScoreboard() {
-        return playersScoreboard;
-    }
-
     public Optional<String> getWorldName() {
         return config.getWorldName();
     }
 
-    public void setWorldName(String worldName) throws NoWorldException {
-        World world = Sponge.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException(worldName);
+    public void setWorldName(String worldName) {
+        World world = Sponge.getServer().getWorld(worldName).get();
+        if (world == null) throw new IllegalArgumentException(worldName);
 
         config.setWorldName(world.getName());
     }
@@ -385,39 +347,39 @@ public class SurvivalGame {
     }
 
     public Optional<Location> getExitLocation() {
-        Optional<Vector> exit = config.getExitVector();
+        Optional<Vector3i> exit = config.getExitVector();
         if (!exit.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
-        World world = Sponge.getServer().getWorld(config.getExitWorld().get());
+        World world = Sponge.getServer().getWorld(config.getExitWorld().get()).get();
         if (world == null) return Optional.empty();
 
-        return Optional.of(new Location(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
+        return Optional.of(new Location<>(world, exit.get().getX(), exit.get().getY(), exit.get().getZ()));
     }
 
-    public void setExitLocation(String worldName, int x, int y, int z) throws NoWorldException {
-        World world = Sponge.getServer().getWorld(worldName);
-        if (world == null) throw new NoWorldException(worldName);
+    public void setExitLocation(String worldName, int x, int y, int z) {
+        World world = Sponge.getServer().getWorld(worldName).get();
+        if (world == null) throw new IllegalArgumentException(worldName);
 
-        config.setExitVector(new Vector(x, y, z));
+        config.setExitVector(new Vector3i(x, y, z));
         config.setExitWorld(worldName);
     }
 
     public Optional<Location> getCenterLocation() {
-        Optional<Vector> center = config.getCenterVector();
+        Optional<Vector3i> center = config.getCenterVector();
         if (!center.isPresent()) return Optional.empty();
         if (!config.getWorldName().isPresent()) return Optional.empty();
-        World world = Sponge.getServer().getWorld(config.getWorldName().get());
+        World world = Sponge.getServer().getWorld(config.getWorldName().get()).get();
         if (world == null) return Optional.empty();
 
-        return Optional.of(new Location(world, center.get().getX(), center.get().getY(), center.get().getZ()));
+        return Optional.of(new Location<>(world, center.get().getX(), center.get().getY(), center.get().getZ()));
     }
 
-    public void setCenterLocation(int x, int y, int z) throws NoWorldNameException, NoWorldException {
-        if (!config.getWorldName().isPresent()) throw new NoWorldNameException();
-        World world = Sponge.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
+    public void setCenterLocation(int x, int y, int z) {
+        if (!config.getWorldName().isPresent()) throw new IllegalArgumentException();
+        World world = Sponge.getServer().getWorld(config.getWorldName().get()).get();
+        if (world == null) throw new IllegalArgumentException(config.getWorldName().get());
 
-        config.setCenterVector(new Vector(x, y, z));
+        config.setCenterVector(new Vector3i(x, y, z));
     }
 
     public Optional<Integer> getPlayerLimit() {
@@ -432,8 +394,8 @@ public class SurvivalGame {
         return config.getCountdownTime();
     }
 
-    public void setCountdownTime(int countdownTime) throws NegativeNumberException {
-        if (countdownTime < 0) throw new NegativeNumberException();
+    public void setCountdownTime(int countdownTime) {
+        if (countdownTime < 0) throw new IllegalArgumentException();
         config.setCountdownTime(countdownTime);
     }
 
@@ -441,8 +403,8 @@ public class SurvivalGame {
         return config.getChestMidpoint();
     }
 
-    public void setChestMidpoint(Double chestMidpoint) throws NegativeNumberException {
-        if (chestMidpoint < 0) throw new NegativeNumberException();
+    public void setChestMidpoint(Double chestMidpoint) {
+        if (chestMidpoint < 0) throw new IllegalArgumentException();
         config.setChestMidpoint(chestMidpoint);
     }
 
@@ -450,8 +412,8 @@ public class SurvivalGame {
         return config.getChestRange();
     }
 
-    public void setChestRange(Double chestRange) throws NegativeNumberException {
-        if (chestRange < 0) throw new NegativeNumberException();
+    public void setChestRange(Double chestRange) {
+        if (chestRange < 0) throw new IllegalArgumentException();
         config.setChestRange(chestRange);
     }
 
@@ -459,8 +421,8 @@ public class SurvivalGame {
         return config.getDeathmatchRadius();
     }
 
-    public void setDeathmatchRadius(int deathmatchRadius) throws NegativeNumberException {
-        if (deathmatchRadius < 0) throw new NegativeNumberException();
+    public void setDeathmatchRadius(int deathmatchRadius) {
+        if (deathmatchRadius < 0) throw new IllegalArgumentException();
         config.setDeathmatchRadius(deathmatchRadius);
     }
 
@@ -468,8 +430,8 @@ public class SurvivalGame {
         return config.getDeathmatchTime();
     }
 
-    public void setDeathmatchTime(int deathmatchTime) throws NegativeNumberException {
-        if (deathmatchTime < 0) throw new NegativeNumberException();
+    public void setDeathmatchTime(int deathmatchTime) {
+        if (deathmatchTime < 0) throw new IllegalArgumentException();
         config.setDeathmatchTime(deathmatchTime);
     }
 
@@ -477,12 +439,12 @@ public class SurvivalGame {
         return config.getSpawns();
     }
 
-    public void addSpawnVector(int x, int y, int z) throws SurvivalGameException {
-        if (!config.getWorldName().isPresent()) throw new SurvivalGameException("World Not Set");
-        World world = Sponge.getServer().getWorld(config.getWorldName().get());
-        if (world == null) throw new NoWorldException(config.getWorldName().get());
+    public void addSpawnVector(int x, int y, int z) {
+        if (!config.getWorldName().isPresent()) throw new IllegalArgumentException("World Not Set");
+        World world = Sponge.getServer().getWorld(config.getWorldName().get()).get();
+        if (world == null) throw new IllegalArgumentException(config.getWorldName().get());
 
-        config.getSpawns().add(new Vector(x, y, z));
+        config.getSpawns().add(new Vector3i(x, y, z));
     }
 
     public void clearSpawnVectors() {
@@ -496,5 +458,4 @@ public class SurvivalGame {
     public void addLoot(Loot loot) {
         if (loot != null) config.getLoot().add(loot);
     }
-
 }

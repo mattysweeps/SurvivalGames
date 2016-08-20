@@ -46,12 +46,17 @@ public class ChainedCommandExecutor implements CommandExecutor {
 
         for (CommandExecutor commandExecutor: commandExecutors) {
 
-            CommandResult result = commandExecutor.execute(src, args);
+            CommandResult commandResult;
+            try {
+                commandResult = commandExecutor.execute(src, args);
+            } catch (RuntimeException e) {
+                commandResult = CommandResult.empty();
+            }
 
-            Optional<Integer> successCount = result.getSuccessCount();
-            Optional<Integer> affectedBlocks = result.getAffectedBlocks();
-            Optional<Integer> affectedEntities = result.getAffectedEntities();
-            Optional<Integer> affectedItems = result.getAffectedItems();
+            Optional<Integer> successCount = commandResult.getSuccessCount();
+            Optional<Integer> affectedBlocks = commandResult.getAffectedBlocks();
+            Optional<Integer> affectedEntities = commandResult.getAffectedEntities();
+            Optional<Integer> affectedItems = commandResult.getAffectedItems();
 
             if (affectedBlocks.isPresent()) {
                 totalAffectedBlocks += affectedBlocks.get();

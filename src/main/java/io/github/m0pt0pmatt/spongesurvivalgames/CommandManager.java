@@ -17,6 +17,8 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import org.spongepowered.api.command.spec.CommandExecutor;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -74,20 +76,20 @@ import io.github.m0pt0pmatt.spongesurvivalgames.util.LoadedTrie;
 
 public class CommandManager {
 
-    private static final LoadedTrie<String, SurvivalGamesCommand> COMMAND_TRIE = new LoadedTrie<>();
-    private static final Map<SurvivalGamesCommand, List<CommandArgs>> COMMAND_ARGS = new HashMap<>();
+    private static final LoadedTrie<String, CommandExecutor> COMMAND_TRIE = new LoadedTrie<>();
+    private static final Map<CommandExecutor, List<CommandArgs>> COMMAND_ARGS = new HashMap<>();
     static {
         registerCommands();
     }
 
-    private static void registerCommand(String[] words, CommandArgs[] args, SurvivalGamesCommand command) {
+    private static void registerCommand(String[] words, CommandArgs[] args, CommandExecutor command) {
         COMMAND_TRIE.add(words, command);
         List<CommandArgs> list = new LinkedList<>();
         Collections.addAll(list, args);
         COMMAND_ARGS.put(command, list);
     }
 
-    private static void registerCommand(String[] words, SurvivalGamesCommand command) {
+    private static void registerCommand(String[] words, CommandExecutor command) {
         COMMAND_TRIE.add(words, command);
     }
 

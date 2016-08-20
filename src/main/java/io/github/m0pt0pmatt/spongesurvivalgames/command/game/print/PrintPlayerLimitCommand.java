@@ -28,6 +28,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.print;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.game.GameCommand;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 import java.util.Optional;
@@ -52,5 +57,10 @@ public class PrintPlayerLimitCommand implements CommandExecutor {
 
         sender.sendMessage("Game: \"" + game.getID() + "\", Player Limit: \"" + playerLimit.get() + "\".");
         return true;
+    }
+
+    @Override
+    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+        return null;
     }
 }
