@@ -26,10 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.SurvivalGamesCommand;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Collections;

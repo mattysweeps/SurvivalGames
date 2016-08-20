@@ -34,6 +34,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.InventoryHolder;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -45,7 +46,7 @@ import java.util.Set;
 /**
  * Command to scrape the entire bounds and get all the chests
  */
-public class GetChestsCommand extends StoppedCommand {
+public class GetChestsCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

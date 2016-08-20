@@ -26,7 +26,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.sponsor.Sponsors;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.print;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.game.GameCommand;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,7 @@ import java.util.Optional;
 /**
  * Command to print the name of a game's assigned world
  */
-public class PrintWorldCommand extends GameCommand {
+public class PrintWorldCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

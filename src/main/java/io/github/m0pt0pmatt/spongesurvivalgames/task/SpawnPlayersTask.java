@@ -28,6 +28,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 import com.flowpowered.math.vector.Vector3i;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -46,13 +48,12 @@ class SpawnPlayersTask implements SurvivalGameTask {
         Set<Vector3i> spawnLocations = new HashSet<>();
         spawnLocations.addAll(game.getSpawnVectors());
         Iterator<Vector3i> spawnIterator = spawnLocations.iterator();
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).stream()
-            .forEach(player -> {
-                Vector3i spawnPoint = spawnIterator.next();
-                World world = Sponge.getServer().getWorld(game.getWorldName().get()).get();
-                Location<World> location = new Location<>(world, spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
-                player.setLocation(location.add(0.5, 0, 0.5));
-            });
+        Util.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
+            Vector3i spawnPoint = spawnIterator.next();
+            World world = Sponge.getServer().getWorld(game.getWorldName().get()).get();
+            Location<World> location = new Location<>(world, spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ());
+            player.setLocation(location.add(0.5, 0, 0.5));
+        });
         return true;
     }
 }

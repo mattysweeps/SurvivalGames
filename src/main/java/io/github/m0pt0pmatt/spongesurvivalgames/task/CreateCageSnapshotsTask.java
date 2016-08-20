@@ -27,44 +27,52 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Sets;
+
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Task for creating the player cage which surronds a player at the start of the match
  */
 class CreateCageSnapshotsTask implements SurvivalGameTask {
 
-    private static final Set<Vector> surroundingVectors = Sets.newHashSet(
-        new Vector(1, 0, 0),
-        new Vector(1, 1, 0),
-        new Vector(-1, 0, 0),
-        new Vector(-1, 1, 0),
-        new Vector(0, 0, 1),
-        new Vector(0, 1, 1),
-        new Vector(0, 0, -1),
-        new Vector(0, 1, -1),
-        new Vector(0, 2, 0)
+    private static final Set<Vector3i> surroundingVectors = Sets.newHashSet(
+        new Vector3i(1, 0, 0),
+        new Vector3i(1, 1, 0),
+        new Vector3i(-1, 0, 0),
+        new Vector3i(-1, 1, 0),
+        new Vector3i(0, 0, 1),
+        new Vector3i(0, 1, 1),
+        new Vector3i(0, 0, -1),
+        new Vector3i(0, 1, -1),
+        new Vector3i(0, 2, 0)
     );
 
     @Override
     public boolean execute(SurvivalGame game) {
 
-        for (Vector spawn : game.getSpawnVectors()) {
+        for (Vector3i spawn : game.getSpawnVectors()) {
 
-            World world = Bukkit.getServer().getWorld(game.getWorldName().get());
-            if (world == null) return false;
+            World world = Sponge.getGame().getServer().getWorld(game.getWorldName().get()).get();
 
-            Location location = new Location(world, spawn.getX(), spawn.getY(), spawn.getZ());
+            Location<World> location = new Location<>(world, spawn.getX(), spawn.getY(), spawn.getZ());
 
-            surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.BARRIER));
+            surroundingVectors.forEach(vector -> location.add(vector).setBlock(BlockTypes.BARRIER.getDefaultState(), Cause.of(NamedCause.owner(SpongeSurvivalGamesPlugin.plugin))));
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(
-                SpongeSurvivalGamesPlugin.plugin,
-                () -> surroundingVectors.forEach(vector -> location.clone().add(vector).getBlock().setType(Material.AIR)),
-                20L * game.getCountdownTime().get()
+            SpongeSurvivalGamesPlugin.executorService.schedule(
+                    () -> surroundingVectors.forEach(vector -> location.add(vector).setBlock(BlockTypes.AIR.getDefaultState(), Cause.of(NamedCause.owner(SpongeSurvivalGamesPlugin.plugin)))),
+                    game.getCountdownTime().get(),
+                    TimeUnit.SECONDS
             );
         }
         return true;

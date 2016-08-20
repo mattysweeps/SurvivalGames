@@ -31,13 +31,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to add a player to a game
  */
-public class AddPlayerCommand extends ReadyCommand {
+public class AddPlayerCommand implements CommandExecutor {
 
     private static final String allKeyword = "@a";
 

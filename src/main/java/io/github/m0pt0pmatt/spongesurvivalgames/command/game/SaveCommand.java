@@ -27,9 +27,10 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ import java.util.Map;
 /**
  * Command to save a configuration for a game
  */
-public class SaveCommand extends GameCommand {
+public class SaveCommand implements CommandExecutor {
 
     private static final SurvivalGameConfigSerializer serializer = new SurvivalGameConfigSerializer();
 

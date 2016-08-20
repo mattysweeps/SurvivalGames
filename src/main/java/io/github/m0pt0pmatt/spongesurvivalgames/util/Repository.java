@@ -15,9 +15,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command;
+package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-public interface SurvivalGamesCommand {
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
+public interface Repository<T> {
 
+    void put(UUID uuid, T object);
+
+    Optional<T> get(UUID uuid);
+
+    Collection<T> values();
 }

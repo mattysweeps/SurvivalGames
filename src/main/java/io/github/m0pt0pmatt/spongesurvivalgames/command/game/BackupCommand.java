@@ -30,6 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.backup.Backup;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.io.File;
 import java.util.Map;
@@ -37,7 +38,7 @@ import java.util.Map;
 /**
  * Command to backup to a file
  */
-public class BackupCommand extends GameCommand {
+public class BackupCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

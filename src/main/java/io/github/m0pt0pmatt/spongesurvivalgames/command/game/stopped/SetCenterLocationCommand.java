@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
@@ -36,7 +37,7 @@ import java.util.Map;
  * Command to set the center location for the game (where players look when they spawn)
  * This location is also where the initial chests spawn
  */
-public class SetCenterLocationCommand extends StoppedCommand {
+public class SetCenterLocationCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

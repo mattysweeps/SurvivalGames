@@ -30,13 +30,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to remove a player from a game
  */
-public class RemovePlayerCommand extends ReadyCommand {
+public class RemovePlayerCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

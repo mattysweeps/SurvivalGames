@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.running;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
@@ -35,7 +36,7 @@ import java.util.Map;
 /**
  * Command to stop a game when it is in the RUNNING state
  */
-public class ForceStopGameCommand extends RunningCommand {
+public class ForceStopGameCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

@@ -35,7 +35,7 @@ import java.util.Optional;
 /**
  * Command to print the player limit of a game
  */
-public class PrintPlayerLimitCommand extends GameCommand {
+public class PrintPlayerLimitCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

@@ -25,12 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.spongepowered.api.world.Location;
-
-import java.util.Optional;
 
 /**
  * Task for rotating the players towards the center location
@@ -39,19 +34,6 @@ class RotatePlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 
-        Optional<Location> center = game.getCenterLocation();
-
-        if (!center.isPresent()) {
-            return false;
-        }
-
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(player -> {
-            Vector3i direction = player.getLocation().sub(center.get().add(0.5, 0, 0.5).getChunkPosition());
-            Location newLocation = player.getLocation().clone();
-            newLocation.setYaw(180 - (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ())));
-            newLocation.setPitch(90 - (float) Math.toDegrees(Math.acos(direction.getY())));
-            player.teleport(newLocation);
-        });
         return true;
     }
 }

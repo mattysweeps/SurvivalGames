@@ -25,37 +25,43 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.util.annotation.NonnullByDefault;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+
+import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin.LOGGER;
 
 /**
  * Command to create a new game
  */
-public class CreateGameCommand extends SurvivalGamesCommand {
+public class CreateGameCommand implements CommandExecutor {
 
     @Override
-    public boolean execute(CommandExecutor sender, Map<CommandArgs, String> arguments) {
-        if (!super.execute(sender, arguments)) {
-            return false;
+    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+
+        Optional<String> id = args.getOne("id");
+        if (!id.isPresent()) {
+            LOGGER.error("Survival Game ID is not present.");
+            return CommandResult.empty();
         }
 
-        if (!arguments.containsKey(CommandArgs.ID)) {)
-            sender.sendMessage("Survival Game ID is not present.");
-            return false;
-        }
-        String id = arguments.get(CommandArgs.ID);
-
-        if (SpongeSurvivalGamesPlugin.survivalGameMap.containsKey(id)) {
-            sender.sendMessage("Survival Game ID already exists.");
-            return false;
+        if (SurvivalGameRepository.get(UUID.fromString(id.get())).isPresent()) {
+            LOGGER.error("Survival Game ID already exists.");
+            return CommandResult.empty();
         }
 
-        SpongeSurvivalGamesPlugin.survivalGameMap.put(id, new SurvivalGame(id));
-        sender.sendMessage("Survival Game \"" + id + "\" created.");
+        SurvivalGameRepository.put(UUID.fromString(id.get()), new SurvivalGame(id.get()));
+        LOGGER.info("Survival Game \"" + id.get() + "\" created.");
 
-        return true;
+        return CommandResult.success();
     }
 }

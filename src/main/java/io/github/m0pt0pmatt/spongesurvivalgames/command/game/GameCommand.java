@@ -28,8 +28,13 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.SurvivalGamesCommand;
+
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
@@ -37,11 +42,14 @@ import java.util.Map;
  * GameCommands require the name of the game as the first argument
  * The unique name of the game is stored for the use of child commands
  */
-public abstract class GameCommand extends SurvivalGamesCommand {
+public class GameCommand implements CommandExecutor {
 
     protected SurvivalGame game;
 
-    public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
+    @Override
+    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+
+        args.getOne(CommandArgs.ID.toString()).orElseThrow()
 
         if (!arguments.containsKey(CommandArgs.ID)) {
             sender.sendMessage("Survival Game ID is not present.");
@@ -55,7 +63,6 @@ public abstract class GameCommand extends SurvivalGamesCommand {
             sender.sendMessage("No Survival Game has specified ID \"" + id + "\".");
             return false;
         }
-
-        return true;
     }
+
 }

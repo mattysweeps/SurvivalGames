@@ -34,11 +34,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 import java.util.Optional;
 
-public class SponsorCommand extends RunningCommand {
+public class SponsorCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

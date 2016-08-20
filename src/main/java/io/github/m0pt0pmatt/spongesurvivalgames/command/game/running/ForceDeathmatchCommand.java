@@ -28,10 +28,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.running;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
-public class ForceDeathmatchCommand extends RunningCommand {
+public class ForceDeathmatchCommand implements CommandExecutor {
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 

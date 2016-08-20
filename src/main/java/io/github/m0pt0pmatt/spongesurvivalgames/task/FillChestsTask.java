@@ -25,17 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockState;
-import org.spongepowered.api.block.tileentity.carrier.Chest;
-import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.world.World;
-
-import java.util.Optional;
-import java.util.Random;
 
 /**
  * Task for filling the chests with random loot
@@ -45,40 +35,6 @@ class FillChestsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 
-        String worldName = game.getWorldName().get();
-        Optional<World> world = Sponge.getServer().getWorld(worldName);
-        if (!world.isPresent()) return false;
-
-        game.getConfig().getChestLocations().forEach(chestVector ->
-
-            {
-                final Random random = new Random();
-
-                BlockState block = world.getBlockAt(chestVector.getBlockX(), chestVector.getBlockY(), chestVector.getBlockZ());
-                if (block. instanceof Chest) {
-                    Chest chest = (Chest) block.getState();
-
-                    Inventory inventory = chest.getInventory();
-                    inventory.clear();
-                    double itemCount = (
-                        game.getChestMidpoint().get() +
-                            (
-                                (random.nextDouble() * game.getChestRange().get())
-                                    * (random.nextDouble() > 0.5 ? 1 : -1)
-                            )
-                    );
-                    for (int i = 0; i < itemCount; i++) {
-                        Optional<Loot> item = game.getLootGenerator().generate();
-                        if (item.isPresent()) inventory.addItem(item.get().getItem());
-
-                    }
-                } else
-                    System.out.println("Unable to locate chest at " + chestVector.getBlockX() + ", " + chestVector.getBlockY() + ", " + chestVector.getBlockZ());
-            }
-        );
-
-        game.setChestsFilled();
-        SpongeSurvivalGamesPlugin.getLogger().info("Chests have finished populating");
         return true;
     }
 }

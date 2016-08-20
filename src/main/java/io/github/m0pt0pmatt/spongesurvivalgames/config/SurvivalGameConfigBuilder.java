@@ -25,8 +25,9 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import com.flowpowered.math.vector.Vector3i;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
-import org.bukkit.util.Vector;
 
 /**
  * Builder Pattern for SurvivalGameConfigs
@@ -54,12 +55,12 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder exitLocation(Vector exit) {
+    public SurvivalGameConfigBuilder exitLocation(Vector3i exit) {
         if (exit != null) config.setExitVector(exit);
         return this;
     }
 
-    public SurvivalGameConfigBuilder centerLocation(Vector center) {
+    public SurvivalGameConfigBuilder centerLocation(Vector3i center) {
         if (center != null) config.setCenterVector(center);
         return this;
     }
@@ -74,7 +75,7 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder addSpawn(Vector vector) {
+    public SurvivalGameConfigBuilder addSpawn(Vector3i vector) {
         if (vector != null) config.getSpawns().add(vector);
         return this;
     }
@@ -124,7 +125,7 @@ public class SurvivalGameConfigBuilder {
         return this;
     }
 
-    public SurvivalGameConfigBuilder addChestLocation(Vector v) {
+    public SurvivalGameConfigBuilder addChestLocation(Vector3i v) {
         if (v != null) config.getChestLocations().add(v);
         return this;
     }

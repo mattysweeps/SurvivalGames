@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.game.GameCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +37,7 @@ import java.util.Set;
 /**
  * Command to print the spawn locations of a game
  */
-public class PrintSpawnsCommand extends GameCommand {
+public class PrintSpawnsCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

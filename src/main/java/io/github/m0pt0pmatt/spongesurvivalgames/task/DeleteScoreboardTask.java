@@ -25,17 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.scoreboard.Scoreboard;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.ScoreboardManager;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 class DeleteScoreboardTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(
-            player -> player.setScoreboard(manager.getMainScoreboard()) //Hopefully this works
+        Scoreboard manager = Sponge.getServer().getServerScoreboard().get();
+        Util.getPlayers(game.getPlayerUUIDs()).forEach(
+            player -> player.setScoreboard(manager) //Hopefully this works
         );
         return true;
     }

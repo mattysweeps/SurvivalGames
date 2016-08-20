@@ -25,10 +25,11 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 /**
  * Task for resetting the players' food and health levels
@@ -37,7 +38,7 @@ class ReadyPlayerTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
 
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+        Util.getPlayers(game.getPlayerUUIDs())
             .forEach(player -> {
                 player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
                 player.offer(Keys.MAX_HEALTH, 20.0);

@@ -15,9 +15,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command;
+package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-public interface SurvivalGamesCommand {
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+public class ConcurrentRepository<T> implements Repository<T> {
 
+    private final Map<UUID, T> MAP = new ConcurrentHashMap<>();
+
+    @Override
+    public void put(UUID uuid, T object) {
+        MAP.put(uuid, object);
+    }
+
+    @Override
+    public Optional<T> get(UUID uuid) {
+        return Optional.ofNullable(MAP.get(uuid));
+    }
+
+    @Override
+    public Collection<T> values() {
+        return MAP.values();
+    }
 }

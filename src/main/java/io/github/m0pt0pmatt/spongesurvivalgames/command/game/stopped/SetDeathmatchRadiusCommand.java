@@ -27,10 +27,11 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.stopped;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
-public class SetDeathmatchRadiusCommand extends StoppedCommand {
+public class SetDeathmatchRadiusCommand implements CommandExecutor {
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 

@@ -28,9 +28,10 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.InternalTitle;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
+
+import org.spongepowered.api.effect.sound.SoundCategories;
+import org.spongepowered.api.effect.sound.SoundTypes;
 import org.spongepowered.api.util.Color;
 
 import java.util.HashSet;
@@ -50,14 +51,14 @@ class CreateCountdownTask implements SurvivalGameTask {
         everyone.addAll(game.getPlayerUUIDs());
         everyone.addAll(game.getSpectatorUUIDs());
 
-        SpongeSurvivalGamesPlugin.getPlayers(everyone).forEach(player -> {
+        Util.getPlayers(everyone).forEach(player -> {
             for (int i = game.getCountdownTime().get(); i > 0; i--) {
                 final int j = i;
 
                 SpongeSurvivalGamesPlugin.executorService.schedule(
                     () -> {
                         InternalTitle.displayTitle(player, j + "", j < 4 ? Color.RED : Color.DARK_GREEN);
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
+                        player.playSound(SoundTypes.BLOCK_NOTE_PLING, SoundCategories.BLOCK, player.getLocation().getPosition(), 1);
                     },
                     (game.getCountdownTime().get() - i),
                     TimeUnit.SECONDS
@@ -66,8 +67,8 @@ class CreateCountdownTask implements SurvivalGameTask {
 
             SpongeSurvivalGamesPlugin.executorService.schedule(
                 () -> {
-                    InternalTitle.displayTitle(player, "Go!", ChatColor.DARK_RED);
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, (float) 1.5);
+                    InternalTitle.displayTitle(player, "Go!", Color.RED);
+                    player.playSound(SoundTypes.BLOCK_NOTE_PLING, SoundCategories.BLOCK, player.getLocation().getPosition(), 1);
                     new CheckWinTask().execute(game);
                 },
                 game.getCountdownTime().get(),

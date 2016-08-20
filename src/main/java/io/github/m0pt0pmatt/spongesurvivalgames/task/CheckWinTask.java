@@ -33,10 +33,14 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Color;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin.LOGGER;
 
 class CheckWinTask implements SurvivalGameTask {
     @Override
@@ -52,7 +56,7 @@ class CheckWinTask implements SurvivalGameTask {
 
             SpongeSurvivalGamesPlugin.executorService.schedule(
                 () -> {
-                    if (winner.get().isOnline()) winner.get().teleport(game.getExitLocation().get());
+                    if (winner.get().isOnline()) winner.get().setLocation(game.getExitLocation().get());
                 },
                 200,
                 TimeUnit.MILLISECONDS
@@ -67,7 +71,7 @@ class CheckWinTask implements SurvivalGameTask {
                 try {
                     game.stop();
                 } catch (SurvivalGameException e) {
-                    Bukkit.getLogger().warning(e.getDescription());
+                    LOGGER.error("unable to stop");
                 }
             },
             200,

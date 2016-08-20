@@ -30,13 +30,14 @@ import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to add a held item to a game's loot list
  */
-public class AddHeldLootCommand extends StoppedCommand {
+public class AddHeldLootCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

@@ -29,10 +29,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.game.GameCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
-public class PrintDeathmatchRadiusCommand extends GameCommand {
+public class PrintDeathmatchRadiusCommand implements CommandExecutor {
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 

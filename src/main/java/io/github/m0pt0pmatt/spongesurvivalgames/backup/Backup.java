@@ -29,7 +29,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfigSerializer;
 import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

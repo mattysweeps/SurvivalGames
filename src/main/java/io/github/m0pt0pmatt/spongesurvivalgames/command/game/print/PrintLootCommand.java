@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.game.GameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +37,7 @@ import java.util.Set;
 /**
  * Command to print the loot of a game
  */
-public class PrintLootCommand extends GameCommand {
+public class PrintLootCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

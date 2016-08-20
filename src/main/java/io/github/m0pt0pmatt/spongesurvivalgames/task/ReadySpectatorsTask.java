@@ -25,15 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 class ReadySpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        SpongeSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs())
+        Util.getPlayers(game.getSpectatorUUIDs())
             .forEach(s -> s.offer(Keys.GAME_MODE, GameModes.SPECTATOR));
         return true;
     }

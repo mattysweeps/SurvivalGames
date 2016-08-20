@@ -30,6 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.backup.Backup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ import java.util.Map;
 /**
  * Command to restore a game from a backup
  */
-public class RestoreGameCommand extends SurvivalGamesCommand {
+public class RestoreGameCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

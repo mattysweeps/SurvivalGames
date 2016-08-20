@@ -28,13 +28,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command;
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to list all games
  */
-public class ListGamesCommand extends SurvivalGamesCommand {
+public class ListGamesCommand implements CommandExecutor {
 
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 

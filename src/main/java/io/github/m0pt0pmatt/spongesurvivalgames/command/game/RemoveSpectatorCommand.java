@@ -30,10 +30,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
-public class RemoveSpectatorCommand extends GameCommand {
+public class RemoveSpectatorCommand implements CommandExecutor {
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {
 

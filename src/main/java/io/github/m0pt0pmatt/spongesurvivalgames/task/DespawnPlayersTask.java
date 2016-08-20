@@ -25,17 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import org.spongepowered.api.entity.living.player.Player;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import org.bukkit.entity.Player;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 class DespawnPlayersTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         if (game.getExitLocation().isPresent()) {
-            SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs())
+            Util.getPlayers(game.getPlayerUUIDs())
                 .forEach(player -> {
-                    player.teleport(game.getExitLocation().get());
+                    player.setLocation(game.getExitLocation().get());
                     player.getInventory().clear();
                     clearEquipment(player);
                 });
@@ -44,9 +45,6 @@ class DespawnPlayersTask implements SurvivalGameTask {
     }
 
     private void clearEquipment(Player player) {
-        player.getInventory().setHelmet(null);
-        player.getInventory().setChestplate(null);
-        player.getInventory().setLeggings(null);
-        player.getInventory().setBoots(null);
+        player.getInventory().clear();
     }
 }

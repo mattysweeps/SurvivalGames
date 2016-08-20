@@ -26,7 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 /**
- * Enumeration of the three states of a game
+ * Enumeration of the three states of a game.
  * A game is always in one of these states.
  */
 public enum SurvivalGameState {

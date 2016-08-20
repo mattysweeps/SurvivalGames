@@ -29,13 +29,14 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to add a spawn location to a game
  */
-public class AddSpawnCommand extends StoppedCommand {
+public class AddSpawnCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

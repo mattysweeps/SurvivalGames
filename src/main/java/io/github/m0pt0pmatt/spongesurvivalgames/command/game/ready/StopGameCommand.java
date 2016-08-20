@@ -28,13 +28,14 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.game.ready;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
 import org.bukkit.command.CommandSender;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
 /**
  * Command to set a game to the STOPPED state
  */
-public class StopGameCommand extends ReadyCommand {
+public class StopGameCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

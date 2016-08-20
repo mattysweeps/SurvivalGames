@@ -25,32 +25,15 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.scoreboard.Scoreboard;
-import org.spongepowered.api.scoreboard.objective.Objective;
-import org.spongepowered.api.statistic.Statistics;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 
 class CreateScoreboardTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
-        ScoreboardManager manager = Sponge.getServer().getServerScoreboard().get()
-        Scoreboard board = manager.getNewScoreboard();
-
-        Objective objective = board.registerNewObjective("killCount", "playerKillCount");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName("Kills");
-
-        SpongeSurvivalGamesPlugin.getPlayers(game.getPlayerUUIDs()).forEach(
-            player -> {
-                player.setScoreboard(board);
-                player.offer(Keys.STATISTICS, Statistics.PLAYER_KILLS, 0)
-                player.setStatistic(Statistic.PLAYER_KILLS, 0);
-                objective.getScore(player.getName()).setScore(0);
-            }
-        );
+        Scoreboard board = Sponge.getServer().getServerScoreboard().get();
 
         return true;
     }

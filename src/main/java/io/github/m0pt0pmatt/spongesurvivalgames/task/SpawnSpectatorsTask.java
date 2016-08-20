@@ -25,15 +25,16 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
 import org.spongepowered.api.world.Location;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 class SpawnSpectatorsTask implements SurvivalGameTask {
     @Override
     public boolean execute(SurvivalGame game) {
         Location spawnPoint = game.getCenterLocation().get().add(0, 10, 0);
-        SpongeSurvivalGamesPlugin.getPlayers(game.getSpectatorUUIDs()).forEach(
+        Util.getPlayers(game.getSpectatorUUIDs()).forEach(
             spectator -> spectator.setLocation(spawnPoint)
         );
         return true;

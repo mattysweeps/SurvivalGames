@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandArgs;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.Map;
 
@@ -36,7 +37,7 @@ import java.util.Map;
  * Command to set the exit location for a game
  * The exit location is where players go when they leave the game (by quitting, dying, or winning)
  */
-public class SetExitCommand extends StoppedCommand {
+public class SetExitCommand implements CommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, Map<CommandArgs, String> arguments) {

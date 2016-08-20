@@ -27,6 +27,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -59,7 +61,7 @@ public class PlayerEventListener {
 
         Player player = (Player) event.getTargetEntity();
 
-        long count = SpongeSurvivalGamesPlugin.survivalGameMap.values().parallelStream()
+        long count = SurvivalGameRepository.values().stream()
             .filter(g -> g.getState().equals(SurvivalGameState.RUNNING) || g.getState().equals(SurvivalGameState.DEATHMATCH))
             .filter(g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
             .count();
@@ -86,8 +88,7 @@ public class PlayerEventListener {
     }
 
     private static void reportDeath(Player player) {
-        SpongeSurvivalGamesPlugin.survivalGameMap.values()
-            .stream()
+        SurvivalGameRepository.values().stream()
             .filter(g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
             .forEach(g -> g.reportDeath(player.getUniqueId()));
     }
