@@ -17,10 +17,13 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.argument;
 
+import org.spongepowered.api.entity.living.player.Player;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter.TabCompleters;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 public class CommandArguments {
 
     public static final CommandArgument<SurvivalGame> SURVIVAL_GAME = new CommandArgument<>("[survival-game]", TabCompleters.SURVIVAL_GAME);
+    public static final CommandArgument<Player> ONLINE_PLAYER = new CommandArgument<>("[player-name]", TabCompleters.ONLINE_PLAYER);
 }

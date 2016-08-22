@@ -34,6 +34,7 @@ import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandRepository;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerEventListener;
 
 /**
@@ -52,7 +53,7 @@ public class SpongeSurvivalGamesPlugin {
         SpongeSurvivalGamesPlugin.plugin = this;
         executorService = Sponge.getScheduler().createSyncExecutor(this);
         Sponge.getEventManager().registerListeners(this, PlayerEventListener.getInstance());
-        CommandManager.registerCommandss(this);
+        CommandRepository.registerCommands(this);
         LOGGER.info("Sponge Survival Games Plugin Enabled.");
     }
 

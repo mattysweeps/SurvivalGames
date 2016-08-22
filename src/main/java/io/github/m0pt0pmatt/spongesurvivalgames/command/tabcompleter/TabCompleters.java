@@ -17,9 +17,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter;
 
+import org.spongepowered.api.entity.living.player.Player;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 public class TabCompleters {
-
     public static final TabCompleter<SurvivalGame> SURVIVAL_GAME = SurvivalGameTabCompleter.get();
+    public static final TabCompleter<Player> ONLINE_PLAYER = OnlinePlayerTabCompleter.get();
 }

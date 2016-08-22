@@ -28,7 +28,7 @@ public class CommandValues {
     private final Map<CommandArgument<?>, CommandValue<?>> arguments = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> Optional<CommandValue<T>> get(CommandArgument<T> argument) {
+    public <T> Optional<CommandValue<T>> get(CommandArgument<T> argument, Class<T> type) {
         return Optional.ofNullable((CommandValue<T>) arguments.get(argument));
     }
 

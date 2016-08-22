@@ -34,12 +34,10 @@ public class CommandArgument<T> {
 
     private final String name;
     private final TabCompleter<T> tabCompleter;
-    private final Class<T> type;
 
-    public CommandArgument(String name, TabCompleter<T> tabCompleter, Class<T> type) {
+    public CommandArgument(String name, TabCompleter<T> tabCompleter) {
         this.name = name;
         this.tabCompleter = tabCompleter;
-        this.type = type;
     }
 
     public String getName() {
@@ -48,10 +46,6 @@ public class CommandArgument<T> {
 
     public TabCompleter<T> getTabCompleter() {
         return tabCompleter;
-    }
-
-    public Class<T> getType() {
-        return type;
     }
 
     @Override

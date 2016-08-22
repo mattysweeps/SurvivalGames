@@ -20,6 +20,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
@@ -28,12 +29,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentList;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValues;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArgument;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArguments;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValues;
 
-class PrintCommand implements SurvivalGamesCommand {
+public class PrintCommand implements SurvivalGamesCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new PrintCommand();
 
@@ -48,14 +48,14 @@ class PrintCommand implements SurvivalGamesCommand {
 
     @ArgumentList
     public List<CommandArgument> argumentList() {
-        return Collections.singletonList(CommandArguments.SURVIVAL_GAME);
+        return Collections.singletonList(CommandArguments.ONLINE_PLAYER);
     }
 
     @Override
     public @Nonnull CommandResult execute(@Nonnull CommandSource source, @Nonnull CommandValues arguments) throws CommandException {
-        SurvivalGame game = arguments.get(CommandArguments.SURVIVAL_GAME, SurvivalGame.class)
-                .orElseThrow(() -> new CommandException(Text.of("Missing Survival Game")));
-        source.sendMessage(Text.of(game.getID()));
+        Player player = arguments.get(CommandArguments.ONLINE_PLAYER, Player.class)
+                .orElseThrow(() -> new CommandException(Text.of("Missing Survival Game"))).getValue();
+        player.sendMessage(Text.of(player.getName()));
         return CommandResult.success();
     }
 
