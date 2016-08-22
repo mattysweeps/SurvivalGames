@@ -25,7 +25,7 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 /**
  * Interface for doing work for a Survival Game

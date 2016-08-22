@@ -15,7 +15,46 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.state;
+package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 public class SurvivalGameStateManager {
+
+    private SurvivalGameState state;
+
+    public SurvivalGameStateManager() {
+        state = SurvivalGameState.STOPPED;
+    }
+
+    public void ready() {
+        if (state == SurvivalGameState.STOPPED) {
+            state = SurvivalGameState.READY;
+        }
+    }
+
+    public void stop() {
+        state = SurvivalGameState.STOPPED;
+    }
+
+    public void run() {
+        if (state == SurvivalGameState.READY) {
+            state = SurvivalGameState.RUNNING;
+        }
+    }
+
+    public void deathMatch() {
+        if (state == SurvivalGameState.RUNNING) {
+            state = SurvivalGameState.DEATHMATCH;
+        }
+    }
+
+    /**
+     * Enumeration of the three states of a game.
+     * A game is always in one of these states.
+     */
+    public enum SurvivalGameState {
+        STOPPED,
+        READY,
+        RUNNING,
+        DEATHMATCH
+    }
 }

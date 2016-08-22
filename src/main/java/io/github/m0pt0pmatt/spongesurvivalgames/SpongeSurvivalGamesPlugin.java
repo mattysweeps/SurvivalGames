@@ -25,9 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
-import com.google.inject.Inject;
-
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -40,31 +39,26 @@ import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerEventListener;
 /**
  * SpongeSurvivalGames Sponge Plugin
  */
-@Plugin(id = "SpongeSurvivalGames", name = "Sponge Survival Games", version = "0.1")
+@Plugin(id = "sponge-survival-games", name = "Sponge Survival Games", version = "0.1", description = "Survival Games for Sponge.")
 public class SpongeSurvivalGamesPlugin {
 
     public static SpongeSurvivalGamesPlugin plugin;
     public static SpongeExecutorService executorService;
 
-    @Inject
-    public static Logger LOGGER;
-
-    public SpongeSurvivalGamesPlugin() {
-        SpongeSurvivalGamesPlugin.plugin = this;
-
-        executorService = Sponge.getScheduler().createSyncExecutor(this);
-    }
+    public static Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-
-        Sponge.getEventManager().registerListeners(PlayerEventListener.getInstance(), this);
-        LOGGER.info("Sponge Survival Games Plugin Enabled");
+        SpongeSurvivalGamesPlugin.plugin = this;
+        executorService = Sponge.getScheduler().createSyncExecutor(this);
+        Sponge.getEventManager().registerListeners(this, PlayerEventListener.getInstance());
+        CommandManager.registerCommandss(this);
+        LOGGER.info("Sponge Survival Games Plugin Enabled.");
     }
 
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
-
+        LOGGER.info("Sponge Survival Games Plugin Disabled.");
     }
 }
 

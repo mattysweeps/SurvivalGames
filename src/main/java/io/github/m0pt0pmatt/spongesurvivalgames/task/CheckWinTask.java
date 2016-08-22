@@ -25,20 +25,18 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.InternalTitle;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Color;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin.LOGGER;
 
@@ -63,7 +61,7 @@ class CheckWinTask implements SurvivalGameTask {
             );
 
             winner.get().sendMessage(Text.of("Congratulations! You won!"));
-            InternalTitle.displayTitle(winner.get(), "You Win!", "", Color.DARK_GREEN, Color.RED, 30, 100);
+            //InternalTitle.displayTitle(winner.get(), "You Win!", "", Color.DARK_GREEN, Color.RED, 30, 100);
         }
 
         SpongeSurvivalGamesPlugin.executorService.schedule(

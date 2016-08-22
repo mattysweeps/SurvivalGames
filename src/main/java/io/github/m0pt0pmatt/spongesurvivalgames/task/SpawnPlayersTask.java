@@ -26,8 +26,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.flowpowered.math.vector.Vector3i;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 import org.spongepowered.api.Sponge;

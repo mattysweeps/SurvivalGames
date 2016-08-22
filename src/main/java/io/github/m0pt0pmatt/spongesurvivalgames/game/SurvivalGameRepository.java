@@ -18,26 +18,27 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.ConcurrentRepository;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.Repository;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SurvivalGameRepository {
 
-    private static final Repository<SurvivalGame> REPOSITORY = new ConcurrentRepository<>();
+    private static final Map<String, SurvivalGame> MAP = new ConcurrentHashMap<>();
 
-    public static void put(UUID uuid, SurvivalGame survivalGame) {
-        REPOSITORY.put(uuid, survivalGame);
+    private SurvivalGameRepository() {
+
     }
 
-    public static Optional<SurvivalGame> get(UUID uuid) {
-        return REPOSITORY.get(uuid);
+    public static void put(String name, SurvivalGame survivalGame) {
+        MAP.put(name, survivalGame);
+    }
+
+    public static Optional<SurvivalGame> get(String name) {
+        return Optional.ofNullable(MAP.get(name));
     }
 
     public static Collection<SurvivalGame> values() {
-        return REPOSITORY.values();
+        return MAP.values();
     }
 }

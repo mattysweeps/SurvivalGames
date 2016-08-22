@@ -25,9 +25,8 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
@@ -62,7 +61,7 @@ public class PlayerEventListener {
         Player player = (Player) event.getTargetEntity();
 
         long count = SurvivalGameRepository.values().stream()
-            .filter(g -> g.getState().equals(SurvivalGameState.RUNNING) || g.getState().equals(SurvivalGameState.DEATHMATCH))
+            .filter(g -> g.getState().equals(SurvivalGameStateManager.SurvivalGameState.RUNNING) || g.getState().equals(SurvivalGameStateManager.SurvivalGameState.DEATHMATCH))
             .filter(g -> g.getPlayerUUIDs().contains(player.getUniqueId()))
             .count();
 

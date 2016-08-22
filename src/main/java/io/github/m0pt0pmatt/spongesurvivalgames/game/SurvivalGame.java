@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames;
+package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 import com.flowpowered.math.vector.Vector3i;
 
@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.exception.SurvivalGameException;
 import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
@@ -98,7 +99,7 @@ public class SurvivalGame {
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private final LootGenerator lootGenerator = new LootGenerator();
-    private SurvivalGameState state = SurvivalGameState.STOPPED;
+    private SurvivalGameStateManager.SurvivalGameState state = SurvivalGameStateManager.SurvivalGameState.STOPPED;
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private boolean chestsFilled = false;
 
@@ -125,7 +126,7 @@ public class SurvivalGame {
         if (config.getChestLocations().isEmpty())
             throw new IllegalArgumentException();
         if (config.getPlayerLimit().get() > config.getSpawns().size()) throw new IllegalArgumentException();
-        state = SurvivalGameState.READY;
+        state = SurvivalGameStateManager.SurvivalGameState.READY;
 
         //Execute each task
         if (!executeTasks(readyTasks)) throw new IllegalArgumentException();
@@ -140,7 +141,7 @@ public class SurvivalGame {
         if (!chestsFilled) throw new IllegalArgumentException();
 
         // Set the state
-        state = SurvivalGameState.RUNNING;
+        state = SurvivalGameStateManager.SurvivalGameState.RUNNING;
 
         //Execute each task
         if (!executeTasks(startTasks)) throw new IllegalArgumentException();
@@ -150,12 +151,12 @@ public class SurvivalGame {
     public void stop() throws SurvivalGameException {
 
         // Execute force stop tasks if the game is RUNNING
-        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
+        if (state.equals(SurvivalGameStateManager.SurvivalGameState.RUNNING) || state.equals(SurvivalGameStateManager.SurvivalGameState.DEATHMATCH)) {
             executeTasks(forceStopTasks);
         }
 
         // Set the state
-        state = SurvivalGameState.STOPPED;
+        state = SurvivalGameStateManager.SurvivalGameState.STOPPED;
 
         chestsFilled = false;
 
@@ -163,8 +164,8 @@ public class SurvivalGame {
     }
 
     public void startDeathMatch() {
-        if (!state.equals(SurvivalGameState.DEATHMATCH)) {
-            state = SurvivalGameState.DEATHMATCH;
+        if (!state.equals(SurvivalGameStateManager.SurvivalGameState.DEATHMATCH)) {
+            state = SurvivalGameStateManager.SurvivalGameState.DEATHMATCH;
 
             SpongeSurvivalGamesPlugin.executorService.schedule(
                     () -> {
@@ -216,7 +217,7 @@ public class SurvivalGame {
                     TimeUnit.MILLISECONDS);
         }
 
-        if (state.equals(SurvivalGameState.RUNNING) || state.equals(SurvivalGameState.DEATHMATCH)) {
+        if (state.equals(SurvivalGameStateManager.SurvivalGameState.RUNNING) || state.equals(SurvivalGameStateManager.SurvivalGameState.DEATHMATCH)) {
 
             Util.getPlayers(playerUUIDs).forEach(
                 p -> p.playSound(SoundTypes.ENTITY_LIGHTNING_THUNDER, p.getLocation().getPosition(), 1)
@@ -233,7 +234,7 @@ public class SurvivalGame {
         return id;
     }
 
-    public SurvivalGameState getState() {
+    public SurvivalGameStateManager.SurvivalGameState getState() {
         return state;
     }
 
@@ -243,10 +244,8 @@ public class SurvivalGame {
      * To advance the game's state, us the {@link #start()}, {@link #ready()}, and {@link #stop()} commands!<br />
      * This method does nothing to make certain that the state is valid given the parameters of the game,
      * perform any of the tasks that usually come with moving through the states, or anything else.<br />
-     * It instead is for internal use by {@link io.github.m0pt0pmatt.spongesurvivalgames.backup.Backup Backups}
-     * only!
      */
-    public void setState(SurvivalGameState state) {
+    public void setState(SurvivalGameStateManager.SurvivalGameState state) {
         this.state = state;
     }
 

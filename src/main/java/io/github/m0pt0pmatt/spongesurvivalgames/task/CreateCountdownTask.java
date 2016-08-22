@@ -26,8 +26,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.util.InternalTitle;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 import org.spongepowered.api.effect.sound.SoundCategories;
@@ -57,7 +56,7 @@ class CreateCountdownTask implements SurvivalGameTask {
 
                 SpongeSurvivalGamesPlugin.executorService.schedule(
                     () -> {
-                        InternalTitle.displayTitle(player, j + "", j < 4 ? Color.RED : Color.DARK_GREEN);
+                        //InternalTitle.displayTitle(player, j + "", j < 4 ? Color.RED : Color.DARK_GREEN);
                         player.playSound(SoundTypes.BLOCK_NOTE_PLING, SoundCategories.BLOCK, player.getLocation().getPosition(), 1);
                     },
                     (game.getCountdownTime().get() - i),
@@ -67,7 +66,7 @@ class CreateCountdownTask implements SurvivalGameTask {
 
             SpongeSurvivalGamesPlugin.executorService.schedule(
                 () -> {
-                    InternalTitle.displayTitle(player, "Go!", Color.RED);
+                    //InternalTitle.displayTitle(player, "Go!", Color.RED);
                     player.playSound(SoundTypes.BLOCK_NOTE_PLING, SoundCategories.BLOCK, player.getLocation().getPosition(), 1);
                     new CheckWinTask().execute(game);
                 },

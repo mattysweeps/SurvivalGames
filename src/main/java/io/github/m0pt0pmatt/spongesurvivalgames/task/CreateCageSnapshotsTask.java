@@ -36,7 +36,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

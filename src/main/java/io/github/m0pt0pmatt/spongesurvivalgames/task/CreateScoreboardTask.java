@@ -28,7 +28,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.scoreboard.Scoreboard;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 class CreateScoreboardTask implements SurvivalGameTask {
     @Override

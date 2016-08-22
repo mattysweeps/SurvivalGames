@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import org.spongepowered.api.world.Location;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 class SpawnSpectatorsTask implements SurvivalGameTask {
