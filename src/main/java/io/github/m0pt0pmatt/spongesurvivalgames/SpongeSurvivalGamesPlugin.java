@@ -53,7 +53,7 @@ public class SpongeSurvivalGamesPlugin {
         SpongeSurvivalGamesPlugin.plugin = this;
         executorService = Sponge.getScheduler().createSyncExecutor(this);
         Sponge.getEventManager().registerListeners(this, PlayerEventListener.getInstance());
-        CommandRepository.registerCommands(this);
+        CommandRepository.initializeCommands(this);
         LOGGER.info("Sponge Survival Games Plugin Enabled.");
     }
 

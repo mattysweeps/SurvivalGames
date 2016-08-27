@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.callable.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommands;
+import io.github.m0pt0pmatt.spongesurvivalgames.util.Util;
 
 public class CommandRepository {
 
@@ -38,7 +38,7 @@ public class CommandRepository {
     }
 
     public static void put(SurvivalGamesCommand survivalGamesCommand) {
-        MAP.put(survivalGamesCommand.name(), survivalGamesCommand);
+        MAP.put(survivalGamesCommand.getName(), survivalGamesCommand);
     }
 
     public static Optional<SurvivalGamesCommand> get(String name) {
@@ -49,10 +49,8 @@ public class CommandRepository {
         return MAP.values();
     }
 
-    public static void registerCommands(Object plugin) {
-
-        MAP.put(SurvivalGamesCommands.PRINT_COMMAND.name(), SurvivalGamesCommands.PRINT_COMMAND);
-
+    public static void initializeCommands(Object plugin) {
+        Util.addNameables(MAP, SurvivalGamesCommand.class);
         Sponge.getCommandManager().register(plugin, baseCommand, "ssg");
         baseCommand.registerCommands();
     }

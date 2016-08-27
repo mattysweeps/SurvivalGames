@@ -34,14 +34,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentList;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentProvider;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandRepository;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArgument;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValue;
@@ -78,7 +77,7 @@ public class BaseCommand implements CommandCallable {
 
     public void registerCommands() {
         commandArgumentLists.clear();
-        CommandRepository.values().forEach(command -> commandArgumentLists.put(command.name(), profileCommandArguments(command)));
+        CommandRepository.values().forEach(command -> commandArgumentLists.put(command.getName(), profileCommandArguments(command)));
     }
 
     @SuppressWarnings("unchecked")
@@ -86,24 +85,24 @@ public class BaseCommand implements CommandCallable {
         Map<Integer, List<CommandArgument<?>>> argumentsByLength = new HashMap<>();
 
         for (Method method: command.getClass().getMethods()) {
-            if (method.getAnnotation(ArgumentList.class) != null) {
+            if (method.getAnnotation(ArgumentProvider.class) != null) {
                 Class<?> returnType = method.getReturnType();
                 if (returnType.isAssignableFrom(List.class) && method.getParameterCount() == 0) {
                     try {
                         List list = (List) method.invoke(command);
                         if (list == null) {
-                            LOGGER.error("Return list was null for @ArgumentList method: " + command.getClass().getName() + "#" + method.getName());
+                            LOGGER.error("Return list was null for @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
                         } else if (list.size() != 0 && (!(list.get(0) instanceof CommandArgument))) {
-                            LOGGER.error("Return type isn't List<CommandArgument> for @ArgumentList method: " + command.getClass().getName() + "#" + method.getName());
+                            LOGGER.error("Return type isn't List<CommandArgument> for @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
                         } else if (argumentsByLength.containsKey(list.size())) {
-                            LOGGER.error("Command " + command.getClass().getName() + " has more than one @ArgumentList with the same length.");
+                            LOGGER.error("Command " + command.getClass().getName() + " has more than one @ArgumentProvider with the same length.");
                         } else {
                             argumentsByLength.put(list.size(), list);
                         }
                     } catch (IllegalAccessException e) {
-                        LOGGER.error("Cannot access @ArgumentList method: " + command.getClass().getName() + "#" + method.getName());
+                        LOGGER.error("Cannot access @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
                     } catch (InvocationTargetException e) {
-                        LOGGER.error("Error while profiling @ArgumentList method: " + command.getClass().getName() + "#" + method.getName());
+                        LOGGER.error("Error while profiling @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
                     }
                 }
             }
@@ -114,11 +113,11 @@ public class BaseCommand implements CommandCallable {
 
     private CommandValues buildArguments(SurvivalGamesCommand command, List<String> arguments) throws CommandException {
 
-        if (!commandArgumentLists.containsKey(command.name())) {
-            commandArgumentLists.put(command.name(), profileCommandArguments(command));
+        if (!commandArgumentLists.containsKey(command.getName())) {
+            commandArgumentLists.put(command.getName(), profileCommandArguments(command));
         }
 
-        Map<Integer, List<CommandArgument<?>>> a = commandArgumentLists.get(command.name());
+        Map<Integer, List<CommandArgument<?>>> a = commandArgumentLists.get(command.getName());
         if (!a.containsKey(arguments.size())) {
             throw new CommandException(Text.of("Wrong number of arguments."));
         }
@@ -144,53 +143,71 @@ public class BaseCommand implements CommandCallable {
 
 
     @Override
-    public @Nonnull List<String> getSuggestions(@Nonnull CommandSource source, @Nonnull String arguments, @Nullable Location<World> targetPosition) throws CommandException {
+    public @Nonnull List<String> getSuggestions(@Nonnull CommandSource source,
+                                                @Nonnull String argumentString,
+                                                @Nullable Location<World> targetPosition)
+            throws CommandException {
 
-        List<String> args = WHITE_SPACE.splitAsStream(arguments).collect(Collectors.toList());
+        // Break the command by whitespace
+        List<String> argumentValues =
+                WHITE_SPACE.splitAsStream(argumentString).collect(Collectors.toList());
 
-        if(args.size() == 0) {
-
-            Set<String> keys = commandArgumentLists.keySet();
-
-            if (keys.size() == 1) {
-                return keys.stream().map(s -> s + " ").collect(Collectors.toList());
-            }
-
-            return new ArrayList<>(keys);
+        // If there's nothing, then return the full list of commands.
+        if(argumentValues.size() == 0) {
+            return new ArrayList<>(commandArgumentLists.keySet());
         }
 
-        String commandName = args.remove(0);
+        // Get the command name.
+        String commandName = argumentValues.remove(0);
 
-
-
+        // If there's not a match, return the commands which start with the given command name.
         if (!commandArgumentLists.containsKey(commandName)) {
             return commandArgumentLists.keySet().stream()
                     .filter(s -> s.startsWith(commandName))
                     .collect(Collectors.toList());
         }
 
-        StringBuilder b = new StringBuilder();
+        // Whether or not the last character in the argument string was whitespace
+        boolean endsWithWhiteSpace =
+                Character.isWhitespace(argumentString.charAt(argumentString.length() - 1));
 
-        if (args.size() == 0) {
-            if (commandArgumentLists.containsKey(commandName)) {
-                b.append(' ');
-            }
+        // If there's only a command, append a space.
+        if (argumentValues.size() == 0 && !endsWithWhiteSpace) {
+            return Collections.singletonList(commandName + " ");
         }
 
-        Map<Integer, List<CommandArgument<?>>> argumentsByLength = commandArgumentLists.get(commandName);
+        // Get the possible argument list executors
+        Map<Integer, List<CommandArgument<?>>> argumentsByLength =
+                commandArgumentLists.get(commandName);
 
-        return argumentsByLength.entrySet().stream()
-                .filter(e -> e.getKey() >= args.size())
-                .map(e -> e.getValue().get(args.size() - 1))
+        // The last word is the word which needs to be completed.
+        String lastWord;
+        if (argumentValues.size() == 0 || endsWithWhiteSpace) {
+            lastWord = "";
+        } else {
+            lastWord = argumentValues.get(argumentValues.size() - 1);
+        }
+
+        // The index determines which argument completer to get.
+        int index;
+        if (endsWithWhiteSpace) {
+            index = argumentValues.size();
+        } else {
+            index = argumentValues.size() - 1;
+        }
+
+        List<String> matches = argumentsByLength.entrySet().stream()
+                .filter(e -> e.getKey() >= index + 1)
+                .map(e -> e.getValue().get(index))
                 .map(CommandArgument::getTabCompleter)
-                .flatMap(t -> {
-                    if (args.size() == 0) {
-                        return t.getSuggestions("").stream();
-                    }
-                    return t.getSuggestions(args.get(args.size() - 1)).stream();
-                })
-                .map(s -> b.toString() + s)
+                .flatMap(t -> t.getSuggestions(lastWord).stream())
                 .collect(Collectors.toList());
+
+        if (matches.size() == 1 && matches.get(0).equals(lastWord)) {
+            return Collections.singletonList(lastWord + " ");
+        }
+
+        return matches;
     }
 
     @Override

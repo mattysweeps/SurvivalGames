@@ -33,27 +33,22 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArgument
 import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArguments;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValues;
 
-public class PrintCommand implements SurvivalGamesCommand {
+public class PrintCommand2 implements SurvivalGamesCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintCommand();
+    private static final SurvivalGamesCommand INSTANCE = new PrintCommand2();
 
-    public PrintCommand() {
+    public PrintCommand2() {
 
     }
 
     @Override
     public String getName() {
-        return "print";
+        return "pretty";
     }
 
     @ArgumentProvider
     public List<CommandArgument> argumentList() {
         return Arrays.asList(CommandArguments.ONLINE_PLAYER, CommandArguments.TEST);
-    }
-
-    @ArgumentProvider
-    public List<CommandArgument> argumentList2() {
-        return Arrays.asList(CommandArguments.TEST, CommandArguments.TEST, CommandArguments.TEST);
     }
 
     @Override

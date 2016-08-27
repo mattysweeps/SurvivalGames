@@ -17,15 +17,20 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
+import org.reflections.Reflections;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Util {
+
+    private static final Reflections REFLECTIONS = new Reflections("io.github.m0pt0pmatt.spongesurvivalgames");
 
     /**
      * Helper function to get a set of players from their UUIDs
@@ -39,5 +44,19 @@ public class Util {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+    }
+
+    public static <T extends Namable> void addNameables(Map<String, T> map, Class<? extends Namable> type) {
+        REFLECTIONS.getSubTypesOf(type).stream()
+                .map(c -> {
+                    try {
+                        return c.getConstructor().newInstance();
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .map(o -> (T) o)
+                .forEach(o -> map.put(o.getName(), o));
     }
 }

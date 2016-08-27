@@ -15,9 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
+package io.github.m0pt0pmatt.spongesurvivalgames.util;
 
-public class SurvivalGamesCommands {
+public interface Namable {
 
-    public static final SurvivalGamesCommand PRINT_COMMAND = PrintCommand.get();
+    String getName();
 }
