@@ -15,7 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.callable;
+package io.github.m0pt0pmatt.spongesurvivalgames.command;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -28,6 +31,7 @@ import org.spongepowered.api.world.World;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,22 +44,17 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentProvider;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandRepository;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArgument;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValue;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValues;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin.LOGGER;
 
-public class BaseCommand implements CommandCallable {
+class BaseCommand implements CommandCallable {
 
     private static final Pattern WHITE_SPACE = Pattern.compile("\\s+");
 
-    private final Map<String, Map<Integer, List<CommandArgument<?>>>> commandArgumentLists;
+    private final Map<String, Multimap<Integer, List<Argument<?>>>> commandArgumentLists;
 
-    public BaseCommand() {
+    BaseCommand() {
         commandArgumentLists = new HashMap<>();
     }
 
@@ -75,14 +74,20 @@ public class BaseCommand implements CommandCallable {
         return command.execute(source, buildArguments(command, args));
     }
 
-    public void registerCommands() {
+    void registerCommands() {
         commandArgumentLists.clear();
-        CommandRepository.values().forEach(command -> commandArgumentLists.put(command.getName(), profileCommandArguments(command)));
+        CommandRepository.values().forEach(command -> {
+            if (!commandArgumentLists.containsKey(command.getName())) {
+                commandArgumentLists.put(command.getName(), HashMultimap.create());
+            }
+            profileCommandArguments(command);
+        });
     }
 
     @SuppressWarnings("unchecked")
-    private Map<Integer, List<CommandArgument<?>>> profileCommandArguments(SurvivalGamesCommand command) {
-        Map<Integer, List<CommandArgument<?>>> argumentsByLength = new HashMap<>();
+    private void profileCommandArguments(SurvivalGamesCommand command) {
+
+        Multimap<Integer, List<Argument<?>>> argumentsByLength = commandArgumentLists.get(command.getName());
 
         for (Method method: command.getClass().getMethods()) {
             if (method.getAnnotation(ArgumentProvider.class) != null) {
@@ -92,8 +97,8 @@ public class BaseCommand implements CommandCallable {
                         List list = (List) method.invoke(command);
                         if (list == null) {
                             LOGGER.error("Return list was null for @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
-                        } else if (list.size() != 0 && (!(list.get(0) instanceof CommandArgument))) {
-                            LOGGER.error("Return type isn't List<CommandArgument> for @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
+                        } else if (list.size() != 0 && (!(list.get(0) instanceof Argument))) {
+                            LOGGER.error("Return type isn't List<Argument> for @ArgumentProvider method: " + command.getClass().getName() + "#" + method.getName());
                         } else if (argumentsByLength.containsKey(list.size())) {
                             LOGGER.error("Command " + command.getClass().getName() + " has more than one @ArgumentProvider with the same length.");
                         } else {
@@ -107,29 +112,30 @@ public class BaseCommand implements CommandCallable {
                 }
             }
         }
-
-        return argumentsByLength;
     }
 
-    private CommandValues buildArguments(SurvivalGamesCommand command, List<String> arguments) throws CommandException {
+    private ArgumentValues buildArguments(SurvivalGamesCommand command, List<String> arguments) throws CommandException {
 
         if (!commandArgumentLists.containsKey(command.getName())) {
-            commandArgumentLists.put(command.getName(), profileCommandArguments(command));
+            if (!commandArgumentLists.containsKey(command.getName())) {
+                commandArgumentLists.put(command.getName(), HashMultimap.create());
+            }
+            profileCommandArguments(command);
         }
 
-        Map<Integer, List<CommandArgument<?>>> a = commandArgumentLists.get(command.getName());
+        Multimap<Integer, List<Argument<?>>> a = commandArgumentLists.get(command.getName());
         if (!a.containsKey(arguments.size())) {
             throw new CommandException(Text.of("Wrong number of arguments."));
         }
 
-        List<CommandArgument<?>> args = a.get(arguments.size());
+        List<Argument<?>> args = a.get(arguments.size()).stream().flatMap(Collection::stream).collect(Collectors.toList());
 
-        CommandValues value = new CommandValues();
+        ArgumentValues value = new ArgumentValues();
 
-        Iterator<CommandArgument<?>> commandIterator = args.iterator();
+        Iterator<Argument<?>> commandIterator = args.iterator();
         Iterator<String> argIterator = arguments.iterator();
         while (commandIterator.hasNext() && argIterator.hasNext()) {
-            CommandArgument<?> c = commandIterator.next();
+            Argument<?> c = commandIterator.next();
             String arg = argIterator.next();
             addValue(c, arg, value);
         }
@@ -137,8 +143,13 @@ public class BaseCommand implements CommandCallable {
         return value;
     }
 
-    private <T> void addValue(CommandArgument<T> argument, String value, CommandValues values) {
-        argument.getTabCompleter().getValue(value).ifPresent(v -> values.put(argument, new CommandValue<>(value, v)));
+    private <T> void addValue(Argument<T> argument, String value, ArgumentValues values) {
+        Optional<T> v = argument.getTabCompleter().getValue(value);
+        if (v.isPresent()) {
+            values.put(argument, new ArgumentValue<>(value, v.get()));
+        } else {
+            values.put(argument, new ArgumentValue<>(value));
+        }
     }
 
 
@@ -177,7 +188,7 @@ public class BaseCommand implements CommandCallable {
         }
 
         // Get the possible argument list executors
-        Map<Integer, List<CommandArgument<?>>> argumentsByLength =
+        Multimap<Integer, List<Argument<?>>> argumentsByLength =
                 commandArgumentLists.get(commandName);
 
         // The last word is the word which needs to be completed.
@@ -196,10 +207,10 @@ public class BaseCommand implements CommandCallable {
             index = argumentValues.size() - 1;
         }
 
-        List<String> matches = argumentsByLength.entrySet().stream()
+        List<String> matches = argumentsByLength.entries().stream()
                 .filter(e -> e.getKey() >= index + 1)
                 .map(e -> e.getValue().get(index))
-                .map(CommandArgument::getTabCompleter)
+                .map(Argument::getTabCompleter)
                 .flatMap(t -> t.getSuggestions(lastWord).stream())
                 .collect(Collectors.toList());
 
@@ -229,5 +240,4 @@ public class BaseCommand implements CommandCallable {
     public @Nonnull Text getUsage(@Nonnull CommandSource source) {
         return Text.of("usage");
     }
-
 }

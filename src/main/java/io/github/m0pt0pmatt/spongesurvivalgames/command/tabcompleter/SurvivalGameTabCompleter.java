@@ -24,13 +24,7 @@ import java.util.stream.Collectors;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-class SurvivalGameTabCompleter implements TabCompleter<SurvivalGame> {
-
-    private static final TabCompleter<SurvivalGame> INSTANCE = new SurvivalGameTabCompleter();
-
-    private SurvivalGameTabCompleter() {
-
-    }
+public class SurvivalGameTabCompleter implements TabCompleter<SurvivalGame> {
 
     @Override
     public List<String> getSuggestions(String argument) {
@@ -43,9 +37,5 @@ class SurvivalGameTabCompleter implements TabCompleter<SurvivalGame> {
     @Override
     public Optional<SurvivalGame> getValue(String argument) {
         return SurvivalGameRepository.get(argument);
-    }
-
-    public static TabCompleter<SurvivalGame> get() {
-        return INSTANCE;
     }
 }

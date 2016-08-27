@@ -15,24 +15,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.data;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.argument.CommandArgument;
+public class NoopTabCompleter implements TabCompleter<String> {
 
-public class CommandValues {
-
-    private final Map<CommandArgument<?>, CommandValue<?>> arguments = new HashMap<>();
-
-    @SuppressWarnings("unchecked")
-    public <T> Optional<CommandValue<T>> get(CommandArgument<T> argument, Class<T> type) {
-        return Optional.ofNullable((CommandValue<T>) arguments.get(argument));
+    @Override
+    public List<String> getSuggestions(String argument) {
+        return Collections.emptyList();
     }
 
-    public <T> void put(CommandArgument<T> argument, CommandValue<T> value) {
-        arguments.put(argument, value);
+    @Override
+    public Optional<String> getValue(String argument) {
+        return Optional.of(argument);
     }
 }

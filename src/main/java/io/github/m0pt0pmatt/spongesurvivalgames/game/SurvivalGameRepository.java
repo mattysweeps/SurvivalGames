@@ -41,4 +41,16 @@ public class SurvivalGameRepository {
     public static Collection<SurvivalGame> values() {
         return MAP.values();
     }
+
+    public static boolean contains(String name) {
+        return MAP.containsKey(name);
+    }
+
+    public static SurvivalGame remove(String name) {
+        return MAP.remove(name);
+    }
+
+    public static SurvivalGame remove(SurvivalGame game) {
+        return MAP.remove(game.getID());
+    }
 }

@@ -23,10 +23,11 @@ import org.spongepowered.api.command.CommandSource;
 
 import javax.annotation.Nonnull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.util.Namable;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.data.CommandValues;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValues;
 
-public interface SurvivalGamesCommand extends Namable {
+public interface SurvivalGamesCommand {
 
-    @Nonnull CommandResult execute(@Nonnull CommandSource source, @Nonnull CommandValues arguments) throws CommandException;
+    String getName();
+
+    @Nonnull CommandResult execute(@Nonnull CommandSource source, @Nonnull ArgumentValues arguments) throws CommandException;
 }

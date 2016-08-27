@@ -15,14 +15,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.data;
+package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
-public class CommandValue<T> {
+import java.util.Optional;
+
+public class ArgumentValue<T> {
 
     private final String argument;
     private final T value;
 
-    public CommandValue(String argument, T value) {
+    ArgumentValue(String argument) {
+        this.argument = argument;
+        this.value = null;
+    }
+
+    ArgumentValue(String argument, T value) {
         this.argument = argument;
         this.value = value;
     }
@@ -31,7 +38,7 @@ public class CommandValue<T> {
         return argument;
     }
 
-    public T getValue() {
-        return value;
+    public Optional<T> getValue() {
+        return Optional.ofNullable(value);
     }
 }

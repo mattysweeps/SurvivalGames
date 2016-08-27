@@ -27,12 +27,6 @@ import java.util.stream.Collectors;
 
 public class OnlinePlayerTabCompleter implements TabCompleter<Player> {
 
-    private static final TabCompleter<Player> INSTANCE = new OnlinePlayerTabCompleter();
-
-    private OnlinePlayerTabCompleter() {
-
-    }
-
     @Override
     public List<String> getSuggestions(String argument) {
         return Sponge.getGame().getServer().getOnlinePlayers().stream()
@@ -44,9 +38,5 @@ public class OnlinePlayerTabCompleter implements TabCompleter<Player> {
     @Override
     public Optional<Player> getValue(String argument) {
         return Sponge.getGame().getServer().getPlayer(argument);
-    }
-
-    public static TabCompleter<Player> get() {
-        return INSTANCE;
     }
 }

@@ -26,7 +26,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter.TabCompleter;
 
 public class Util {
 
@@ -46,7 +50,7 @@ public class Util {
                 .collect(Collectors.toSet());
     }
 
-    public static <T extends Namable> void addNameables(Map<String, T> map, Class<? extends Namable> type) {
+    public static <T> void addComponents(Map<String, T> map, Class<?> type, Function<T, String> keyFunction) {
         REFLECTIONS.getSubTypesOf(type).stream()
                 .map(c -> {
                     try {
@@ -57,6 +61,7 @@ public class Util {
                 })
                 .filter(Objects::nonNull)
                 .map(o -> (T) o)
-                .forEach(o -> map.put(o.getName(), o));
+                .forEach(o -> map.put(keyFunction.apply(o), o));
     }
+
 }

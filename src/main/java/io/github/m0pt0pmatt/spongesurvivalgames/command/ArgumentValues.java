@@ -15,13 +15,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter;
+package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
-import org.spongepowered.api.entity.living.player.Player;
+import java.util.HashMap;
+import java.util.Map;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.Argument;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValue;
 
-public class TabCompleters {
-    public static final TabCompleter<SurvivalGame> SURVIVAL_GAME = SurvivalGameTabCompleter.get();
-    public static final TabCompleter<Player> ONLINE_PLAYER = OnlinePlayerTabCompleter.get();
+public class ArgumentValues {
+
+    private final Map<Argument<?>, ArgumentValue<?>> arguments;
+
+    ArgumentValues() {
+        arguments = new HashMap<>();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> ArgumentValue<T> get(Argument<T> argument) {
+        return (ArgumentValue<T>) arguments.get(argument);
+    }
+
+    <T> void put(Argument<T> argument, ArgumentValue<T> value) {
+        arguments.put(argument, value);
+    }
 }

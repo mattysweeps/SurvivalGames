@@ -15,17 +15,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.argument;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter;
 
-import org.spongepowered.api.entity.living.player.Player;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter.TabCompleters;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter.TestTabCompleter;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class CommandArguments {
+public class SurvivalGameNameTabCompleter implements TabCompleter<String> {
 
-    public static final CommandArgument<SurvivalGame> SURVIVAL_GAME = new CommandArgument<>("[survival-game]", TabCompleters.SURVIVAL_GAME);
-    public static final CommandArgument<Player> ONLINE_PLAYER = new CommandArgument<>("[player-name]", TabCompleters.ONLINE_PLAYER);
-    public static final CommandArgument<String> TEST = new CommandArgument<>("[test]", new TestTabCompleter());
+    @Override
+    public List<String> getSuggestions(String argument) {
+        return SurvivalGameRepository.values().stream()
+                .map(SurvivalGame::getID)
+                .filter(s -> s.startsWith(argument))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<String> getValue(String argument) {
+        return Optional.of(argument);
+    }
 }

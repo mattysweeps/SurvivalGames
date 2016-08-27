@@ -23,28 +23,28 @@
  * THE SOFTWARE.
  */
 
-package io.github.m0pt0pmatt.spongesurvivalgames.command.argument;
+package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter.TabCompleter;
 
 /**
  * The different arguments which commands will use.
  */
-public class CommandArgument<T> {
+public class Argument<T> {
 
     private final String name;
     private final TabCompleter<T> tabCompleter;
 
-    public CommandArgument(String name, TabCompleter<T> tabCompleter) {
+    Argument(String name, TabCompleter<T> tabCompleter) {
         this.name = name;
         this.tabCompleter = tabCompleter;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public TabCompleter<T> getTabCompleter() {
+    TabCompleter<T> getTabCompleter() {
         return tabCompleter;
     }
 
@@ -61,7 +61,7 @@ public class CommandArgument<T> {
     @Override
     public boolean equals(Object object) {
         return this == object
-                || object instanceof CommandArgument
-                && name.equals(((CommandArgument) object).name);
+                || object instanceof Argument
+                && name.equals(((Argument) object).name);
     }
 }
