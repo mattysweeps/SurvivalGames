@@ -20,52 +20,43 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentProvider;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.Argument;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.Arguments;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValue;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValues;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.Keys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
-public class DeleteGameCommand implements SurvivalGamesCommand {
+public class DeleteGameCommand extends BaseCommand {
+
+    private static SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
+
+    private DeleteGameCommand() {
+        super(
+                Collections.singletonList("delete"),
+                "",
+                Text.of("usage"),
+                SurvivalGameNameCommandElement.getInstance()
+        );
+    }
 
     @Override
-    public String getName() {
-        return "delete";
-    }
-
-    @ArgumentProvider
-    public List<Argument<?>> argumentList() {
-        return Collections.singletonList(Arguments.SURVIVAL_GAME);
-    }
-
     @Nonnull
-    @Override
-    public CommandResult execute(@Nonnull CommandSource source, @Nonnull ArgumentValues arguments) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        String survivalGameName = (String) args.getOne(Keys.SURVIVAL_GAME_NAME)
+                .orElseThrow(() -> new CommandException(Text.of("No Such Survival Game")));
 
-        ArgumentValue<SurvivalGame> game = arguments.get(Arguments.SURVIVAL_GAME);
-        if (!game.getValue().isPresent()) {
-            source.sendMessage(Text.of("No such SurvivalGame with the name: " + game.getArgument()));
-            return CommandResult.empty();
-        }
+        SurvivalGameRepository.remove(survivalGameName);
 
-        SurvivalGame g = game.getValue().get();
-        if (g.getState() != SurvivalGameStateManager.SurvivalGameState.STOPPED) {
-            source.sendMessage(Text.of("Cannot delete the SurvivalGame: " + game.getArgument() + ". State must be STOPPED."));
-            return CommandResult.empty();
-        }
-
-        SurvivalGameRepository.remove(g.getID());
-        source.sendMessage(Text.of("Deleted the SurvivalGame: " + game.getArgument()));
         return CommandResult.success();
+    }
+
+    public static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
     }
 }

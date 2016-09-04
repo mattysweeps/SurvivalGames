@@ -51,6 +51,6 @@ public class SurvivalGameRepository {
     }
 
     public static SurvivalGame remove(SurvivalGame game) {
-        return MAP.remove(game.getID());
+        return MAP.remove(game.getName());
     }
 }

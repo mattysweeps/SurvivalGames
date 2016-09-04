@@ -20,40 +20,43 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentProvider;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.Argument;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValues;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class ListGamesCommand implements SurvivalGamesCommand {
+public class ListGameCommand extends BaseCommand {
+
+    private static SurvivalGamesCommand INSTANCE = new ListGameCommand();
+
+    private ListGameCommand() {
+        super(
+                Collections.singletonList("list"),
+                "",
+                Text.of("usage"),
+                GenericArguments.none()
+        );
+    }
+
     @Override
-    public String getName() {
-        return "list";
-    }
-
-    @ArgumentProvider
-    public List<Argument<?>> argumentList() {
-        return Collections.emptyList();
-    }
-
     @Nonnull
-    @Override
-    public CommandResult execute(@Nonnull CommandSource source, @Nonnull ArgumentValues arguments) throws CommandException {
-
-        source.sendMessage(Text.of("Survival Games:"));
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        src.sendMessage(Text.of("Survival Games:"));
         SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getID)
+                .map(SurvivalGame::getName)
                 .map(Text::of)
-                .forEach(source::sendMessage);
+                .forEach(src::sendMessage);
 
         return CommandResult.success();
+    }
+
+    public static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
     }
 }

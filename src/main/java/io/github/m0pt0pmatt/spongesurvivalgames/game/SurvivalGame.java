@@ -59,8 +59,6 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin
  */
 public class SurvivalGame {
 
-    public static final int backupTime = 60 * 5; //make a backup every 5 minutes
-
     private static final List<SurvivalGameTask> startTasks = Arrays.asList(
         Tasks.CREATE_CAGE,
         Tasks.SPAWN_PLAYERS,
@@ -95,7 +93,7 @@ public class SurvivalGame {
         Tasks.CHECK_WIN
     );
 
-    private final String id;
+    private final String name;
     private final Set<UUID> playerUUIDs = new HashSet<>();
     private final Set<UUID> spectatorUUIDs = new HashSet<>();
     private final LootGenerator lootGenerator = new LootGenerator();
@@ -103,8 +101,8 @@ public class SurvivalGame {
     private SurvivalGameConfig config = new SurvivalGameConfig();
     private boolean chestsFilled = false;
 
-    public SurvivalGame(String id) {
-        this.id = id;
+    public SurvivalGame(String name) {
+        this.name = name;
     }
 
     public void ready() throws SurvivalGameException {
@@ -230,8 +228,8 @@ public class SurvivalGame {
         }
     }
 
-    public String getID() {
-        return id;
+    public String getName() {
+        return name;
     }
 
     public SurvivalGameStateManager.SurvivalGameState getState() {

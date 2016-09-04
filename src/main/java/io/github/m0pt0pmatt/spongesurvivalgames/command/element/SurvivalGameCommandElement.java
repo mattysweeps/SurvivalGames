@@ -15,27 +15,48 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.tabcompleter;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
-import java.util.List;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.SelectorCommandElement;
+import org.spongepowered.api.text.Text;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class SurvivalGameTabCompleter implements TabCompleter<SurvivalGame> {
+public class SurvivalGameCommandElement extends SelectorCommandElement {
 
+    private static final CommandElement INSTANCE = new SurvivalGameCommandElement();
+
+    private SurvivalGameCommandElement() {
+        super(Keys.SURVIVAL_GAME);
+    }
+
+    @Nonnull
     @Override
-    public List<String> getSuggestions(String argument) {
+    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
         return SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getID)
-                .filter(s -> s.startsWith(argument))
+                .map(SurvivalGame::getName)
                 .collect(Collectors.toList());
     }
 
+    @Nonnull
     @Override
-    public Optional<SurvivalGame> getValue(String argument) {
-        return SurvivalGameRepository.get(argument);
+    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
+        Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
+        if (survivalGame.isPresent()) {
+            return survivalGame.get();
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static CommandElement getInstance() {
+        return INSTANCE;
     }
 }

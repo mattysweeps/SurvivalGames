@@ -17,17 +17,25 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
 
-import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Optional;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValues;
+public interface SurvivalGamesCommand extends CommandExecutor {
 
-public interface SurvivalGamesCommand {
+    List<String> getAliases();
 
-    String getName();
+    boolean testPermission(CommandSource source);
 
-    @Nonnull CommandResult execute(@Nonnull CommandSource source, @Nonnull ArgumentValues arguments) throws CommandException;
+    Optional<Text> getShortDescription(CommandSource source);
+
+    Optional<Text> getHelp(CommandSource source);
+
+    Text getUsage(CommandSource source);
+
+    CommandElement getArguments();
 }

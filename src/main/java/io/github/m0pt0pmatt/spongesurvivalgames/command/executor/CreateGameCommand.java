@@ -20,47 +20,48 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentProvider;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.Argument;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.Arguments;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.ArgumentValues;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.Keys;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class CreateGameCommand implements SurvivalGamesCommand {
+public class CreateGameCommand extends BaseCommand {
+
+    private static SurvivalGamesCommand INSTANCE = new CreateGameCommand();
+
+    private CreateGameCommand() {
+        super(
+                Collections.singletonList("create"),
+                "",
+                Text.of("usage"),
+                GenericArguments.string(Keys.SURVIVAL_GAME_NAME)
+        );
+    }
 
     @Override
-    public String getName() {
-        return "create";
-    }
-
-    @ArgumentProvider
-    public List<Argument<?>> argumentList() {
-        return Collections.singletonList(Arguments.NEW_SURVIVAL_GAME_NAME);
-    }
-
     @Nonnull
-    @Override
-    public CommandResult execute(@Nonnull CommandSource source, @Nonnull ArgumentValues arguments) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        String survivalGameName = (String) args.getOne(Keys.SURVIVAL_GAME_NAME)
+                .orElseThrow(() -> new CommandException(Text.of("No Such Survival Game")));
 
-        String newSurvivalGameName = arguments.get(Arguments.NEW_SURVIVAL_GAME_NAME)
-                .getValue()
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game Name Provided")));
-
-        if (SurvivalGameRepository.contains(newSurvivalGameName)) {
-            source.sendMessage(Text.of("There already exists a SurvivalGame with the name: " + newSurvivalGameName));
+        if (SurvivalGameRepository.contains(survivalGameName)) {
+            src.sendMessage(Text.of("Game of the same name already exists"));
             return CommandResult.empty();
         }
 
-        SurvivalGameRepository.put(newSurvivalGameName, new SurvivalGame(newSurvivalGameName));
-        source.sendMessage(Text.of("Created a new SurvivalGame with the name: " + newSurvivalGameName));
+        SurvivalGameRepository.put(survivalGameName, new SurvivalGame(survivalGameName));
+        src.sendMessage(Text.of("Game created"));
         return CommandResult.success();
+    }
+
+    public static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
     }
 }
