@@ -22,48 +22,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.SelectorCommandElement;
+import org.spongepowered.api.text.Text;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class SurvivalGameNameCommandElement extends SelectorCommandElement {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private static final CommandElement INSTANCE = new SurvivalGameNameCommandElement();
+class AbstractPrintCommand extends BaseCommand {
 
-    private SurvivalGameNameCommandElement() {
-        super(CommandKeys.SURVIVAL_GAME_NAME);
+    private final Function<SurvivalGame, Text> function;
+
+    AbstractPrintCommand(
+            List<String> aliases,
+            String permission,
+            CommandElement arguments,
+            Map<List<String>, CommandCallable> children,
+            Function<SurvivalGame, Text> function) {
+        super(aliases, permission, arguments, children);
+        this.function = checkNotNull(function, "function");
     }
 
     @Nonnull
     @Override
-    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getName)
-                .collect(Collectors.toList());
-    }
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-    @Nonnull
-    @Override
-    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
-        Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
-        if (survivalGame.isPresent()) {
-            return survivalGame.get().getName();
+        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
+                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
+
+        try {
+            src.sendMessage(function.apply(survivalGame));
+        } catch (RuntimeException e) {
+            throw new CommandException(Text.of("Error printing"));
         }
-        throw new IllegalArgumentException();
-    }
 
-    public static CommandElement getInstance() {
-        return INSTANCE;
+        return CommandResult.success();
     }
 }

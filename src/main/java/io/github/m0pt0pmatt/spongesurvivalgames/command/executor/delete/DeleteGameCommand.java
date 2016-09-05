@@ -22,48 +22,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete;
 
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.SelectorCommandElement;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.text.Text;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
-public class SurvivalGameNameCommandElement extends SelectorCommandElement {
+public class DeleteGameCommand extends BaseCommand {
 
-    private static final CommandElement INSTANCE = new SurvivalGameNameCommandElement();
+    private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
 
-    private SurvivalGameNameCommandElement() {
-        super(CommandKeys.SURVIVAL_GAME_NAME);
+    private DeleteGameCommand() {
+        super(
+                Collections.singletonList("delete"),
+                "",
+                SurvivalGameNameCommandElement.getInstance(),
+                Collections.emptyMap()
+        );
     }
 
-    @Nonnull
     @Override
-    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getName)
-                .collect(Collectors.toList());
-    }
-
     @Nonnull
-    @Override
-    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
-        Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
-        if (survivalGame.isPresent()) {
-            return survivalGame.get().getName();
-        }
-        throw new IllegalArgumentException();
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        String survivalGameName = (String) args.getOne(CommandKeys.SURVIVAL_GAME_NAME)
+                .orElseThrow(() -> new CommandException(Text.of("No Such Survival Game")));
+
+        SurvivalGameRepository.remove(survivalGameName);
+
+        return CommandResult.success();
     }
 
-    public static CommandElement getInstance() {
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

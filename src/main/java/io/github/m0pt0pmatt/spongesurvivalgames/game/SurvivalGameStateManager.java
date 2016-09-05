@@ -20,41 +20,42 @@ package io.github.m0pt0pmatt.spongesurvivalgames.game;
 public class SurvivalGameStateManager {
 
     private SurvivalGameState state;
+    private SurvivalGameRunningState runningState;
 
     public SurvivalGameStateManager() {
-        state = SurvivalGameState.STOPPED;
+        state = SurvivalGameState.EDITING;
+        runningState = SurvivalGameRunningState.STOPPED;
+    }
+
+    public SurvivalGameState getState() {
+        return state;
+    }
+
+    public SurvivalGameRunningState getRunningState() {
+        return runningState;
     }
 
     public void ready() {
-        if (state == SurvivalGameState.STOPPED) {
-            state = SurvivalGameState.READY;
+        if (state == SurvivalGameState.EDITING) {
+            state = SurvivalGameState.JOINABLE;
         }
     }
 
     public void stop() {
-        state = SurvivalGameState.STOPPED;
+        state = SurvivalGameState.EDITING;
+        runningState = SurvivalGameRunningState.STOPPED;
     }
 
     public void run() {
-        if (state == SurvivalGameState.READY) {
+        if (state == SurvivalGameState.JOINABLE) {
             state = SurvivalGameState.RUNNING;
+            runningState = SurvivalGameRunningState.IN_PROGRESS;
         }
     }
 
     public void deathMatch() {
         if (state == SurvivalGameState.RUNNING) {
-            state = SurvivalGameState.DEATHMATCH;
+            runningState = SurvivalGameRunningState.DEATH_MATCH;
         }
-    }
-
-    /**
-     * Enumeration of the three states of a game.
-     * A game is always in one of these states.
-     */
-    public enum SurvivalGameState {
-        STOPPED,
-        READY,
-        RUNNING,
-        DEATHMATCH
     }
 }

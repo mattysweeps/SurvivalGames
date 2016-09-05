@@ -22,19 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.text.Text;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import java.util.Collections;
 
-    private PlayerEventListener() {
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+class RemoveSpawnPointCommand extends BlockRayCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new RemoveSpawnPointCommand();
+
+    private RemoveSpawnPointCommand() {
+        super(
+                Collections.singletonList("spawn"),
+                "",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap(),
+                (survivalGame, location) -> survivalGame.getConfig().getSpawns().remove(location.getBlockPosition()),
+                Text.of("Spawn point removed.")
+        );
     }
 
-    public static PlayerEventListener getInstance(){
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

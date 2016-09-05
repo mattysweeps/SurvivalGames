@@ -22,19 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
-
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
-
-    private PlayerEventListener() {
-    }
-
-    public static PlayerEventListener getInstance(){
-        return INSTANCE;
-    }
+public enum SurvivalGameState {
+    EDITING,
+    JOINABLE,
+    RUNNING
 }

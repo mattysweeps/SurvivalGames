@@ -22,19 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.text.Text;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import java.util.Collections;
 
-    private PlayerEventListener() {
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+class PrintPlayerLimitCommand extends AbstractPrintCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new PrintPlayerLimitCommand();
+
+    private PrintPlayerLimitCommand() {
+        super(
+                Collections.singletonList("player-limit"),
+                "",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap(),
+                survivalGame -> Text.of(survivalGame.getConfig().getPlayerLimit().map(String::valueOf).orElse("Player limit not set."))
+        );
     }
 
-    public static PlayerEventListener getInstance(){
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

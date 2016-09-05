@@ -26,11 +26,13 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
 import com.flowpowered.math.vector.Vector3i;
-import io.github.m0pt0pmatt.spongesurvivalgames.loot.Loot;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 
 /**
  * Config for a Survival Game
@@ -39,97 +41,101 @@ import java.util.Set;
 public class SurvivalGameConfig {
 
     private final Set<Vector3i> spawns = new HashSet<>();
-    private final Set<Loot> loot = new HashSet<>();
-    private final Set<Vector3i> chests = new HashSet<>();
     private String worldName;
-    private Integer xMin;
-    private Integer xMax;
-    private Integer zMin;
-    private Integer zMax;
-    private String exitWorld;
+    private Vector3i lesserBoundary;
+    private Vector3i greaterBoundary;
+    private String exitWorldName;
     private Vector3i exitVector;
     private Vector3i centerVector;
     private Integer playerLimit;
     private Integer countdownTime;
-    private Double chestMidpoint;
-    private Double chestRange;
-    private Integer deathmatchRadius;
-    private Integer deathmatchTime;
 
     public SurvivalGameConfig() {
 
     }
 
-    public SurvivalGameConfig(SurvivalGameConfig config) {
-        worldName = config.worldName;
-        xMin = config.xMin;
-        xMax = config.xMax;
-        zMin = config.zMin;
-        zMax = config.zMax;
-        exitWorld = config.exitWorld;
-        exitVector = config.exitVector;
-        centerVector = config.centerVector;
-        playerLimit = config.playerLimit;
-        countdownTime = config.countdownTime;
-        chestMidpoint = config.chestMidpoint;
-        chestRange = config.chestRange;
-        deathmatchRadius = config.deathmatchRadius;
-        deathmatchTime = config.deathmatchTime;
-        spawns.addAll(config.spawns);
-        loot.addAll(config.loot);
-        chests.addAll(config.chests);
-    }
-
     public Optional<String> getWorldName() {
-        return worldName == null ? Optional.empty() : Optional.of(worldName);
+        return Optional.ofNullable(worldName);
     }
 
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
 
-    public Optional<Integer> getXMin() {
-        return xMin == null ? Optional.empty() : Optional.of(xMin);
+
+    public Optional<Vector3i> getLesserBoundary() {
+        return Optional.ofNullable(lesserBoundary);
     }
 
-    public void setXMin(Integer xMin) {
-        this.xMin = xMin;
+    public Optional<Vector3i> getGreaterBoundary() {
+        if (greaterBoundary != null) {
+            return Optional.of(greaterBoundary);
+        }
+
+        return getLesserBoundary();
     }
 
-    public Optional<Integer> getXMax() {
-        return xMax == null ? Optional.empty() : Optional.of(xMax);
+    public void addBoundaryVector(Vector3i vector3i) {
+        if (lesserBoundary == null) {
+            lesserBoundary = vector3i;
+        } else {
+            if (greaterBoundary != null) {
+
+                int x1 = lesserBoundary.getX();
+                int x2 = greaterBoundary.getX();
+                int x3 = vector3i.getX();
+
+                int y1 = lesserBoundary.getY();
+                int y2 = greaterBoundary.getY();
+                int y3 = vector3i.getY();
+
+                int z1 = lesserBoundary.getZ();
+                int z2 = greaterBoundary.getZ();
+                int z3 = vector3i.getZ();
+
+                lesserBoundary = new Vector3i(
+                        min(min(x1, x2), x3),
+                        min(min(y1, y2), y3),
+                        min(min(z1, z2), z3));
+
+                greaterBoundary = new Vector3i(
+                        max(max(x1, x2), x3),
+                        max(max(y1, y2), y3),
+                        max(max(z1, z2), z3));
+
+            } else {
+                int x1 = lesserBoundary.getX();
+                int x2 = vector3i.getX();
+
+                int y1 = lesserBoundary.getY();
+                int y2 = vector3i.getY();
+
+                int z1 = lesserBoundary.getZ();
+                int z2 = vector3i.getZ();
+
+                lesserBoundary = new Vector3i(
+                        min(x1, x2),
+                        min(y1, y2),
+                        min(z1, z2));
+
+                greaterBoundary = new Vector3i(
+                        max(x1, x2),
+                        max(y1, y2),
+                        max(z1, z2));
+            }
+        }
     }
 
-    public void setXMax(Integer xMax) {
-        this.xMax = xMax;
+    public Optional<String> getExitWorldName() {
+        return Optional.ofNullable(exitWorldName);
     }
 
-    public Optional<Integer> getZMin() {
-        return zMin == null ? Optional.empty() : Optional.of(zMin);
-    }
-
-    public void setZMin(Integer zMin) {
-        this.zMin = zMin;
-    }
-
-    public Optional<Integer> getZMax() {
-        return zMax == null ? Optional.empty() : Optional.of(zMax);
-    }
-
-    public void setZMax(Integer zMax) {
-        this.zMax = zMax;
-    }
-
-    public Optional<String> getExitWorld() {
-        return exitWorld == null ? Optional.empty() : Optional.of(exitWorld);
-    }
-
-    public void setExitWorld(String exitWorld) {
-        this.exitWorld = exitWorld;
+    public void setExitWorldName(String exitWorldName) {
+        this.exitWorldName = exitWorldName;
     }
 
     public Optional<Vector3i> getExitVector() {
-        return exitVector == null ? Optional.empty() : Optional.of(exitVector);
+        return Optional.ofNullable(exitVector);
     }
 
     public void setExitVector(Vector3i exitVector) {
@@ -137,7 +143,7 @@ public class SurvivalGameConfig {
     }
 
     public Optional<Vector3i> getCenterVector() {
-        return centerVector == null ? Optional.empty() : Optional.of(centerVector);
+        return Optional.ofNullable(centerVector);
     }
 
     public void setCenterVector(Vector3i centerVector) {
@@ -145,62 +151,22 @@ public class SurvivalGameConfig {
     }
 
     public Optional<Integer> getPlayerLimit() {
-        return playerLimit == null ? Optional.empty() : Optional.of(playerLimit);
+        return Optional.ofNullable(playerLimit);
     }
 
     public void setPlayerLimit(Integer playerLimit) {
         this.playerLimit = playerLimit;
     }
 
-    public Optional<Integer> getCountdownTime() {
-        return countdownTime == null ? Optional.empty() : Optional.of(countdownTime);
+    public Optional<Integer> getCountdownSeconds() {
+        return Optional.ofNullable(countdownTime);
     }
 
     public void setCountdownTime(Integer countdownTime) {
         this.countdownTime = countdownTime;
     }
 
-    public Optional<Double> getChestMidpoint() {
-        return chestMidpoint == null ? Optional.empty() : Optional.of(chestMidpoint);
-    }
-
-    public void setChestMidpoint(Double chestMidpoint) {
-        this.chestMidpoint = chestMidpoint;
-    }
-
-    public Optional<Double> getChestRange() {
-        return chestRange == null ? Optional.empty() : Optional.of(chestRange);
-    }
-
-    public void setChestRange(Double chestRange) {
-        this.chestRange = chestRange;
-    }
-
-    public Optional<Integer> getDeathmatchRadius() {
-        return deathmatchRadius == null ? Optional.empty() : Optional.of(deathmatchRadius);
-    }
-
-    public void setDeathmatchRadius(Integer deathmatchRadius) {
-        this.deathmatchRadius = deathmatchRadius;
-    }
-
-    public Optional<Integer> getDeathmatchTime() {
-        return deathmatchTime == null ? Optional.empty() : Optional.of(deathmatchTime);
-    }
-
-    public void setDeathmatchTime(Integer deathmatchTime) {
-        this.deathmatchTime = deathmatchTime;
-    }
-
     public Set<Vector3i> getSpawns() {
         return spawns;
-    }
-
-    public Set<Loot> getLoot() {
-        return loot;
-    }
-
-    public Set<Vector3i> getChestLocations() {
-        return chests;
     }
 }

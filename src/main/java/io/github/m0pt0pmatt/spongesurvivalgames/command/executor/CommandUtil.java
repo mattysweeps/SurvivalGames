@@ -22,19 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.spec.CommandSpec;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 
-    private PlayerEventListener() {
+public class CommandUtil {
+
+    private CommandUtil() {
+
     }
 
-    public static PlayerEventListener getInstance(){
-        return INSTANCE;
+    public static Map.Entry<List<String>, ? extends CommandCallable> toEntry(
+            SurvivalGamesCommand command) {
+        return new AbstractMap.SimpleImmutableEntry<>(
+                command.getAliases(), toCommandCallable(command));
+    }
+
+    public static CommandCallable toCommandCallable(SurvivalGamesCommand command) {
+
+        if (command.getChildren().size() > 0) {
+            return CommandSpec.builder()
+                    .children(command.getChildren())
+                    .executor(command)
+                    .build();
+        }
+
+        return CommandSpec.builder()
+                .arguments(command.getArguments())
+                .executor(command)
+                .build();
     }
 }

@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
 import org.slf4j.Logger;
@@ -32,28 +31,23 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.scheduler.SpongeExecutorService;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandInitializer;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerEventListener;
 
-/**
- * SpongeSurvivalGames Sponge Plugin
- */
+import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toCommandCallable;
+
+/** SpongeSurvivalGames Sponge Plugin */
 @Plugin(id = "sponge-survival-games", name = "Sponge Survival Games", version = "0.1", description = "Survival Games for Sponge.")
 public class SpongeSurvivalGamesPlugin {
 
-    public static SpongeSurvivalGamesPlugin plugin;
-    public static SpongeExecutorService executorService;
-
-    public static Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        SpongeSurvivalGamesPlugin.plugin = this;
-        executorService = Sponge.getScheduler().createSyncExecutor(this);
         Sponge.getEventManager().registerListeners(this, PlayerEventListener.getInstance());
-        CommandInitializer.initializeCommands(this);
+        Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
+                RootCommand.getInstance().getAliases());
         LOGGER.info("Sponge Survival Games Plugin Enabled.");
     }
 
@@ -62,4 +56,3 @@ public class SpongeSurvivalGamesPlugin {
         LOGGER.info("Sponge Survival Games Plugin Disabled.");
     }
 }
-

@@ -22,48 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.SelectorCommandElement;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.text.Text;
 
-import java.util.Optional;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+public abstract class ParentCommand extends BaseCommand {
 
-public class SurvivalGameNameCommandElement extends SelectorCommandElement {
+    private final Text chooseChildMessage;
 
-    private static final CommandElement INSTANCE = new SurvivalGameNameCommandElement();
-
-    private SurvivalGameNameCommandElement() {
-        super(CommandKeys.SURVIVAL_GAME_NAME);
+    protected ParentCommand(List<String> aliases, String permission, Map<List<String>, CommandCallable> children) {
+        super(aliases, permission, GenericArguments.none(), children);
+        chooseChildMessage = Text.of("Select a child command: ")
+                .concat(Text.joinWith(Text.of(':'), children.keySet().stream()
+                        .flatMap(Collection::stream)
+                        .map(Text::of)
+                        .collect(Collectors.toList())));
     }
 
     @Nonnull
     @Override
-    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getName)
-                .collect(Collectors.toList());
-    }
-
-    @Nonnull
-    @Override
-    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
-        Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
-        if (survivalGame.isPresent()) {
-            return survivalGame.get().getName();
-        }
-        throw new IllegalArgumentException();
-    }
-
-    public static CommandElement getInstance() {
-        return INSTANCE;
+    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        throw new CommandException(chooseChildMessage);
     }
 }

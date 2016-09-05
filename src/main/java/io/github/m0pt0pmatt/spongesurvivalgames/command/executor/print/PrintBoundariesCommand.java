@@ -22,19 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.text.Text;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import java.util.Collections;
 
-    private PlayerEventListener() {
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+class PrintBoundariesCommand extends AbstractPrintCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new PrintBoundariesCommand();
+
+    private PrintBoundariesCommand() {
+        super(
+                Collections.singletonList("boundaries"),
+                "",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap(),
+                survivalGame -> survivalGame.getConfig().getLesserBoundary().map(Text::of).orElse(Text.of("(No first boundary)"))
+                        .concat(Text.of(' ').concat(survivalGame.getConfig().getGreaterBoundary().map(Text::of).orElse(Text.of("(No second boundary)"))))
+        );
     }
 
-    public static PlayerEventListener getInstance(){
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

@@ -22,19 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.text.Text;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
-
-    private PlayerEventListener() {
-    }
-
-    public static PlayerEventListener getInstance(){
-        return INSTANCE;
-    }
+public class CommandKeys {
+    public static final Text SURVIVAL_GAME = Text.of("survival-game");
+    public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
+    public static final Text COUNT_DOWN_SECONDS = Text.of("count-down-seconds");
+    public static final Text PLAYER_LIMIT = Text.of("player-limit");
+    public static final Text WORLD_NAME = Text.of("world-name");
 }

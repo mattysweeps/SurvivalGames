@@ -22,19 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.text.Text;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import java.util.Collections;
 
-    private PlayerEventListener() {
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new PrintSurvivalGameStateCommand();
+
+    private PrintSurvivalGameStateCommand() {
+        super(
+                Collections.singletonList("state"),
+                "",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap(),
+                survivalGame -> Text.of(survivalGame.getStateManager().getState())
+        );
     }
 
-    public static PlayerEventListener getInstance(){
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

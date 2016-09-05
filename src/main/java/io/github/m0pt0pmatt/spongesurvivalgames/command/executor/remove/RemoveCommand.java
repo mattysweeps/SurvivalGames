@@ -22,19 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import com.google.common.collect.ImmutableMap;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import org.spongepowered.api.command.CommandCallable;
 
-    private PlayerEventListener() {
+import java.util.Collections;
+import java.util.List;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
+
+public class RemoveCommand extends ParentCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new RemoveCommand();
+
+    private RemoveCommand() {
+        super(
+                Collections.singletonList("remove"),
+                "",
+                ImmutableMap.<List<String>, CommandCallable>builder()
+                        .put(toEntry(RemoveSpawnPointCommand.getInstance()))
+                        .build()
+        );
     }
 
-    public static PlayerEventListener getInstance(){
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }
