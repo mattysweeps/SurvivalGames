@@ -48,7 +48,7 @@ public class SurvivalGameConfig {
     private Vector3i exitVector;
     private Vector3i centerVector;
     private Integer playerLimit;
-    private Integer countdownTime;
+    private Integer countdownSeconds;
 
     public SurvivalGameConfig() {
 
@@ -76,6 +76,11 @@ public class SurvivalGameConfig {
     }
 
     public void addBoundaryVector(Vector3i vector3i) {
+
+        if (vector3i == null) {
+            return;
+        }
+
         if (lesserBoundary == null) {
             lesserBoundary = vector3i;
         } else {
@@ -126,6 +131,11 @@ public class SurvivalGameConfig {
         }
     }
 
+    public void clearBoundaryVectors() {
+        lesserBoundary = null;
+        greaterBoundary = null;
+    }
+
     public Optional<String> getExitWorldName() {
         return Optional.ofNullable(exitWorldName);
     }
@@ -159,11 +169,11 @@ public class SurvivalGameConfig {
     }
 
     public Optional<Integer> getCountdownSeconds() {
-        return Optional.ofNullable(countdownTime);
+        return Optional.ofNullable(countdownSeconds);
     }
 
-    public void setCountdownTime(Integer countdownTime) {
-        this.countdownTime = countdownTime;
+    public void setCountdownSeconds(Integer countdownSeconds) {
+        this.countdownSeconds = countdownSeconds;
     }
 
     public Set<Vector3i> getSpawns() {

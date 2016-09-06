@@ -40,8 +40,6 @@ class SetExitVectorCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("exit-vector"),
                 "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 (survivalGame, location) -> survivalGame.getConfig().setExitVector(location.getBlockPosition()),
                 Text.of("Exit vector set.")
         );

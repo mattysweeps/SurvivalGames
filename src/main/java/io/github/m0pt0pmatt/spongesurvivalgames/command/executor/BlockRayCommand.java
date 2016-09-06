@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -37,13 +36,14 @@ import org.spongepowered.api.util.blockray.BlockRay;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -56,28 +56,33 @@ public abstract class BlockRayCommand extends BaseCommand {
     protected BlockRayCommand(
             List<String> aliases,
             String permission,
-            CommandElement arguments,
-            Map<List<String>, CommandCallable> children,
             BiConsumer<SurvivalGame, Location<World>> setter,
             Text message) {
-        super(aliases, permission, arguments, children);
+        super(aliases, permission, GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.optional(GenericArguments.location(CommandKeys.LOCATION))), Collections.emptyMap());
         this.setter = checkNotNull(setter, "setter");
         this.message = checkNotNull(message, "message");
     }
 
     @Nonnull
     @Override
+    @SuppressWarnings("unchecked")
     public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
                 .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
 
-        Location<World> location = getLocation(src);
+        Location<World> location;
+
+        if (args.hasAny(CommandKeys.LOCATION)) {
+            location = (Location<World>) args.getOne(CommandKeys.LOCATION).orElseThrow(() -> new CommandException(Text.of("No Location")));
+        } else {
+            location = getLocation(src);
+        }
 
         try {
             setter.accept(survivalGame, location);
         } catch (RuntimeException e) {
-            throw new CommandException(Text.of("Error printing"));
+            throw new CommandException(Text.of("Error: " + e.getMessage()), e);
         }
 
         src.sendMessage(message.concat(Text.of(" ", location.getBlockPosition())));

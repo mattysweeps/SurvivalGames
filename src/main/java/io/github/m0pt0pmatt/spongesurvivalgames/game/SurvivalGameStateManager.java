@@ -17,45 +17,76 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+
 public class SurvivalGameStateManager {
 
-    private SurvivalGameState state;
-    private SurvivalGameRunningState runningState;
-
-    public SurvivalGameStateManager() {
-        state = SurvivalGameState.EDITING;
-        runningState = SurvivalGameRunningState.STOPPED;
+    public static void ready(SurvivalGame survivalGame) {
+        checkConfig(survivalGame.getConfig());
+        survivalGame.state = SurvivalGameState.JOINABLE;
+        survivalGame.runningState = SurvivalGameRunningState.STOPPED;
     }
 
-    public SurvivalGameState getState() {
-        return state;
+    public static void stop(SurvivalGame survivalGame) {
+        survivalGame.state = SurvivalGameState.STOPPED;
+        survivalGame.runningState = SurvivalGameRunningState.STOPPED;
     }
 
-    public SurvivalGameRunningState getRunningState() {
-        return runningState;
+    public static void start(SurvivalGame survivalGame) {
+        checkConfig(survivalGame.getConfig());
+        survivalGame.state = SurvivalGameState.RUNNING;
+        survivalGame.runningState = SurvivalGameRunningState.IN_PROGRESS;
     }
 
-    public void ready() {
-        if (state == SurvivalGameState.EDITING) {
-            state = SurvivalGameState.JOINABLE;
+    private static void checkConfig(SurvivalGameConfig config) {
+
+        String worldName = config.getWorldName()
+                .orElseThrow(() -> new IllegalArgumentException("World name is not set."));
+
+        if (!Sponge.getServer().getWorld(worldName).isPresent()) {
+            throw new IllegalArgumentException("World " + worldName + " does not exist.");
+        }
+
+        if (!config.getLesserBoundary().isPresent() || !config.getGreaterBoundary().isPresent()) {
+            throw new IllegalArgumentException("Boundaries are not set.");
+        }
+
+        String exitWorldName = config.getExitWorldName()
+                .orElseThrow(() -> new IllegalArgumentException("Exit world name is not set."));
+
+        if (!Sponge.getServer().getWorld(exitWorldName).isPresent()) {
+            throw new IllegalArgumentException("Exit world " + worldName + " does not exist.");
+        }
+
+        if (!config.getExitVector().isPresent()) {
+            throw new IllegalArgumentException("Exit vector is not set.");
+        }
+
+        if (!config.getCenterVector().isPresent()) {
+            throw new IllegalArgumentException("Center vector is not set.");
+        }
+
+        if (!config.getCountdownSeconds().isPresent()) {
+            throw new IllegalArgumentException("Countdown seconds are not set.");
+        }
+
+        if (!config.getPlayerLimit().isPresent()) {
+            throw new IllegalArgumentException("Player limit is not set.");
+        }
+
+        if (config.getSpawns().isEmpty()) {
+            throw new IllegalArgumentException("No spawn points set.");
         }
     }
 
-    public void stop() {
-        state = SurvivalGameState.EDITING;
-        runningState = SurvivalGameRunningState.STOPPED;
-    }
-
-    public void run() {
-        if (state == SurvivalGameState.JOINABLE) {
-            state = SurvivalGameState.RUNNING;
-            runningState = SurvivalGameRunningState.IN_PROGRESS;
-        }
-    }
-
-    public void deathMatch() {
-        if (state == SurvivalGameState.RUNNING) {
-            runningState = SurvivalGameRunningState.DEATH_MATCH;
-        }
+    public static void deathMatch(SurvivalGame survivalGame) {
+        survivalGame.state = SurvivalGameState.RUNNING;
+        survivalGame.runningState = SurvivalGameRunningState.DEATH_MATCH;
     }
 }

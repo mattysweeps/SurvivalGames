@@ -40,8 +40,6 @@ class SetBoundaryCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("boundary"),
                 "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 (survivalGame, location) -> survivalGame.getConfig().addBoundaryVector(location.getBlockPosition()),
                 Text.of("Boundary point set.")
         );

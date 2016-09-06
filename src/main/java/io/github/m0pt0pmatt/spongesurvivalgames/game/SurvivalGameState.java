@@ -25,7 +25,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 public enum SurvivalGameState {
-    EDITING,
+    STOPPED,
     JOINABLE,
     RUNNING
 }

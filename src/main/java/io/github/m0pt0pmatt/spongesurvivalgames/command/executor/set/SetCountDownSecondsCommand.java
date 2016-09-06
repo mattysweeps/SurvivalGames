@@ -64,7 +64,7 @@ class SetCountDownSecondsCommand extends BaseCommand {
         Integer countDownSeconds = (Integer) args.getOne(CommandKeys.COUNT_DOWN_SECONDS)
                 .orElseThrow(() -> new CommandException(Text.of("No Countdown Seconds")));
 
-        survivalGame.getConfig().setCountdownTime(countDownSeconds);
+        survivalGame.getConfig().setCountdownSeconds(countDownSeconds);
         src.sendMessage(Text.of("Countdown seconds set."));
 
         return CommandResult.success();

@@ -22,30 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
-import org.spongepowered.api.text.Text;
+import com.google.common.collect.ImmutableMap;
+
+import org.spongepowered.api.command.CommandCallable;
 
 import java.util.Collections;
+import java.util.List;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
-class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
+import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintSurvivalGameStateCommand();
+public class UnsetCommand extends ParentCommand {
 
-    private PrintSurvivalGameStateCommand() {
+    private static final SurvivalGamesCommand INSTANCE = new UnsetCommand();
+
+    private UnsetCommand() {
         super(
-                Collections.singletonList("state"),
+                Collections.singletonList("unset"),
                 "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                survivalGame -> Text.of(survivalGame.getState())
+                ImmutableMap.<List<String>, CommandCallable>builder()
+                        .put(toEntry(UnsetBoundariesCommand.getInstance()))
+                        .put(toEntry(UnsetCenterLocationCommand.getInstance()))
+                        .put(toEntry(UnsetCountDownSecondsCommand.getInstance()))
+                        .put(toEntry(UnsetExitVectorCommand.getInstance()))
+                        .put(toEntry(UnsetExitWorldNameCommand.getInstance()))
+                        .put(toEntry(UnsetPlayerLimitCommand.getInstance()))
+                        .put(toEntry(UnsetWorldNameCommand.getInstance()))
+                        .build()
         );
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

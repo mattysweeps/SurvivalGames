@@ -25,30 +25,47 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 
 /** represents a Survival Game. */
 public class SurvivalGame {
 
+    SurvivalGameState state;
+    SurvivalGameRunningState runningState;
+
     private final String name;
-    private final SurvivalGameStateManager stateManager;
     private final SurvivalGameConfig config;
+    private final Set<UUID> playerUUIDs;
 
     public SurvivalGame(String name) {
         this.name = name;
-        stateManager = new SurvivalGameStateManager();
+        state = SurvivalGameState.STOPPED;
+        runningState = SurvivalGameRunningState.STOPPED;
         config = new SurvivalGameConfig();
+        playerUUIDs = new HashSet<>();
     }
 
     public String getName() {
         return name;
     }
 
-    public SurvivalGameStateManager getStateManager() {
-        return stateManager;
+    public SurvivalGameState getState() {
+        return state;
+    }
+
+    public SurvivalGameRunningState getRunningState() {
+        return runningState;
     }
 
     public SurvivalGameConfig getConfig() {
         return config;
+    }
+
+    public Set<UUID> getPlayerUUIDs() {
+        return playerUUIDs;
     }
 }

@@ -22,16 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
-public class CommandKeys {
-    public static final Text SURVIVAL_GAME = Text.of("survival-game");
-    public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
-    public static final Text COUNT_DOWN_SECONDS = Text.of("count-down-seconds");
-    public static final Text PLAYER_LIMIT = Text.of("player-limit");
-    public static final Text WORLD_NAME = Text.of("world-name");
-    public static final Text LOCATION = Text.of("location");
-    public static final Text PLAYER = Text.of("player");
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+
+class PrintPlayersCommand extends AbstractPrintCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new PrintPlayersCommand();
+
+    private PrintPlayersCommand() {
+        super(
+                Collections.singletonList("players"),
+                "",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap(),
+                survivalGame -> Text.joinWith(Text.of('\n'), survivalGame.getPlayerUUIDs().stream()
+                        .map(id -> Sponge.getServer().getPlayer(id))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(Text::of).collect(Collectors.toList()))
+        );
+    }
+
+    static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
+    }
 }

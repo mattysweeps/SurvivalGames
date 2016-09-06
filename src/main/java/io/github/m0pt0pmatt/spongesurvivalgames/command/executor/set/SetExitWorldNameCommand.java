@@ -31,6 +31,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
@@ -61,8 +62,15 @@ class SetExitWorldNameCommand extends BaseCommand {
         SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
                 .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
 
-        String worldName = (String) args.getOne(CommandKeys.WORLD_NAME)
+        Object worldInfo = args.getOne(CommandKeys.WORLD_NAME)
                 .orElseThrow(() -> new CommandException(Text.of("No World Name")));
+
+        String worldName;
+        try {
+            worldName = (String) worldInfo.getClass().getMethod("getWorldName").invoke(worldInfo);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            throw new CommandException(Text.of("Error: " + e.getMessage()), e);
+        }
 
         survivalGame.getConfig().setExitWorldName(worldName);
         src.sendMessage(Text.of("Exit world name set."));

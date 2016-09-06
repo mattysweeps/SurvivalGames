@@ -22,32 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.TextMessageException;
 
-import java.util.Collections;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+public class CreateDeathmatBorderTask implements Task {
 
-class SetCenterLocationCommand extends BlockRayCommand {
+    private static final Task INSTANCE = new CheckWinTask();
 
-    private static final SurvivalGamesCommand INSTANCE = new SetCenterLocationCommand();
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-    private SetCenterLocationCommand() {
-        super(
-                Collections.singletonList("center-location"),
-                "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                (survivalGame, location) -> survivalGame.getConfig().setCenterVector(location.getChunkPosition()),
-                Text.of("Center location set.")
-        );
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static Task getInstance() {
         return INSTANCE;
     }
 }

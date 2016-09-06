@@ -40,8 +40,6 @@ class RemoveSpawnPointCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("spawn"),
                 "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 (survivalGame, location) -> survivalGame.getConfig().getSpawns().remove(location.getBlockPosition()),
                 Text.of("Spawn point removed.")
         );

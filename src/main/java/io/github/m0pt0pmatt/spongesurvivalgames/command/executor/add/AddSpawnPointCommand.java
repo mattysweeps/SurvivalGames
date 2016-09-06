@@ -40,8 +40,6 @@ class AddSpawnPointCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("spawn"),
                 "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 (survivalGame, location) -> survivalGame.getConfig().getSpawns().add(location.getBlockPosition()),
                 Text.of("Spawn point added.")
         );

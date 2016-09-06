@@ -68,7 +68,7 @@ class AbstractPrintCommand extends BaseCommand {
         try {
             src.sendMessage(function.apply(survivalGame));
         } catch (RuntimeException e) {
-            throw new CommandException(Text.of("Error printing"));
+            throw new CommandException(Text.of("Error printing: " + e.getMessage()), e);
         }
 
         return CommandResult.success();

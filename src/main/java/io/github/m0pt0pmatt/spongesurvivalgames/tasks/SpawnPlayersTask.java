@@ -22,30 +22,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import org.spongepowered.api.text.Text;
+import com.flowpowered.math.vector.Vector3i;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.util.TextMessageException;
+
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
+public class SpawnPlayersTask implements Task {
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintSurvivalGameStateCommand();
+    private static final Task INSTANCE = new CheckWinTask();
 
-    private PrintSurvivalGameStateCommand() {
-        super(
-                Collections.singletonList("state"),
-                "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                survivalGame -> Text.of(survivalGame.getState())
-        );
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+
+        List<Vector3i> spawns = new ArrayList<>(survivalGame.getConfig().getSpawns());
+
+        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
+                Sponge.getServer().getWorld(worldName).ifPresent(world ->
+                        survivalGame.getPlayerUUIDs().forEach(playerId ->
+                                Sponge.getServer().getPlayer(playerId).ifPresent(player -> {
+                                    if (spawns.isEmpty()) {
+                                        return;
+                                    }
+                                    player.setLocation(world.getLocation(spawns.remove(0)));
+                                }))));
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static Task getInstance() {
         return INSTANCE;
     }
 }

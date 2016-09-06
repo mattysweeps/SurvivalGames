@@ -22,16 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
-import org.spongepowered.api.text.Text;
+import java.util.Collections;
 
-public class CommandKeys {
-    public static final Text SURVIVAL_GAME = Text.of("survival-game");
-    public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
-    public static final Text COUNT_DOWN_SECONDS = Text.of("count-down-seconds");
-    public static final Text PLAYER_LIMIT = Text.of("player-limit");
-    public static final Text WORLD_NAME = Text.of("world-name");
-    public static final Text LOCATION = Text.of("location");
-    public static final Text PLAYER = Text.of("player");
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
+
+public class StartSurvivalGameCommand extends AbstractStateCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new StartSurvivalGameCommand();
+
+    private StartSurvivalGameCommand() {
+        super(
+                Collections.singletonList("start"),
+                "",
+                Collections.singleton(SurvivalGameState.JOINABLE),
+                SurvivalGameStateManager::start
+        );
+    }
+
+    public static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
+    }
 }

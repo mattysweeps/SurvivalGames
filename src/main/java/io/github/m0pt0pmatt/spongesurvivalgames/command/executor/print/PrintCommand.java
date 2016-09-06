@@ -51,6 +51,7 @@ public class PrintCommand extends ParentCommand {
                         .put(toEntry(PrintExitVectorCommand.getInstance()))
                         .put(toEntry(PrintExitWorldNameCommand.getInstance()))
                         .put(toEntry(PrintPlayerLimitCommand.getInstance()))
+                        .put(toEntry(PrintPlayersCommand.getInstance()))
                         .put(toEntry(PrintSpawnsCommand.getInstance()))
                         .put(toEntry(PrintSurvivalGameStateCommand.getInstance()))
                         .put(toEntry(PrintWorldNameCommand.getInstance()))

@@ -22,16 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command;
+package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
 
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.TextMessageException;
 
-public class CommandKeys {
-    public static final Text SURVIVAL_GAME = Text.of("survival-game");
-    public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
-    public static final Text COUNT_DOWN_SECONDS = Text.of("count-down-seconds");
-    public static final Text PLAYER_LIMIT = Text.of("player-limit");
-    public static final Text WORLD_NAME = Text.of("world-name");
-    public static final Text LOCATION = Text.of("location");
-    public static final Text PLAYER = Text.of("player");
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+
+public class DespawnPlayersTask implements Task {
+
+    private static final Task INSTANCE = new CheckWinTask();
+
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+
+    }
+
+    public static Task getInstance() {
+        return INSTANCE;
+    }
 }

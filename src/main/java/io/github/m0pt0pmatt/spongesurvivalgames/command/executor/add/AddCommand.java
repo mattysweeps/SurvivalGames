@@ -45,6 +45,7 @@ public class AddCommand extends ParentCommand {
                 Collections.singletonList("add"),
                 "",
                 ImmutableMap.<List<String>, CommandCallable>builder()
+                        .put(toEntry(AddPlayerCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
                         .build()
         );

@@ -39,6 +39,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.list.ListGameCo
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.PrintCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove.RemoveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set.SetCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.DeathMatchSurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.ReadySurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.StartSurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.StopSurvivalGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset.UnsetCommand;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
 
@@ -59,6 +64,11 @@ public class RootCommand extends ParentCommand {
                     .put(toEntry(PrintCommand.getInstance()))
                     .put(toEntry(RemoveCommand.getInstance()))
                     .put(toEntry(SetCommand.getInstance()))
+                    .put(toEntry(UnsetCommand.getInstance()))
+                    .put(toEntry(ReadySurvivalGameCommand.getInstance()))
+                    .put(toEntry(StartSurvivalGameCommand.getInstance()))
+                    .put(toEntry(StopSurvivalGameCommand.getInstance()))
+                    .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
                     .build();
 
     private static final SurvivalGamesCommand INSTANCE = new RootCommand();

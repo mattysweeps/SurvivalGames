@@ -46,7 +46,7 @@ public class SetCommand extends ParentCommand {
                 "",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(SetBoundaryCommand.getInstance()))
-                        .put(toEntry(SetCenterLocationCommand.getInstance()))
+                        .put(toEntry(SetCenterVectorCommand.getInstance()))
                         .put(toEntry(SetCountDownSecondsCommand.getInstance()))
                         .put(toEntry(SetExitVectorCommand.getInstance()))
                         .put(toEntry(SetExitWorldNameCommand.getInstance()))

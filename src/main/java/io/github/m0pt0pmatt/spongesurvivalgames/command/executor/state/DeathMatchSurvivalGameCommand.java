@@ -22,16 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
@@ -41,18 +39,15 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameComm
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
-class SetWorldNameCommand extends BaseCommand {
+public class DeathMatchSurvivalGameCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new SetWorldNameCommand();
+    private static final SurvivalGamesCommand INSTANCE = new DeathMatchSurvivalGameCommand();
 
-    private SetWorldNameCommand() {
-        super(
-                Collections.singletonList("world-name"),
-                "",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
-                Collections.emptyMap()
-        );
+    private DeathMatchSurvivalGameCommand() {
+        super(Collections.singletonList("death-match"), "", SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
     }
 
     @Nonnull
@@ -62,23 +57,17 @@ class SetWorldNameCommand extends BaseCommand {
         SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
                 .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
 
-        Object worldInfo = args.getOne(CommandKeys.WORLD_NAME)
-                .orElseThrow(() -> new CommandException(Text.of("No World Name")));
-
-        String worldName;
-        try {
-            worldName = (String) worldInfo.getClass().getMethod("getWorldName").invoke(worldInfo);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw new CommandException(Text.of("Error: " + e.getMessage()), e);
+        if (survivalGame.getState() != SurvivalGameState.RUNNING) {
+            throw new CommandException(Text.of("Must be in the " + SurvivalGameState.RUNNING + " states."));
         }
 
-        survivalGame.getConfig().setWorldName(worldName);
-        src.sendMessage(Text.of("World name set."));
+        SurvivalGameStateManager.deathMatch(survivalGame);
 
+        src.sendMessage(Text.of("Death-match started"));
         return CommandResult.success();
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

@@ -22,37 +22,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-class SetWorldNameCommand extends BaseCommand {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private static final SurvivalGamesCommand INSTANCE = new SetWorldNameCommand();
+class AbstractUnsetCommand extends BaseCommand {
 
-    private SetWorldNameCommand() {
-        super(
-                Collections.singletonList("world-name"),
-                "",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
-                Collections.emptyMap()
-        );
+    private final Consumer<SurvivalGame> consumer;
+    private final Text message;
+
+    AbstractUnsetCommand(
+            List<String> aliases,
+            String permission,
+            Consumer<SurvivalGame> consumer,
+            Text message) {
+        super(aliases, permission, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        this.consumer = checkNotNull(consumer, "consumer");
+        this.message = checkNotNull(message, "message");
     }
 
     @Nonnull
@@ -62,23 +65,13 @@ class SetWorldNameCommand extends BaseCommand {
         SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
                 .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
 
-        Object worldInfo = args.getOne(CommandKeys.WORLD_NAME)
-                .orElseThrow(() -> new CommandException(Text.of("No World Name")));
-
-        String worldName;
         try {
-            worldName = (String) worldInfo.getClass().getMethod("getWorldName").invoke(worldInfo);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw new CommandException(Text.of("Error: " + e.getMessage()), e);
+            consumer.accept(survivalGame);
+        } catch (RuntimeException e) {
+            throw new CommandException(Text.of("Error while unsetting: " + e.getMessage()), e);
         }
 
-        survivalGame.getConfig().setWorldName(worldName);
-        src.sendMessage(Text.of("World name set."));
-
+        src.sendMessage(message);
         return CommandResult.success();
-    }
-
-    static SurvivalGamesCommand getInstance() {
-        return INSTANCE;
     }
 }
