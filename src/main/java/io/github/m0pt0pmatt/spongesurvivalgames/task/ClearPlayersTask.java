@@ -22,37 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
+import org.spongepowered.api.util.TextMessageException;
 
-import org.spongepowered.api.text.Text;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
+public class ClearPlayersTask implements Task {
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+    private static final Task INSTANCE = new ClearPlayersTask();
 
-class PrintSpawnsCommand extends AbstractPrintCommand {
-
-    private static final SurvivalGamesCommand INSTANCE = new PrintSpawnsCommand();
-
-    private PrintSpawnsCommand() {
-        super(
-                Collections.singletonList("spawns"),
-                "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                survivalGame -> Text.joinWith(Text.of('\n'),
-                        survivalGame.getConfig().getSpawnPoints().stream()
-                                .map(Vector3i::toString)
-                                .map(Text::of)
-                                .collect(Collectors.toList()))
-        );
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        survivalGame.getPlayerUUIDs().clear();
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static Task getInstance() {
         return INSTANCE;
     }
 }

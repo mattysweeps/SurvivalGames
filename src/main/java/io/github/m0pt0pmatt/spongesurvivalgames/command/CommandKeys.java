@@ -34,4 +34,8 @@ public class CommandKeys {
     public static final Text WORLD_NAME = Text.of("world-name");
     public static final Text LOCATION = Text.of("location");
     public static final Text PLAYER = Text.of("player");
+    public static final Text X = Text.of("x");
+    public static final Text Y = Text.of("y");
+    public static final Text Z = Text.of("z");
+    public static final Text VECTOR = Text.of("vector");
 }

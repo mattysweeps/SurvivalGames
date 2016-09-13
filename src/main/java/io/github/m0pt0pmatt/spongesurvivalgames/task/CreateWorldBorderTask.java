@@ -22,18 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import com.flowpowered.math.vector.Vector3i;
+
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.WorldBorder;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-public class CreateScoreboardTask implements Task {
+import static java.lang.Math.abs;
 
-    private static final Task INSTANCE = new CheckWinTask();
+public class CreateWorldBorderTask implements Task {
+
+    private static final Task INSTANCE = new CreateWorldBorderTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
+
+        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
+                Sponge.getServer().getWorld(worldName).ifPresent(world -> {
+
+                    WorldBorder worldBorder = world.getWorldBorder();
+
+                    Vector3i center = survivalGame.getConfig().getCenterVector().get();
+
+                    worldBorder.setCenter(center.getX(), center.getZ());
+
+                    Vector3i l = survivalGame.getConfig().getLesserBoundary().get();
+                    Vector3i g = survivalGame.getConfig().getGreaterBoundary().get();
+
+                    int m = Integer.max(abs(g.getX() - l.getX()), abs(g.getZ() - l.getZ()));
+
+                    worldBorder.setDiameter(m);
+
+                }));
 
     }
 

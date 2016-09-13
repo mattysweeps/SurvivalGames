@@ -24,6 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
+import com.google.common.collect.ComputationException;
+
+import com.flowpowered.math.vector.Vector3d;
+
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -58,7 +63,10 @@ public abstract class BlockRayCommand extends BaseCommand {
             String permission,
             BiConsumer<SurvivalGame, Location<World>> setter,
             Text message) {
-        super(aliases, permission, GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.optional(GenericArguments.location(CommandKeys.LOCATION))), Collections.emptyMap());
+        super(aliases, permission, GenericArguments.seq(
+                SurvivalGameCommandElement.getInstance(),
+                GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))),
+                Collections.emptyMap());
         this.setter = checkNotNull(setter, "setter");
         this.message = checkNotNull(message, "message");
     }
@@ -73,8 +81,13 @@ public abstract class BlockRayCommand extends BaseCommand {
 
         Location<World> location;
 
-        if (args.hasAny(CommandKeys.LOCATION)) {
-            location = (Location<World>) args.getOne(CommandKeys.LOCATION).orElseThrow(() -> new CommandException(Text.of("No Location")));
+        if (args.hasAny(CommandKeys.VECTOR)) {
+
+            String worldName = survivalGame.getConfig().getWorldName().orElseThrow(() -> new CommandException(Text.of("World name not set! Set world name first!")));
+            World world = Sponge.getServer().getWorld(worldName).orElseThrow(() -> new CommandException(Text.of("World does not exist!")));
+
+            location = world.getLocation((Vector3d) args.getOne(CommandKeys.VECTOR).orElseThrow(() -> new CommandException(Text.of("No Location"))));
+
         } else {
             location = getLocation(src);
         }

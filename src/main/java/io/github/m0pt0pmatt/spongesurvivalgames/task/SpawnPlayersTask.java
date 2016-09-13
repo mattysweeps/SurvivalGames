@@ -22,19 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import com.flowpowered.math.vector.Vector3d;
+import com.flowpowered.math.vector.Vector3i;
+
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-public class ReadyPlayerTask implements Task {
+public class SpawnPlayersTask implements Task {
 
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Task INSTANCE = new SpawnPlayersTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
+        List<Vector3i> spawns = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
+
+        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
+                Sponge.getServer().getWorld(worldName).ifPresent(world ->
+                        survivalGame.getPlayerUUIDs().forEach(playerId ->
+                                Sponge.getServer().getPlayer(playerId).ifPresent(player -> {
+                                    if (spawns.isEmpty()) {
+                                        return;
+                                    }
+                                    player.setLocation(world.getLocation(spawns.remove(0)).add(new Vector3d(0.5, -0.5, 0.5)));
+                                }))));
     }
 
     public static Task getInstance() {

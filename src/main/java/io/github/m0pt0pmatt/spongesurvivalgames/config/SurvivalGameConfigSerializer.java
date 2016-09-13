@@ -22,22 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
-import org.spongepowered.api.util.TextMessageException;
+import com.google.common.reflect.TypeToken;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 
-public class CreateWorldBorderTask implements Task {
-
-    private static final Task INSTANCE = new CheckWinTask();
-
+public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    public SurvivalGameConfig deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
+        return null;
     }
 
-    public static Task getInstance() {
-        return INSTANCE;
+    @Override
+    public void serialize(TypeToken<?> type, SurvivalGameConfig obj, ConfigurationNode value) throws ObjectMappingException {
+
     }
 }

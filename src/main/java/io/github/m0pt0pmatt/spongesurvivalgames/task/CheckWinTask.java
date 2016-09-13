@@ -22,37 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.flowpowered.math.vector.Vector3i;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.TextMessageException;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.UUID;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.WinChecker;
 
-class PrintSpawnsCommand extends AbstractPrintCommand {
+public class CheckWinTask implements Task {
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintSpawnsCommand();
+    private static final Task INSTANCE = new CheckWinTask();
 
-    private PrintSpawnsCommand() {
-        super(
-                Collections.singletonList("spawns"),
-                "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                survivalGame -> Text.joinWith(Text.of('\n'),
-                        survivalGame.getConfig().getSpawnPoints().stream()
-                                .map(Vector3i::toString)
-                                .map(Text::of)
-                                .collect(Collectors.toList()))
-        );
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        WinChecker.checkWin(survivalGame);
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static Task getInstance() {
         return INSTANCE;
     }
 }

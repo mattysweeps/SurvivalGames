@@ -25,34 +25,68 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.config;
 
+import com.google.common.reflect.TypeToken;
+
 import com.flowpowered.math.vector.Vector3i;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
+
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 
 /**
- * Config for a Survival Game
- * <p>All configurable fields are stored in this class. Getter which return Nullable values return Optionals.</p>
+ * Config for a Survival Game.
+ * <p>All configurable fields are stored in this class. Getters return Optionals.</p>
  */
+@ConfigSerializable
 public class SurvivalGameConfig {
 
-    private final Set<Vector3i> spawns = new HashSet<>();
-    private String worldName;
-    private Vector3i lesserBoundary;
-    private Vector3i greaterBoundary;
-    private String exitWorldName;
-    private Vector3i exitVector;
-    private Vector3i centerVector;
-    private Integer playerLimit;
-    private Integer countdownSeconds;
+    private static final SurvivalGameConfig DEFAULT_CONFIG = createDefaultConfig();
 
-    public SurvivalGameConfig() {
-
+    private static SurvivalGameConfig createDefaultConfig() {
+        SurvivalGameConfig survivalGameConfig = new SurvivalGameConfig();
+        survivalGameConfig.setPlayerLimit(4);
+        survivalGameConfig.setCountdownSeconds(10);
+        return survivalGameConfig;
     }
+
+    static {
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(SurvivalGameConfig.class),
+                new SurvivalGameConfigSerializer());
+    }
+
+    @Setting(value = "spawn-points", comment = "Where players spawn when the game starts.")
+    private final Set<Vector3i> spawnPoints = new HashSet<>();
+
+    @Setting(value = "world-name", comment = "The name of the world where the survival game will take place.")
+    private String worldName;
+
+    @Setting(value = "lesser-boundary", comment = "Map boundary")
+    private Vector3i lesserBoundary;
+
+    @Setting(value = "greater-boundary", comment = "Map boundary")
+    private Vector3i greaterBoundary;
+
+    @Setting(value = "exit-world-name", comment = "The name of the world where players teleport to once they leave the game.")
+    private String exitWorldName;
+
+    @Setting(value = "exit-vector", comment = "The location where players teleport to once they leave the game.")
+    private Vector3i exitVector;
+
+    @Setting(value = "center-vector", comment = "The center of the survival game map.")
+    private Vector3i centerVector;
+
+    @Setting(value = "player-limit", comment = "The max number of players which can join the game.")
+    private Integer playerLimit;
+
+    @Setting(value = "countdown-seconds", comment = "The number of seconds to countdown once the survival game starts.")
+    private Integer countdownSeconds;
 
     public Optional<String> getWorldName() {
         return Optional.ofNullable(worldName);
@@ -61,7 +95,6 @@ public class SurvivalGameConfig {
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
-
 
     public Optional<Vector3i> getLesserBoundary() {
         return Optional.ofNullable(lesserBoundary);
@@ -107,7 +140,6 @@ public class SurvivalGameConfig {
                         max(max(x1, x2), x3),
                         max(max(y1, y2), y3),
                         max(max(z1, z2), z3));
-
             } else {
                 int x1 = lesserBoundary.getX();
                 int x2 = vector3i.getX();
@@ -176,7 +208,7 @@ public class SurvivalGameConfig {
         this.countdownSeconds = countdownSeconds;
     }
 
-    public Set<Vector3i> getSpawns() {
-        return spawns;
+    public Set<Vector3i> getSpawnPoints() {
+        return spawnPoints;
     }
 }

@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -43,7 +43,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 public class CreateCageSnapshotsTask implements Task {
 
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Task INSTANCE = new CreateCageSnapshotsTask();
 
     private static final Set<Vector3i> SURROUNDING_BLOCKS = ImmutableSet.<Vector3i>builder()
             .add(new Vector3i(1, 0, 0))
@@ -56,8 +56,6 @@ public class CreateCageSnapshotsTask implements Task {
             .add(new Vector3i(0, 1, -1))
             .add(new Vector3i(0, 2, 0))
             .build();
-
-    private static final Cause CAUSE = Cause.of(NamedCause.of("CreateCageSnapshotsTask", INSTANCE));
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
@@ -73,10 +71,13 @@ public class CreateCageSnapshotsTask implements Task {
     private void setBlocks(SurvivalGame survivalGame, BlockType blockType) {
         survivalGame.getConfig().getWorldName().ifPresent(worldName ->
                 Sponge.getServer().getWorld(worldName).ifPresent(world ->
-                        survivalGame.getConfig().getSpawns().forEach(spawnPoint ->
+                        survivalGame.getConfig().getSpawnPoints().forEach(spawnPoint ->
                                 SURROUNDING_BLOCKS.forEach(vector3i ->
                                         world.getLocation(spawnPoint.add(vector3i))
-                                                .setBlockType(blockType, CAUSE)))));
+                                                .setBlockType(blockType,
+
+                                                        Cause.of(NamedCause.of("CreateCageSnapshotsTask", SpongeSurvivalGamesPlugin.PLUGIN))
+                                                        )))));
     }
 
     public static Task getInstance() {

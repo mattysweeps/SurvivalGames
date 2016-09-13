@@ -22,25 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.game;
+
+import com.flowpowered.math.vector.Vector3i;
 
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.text.Text;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import java.util.Optional;
+import java.util.UUID;
 
-public class ClearWorldBorderTask implements Task {
+public class WinChecker {
 
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
 
-    @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
-                Sponge.getServer().getWorld(worldName).ifPresent(world ->
-                        world.getWorldBorder().setDiameter(60000000)));
+    private WinChecker() {
+
     }
 
-    public static Task getInstance() {
-        return INSTANCE;
+    public static void checkWin(SurvivalGame survivalGame) {
+        if (survivalGame.getPlayerUUIDs().size() > 1) {
+            return;
+        } else if (survivalGame.getPlayerUUIDs().size() == 1) {
+
+            UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
+            Sponge.getServer().getPlayer(winnerId).ifPresent(winner -> {
+                winner.sendMessage(WINNER_MESSAGE);
+                Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
+                Optional<Vector3i> exitVector = survivalGame.getConfig().getExitVector();
+                if (exitWorldName.isPresent() && exitVector.isPresent()) {
+                    Sponge.getServer().getWorld(exitWorldName.get())
+                            .ifPresent(world -> winner.setLocation(world.getLocation(exitVector.get())));
+                }
+            });
+        }
+
+        SurvivalGameStateManager.stop(survivalGame);
     }
 }

@@ -31,10 +31,11 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerEventListener;
+import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerDeathListener;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toCommandCallable;
 
@@ -42,17 +43,21 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandU
 @Plugin(id = "sponge-survival-games", name = "Sponge Survival Games", version = "0.1", description = "Survival Games for Sponge.")
 public class SpongeSurvivalGamesPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
 
     public static SpongeExecutorService EXECUTOR;
 
+    public static PluginContainer PLUGIN;
+
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        Sponge.getEventManager().registerListeners(this, PlayerEventListener.getInstance());
+        Sponge.getEventManager().registerListeners(this, PlayerDeathListener.getInstance());
         Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
                 RootCommand.getInstance().getAliases());
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
+        PLUGIN = Sponge.getPluginManager().getPlugin("sponge-survival-games").get();
         LOGGER.info("Sponge Survival Games Plugin Enabled.");
+
     }
 
     @Listener

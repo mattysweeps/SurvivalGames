@@ -22,46 +22,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
-
-import com.flowpowered.math.vector.Vector3i;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.title.Title;
+import org.spongepowered.api.util.Color;
 import org.spongepowered.api.util.TextMessageException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
-public class CheckWinTask implements Task {
+public class CreateCountdownTask implements Task {
 
-    private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
-
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Task INSTANCE = new CreateCountdownTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        if (survivalGame.getPlayerUUIDs().size() != 1) {
-            return;
+        int countDown = survivalGame.getConfig().getCountdownSeconds().orElseThrow(() -> new TextMessageException(Text.of("no countdown")));
+
+        List<Title> titles = new ArrayList<>();
+
+        for (int i = 0; i < countDown; i++) {
+            titles.add(
+                    Title.of(
+                            Text.of(TextColors.RED, "Game begins in..."),
+                            Text.of(TextColors.RED, countDown - i)));
         }
 
-        UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
-        Sponge.getServer().getPlayer(winnerId).ifPresent(winner -> {
-            winner.sendMessage(WINNER_MESSAGE);
-            Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
-            Optional<Vector3i> exitVector = survivalGame.getConfig().getExitVector();
-            if (exitWorldName.isPresent() && exitVector.isPresent()) {
-                Sponge.getServer().getWorld(exitWorldName.get())
-                        .ifPresent(world -> winner.setLocation(world.getLocation(exitVector.get())));
-            }
-        });
+        survivalGame.getPlayerUUIDs().stream().map(player -> Sponge.getServer().getPlayer(player))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(player -> {
+                    for (int i = 0; i < countDown; i++) {
+                        final int j = i;
+                        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+                            player.sendTitle(titles.get(j));
+                        }, i, TimeUnit.SECONDS);
+                    }
+                });
 
-        SurvivalGameStateManager.stop(survivalGame);
     }
 
     public static Task getInstance() {

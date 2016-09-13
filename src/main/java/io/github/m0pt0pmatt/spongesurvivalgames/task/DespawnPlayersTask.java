@@ -22,39 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.flowpowered.math.vector.Vector3i;
 
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-public class SpawnPlayersTask implements Task {
+public class DespawnPlayersTask implements Task {
 
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Task INSTANCE = new DespawnPlayersTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        List<Vector3i> spawns = new ArrayList<>(survivalGame.getConfig().getSpawns());
+        survivalGame.getPlayerUUIDs().forEach(uuid -> {
 
-        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
-                Sponge.getServer().getWorld(worldName).ifPresent(world ->
-                        survivalGame.getPlayerUUIDs().forEach(playerId ->
-                                Sponge.getServer().getPlayer(playerId).ifPresent(player -> {
-                                    if (spawns.isEmpty()) {
-                                        return;
-                                    }
-                                    player.setLocation(world.getLocation(spawns.remove(0)));
-                                }))));
+            Optional<Player> playerOptional = Sponge.getServer().getPlayer(uuid);
+            playerOptional.ifPresent(player -> {
+
+                Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
+                Optional<Vector3i> exitVector = survivalGame.getConfig().getExitVector();
+                if (exitWorldName.isPresent() && exitVector.isPresent()) {
+                    Sponge.getServer().getWorld(exitWorldName.get())
+                            .ifPresent(world -> player.setLocation(world.getLocation(exitVector.get())));
+                }
+
+            });
+
+
+        });
+
+
     }
 
     public static Task getInstance() {

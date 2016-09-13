@@ -22,19 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.tasks;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-public class SpawnSpectatorsTask implements Task {
+public class ClearWorldBorderTask implements Task {
 
-    private static final Task INSTANCE = new CheckWinTask();
+    private static final Task INSTANCE = new ClearWorldBorderTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
+                Sponge.getServer().getWorld(worldName).ifPresent(world ->
+                        world.getWorldBorder().setDiameter(60000000)));
     }
 
     public static Task getInstance() {

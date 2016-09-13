@@ -22,19 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-/**
- * Listener class for the plugin.
- */
-public class PlayerEventListener {
+import org.spongepowered.api.util.TextMessageException;
 
-    private static final PlayerEventListener INSTANCE = new PlayerEventListener();
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
-    private PlayerEventListener() {
+public class ReadyPlayerTask implements Task {
+
+    private static final Task INSTANCE = new ReadyPlayerTask();
+
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+
     }
 
-    public static PlayerEventListener getInstance(){
+    public static Task getInstance() {
         return INSTANCE;
     }
 }
