@@ -24,13 +24,12 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class CreateDeathmatchBorderTask implements Task {
 
-public class DeleteScoreboardTask implements Task {
-
-    private static final Task INSTANCE = new DeleteScoreboardTask();
+    private static final Task INSTANCE = new CreateDeathmatchBorderTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {

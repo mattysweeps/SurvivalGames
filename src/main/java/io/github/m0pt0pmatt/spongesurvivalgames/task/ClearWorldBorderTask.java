@@ -24,10 +24,9 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 public class ClearWorldBorderTask implements Task {
 

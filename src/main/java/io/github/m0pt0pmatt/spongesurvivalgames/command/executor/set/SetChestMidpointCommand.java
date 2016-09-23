@@ -22,50 +22,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
 
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class DeleteGameCommand extends BaseCommand {
+class SetChestMidpointCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
+    private static final SurvivalGamesCommand INSTANCE = new SetChestMidpointCommand();
 
-    private DeleteGameCommand() {
+    private SetChestMidpointCommand() {
         super(
-                Collections.singletonList("delete"),
+                Collections.singletonList("chest-midpoint"),
                 "",
-                SurvivalGameNameCommandElement.getInstance(),
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_MIDPOINT)),
                 Collections.emptyMap()
         );
     }
 
-    @Override
     @Nonnull
+    @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
-        SurvivalGameRepository.remove(survivalGameName);
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Integer chestMidpoint = (Integer) getOrThrow(args, CommandKeys.CHEST_MIDPOINT);
 
-        sendSuccess(src, "Deleted game", survivalGameName);
+        survivalGame.getConfig().setChestMidpoint(chestMidpoint);
+
+        sendSuccess(src, "Set chest midpoint", chestMidpoint);
         return CommandResult.success();
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

@@ -24,12 +24,13 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 class PrintBoundariesCommand extends AbstractPrintCommand {
 
@@ -41,8 +42,13 @@ class PrintBoundariesCommand extends AbstractPrintCommand {
                 "",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> survivalGame.getConfig().getLesserBoundary().map(Text::of).orElse(Text.of("(No first boundary)"))
-                        .concat(Text.of(' ').concat(survivalGame.getConfig().getGreaterBoundary().map(Text::of).orElse(Text.of("(No second boundary)"))))
+                survivalGame -> Stream.of(
+                        survivalGame.getConfig().getLesserBoundary(),
+                        survivalGame.getConfig().getGreaterBoundary())
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(Text::of)
+                        .reduce((v1, v2) -> Text.of(v1, " ", v2))
         );
     }
 

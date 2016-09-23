@@ -24,11 +24,10 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class UnsetExitWorldNameCommand extends AbstractUnsetCommand {
 
@@ -39,7 +38,7 @@ class UnsetExitWorldNameCommand extends AbstractUnsetCommand {
                 Collections.singletonList("exit-world-name"),
                 "",
                 survivalGame -> survivalGame.getConfig().setExitWorldName(null),
-                Text.of("Exit world name unset.")
+                Text.of("Unset exit world name")
         );
     }
 

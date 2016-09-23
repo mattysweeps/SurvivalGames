@@ -24,17 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
+
 import com.google.common.collect.ImmutableMap;
-
-import org.spongepowered.api.command.CommandCallable;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add.AddCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.create.CreateGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete.DeleteGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file.LoadConfigCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file.SaveConfigCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.list.ListGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.PrintCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove.RemoveCommand;
@@ -44,8 +41,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.ReadySurv
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.StartSurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.StopSurvivalGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset.UnsetCommand;
+import org.spongepowered.api.command.CommandCallable;
 
-import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class RootCommand extends ParentCommand {
 
@@ -69,6 +69,8 @@ public class RootCommand extends ParentCommand {
                     .put(toEntry(StartSurvivalGameCommand.getInstance()))
                     .put(toEntry(StopSurvivalGameCommand.getInstance()))
                     .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
+                    .put(toEntry(LoadConfigCommand.getInstance()))
+                    .put(toEntry(SaveConfigCommand.getInstance()))
                     .build();
 
     private static final SurvivalGamesCommand INSTANCE = new RootCommand();

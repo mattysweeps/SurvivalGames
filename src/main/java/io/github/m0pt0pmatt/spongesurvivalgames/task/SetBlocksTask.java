@@ -24,17 +24,24 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import org.spongepowered.api.util.TextMessageException;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.BlockChangeFlag;
 
-public class ReadyPlayerTask implements Task {
+import java.util.List;
 
-    private static final Task INSTANCE = new ReadyPlayerTask();
+public class SetBlocksTask implements Task {
+
+    private static final Task INSTANCE = new SetBlocksTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        List<BlockSnapshot> blocks = survivalGame.getConfig().getBlocks();
+        blocks.forEach(blockSnapshot ->
 
+
+                blockSnapshot.restore(true, BlockChangeFlag.ALL));
     }
 
     public static Task getInstance() {

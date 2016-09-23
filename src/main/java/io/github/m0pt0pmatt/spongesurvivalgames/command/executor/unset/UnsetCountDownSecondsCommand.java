@@ -24,11 +24,10 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class UnsetCountDownSecondsCommand extends AbstractUnsetCommand {
 
@@ -39,7 +38,7 @@ class UnsetCountDownSecondsCommand extends AbstractUnsetCommand {
                 Collections.singletonList("countdown-seconds"),
                 "",
                 survivalGame -> survivalGame.getConfig().setCountdownSeconds(null),
-                Text.of("Countdown seconds unset.")
+                Text.of("Unset countdown seconds")
         );
     }
 

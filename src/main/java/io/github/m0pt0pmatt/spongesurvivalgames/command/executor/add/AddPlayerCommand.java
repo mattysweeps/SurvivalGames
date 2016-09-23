@@ -24,21 +24,8 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
-import org.spongepowered.api.command.CommandCallable;
-import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
@@ -46,6 +33,17 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
 
 class AddPlayerCommand extends BaseCommand {
 
@@ -63,18 +61,15 @@ class AddPlayerCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
-
-        Player player = (Player) args.getOne(CommandKeys.PLAYER)
-                .orElseThrow(() -> new CommandException(Text.of("No Player")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Player player = (Player) getOrThrow(args, CommandKeys.PLAYER);
 
         if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
         }
 
         survivalGame.getPlayerUUIDs().add(player.getUniqueId());
-        src.sendMessage(Text.of("Player added."));
+        sendSuccess(src, "Player added", player.getName());
         return CommandResult.success();
     }
 

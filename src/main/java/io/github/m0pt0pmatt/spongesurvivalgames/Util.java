@@ -22,18 +22,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
+package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-public class CommandUtil {
+public final class Util {
 
-    private CommandUtil() {
+    private Util() {
 
     }
 
@@ -56,5 +63,36 @@ public class CommandUtil {
                 .arguments(command.getArguments())
                 .executor(command)
                 .build();
+    }
+
+    public static <T> T getOrThrow(Optional<T> optional, Object name) throws CommandException {
+        return optional.orElseThrow(() -> new CommandException(
+                Text.of(TextColors.DARK_RED, "No value found", ": ", TextColors.BLUE, name)));
+    }
+
+    public static <T> T getOrThrow(Optional<T> optional, Object name, Object value) throws CommandException {
+        return optional.orElseThrow(() -> new CommandException(
+                Text.of(TextColors.DARK_RED, "No ", TextColors.BLUE, name, ": ", TextColors.BLUE, value)));
+    }
+
+    public static Object getOrThrow(CommandContext args, Text key) throws CommandException {
+        return args.getOne(key).orElseThrow(() -> new CommandException(
+                Text.of(TextColors.DARK_RED, "Argument not found", ": ", TextColors.BLUE, key)));
+    }
+
+    public static void sendSuccess(CommandSource source, Object message) {
+        source.sendMessage(Text.of(TextColors.GREEN, message));
+    }
+
+    public static void sendSuccess(CommandSource source, Object message, Object object) {
+        source.sendMessage(Text.of(TextColors.GREEN, message, ": ", TextColors.BLUE, object));
+    }
+
+    public static void sendError(CommandSource source, String message) {
+        source.sendMessage(Text.of(TextColors.DARK_RED, message));
+    }
+
+    public static void sendError(CommandSource source, Object message, Object object) {
+        source.sendMessage(Text.of(TextColors.DARK_RED, message, ": ", TextColors.BLUE, object));
     }
 }

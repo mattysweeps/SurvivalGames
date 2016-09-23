@@ -17,6 +17,22 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearScoreBoardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearWorldBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCageSnapshotsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCountdownTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateDeathmatchBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateScoreboardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateWorldBorderTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.DespawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.FillChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.HealPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.SetBlocksTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnSpectatorsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.Task;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
 
@@ -24,50 +40,32 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearScoreBoardTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearWorldBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCountdownTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateDeathmatBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateScoreboardTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateWorldBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.DespawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.FillChestsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ReadyPlayerTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ReadySpectatorsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.RotatePlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnSpectatorsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.Task;
-
 public class SurvivalGameStateManager {
 
-    private static final List<Task> READY_TASKS = Collections.singletonList(FillChestsTask.getInstance());
+    private static final List<Task> READY_TASKS = Collections.emptyList();
 
     private static final List<Task> START_TASKS = Arrays.asList(
+            SetBlocksTask.getInstance(),
+            FillChestsTask.getInstance(),
             CreateCageSnapshotsTask.getInstance(),
             SpawnPlayersTask.getInstance(),
-            RotatePlayersTask.getInstance(),
-            ReadyPlayerTask.getInstance(),
+            HealPlayersTask.getInstance(),
             SpawnSpectatorsTask.getInstance(),
-            ReadySpectatorsTask.getInstance(),
             CreateCountdownTask.getInstance(),
             CreateScoreboardTask.getInstance(),
             CreateWorldBorderTask.getInstance()
-            );
+    );
 
     private static final List<Task> DEATH_MATCH_TASKS = Arrays.asList(
             CreateCageSnapshotsTask.getInstance(),
             SpawnPlayersTask.getInstance(),
-            RotatePlayersTask.getInstance(),
             CreateCountdownTask.getInstance(),
-            CreateDeathmatBorderTask.getInstance()
+            CreateDeathmatchBorderTask.getInstance()
     );
 
     private static final List<Task> STOP_TASKS = Arrays.asList(
             DespawnPlayersTask.getInstance(),
+            HealPlayersTask.getInstance(),
             ClearScoreBoardTask.getInstance(),
             ClearWorldBorderTask.getInstance(),
             ClearPlayersTask.getInstance()
@@ -155,8 +153,9 @@ public class SurvivalGameStateManager {
             throw new IllegalArgumentException("No spawn points set.");
         }
     }
+
     private static void executeTasks(List<Task> tasks, SurvivalGame survivalGame) throws TextMessageException {
-        for (Task task: tasks) {
+        for (Task task : tasks) {
             task.execute(survivalGame);
         }
     }

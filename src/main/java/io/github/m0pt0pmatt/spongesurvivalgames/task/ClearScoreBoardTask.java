@@ -24,20 +24,21 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class ClearScoreBoardTask extends PlayerTask {
 
-public class ClearScoreBoardTask implements Task {
-
-    private static final Task INSTANCE = new ClearScoreBoardTask();
+    private static final PlayerTask INSTANCE = new ClearScoreBoardTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        player.setScoreboard(Scoreboard.builder().build());
     }
 
-    public static Task getInstance() {
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

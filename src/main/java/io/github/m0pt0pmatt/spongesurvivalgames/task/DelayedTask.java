@@ -24,20 +24,36 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import java.util.concurrent.TimeUnit;
 
-public class ReadySpectatorsTask implements Task {
+public class DelayedTask implements Task {
 
-    private static final Task INSTANCE = new ReadySpectatorsTask();
+    private final Task task;
+    private final long delay;
+    private final TimeUnit timeUnit;
+
+    private DelayedTask(Task task, long delay, TimeUnit timeUnit) {
+        this.task = task;
+        this.delay = delay;
+        this.timeUnit = timeUnit;
+    }
+
+    public static Task of(Task task, long delay, TimeUnit timeUnit) {
+        return new DelayedTask(task, delay, timeUnit);
+    }
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
-    }
-
-    public static Task getInstance() {
-        return INSTANCE;
+        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+            try {
+                task.execute(survivalGame);
+            } catch (TextMessageException e) {
+                e.printStackTrace();
+            }
+        }, delay, timeUnit);
     }
 }

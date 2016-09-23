@@ -24,20 +24,49 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scoreboard.Scoreboard;
+import org.spongepowered.api.scoreboard.critieria.Criteria;
+import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
+import org.spongepowered.api.scoreboard.objective.Objective;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class CreateScoreboardTask extends PlayerTask {
 
-public class CreateScoreboardTask implements Task {
+    private static final PlayerTask INSTANCE = new CreateScoreboardTask();
 
-    private static final Task INSTANCE = new CreateScoreboardTask();
+    private Scoreboard scoreboard;
+    private Objective objective;
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        objective.getOrCreateScore(Text.of(player.getName())).setScore(0);
     }
 
-    public static Task getInstance() {
+    @Override
+    public void setup(SurvivalGame survivalGame) {
+        scoreboard = Scoreboard.builder()
+                .build();
+
+        objective = Objective.builder()
+                .criterion(Criteria.DUMMY)
+                .name("ssg-" + survivalGame.getName())
+                .displayName(Text.of("Remaining Players"))
+                .build();
+
+        scoreboard.addObjective(objective);
+        scoreboard.updateDisplaySlot(objective, DisplaySlots.SIDEBAR);
+    }
+
+    @Override
+    public void after(SurvivalGame survivalGame) {
+        survivalGame.getPlayerUUIDs().forEach(id -> Sponge.getServer().getPlayer(id).ifPresent(player -> player.setScoreboard(scoreboard)));
+    }
+
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

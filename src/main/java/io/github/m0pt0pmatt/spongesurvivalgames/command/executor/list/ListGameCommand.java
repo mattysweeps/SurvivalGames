@@ -24,21 +24,23 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.list;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
 public class ListGameCommand extends BaseCommand {
 
@@ -56,10 +58,10 @@ public class ListGameCommand extends BaseCommand {
     @Override
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        src.sendMessage(Text.of("Survival Games:"));
+        sendSuccess(src, "Survival Games: ");
         SurvivalGameRepository.values().stream()
                 .map(SurvivalGame::getName)
-                .map(Text::of)
+                .map(name -> Text.of(TextColors.BLUE, name))
                 .forEach(src::sendMessage);
 
         return CommandResult.success();

@@ -24,15 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
-import com.flowpowered.math.vector.Vector3i;
-
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class PrintSpawnsCommand extends AbstractPrintCommand {
 
@@ -44,11 +43,11 @@ class PrintSpawnsCommand extends AbstractPrintCommand {
                 "",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Text.joinWith(Text.of('\n'),
+                survivalGame -> Optional.of(Text.joinWith(Text.of('\n'),
                         survivalGame.getConfig().getSpawnPoints().stream()
-                                .map(Vector3i::toString)
+                                .map(Vector3d::toString)
                                 .map(Text::of)
-                                .collect(Collectors.toList()))
+                                .collect(Collectors.toList())))
         );
     }
 

@@ -22,46 +22,76 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMapper;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.text.Text;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class DeleteGameCommand extends BaseCommand {
+public class LoadConfigCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
+    private static SurvivalGamesCommand INSTANCE = new LoadConfigCommand();
 
-    private DeleteGameCommand() {
+    private LoadConfigCommand() {
         super(
-                Collections.singletonList("delete"),
+                Collections.singletonList("load"),
                 "",
-                SurvivalGameNameCommandElement.getInstance(),
-                Collections.emptyMap()
-        );
+                GenericArguments.seq(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME)),
+                Collections.emptyMap());
     }
 
-    @Override
     @Nonnull
+    @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+
+        Path potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
         String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
-        SurvivalGameRepository.remove(survivalGameName);
+        if (SurvivalGameRepository.contains(survivalGameName)) {
+            throw new CommandException(Text.of("Already exists a game of saem name"));
+        }
 
-        sendSuccess(src, "Deleted game", survivalGameName);
+        ConfigurationLoader<CommentedConfigurationNode> loader =
+                HoconConfigurationLoader.builder().setPath(potentialFile).build();
+        try {
+
+            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
+
+            ObjectMapper.BoundInstance i = SurvivalGameConfig.OBJECT_MAPPER.bindToNew();
+            SurvivalGameConfig config = (SurvivalGameConfig) i.populate(node);
+            SurvivalGame game = new SurvivalGame(survivalGameName, config);
+            SurvivalGameRepository.put(survivalGameName, game);
+
+        } catch (IOException | ObjectMappingException | RuntimeException e) {
+            e.printStackTrace();
+            throw new CommandException(Text.of("BAAD"));
+
+        }
+
         return CommandResult.success();
     }
 

@@ -24,39 +24,43 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
-import com.flowpowered.math.vector.Vector3i;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.Util;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.CelebrateWinnerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.DelayedPlayerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.PlayerTask;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.util.TextMessageException;
 
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class WinChecker {
 
-    private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
+    private static final long CELEBRATE_DELAY_SECONDS = 5;
+
+    private static final List<PlayerTask> WINNER_TASKS = Arrays.asList(
+            CelebrateWinnerTask.getInstance(),
+            DelayedPlayerTask.of(new PlayerTask() {
+                @Override
+                public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+                    SurvivalGameStateManager.stop(survivalGame);
+                }
+            }, CELEBRATE_DELAY_SECONDS, TimeUnit.SECONDS));
 
     private WinChecker() {
 
     }
 
-    public static void checkWin(SurvivalGame survivalGame) {
-        if (survivalGame.getPlayerUUIDs().size() > 1) {
-            return;
-        } else if (survivalGame.getPlayerUUIDs().size() == 1) {
-
+    public static void checkWin(SurvivalGame survivalGame) throws TextMessageException {
+        if (survivalGame.getPlayerUUIDs().size() == 1) {
             UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
-            Sponge.getServer().getPlayer(winnerId).ifPresent(winner -> {
-                winner.sendMessage(WINNER_MESSAGE);
-                Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
-                Optional<Vector3i> exitVector = survivalGame.getConfig().getExitVector();
-                if (exitWorldName.isPresent() && exitVector.isPresent()) {
-                    Sponge.getServer().getWorld(exitWorldName.get())
-                            .ifPresent(world -> winner.setLocation(world.getLocation(exitVector.get())));
-                }
-            });
+            Player winner = Util.getOrThrow(Sponge.getServer().getPlayer(winnerId), "winner");
+            for (PlayerTask task : WINNER_TASKS) {
+                task.execute(survivalGame, winner);
+            }
         }
-
-        SurvivalGameStateManager.stop(survivalGame);
     }
 }

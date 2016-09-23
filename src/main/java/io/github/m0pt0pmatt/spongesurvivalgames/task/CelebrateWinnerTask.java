@@ -24,20 +24,23 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class CelebrateWinnerTask extends PlayerTask {
 
-public class RotatePlayersTask implements Task {
+    private static final PlayerTask INSTANCE = new CelebrateWinnerTask();
 
-    private static final Task INSTANCE = new RotatePlayersTask();
+    private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        player.sendMessage(WINNER_MESSAGE);
     }
 
-    public static Task getInstance() {
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

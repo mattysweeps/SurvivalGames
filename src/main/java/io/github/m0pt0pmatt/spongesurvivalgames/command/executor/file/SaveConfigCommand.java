@@ -22,16 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMapper;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -39,45 +47,61 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SetExitWorldNameCommand extends BaseCommand {
+public class SaveConfigCommand extends BaseCommand {
+    private static SurvivalGamesCommand INSTANCE = new SaveConfigCommand();
 
-    private static final SurvivalGamesCommand INSTANCE = new SetExitWorldNameCommand();
-
-    private SetExitWorldNameCommand() {
+    private SaveConfigCommand() {
         super(
-                Collections.singletonList("exit-world-name"),
+                Collections.singletonList("save"),
                 "",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
-                Collections.emptyMap()
-        );
+                GenericArguments.seq(GenericArguments.firstParsing(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.FILE_NAME)), SurvivalGameCommandElement.getInstance()),
+                Collections.emptyMap());
     }
 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
-        Object worldInfo = getOrThrow(args, CommandKeys.WORLD_NAME);
+        Path potentialFile;
 
-        String worldName;
-        try {
-            worldName = (String) worldInfo.getClass().getMethod("getWorldName").invoke(worldInfo);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw new CommandException(Text.of("Error: " + e.getMessage()), e);
+        if (args.hasAny(CommandKeys.FILE_PATH)) {
+            potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
+        } else if (args.hasAny(CommandKeys.FILE_NAME)) {
+            String potentialFileName = (String) getOrThrow(args, CommandKeys.FILE_NAME);
+            potentialFile = SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
+        } else {
+            throw new CommandException(Text.of("No file name"));
         }
 
-        survivalGame.getConfig().setExitWorldName(worldName);
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
-        sendSuccess(src, "Set exit world name", worldName);
+        ConfigurationLoader<CommentedConfigurationNode> loader =
+                HoconConfigurationLoader.builder().setPath(potentialFile).build();
+        try {
+
+            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
+
+            ObjectMapper.BoundInstance i = SurvivalGameConfig.OBJECT_MAPPER.bind(survivalGame.getConfig());
+
+            i.serialize(node);
+            loader.save(node);
+
+        } catch (IOException | ObjectMappingException | RuntimeException e) {
+            e.printStackTrace();
+            throw new CommandException(Text.of("BAAD"));
+
+        }
+
         return CommandResult.success();
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

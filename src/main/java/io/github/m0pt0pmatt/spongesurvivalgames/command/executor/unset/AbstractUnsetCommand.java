@@ -24,6 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -35,13 +43,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 class AbstractUnsetCommand extends BaseCommand {
 
@@ -62,8 +63,7 @@ class AbstractUnsetCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
         try {
             consumer.accept(survivalGame);
@@ -71,7 +71,7 @@ class AbstractUnsetCommand extends BaseCommand {
             throw new CommandException(Text.of("Error while unsetting: " + e.getMessage()), e);
         }
 
-        src.sendMessage(message);
+        sendSuccess(src, message);
         return CommandResult.success();
     }
 }

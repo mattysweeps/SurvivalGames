@@ -24,10 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-import com.google.common.collect.ComputationException;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import com.flowpowered.math.vector.Vector3d;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -46,12 +50,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class BlockRayCommand extends BaseCommand {
 
@@ -76,18 +74,14 @@ public abstract class BlockRayCommand extends BaseCommand {
     @SuppressWarnings("unchecked")
     public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
         Location<World> location;
 
         if (args.hasAny(CommandKeys.VECTOR)) {
-
-            String worldName = survivalGame.getConfig().getWorldName().orElseThrow(() -> new CommandException(Text.of("World name not set! Set world name first!")));
-            World world = Sponge.getServer().getWorld(worldName).orElseThrow(() -> new CommandException(Text.of("World does not exist!")));
-
-            location = world.getLocation((Vector3d) args.getOne(CommandKeys.VECTOR).orElseThrow(() -> new CommandException(Text.of("No Location"))));
-
+            String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+            World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
+            location = world.getLocation((Vector3d) getOrThrow(args, CommandKeys.VECTOR));
         } else {
             location = getLocation(src);
         }
@@ -98,8 +92,7 @@ public abstract class BlockRayCommand extends BaseCommand {
             throw new CommandException(Text.of("Error: " + e.getMessage()), e);
         }
 
-        src.sendMessage(message.concat(Text.of(" ", location.getBlockPosition())));
-
+        sendSuccess(src, message, location.getBlockPosition());
         return CommandResult.success();
     }
 

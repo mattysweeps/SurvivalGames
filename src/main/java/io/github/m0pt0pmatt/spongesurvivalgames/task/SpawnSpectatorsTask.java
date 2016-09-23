@@ -24,20 +24,60 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import org.spongepowered.api.util.TextMessageException;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.World;
 
-public class SpawnSpectatorsTask implements Task {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
-    private static final Task INSTANCE = new SpawnSpectatorsTask();
+public class SpawnSpectatorsTask extends PlayerTask {
+
+    private static final PlayerTask INSTANCE = new SpawnSpectatorsTask();
+
+    private List<Vector3d> spawnPoints;
+    private Vector3d centerVector;
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
 
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), "world name");
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
+
+        if (!spawnPoints.isEmpty()) {
+
+            Vector3d spawnPoint = spawnPoints.remove(0);
+
+            spawnPlayer(player, world,
+                    new Vector3d(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ()),
+                    new Vector3d(centerVector.getX(), centerVector.getY(), centerVector.getZ()));
+        }
     }
 
-    public static Task getInstance() {
+    private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
+        player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 10, 0.5)));
+        player.lookAt(centerVector.add(new Vector3d(0.5, 0.5, 0.5)));
+    }
+
+    @Override
+    protected void setup(SurvivalGame survivalGame) throws TextMessageException {
+        spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
+        centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), "center vector");
+    }
+
+    @Override
+    protected Collection<UUID> getPlayerIds(SurvivalGame survivalGame) {
+        return survivalGame.getSpectatorUUIDs();
+    }
+
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

@@ -24,17 +24,15 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
-import com.google.common.collect.ImmutableMap;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
+import com.google.common.collect.ImmutableMap;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
 import java.util.Collections;
 import java.util.List;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-
-import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
 
 public class UnsetCommand extends ParentCommand {
 

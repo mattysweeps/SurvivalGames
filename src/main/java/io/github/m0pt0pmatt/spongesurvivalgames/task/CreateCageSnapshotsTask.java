@@ -24,10 +24,10 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.ImmutableSet;
-
-import com.flowpowered.math.vector.Vector3i;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
@@ -38,23 +38,20 @@ import org.spongepowered.api.util.TextMessageException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-
 public class CreateCageSnapshotsTask implements Task {
 
     private static final Task INSTANCE = new CreateCageSnapshotsTask();
 
-    private static final Set<Vector3i> SURROUNDING_BLOCKS = ImmutableSet.<Vector3i>builder()
-            .add(new Vector3i(1, 0, 0))
-            .add(new Vector3i(1, 1, 0))
-            .add(new Vector3i(-1, 0, 0))
-            .add(new Vector3i(-1, 1, 0))
-            .add(new Vector3i(0, 0, 1))
-            .add(new Vector3i(0, 1, 1))
-            .add(new Vector3i(0, 0, -1))
-            .add(new Vector3i(0, 1, -1))
-            .add(new Vector3i(0, 2, 0))
+    private static final Set<Vector3d> SURROUNDING_BLOCKS = ImmutableSet.<Vector3d>builder()
+            .add(new Vector3d(1, 0, 0))
+            .add(new Vector3d(1, 1, 0))
+            .add(new Vector3d(-1, 0, 0))
+            .add(new Vector3d(-1, 1, 0))
+            .add(new Vector3d(0, 0, 1))
+            .add(new Vector3d(0, 1, 1))
+            .add(new Vector3d(0, 0, -1))
+            .add(new Vector3d(0, 1, -1))
+            .add(new Vector3d(0, 2, 0))
             .build();
 
     @Override
@@ -76,8 +73,8 @@ public class CreateCageSnapshotsTask implements Task {
                                         world.getLocation(spawnPoint.add(vector3i))
                                                 .setBlockType(blockType,
 
-                                                        Cause.of(NamedCause.of("CreateCageSnapshotsTask", SpongeSurvivalGamesPlugin.PLUGIN))
-                                                        )))));
+                                                        Cause.of(NamedCause.of("CreateCageSnapshotsTask", SpongeSurvivalGamesPlugin.PLUGIN_CONTAINER))
+                                                )))));
     }
 
     public static Task getInstance() {

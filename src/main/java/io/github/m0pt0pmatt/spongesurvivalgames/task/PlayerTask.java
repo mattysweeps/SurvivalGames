@@ -24,29 +24,50 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.text.Text;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.WinChecker;
-
-public class CheckWinTask implements Task {
-
-    private static final Task INSTANCE = new CheckWinTask();
+public abstract class PlayerTask implements Task {
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        WinChecker.checkWin(survivalGame);
+    public final void execute(SurvivalGame survivalGame) throws TextMessageException {
+        execute(survivalGame, getPlayerIds(survivalGame));
     }
 
-    public static Task getInstance() {
-        return INSTANCE;
+    public final void execute(SurvivalGame survivalGame, Collection<UUID> playerIds) throws TextMessageException {
+        executePlayers(survivalGame, playerIds.stream()
+                .map(Sponge.getServer()::getPlayer)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList()));
+    }
+
+    public final void executePlayers(SurvivalGame survivalGame, Collection<Player> players) throws TextMessageException {
+        setup(survivalGame);
+        for (Player player : players) {
+            execute(survivalGame, player);
+        }
+        after(survivalGame);
+    }
+
+    public abstract void execute(SurvivalGame survivalGame, Player player) throws TextMessageException;
+
+    protected void setup(SurvivalGame survivalGame) throws TextMessageException {
+
+    }
+
+    protected Collection<UUID> getPlayerIds(SurvivalGame survivalGame) {
+        return survivalGame.getPlayerUUIDs();
+    }
+
+    protected void after(SurvivalGame survivalGame) throws TextMessageException {
+
     }
 }

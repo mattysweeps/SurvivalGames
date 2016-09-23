@@ -22,22 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.config;
+package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.google.common.reflect.TypeToken;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.util.TextMessageException;
 
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
+public class HealPlayersTask extends PlayerTask {
 
-public class SurvivalGameConfigSerializer implements TypeSerializer<SurvivalGameConfig> {
+    private static final PlayerTask INSTANCE = new HealPlayersTask();
+
     @Override
-    public SurvivalGameConfig deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
-        return null;
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        survivalGame.getPlayerUUIDs().forEach(playerId ->
+                Sponge.getServer().getPlayer(playerId).ifPresent(HealPlayersTask::healPlayer));
     }
 
-    @Override
-    public void serialize(TypeToken<?> type, SurvivalGameConfig obj, ConfigurationNode value) throws ObjectMappingException {
+    private static void healPlayer(Player player) {
+        player.offer(Keys.HEALTH, 20.0);
+        player.offer(Keys.EXHAUSTION, 0.0);
+        player.offer(Keys.FOOD_LEVEL, 20);
+        player.offer(Keys.SATURATION, 20.0);
+    }
 
+    public static PlayerTask getInstance() {
+        return INSTANCE;
     }
 }

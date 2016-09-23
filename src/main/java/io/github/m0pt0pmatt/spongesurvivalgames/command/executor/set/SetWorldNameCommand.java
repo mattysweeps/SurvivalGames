@@ -24,6 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -35,12 +43,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 
 class SetWorldNameCommand extends BaseCommand {
 
@@ -59,11 +61,8 @@ class SetWorldNameCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
-
-        Object worldInfo = args.getOne(CommandKeys.WORLD_NAME)
-                .orElseThrow(() -> new CommandException(Text.of("No World Name")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Object worldInfo = getOrThrow(args, CommandKeys.WORLD_NAME);
 
         String worldName;
         try {
@@ -73,8 +72,8 @@ class SetWorldNameCommand extends BaseCommand {
         }
 
         survivalGame.getConfig().setWorldName(worldName);
-        src.sendMessage(Text.of("World name set."));
 
+        sendSuccess(src, "Set world name", worldName);
         return CommandResult.success();
     }
 

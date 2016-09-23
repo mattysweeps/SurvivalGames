@@ -24,21 +24,18 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.carrier.Chest;
-import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
-import org.spongepowered.api.world.Chunk;
 import org.spongepowered.api.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import java.util.Random;
 
 public class FillChestsTask implements Task {
 
@@ -47,21 +44,38 @@ public class FillChestsTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
+        Random random = new Random();
 
-        Vector3i lowerBoundar = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("lower")));
-        Vector3i greaterBoundary = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("better")));
+        Vector3d lowerBoundary = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("lower")));
+        Vector3d greaterBoundary = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("better")));
 
         String worldName = survivalGame.getConfig().getWorldName().orElseThrow(() -> new TextMessageException(Text.of("worldName")));
         World world = Sponge.getServer().getWorld(worldName).orElseThrow(() -> new TextMessageException(Text.of("world")));
 
-        Chunk lesserChunk = world.getChunkAtBlock(lowerBoundar).orElseThrow(() -> new TextMessageException(Text.of("lower chunjk")));
-        Chunk greaterChunk = world.getChunkAtBlock(greaterBoundary).orElseThrow(() -> new TextMessageException(Text.of("g chunjk")));
+        Integer chestMidpoint = getOrThrow(survivalGame.getConfig().getChestMidpoint(), "chest midpoint");
+        Integer chestRange = getOrThrow(survivalGame.getConfig().getChestRange(), "chest range");
 
         world.getTileEntities().forEach(tileEntity -> {
 
             if (tileEntity instanceof Chest) {
-                //Chest chest = (Chest) tileEntity;
-                //chest.getInventory().offer(ItemStack.of(ItemTypes.STONE_SWORD, 1));
+                Chest chest = (Chest) tileEntity;
+
+                chest.getInventory().clear();
+
+                if (!survivalGame.getConfig().getItems().isEmpty()) {
+
+                    double itemCount = (
+                            chestMidpoint +
+                                    (
+                                            (random.nextDouble() * chestRange)
+                                                    * (random.nextDouble() > 0.5 ? 1 : -1)
+                                    )
+                    );
+                    for (int i = 0; i < itemCount; i++) {
+                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItems().get(random.nextInt(survivalGame.getConfig().getItems().size()));
+                        chest.getInventory().offer(stackSnapshot.createStack());
+                    }
+                }
             }
 
         });

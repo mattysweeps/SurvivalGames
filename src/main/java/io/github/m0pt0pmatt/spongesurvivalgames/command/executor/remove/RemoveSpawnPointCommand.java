@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class RemoveSpawnPointCommand extends BlockRayCommand {
 
@@ -40,7 +39,7 @@ class RemoveSpawnPointCommand extends BlockRayCommand {
                 Collections.singletonList("spawn"),
                 "",
                 (survivalGame, location) -> survivalGame.getConfig().getSpawnPoints().remove(location.getBlockPosition()),
-                Text.of("Spawn point removed.")
+                Text.of("Removed spawn point")
         );
     }
 

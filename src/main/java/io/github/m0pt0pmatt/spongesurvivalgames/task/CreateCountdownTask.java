@@ -24,54 +24,45 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import org.spongepowered.api.Sponge;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
-import org.spongepowered.api.util.Color;
 import org.spongepowered.api.util.TextMessageException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class CreateCountdownTask extends PlayerTask {
 
-public class CreateCountdownTask implements Task {
-
-    private static final Task INSTANCE = new CreateCountdownTask();
+    private static final PlayerTask INSTANCE = new CreateCountdownTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
         int countDown = survivalGame.getConfig().getCountdownSeconds().orElseThrow(() -> new TextMessageException(Text.of("no countdown")));
 
         List<Title> titles = new ArrayList<>();
 
-        for (int i = 0; i < countDown; i++) {
-            titles.add(
-                    Title.of(
-                            Text.of(TextColors.RED, "Game begins in..."),
-                            Text.of(TextColors.RED, countDown - i)));
+        for (int i = 0; i < countDown + 1; i++) {
+            titles.add(Title.builder()
+                    .fadeIn(5)
+                    .stay(20)
+                    .fadeOut(5)
+                    .title(Text.of(TextColors.RED, "Game begins in..."))
+                    .subtitle(Text.of(TextColors.RED, countDown - i))
+                    .build());
         }
 
-        survivalGame.getPlayerUUIDs().stream().map(player -> Sponge.getServer().getPlayer(player))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .forEach(player -> {
-                    for (int i = 0; i < countDown; i++) {
-                        final int j = i;
-                        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
-                            player.sendTitle(titles.get(j));
-                        }, i, TimeUnit.SECONDS);
-                    }
-                });
-
+        for (int i = 0; i < countDown + 1; i++) {
+            final int j = i;
+            SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> player.sendTitle(titles.get(j)), i, TimeUnit.SECONDS);
+        }
     }
 
-    public static Task getInstance() {
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

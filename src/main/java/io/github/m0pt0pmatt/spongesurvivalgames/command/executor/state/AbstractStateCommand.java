@@ -24,11 +24,21 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,14 +47,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AbstractStateCommand extends BaseCommand {
 
@@ -65,9 +67,7 @@ public class AbstractStateCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
-
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         SurvivalGameState oldState = survivalGame.getState();
 
         if (!states.contains(oldState)) {
@@ -77,11 +77,12 @@ public class AbstractStateCommand extends BaseCommand {
 
         try {
             action.accept(survivalGame);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new CommandException(Text.of("Error while switching states: " + e.getMessage()), e);
         }
 
-        src.sendMessage(Text.of("State changed from " + oldState + " to " + survivalGame.getState()));
+        sendSuccess(src, Text.of("State changed from ", TextColors.BLUE, oldState, TextColors.BLUE,
+                " to ", TextColors.BLUE, survivalGame.getState()));
         return CommandResult.success();
     }
 }

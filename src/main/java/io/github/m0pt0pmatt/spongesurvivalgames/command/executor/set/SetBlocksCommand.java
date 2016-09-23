@@ -22,50 +22,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.world.World;
 
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class DeleteGameCommand extends BaseCommand {
+class SetBlocksCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
+    private static final SurvivalGamesCommand INSTANCE = new SetBlocksCommand();
 
-    private DeleteGameCommand() {
+    private SetBlocksCommand() {
         super(
-                Collections.singletonList("delete"),
+                Collections.singletonList("blocks"),
                 "",
-                SurvivalGameNameCommandElement.getInstance(),
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance()),
                 Collections.emptyMap()
         );
     }
 
-    @Override
     @Nonnull
+    @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
-        SurvivalGameRepository.remove(survivalGameName);
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        SurvivalGameConfig config = survivalGame.getConfig();
+        Vector3d lesserBoundary = getOrThrow(config.getLesserBoundary(), "1st boundary");
+        Vector3d greaterBoundary = getOrThrow(config.getGreaterBoundary(), "2nd boundary");
+        String worldName = getOrThrow(config.getWorldName(), "world name");
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
 
-        sendSuccess(src, "Deleted game", survivalGameName);
+        config.getBlocks().clear();
+
+        for (int x = lesserBoundary.getFloorX(); x < greaterBoundary.getFloorX() + 1; x++) {
+            for (int y = lesserBoundary.getFloorY(); y < greaterBoundary.getFloorY() + 1; y++) {
+                for (int z = lesserBoundary.getFloorZ(); z < greaterBoundary.getFloorZ() + 1; z++) {
+                    config.getBlocks().add(world.getLocation(x, y, z).createSnapshot());
+                }
+            }
+        }
+
+        config.setBlocksValid(true);
+
+        sendSuccess(src, "Set blocks");
         return CommandResult.success();
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

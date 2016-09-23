@@ -24,22 +24,24 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.create;
 
-import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.text.Text;
-
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendError;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
 
 public class CreateGameCommand extends BaseCommand {
 
@@ -57,16 +59,15 @@ public class CreateGameCommand extends BaseCommand {
     @Override
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        String survivalGameName = (String) args.getOne(CommandKeys.SURVIVAL_GAME_NAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Such Survival Game")));
+        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
         if (SurvivalGameRepository.contains(survivalGameName)) {
-            src.sendMessage(Text.of("Game of the same name already exists"));
+            sendError(src, "Game of the same name already exists", survivalGameName);
             return CommandResult.empty();
         }
 
         SurvivalGameRepository.put(survivalGameName, new SurvivalGame(survivalGameName));
-        src.sendMessage(Text.of("Game created"));
+        sendSuccess(src, "Created game", survivalGameName);
         return CommandResult.success();
     }
 

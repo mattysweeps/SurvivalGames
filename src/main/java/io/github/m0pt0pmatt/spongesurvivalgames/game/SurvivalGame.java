@@ -25,13 +25,17 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
-
-/** represents a Survival Game. */
+/**
+ * represents a Survival Game.
+ */
 public class SurvivalGame {
 
     SurvivalGameState state;
@@ -40,13 +44,19 @@ public class SurvivalGame {
     private final String name;
     private final SurvivalGameConfig config;
     private final Set<UUID> playerUUIDs;
+    private final Set<UUID> spectatorUUIDs;
 
-    public SurvivalGame(String name) {
-        this.name = name;
+    public SurvivalGame(String name, SurvivalGameConfig config) {
+        this.name = checkNotNull(name);
         state = SurvivalGameState.STOPPED;
         runningState = SurvivalGameRunningState.STOPPED;
-        config = new SurvivalGameConfig();
+        this.config = checkNotNull(config);
         playerUUIDs = new HashSet<>();
+        spectatorUUIDs = new HashSet<>();
+    }
+
+    public SurvivalGame(String name) {
+        this(name, new SurvivalGameConfig());
     }
 
     public String getName() {
@@ -67,5 +77,9 @@ public class SurvivalGame {
 
     public Set<UUID> getPlayerUUIDs() {
         return playerUUIDs;
+    }
+
+    public Set<UUID> getSpectatorUUIDs() {
+        return spectatorUUIDs;
     }
 }

@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class PrintCenterLocationCommand extends AbstractPrintCommand {
 
@@ -41,7 +40,7 @@ class PrintCenterLocationCommand extends AbstractPrintCommand {
                 "",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> survivalGame.getConfig().getCenterVector().map(Text::of).orElse(Text.of("Center location not set."))
+                survivalGame -> survivalGame.getConfig().getCenterVector().map(Text::of)
         );
     }
 

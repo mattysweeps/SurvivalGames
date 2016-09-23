@@ -22,36 +22,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.text.Text;
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.SelectorCommandElement;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-class PrintPlayersCommand extends AbstractPrintCommand {
+import javax.annotation.Nonnull;
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintPlayersCommand();
+public class ConfigFileCommandElement extends SelectorCommandElement {
 
-    private PrintPlayersCommand() {
-        super(
-                Collections.singletonList("players"),
-                "",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
-                survivalGame -> Optional.of(Text.joinWith(Text.of('\n'), survivalGame.getPlayerUUIDs().stream()
-                        .map(id -> Sponge.getServer().getPlayer(id))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .map(Text::of).collect(Collectors.toList())))
-        );
+    private static final CommandElement INSTANCE = new ConfigFileCommandElement();
+
+    private ConfigFileCommandElement() {
+        super(CommandKeys.FILE_PATH);
     }
 
-    static SurvivalGamesCommand getInstance() {
+    @Override
+    @Nonnull
+    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
+
+        File[] files = SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.toFile().listFiles();
+        if (files == null) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.stream(files)
+                .map(File::getName)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Nonnull
+    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
+        return SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(choice);
+    }
+
+    public static CommandElement getInstance() {
         return INSTANCE;
     }
 }

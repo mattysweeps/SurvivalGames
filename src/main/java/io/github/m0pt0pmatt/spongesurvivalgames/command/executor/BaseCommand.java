@@ -24,15 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-import com.google.common.collect.ImmutableList;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.args.CommandElement;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class BaseCommand implements SurvivalGamesCommand {
 

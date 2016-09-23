@@ -24,13 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class SetExitVectorCommand extends BlockRayCommand {
 
@@ -40,8 +38,8 @@ class SetExitVectorCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("exit-vector"),
                 "",
-                (survivalGame, location) -> survivalGame.getConfig().setExitVector(location.getBlockPosition()),
-                Text.of("Exit vector set.")
+                (survivalGame, location) -> survivalGame.getConfig().setExitVector(location.getBlockPosition().toDouble()),
+                Text.of("Set exit vector")
         );
     }
 

@@ -24,20 +24,38 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scoreboard.Score;
+import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class UpdateScoreBoardTask implements Task {
 
-public class ResetLootGeneratorTask implements Task {
+    private static final UpdateScoreBoardTask INSTANCE = new UpdateScoreBoardTask();
 
-    private static final Task INSTANCE = new ResetLootGeneratorTask();
+    private Player deadPlayer;
+    private Player killingPlayer;
+
+    public void update(SurvivalGame survivalGame, Player deadPlayer, Player killingPlayer) throws TextMessageException {
+        this.deadPlayer = deadPlayer;
+        this.killingPlayer = killingPlayer;
+        execute(survivalGame);
+    }
+
+    public static UpdateScoreBoardTask getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
-    }
-
-    public static Task getInstance() {
-        return INSTANCE;
+        deadPlayer.getScoreboard().getObjective(DisplaySlots.SIDEBAR).ifPresent(objective -> {
+            objective.removeScore(Text.of(deadPlayer.getName()));
+            if (killingPlayer != null) {
+                Score k = objective.getOrCreateScore(Text.of(killingPlayer.getName()));
+                k.setScore(k.getScore() + 1);
+            }
+        });
     }
 }

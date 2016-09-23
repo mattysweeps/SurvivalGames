@@ -24,6 +24,9 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.args.SelectorCommandElement;
@@ -32,10 +35,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 
 public class SurvivalGameNameCommandElement extends SelectorCommandElement {
 

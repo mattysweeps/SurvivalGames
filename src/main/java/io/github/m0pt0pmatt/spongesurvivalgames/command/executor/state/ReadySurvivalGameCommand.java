@@ -24,11 +24,12 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
-import java.util.Collections;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
+
+import java.util.Collections;
 
 public class ReadySurvivalGameCommand extends AbstractStateCommand {
 
@@ -39,8 +40,12 @@ public class ReadySurvivalGameCommand extends AbstractStateCommand {
                 Collections.singletonList("ready"),
                 "",
                 Collections.singleton(SurvivalGameState.STOPPED),
-                SurvivalGameStateManager::ready
+                ReadySurvivalGameCommand::doWork
         );
+    }
+
+    private static void doWork(SurvivalGame survivalGame) {
+        SurvivalGameStateManager.ready(survivalGame);
     }
 
     public static SurvivalGamesCommand getInstance() {

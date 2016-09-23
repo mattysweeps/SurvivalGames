@@ -24,6 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -35,13 +43,6 @@ import org.spongepowered.api.text.Text;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 
 class RemovePlayerCommand extends BaseCommand {
 
@@ -59,11 +60,8 @@ class RemovePlayerCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
-
-        Player player = (Player) args.getOne(CommandKeys.PLAYER)
-                .orElseThrow(() -> new CommandException(Text.of("No Player")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Player player = (Player) getOrThrow(args, CommandKeys.PLAYER);
 
         if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
@@ -74,7 +72,8 @@ class RemovePlayerCommand extends BaseCommand {
         }
 
         survivalGame.getPlayerUUIDs().remove(player.getUniqueId());
-        src.sendMessage(Text.of("Player removed."));
+
+        src.sendMessage(Text.of("Removed playerPlayer removed."));
         return CommandResult.success();
     }
 

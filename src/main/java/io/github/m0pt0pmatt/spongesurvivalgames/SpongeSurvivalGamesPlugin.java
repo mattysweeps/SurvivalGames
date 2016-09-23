@@ -24,9 +24,16 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toCommandCallable;
+
+import com.google.inject.Inject;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerDeathListener;
+import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
@@ -34,20 +41,28 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerDeathListener;
+import java.io.File;
+import java.nio.file.Path;
 
-import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toCommandCallable;
-
-/** SpongeSurvivalGames Sponge Plugin */
+/**
+ * SpongeSurvivalGames Sponge Plugin
+ */
 @Plugin(id = "sponge-survival-games", name = "Sponge Survival Games", version = "0.1", description = "Survival Games for Sponge.")
 public class SpongeSurvivalGamesPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
 
     public static SpongeExecutorService EXECUTOR;
+    public static PluginContainer PLUGIN_CONTAINER;
+    public static SpongeSurvivalGamesPlugin PLUGIN;
+    public static Path CONFIG_DIRECTORY;
 
-    public static PluginContainer PLUGIN;
+    @Inject
+    @ConfigDir(sharedRoot = true)
+    private Path sharedRootConfig;
+
+    @Inject
+    private GuiceObjectMapperFactory factory;
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
@@ -55,13 +70,36 @@ public class SpongeSurvivalGamesPlugin {
         Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
                 RootCommand.getInstance().getAliases());
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
-        PLUGIN = Sponge.getPluginManager().getPlugin("sponge-survival-games").get();
+        Sponge.getPluginManager().getPlugin("sponge-survival-games")
+                .ifPresent(pluginContainer -> PLUGIN_CONTAINER = pluginContainer);
+        PLUGIN = this;
+        setupConfigDirectory();
         LOGGER.info("Sponge Survival Games Plugin Enabled.");
-
     }
 
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
         LOGGER.info("Sponge Survival Games Plugin Disabled.");
+    }
+
+    private void setupConfigDirectory() {
+
+        File configDirectory = new File(sharedRootConfig.toFile(), "sponge-survival-games");
+
+        if (!configDirectory.exists()) {
+            if (!configDirectory.mkdir()) {
+                LOGGER.error("Could not create config directory!");
+            }
+        }
+
+        CONFIG_DIRECTORY = sharedRootConfig.resolve("sponge-survival-games");
+    }
+
+    public Path getSharedRootConfig() {
+        return sharedRootConfig;
+    }
+
+    public GuiceObjectMapperFactory getFactory() {
+        return factory;
     }
 }

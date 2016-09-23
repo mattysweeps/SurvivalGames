@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class AddSpawnPointCommand extends BlockRayCommand {
 
@@ -39,7 +38,7 @@ class AddSpawnPointCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("spawn"),
                 "",
-                (survivalGame, location) -> survivalGame.getConfig().getSpawnPoints().add(location.getBlockPosition()),
+                (survivalGame, location) -> survivalGame.getConfig().getSpawnPoints().add(location.getBlockPosition().toDouble()),
                 Text.of("Spawn point added.")
         );
     }

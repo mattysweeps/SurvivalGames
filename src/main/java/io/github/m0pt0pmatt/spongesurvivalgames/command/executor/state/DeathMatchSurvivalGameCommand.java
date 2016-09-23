@@ -24,6 +24,16 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -33,14 +43,6 @@ import org.spongepowered.api.text.Text;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
 public class DeathMatchSurvivalGameCommand extends BaseCommand {
 
@@ -54,8 +56,7 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        SurvivalGame survivalGame = (SurvivalGame) args.getOne(CommandKeys.SURVIVAL_GAME)
-                .orElseThrow(() -> new CommandException(Text.of("No Survival Game")));
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
         if (survivalGame.getState() != SurvivalGameState.RUNNING) {
             throw new CommandException(Text.of("Must be in the " + SurvivalGameState.RUNNING + " states."));
@@ -63,7 +64,7 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
 
         SurvivalGameStateManager.deathMatch(survivalGame);
 
-        src.sendMessage(Text.of("Death-match started"));
+        sendSuccess(src, "Started deathmatch", survivalGame.getName());
         return CommandResult.success();
     }
 

@@ -22,50 +22,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class DeleteGameCommand extends BaseCommand {
+class AddItemCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
+    private static SurvivalGamesCommand INSTANCE = new AddItemCommand();
 
-    private DeleteGameCommand() {
+    private AddItemCommand() {
         super(
-                Collections.singletonList("delete"),
+                Collections.singletonList("item"),
                 "",
-                SurvivalGameNameCommandElement.getInstance(),
-                Collections.emptyMap()
-        );
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)),
+                Collections.emptyMap());
     }
 
-    @Override
     @Nonnull
+    @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
-        SurvivalGameRepository.remove(survivalGameName);
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        ItemType itemType = (ItemType) getOrThrow(args, CommandKeys.ITEM);
 
-        sendSuccess(src, "Deleted game", survivalGameName);
+        survivalGame.getConfig().getItems().add(ItemStack.of(itemType, 1).createSnapshot());
+
+        sendSuccess(src, "Item added", itemType.getName());
         return CommandResult.success();
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

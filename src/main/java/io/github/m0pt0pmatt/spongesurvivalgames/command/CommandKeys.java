@@ -31,6 +31,7 @@ public class CommandKeys {
     public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
     public static final Text COUNT_DOWN_SECONDS = Text.of("count-down-seconds");
     public static final Text PLAYER_LIMIT = Text.of("player-limit");
+    public static final Text WORLD = Text.of("world");
     public static final Text WORLD_NAME = Text.of("world-name");
     public static final Text LOCATION = Text.of("location");
     public static final Text PLAYER = Text.of("player");
@@ -38,4 +39,9 @@ public class CommandKeys {
     public static final Text Y = Text.of("y");
     public static final Text Z = Text.of("z");
     public static final Text VECTOR = Text.of("vector");
+    public static final Text ITEM = Text.of("item");
+    public static final Text FILE_PATH = Text.of("file-path");
+    public static final Text FILE_NAME = Text.of("file-name");
+    public static final Text CHEST_MIDPOINT = Text.of("chest-midpoint");
+    public static final Text CHEST_RANGE = Text.of("chest-range");
 }

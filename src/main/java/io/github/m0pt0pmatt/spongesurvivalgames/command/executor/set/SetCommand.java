@@ -24,17 +24,15 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
-import com.google.common.collect.ImmutableMap;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
+import com.google.common.collect.ImmutableMap;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
 import java.util.Collections;
 import java.util.List;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-
-import static io.github.m0pt0pmatt.spongesurvivalgames.command.executor.CommandUtil.toEntry;
 
 public class SetCommand extends ParentCommand {
 
@@ -45,8 +43,11 @@ public class SetCommand extends ParentCommand {
                 Collections.singletonList("set"),
                 "",
                 ImmutableMap.<List<String>, CommandCallable>builder()
+                        .put(toEntry(SetBlocksCommand.getInstance()))
                         .put(toEntry(SetBoundaryCommand.getInstance()))
                         .put(toEntry(SetCenterVectorCommand.getInstance()))
+                        .put(toEntry(SetChestMidpointCommand.getInstance()))
+                        .put(toEntry(SetChestRangeCommand.getInstance()))
                         .put(toEntry(SetCountDownSecondsCommand.getInstance()))
                         .put(toEntry(SetExitVectorCommand.getInstance()))
                         .put(toEntry(SetExitWorldNameCommand.getInstance()))

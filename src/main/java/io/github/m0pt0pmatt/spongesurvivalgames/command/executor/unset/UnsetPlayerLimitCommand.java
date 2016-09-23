@@ -24,11 +24,10 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class UnsetPlayerLimitCommand extends AbstractUnsetCommand {
 
@@ -39,7 +38,7 @@ class UnsetPlayerLimitCommand extends AbstractUnsetCommand {
                 Collections.singletonList("player-limit"),
                 "",
                 survivalGame -> survivalGame.getConfig().setPlayerLimit(null),
-                Text.of("Player limit unset.")
+                Text.of("Unset player limit")
         );
     }
 

@@ -24,11 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
-import java.util.Collections;
-
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
+
+import java.util.Collections;
 
 public class StartSurvivalGameCommand extends AbstractStateCommand {
 

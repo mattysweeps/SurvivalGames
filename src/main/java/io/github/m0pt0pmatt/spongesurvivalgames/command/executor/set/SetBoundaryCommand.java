@@ -24,13 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class SetBoundaryCommand extends BlockRayCommand {
 
@@ -40,8 +38,11 @@ class SetBoundaryCommand extends BlockRayCommand {
         super(
                 Collections.singletonList("boundary"),
                 "",
-                (survivalGame, location) -> survivalGame.getConfig().addBoundaryVector(location.getBlockPosition()),
-                Text.of("Boundary point set.")
+                (survivalGame, location) -> {
+                    survivalGame.getConfig().addBoundaryVector(location.getBlockPosition().toDouble());
+                    survivalGame.getConfig().setBlocksValid(false);
+                },
+                Text.of("Set boundary point")
         );
     }
 

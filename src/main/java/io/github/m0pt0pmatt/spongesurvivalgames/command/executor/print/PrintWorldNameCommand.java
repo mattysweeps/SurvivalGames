@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 
 class PrintWorldNameCommand extends AbstractPrintCommand {
 
@@ -41,7 +40,7 @@ class PrintWorldNameCommand extends AbstractPrintCommand {
                 "",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Text.of(survivalGame.getConfig().getWorldName().orElse("World name not set."))
+                survivalGame -> survivalGame.getConfig().getWorldName().map(Text::of)
         );
     }
 

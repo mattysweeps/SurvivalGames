@@ -24,44 +24,29 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
-
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
 import java.util.Optional;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+public class DespawnPlayersTask extends PlayerTask {
 
-public class DespawnPlayersTask implements Task {
-
-    private static final Task INSTANCE = new DespawnPlayersTask();
+    private static final PlayerTask INSTANCE = new DespawnPlayersTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
-        survivalGame.getPlayerUUIDs().forEach(uuid -> {
-
-            Optional<Player> playerOptional = Sponge.getServer().getPlayer(uuid);
-            playerOptional.ifPresent(player -> {
-
-                Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
-                Optional<Vector3i> exitVector = survivalGame.getConfig().getExitVector();
-                if (exitWorldName.isPresent() && exitVector.isPresent()) {
-                    Sponge.getServer().getWorld(exitWorldName.get())
-                            .ifPresent(world -> player.setLocation(world.getLocation(exitVector.get())));
-                }
-
-            });
-
-
-        });
-
-
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
+        Optional<Vector3d> exitVector = survivalGame.getConfig().getExitVector();
+        if (exitWorldName.isPresent() && exitVector.isPresent()) {
+            Sponge.getServer().getWorld(exitWorldName.get())
+                    .ifPresent(world -> player.setLocation(world.getLocation(exitVector.get())));
+        }
     }
 
-    public static Task getInstance() {
+    public static PlayerTask getInstance() {
         return INSTANCE;
     }
 }

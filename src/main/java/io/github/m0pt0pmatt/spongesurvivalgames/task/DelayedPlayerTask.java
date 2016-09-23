@@ -24,20 +24,37 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import java.util.concurrent.TimeUnit;
 
-public class CreateDeathmatBorderTask implements Task {
+public class DelayedPlayerTask extends PlayerTask {
 
-    private static final Task INSTANCE = new CreateDeathmatBorderTask();
+    private final PlayerTask task;
+    private final long delay;
+    private final TimeUnit timeUnit;
 
-    @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-
+    private DelayedPlayerTask(PlayerTask task, long delay, TimeUnit timeUnit) {
+        this.task = task;
+        this.delay = delay;
+        this.timeUnit = timeUnit;
     }
 
-    public static Task getInstance() {
-        return INSTANCE;
+    public static PlayerTask of(PlayerTask task, long delay, TimeUnit timeUnit) {
+        return new DelayedPlayerTask(task, delay, timeUnit);
+    }
+
+    @Override
+    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+            try {
+                task.execute(survivalGame, player);
+            } catch (TextMessageException e) {
+                e.printStackTrace();
+            }
+        }, delay, timeUnit);
     }
 }

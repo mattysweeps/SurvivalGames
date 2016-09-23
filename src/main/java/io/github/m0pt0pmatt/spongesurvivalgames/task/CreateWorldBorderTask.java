@@ -24,16 +24,15 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import com.flowpowered.math.vector.Vector3i;
-
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.TextMessageException;
-import org.spongepowered.api.world.WorldBorder;
-
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static java.lang.Math.abs;
+
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.WorldBorder;
 
 public class CreateWorldBorderTask implements Task {
 
@@ -42,24 +41,22 @@ public class CreateWorldBorderTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
-                Sponge.getServer().getWorld(worldName).ifPresent(world -> {
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), "world name");
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
+        WorldBorder worldBorder = world.getWorldBorder();
+        Vector3d center = getOrThrow(survivalGame.getConfig().getCenterVector(), "center vector");
 
-                    WorldBorder worldBorder = world.getWorldBorder();
+        worldBorder.setCenter(center.getX(), center.getZ());
 
-                    Vector3i center = survivalGame.getConfig().getCenterVector().get();
+        Vector3d lesserBoundaryVector = getOrThrow(survivalGame.getConfig().getLesserBoundary(), "boundary");
+        Vector3d greaterBoundaryVector = getOrThrow(survivalGame.getConfig().getGreaterBoundary(), "boundary");
 
-                    worldBorder.setCenter(center.getX(), center.getZ());
+        double diameter = Double.max(
+                abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),
+                abs(greaterBoundaryVector.getZ() - lesserBoundaryVector.getZ()));
 
-                    Vector3i l = survivalGame.getConfig().getLesserBoundary().get();
-                    Vector3i g = survivalGame.getConfig().getGreaterBoundary().get();
-
-                    int m = Integer.max(abs(g.getX() - l.getX()), abs(g.getZ() - l.getZ()));
-
-                    worldBorder.setDiameter(m);
-
-                }));
-
+        worldBorder.setDiameter(diameter);
+        worldBorder.setWarningDistance(0);
     }
 
     public static Task getInstance() {
