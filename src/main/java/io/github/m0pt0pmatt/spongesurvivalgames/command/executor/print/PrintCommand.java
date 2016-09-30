@@ -28,6 +28,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
@@ -40,6 +41,7 @@ public class PrintCommand extends ParentCommand {
 
     private PrintCommand() {
         super(
+                RootCommand.getInstance(),
                 "print",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(PrintBoundariesCommand.getInstance()))
@@ -53,6 +55,7 @@ public class PrintCommand extends ParentCommand {
                         .put(toEntry(PrintSpawnsCommand.getInstance()))
                         .put(toEntry(PrintSurvivalGameStateCommand.getInstance()))
                         .put(toEntry(PrintWorldNameCommand.getInstance()))
+                        .put(toEntry(PrintEventIntervalsCommand.getInstance()))
                         .build()
         );
     }

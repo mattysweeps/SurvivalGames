@@ -48,6 +48,7 @@ class SetChestRangeCommand extends BaseCommand {
 
     private SetChestRangeCommand() {
         super(
+                SetCommand.getInstance(),
                 "chest-range",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_RANGE)),
                 Collections.emptyMap()
@@ -57,7 +58,6 @@ class SetChestRangeCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Integer chestRange = (Integer) getOrThrow(args, CommandKeys.CHEST_RANGE);
 

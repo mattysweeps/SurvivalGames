@@ -25,9 +25,9 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.Util;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CelebrateWinnerTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.DelayedPlayerTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.PlayerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.CelebrateWinnerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.DelayedPlayerTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.PlayerTask;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;

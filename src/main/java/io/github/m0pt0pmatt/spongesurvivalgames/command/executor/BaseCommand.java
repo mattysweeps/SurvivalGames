@@ -26,6 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.args.CommandElement;
@@ -39,10 +40,21 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     private final List<String> aliases;
     private final CommandElement arguments;
     private final Map<List<String>, CommandCallable> children;
+    private final SurvivalGamesCommand parentCommand;
 
-    protected BaseCommand(String name,
-                          CommandElement arguments,
-                          Map<List<String>, CommandCallable> children) {
+    protected BaseCommand(
+            String name,
+            CommandElement arguments,
+            Map<List<String>, CommandCallable> children) {
+        this(null, name, arguments, children);
+    }
+
+    protected BaseCommand(
+            SurvivalGamesCommand parentCommand,
+            String name,
+            CommandElement arguments,
+            Map<List<String>, CommandCallable> children) {
+        this.parentCommand = parentCommand;
         this.aliases = Collections.singletonList(checkNotNull(name, "name"));
         this.arguments = checkNotNull(arguments, "arguments");
         this.children = checkNotNull(children, "children");
@@ -54,17 +66,26 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     }
 
     @Override
-    public List<String> getAliases() {
+    public final List<String> getAliases() {
         return aliases;
     }
 
     @Override
-    public CommandElement getArguments() {
+    public final CommandElement getArguments() {
         return arguments;
     }
 
     @Override
-    public Map<List<String>, CommandCallable> getChildren() {
+    public final Map<List<String>, CommandCallable> getChildren() {
         return children;
+    }
+
+    @Override
+    public String getPermission() {
+        if (parentCommand == null) {
+            return aliases.get(0);
+        }
+
+        return parentCommand.getPermission() + "." + aliases.get(0);
     }
 }

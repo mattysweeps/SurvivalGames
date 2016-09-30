@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -55,7 +56,7 @@ class AbstractPrintCommand extends BaseCommand {
             CommandElement arguments,
             Map<List<String>, CommandCallable> children,
             Function<SurvivalGame, Optional<Text>> function) {
-        super(name, arguments, children);
+        super(PrintCommand.getInstance(), name, arguments, children);
         this.function = checkNotNull(function, "function");
     }
 

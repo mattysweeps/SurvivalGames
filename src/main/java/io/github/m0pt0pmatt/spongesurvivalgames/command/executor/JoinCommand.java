@@ -24,5 +24,57 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-public class JoinCommand {
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
+
+class JoinCommand extends BaseCommand {
+
+    private static final SurvivalGamesCommand INSTANCE = new JoinCommand();
+
+    private JoinCommand() {
+        super(
+                RootCommand.getInstance(),
+                "join",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap());
+    }
+
+    @Nonnull
+    @Override
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+
+        if (!(src instanceof Player)) {
+            throw new CommandException(Text.of("Must be a player to execute this command"));
+        }
+
+        Player player = (Player) src;
+
+        if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
+        }
+
+        survivalGame.getPlayerUUIDs().add(player.getUniqueId());
+        sendSuccess(src, "Joined game", survivalGame.getName());
+        return CommandResult.success();
+    }
+
+    static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
+    }
 }

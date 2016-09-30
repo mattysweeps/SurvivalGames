@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.task;
+package io.github.m0pt0pmatt.spongesurvivalgames.task.player;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
@@ -51,7 +51,6 @@ public class SpawnPlayersTask extends PlayerTask {
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
 
         if (!spawnPoints.isEmpty()) {
-
             Vector3i spawnPoint = spawnPoints.remove(0).toInt();
 
             spawnPlayer(player, world,

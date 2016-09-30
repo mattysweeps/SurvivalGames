@@ -50,6 +50,7 @@ class SetExitWorldNameCommand extends BaseCommand {
 
     private SetExitWorldNameCommand() {
         super(
+                SetCommand.getInstance(),
                 "exit-world-name",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
                 Collections.emptyMap()
@@ -59,7 +60,6 @@ class SetExitWorldNameCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Object worldInfo = getOrThrow(args, CommandKeys.WORLD_NAME);
 

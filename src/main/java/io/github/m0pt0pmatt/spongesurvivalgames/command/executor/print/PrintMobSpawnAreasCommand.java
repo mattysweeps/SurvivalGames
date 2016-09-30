@@ -26,21 +26,23 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PrintMobSpawnAreasCommand extends AbstractPrintCommand {
+class PrintMobSpawnAreasCommand extends AbstractPrintCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new PrintMobSpawnAreasCommand();
 
     private PrintMobSpawnAreasCommand() {
-        super("mob-spawn-ares", SurvivalGameCommandElement.getInstance(),
+        super("mob-spawn-area", SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> Optional.of(Text.joinWith(Text.of("\n"), survivalGame.getConfig().getMobSpawnAreas()
                         .stream()
+                        .map(MobSpawnArea::getId)
                         .map(Object::toString)
                         .map(Text::of)
                         .collect(Collectors.toList()))));

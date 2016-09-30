@@ -38,31 +38,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/** Utility methods used across the plugin. */
 public final class Util {
 
     private Util() {
 
     }
 
+    /**
+     * Create a {@link Map.Entry} from a {@link SurvivalGamesCommand}, where the key is the {@link SurvivalGamesCommand}'s aliases.
+     * This is useful when adding child commands.
+     * @param command The CommandCallable.
+     * @return A single {@link Map.Entry}
+     */
     public static Map.Entry<List<String>, ? extends CommandCallable> toEntry(
             SurvivalGamesCommand command) {
         return new AbstractMap.SimpleImmutableEntry<>(
-                command.getAliases(), toCommandCallable(command));
+                command.getAliases(),
+                toCommandCallable(command));
     }
 
-    public static CommandCallable toCommandCallable(SurvivalGamesCommand command) {
+    /**
+     * Creates a {@link CommandCallable} from a {@link SurvivalGamesCommand}.
+     * @param command the {@link SurvivalGamesCommand}.
+     * @return a {@link CommandCallable}.
+     */
+    static CommandCallable toCommandCallable(SurvivalGamesCommand command) {
 
+        CommandSpec.Builder builder = CommandSpec.builder();
+        builder.executor(command);
         if (command.getChildren().size() > 0) {
-            return CommandSpec.builder()
-                    .children(command.getChildren())
-                    .executor(command)
-                    .build();
+            // This is a parent command.
+            builder.children(command.getChildren());
+        } else {
+            // This is a leaf command.
+            builder.arguments(command.getArguments());
         }
 
-        return CommandSpec.builder()
-                .arguments(command.getArguments())
-                .executor(command)
-                .build();
+        builder.permission(command.getPermission());
+        return builder.build();
     }
 
     public static <T> T getOrThrow(Optional<T> optional, Object name) throws CommandException {

@@ -24,5 +24,24 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-public class StopEventIntervals {
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.interval.ActiveIntervalRepository;
+import org.spongepowered.api.util.TextMessageException;
+
+public class StopEventIntervalsTask implements Task {
+
+    private static final Task INSTANCE = new StopEventIntervalsTask();
+
+    private StopEventIntervalsTask() {
+
+    }
+
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        survivalGame.getActiveEventIntervals().forEach(ActiveIntervalRepository::stop);
+    }
+
+    public static Task getInstance() {
+        return INSTANCE;
+    }
 }

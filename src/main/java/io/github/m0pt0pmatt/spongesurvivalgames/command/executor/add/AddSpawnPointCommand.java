@@ -39,6 +39,7 @@ class AddSpawnPointCommand extends BlockRayCommand {
 
     private AddSpawnPointCommand() {
         super(
+                AddCommand.getInstance(),
                 "spawn",
                 (survivalGame, location) -> {
 

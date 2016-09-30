@@ -28,9 +28,13 @@ package io.github.m0pt0pmatt.spongesurvivalgames.game;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
+import ninja.leaping.configurate.objectmapping.Setting;
+import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -48,6 +52,9 @@ public class SurvivalGame {
     private final Set<UUID> spectatorUUIDs;
     private final Set<CommandBlock> commandBlocks;
     private final Set<UUID> activeMobSpawners;
+    private final Set<UUID> activeEventIntervals;
+    private final List<BlockSnapshot> blocks;
+    private boolean blocksValid = false;
 
     public SurvivalGame(String name, GameConfig config) {
         this.name = checkNotNull(name);
@@ -58,6 +65,8 @@ public class SurvivalGame {
         spectatorUUIDs = new HashSet<>();
         commandBlocks = new HashSet<>();
         activeMobSpawners = new HashSet<>();
+        activeEventIntervals = new HashSet<>();
+        blocks = new ArrayList<>();
     }
 
     public SurvivalGame(String name) {
@@ -94,5 +103,21 @@ public class SurvivalGame {
 
     public Set<UUID> getActiveMobSpawners() {
         return activeMobSpawners;
+    }
+
+    public Set<UUID> getActiveEventIntervals() {
+        return activeEventIntervals;
+    }
+
+    public List<BlockSnapshot> getBlocks() {
+        return blocks;
+    }
+
+    public boolean areBlocksValid() {
+        return blocksValid;
+    }
+
+    public void setBlocksValid(boolean blocksValid) {
+        this.blocksValid = blocksValid;
     }
 }

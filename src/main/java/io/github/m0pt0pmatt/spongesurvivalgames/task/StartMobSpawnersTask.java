@@ -24,5 +24,34 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-public class StartEventIntervals {
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.mobspawn.ActiveMobSpawnRepository;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.World;
+
+public class StartMobSpawnersTask implements Task {
+
+    private static final Task INSTANCE = new StartMobSpawnersTask();
+
+    private StartMobSpawnersTask() {
+
+    }
+
+    @Override
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), "world-name");
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
+
+        for (MobSpawnArea mobSpawnArea: survivalGame.getConfig().getMobSpawnAreas()) {
+            survivalGame.getActiveMobSpawners().add(ActiveMobSpawnRepository.start(survivalGame, mobSpawnArea, world));
+        }
+    }
+
+    public static Task getInstance() {
+        return INSTANCE;
+    }
 }

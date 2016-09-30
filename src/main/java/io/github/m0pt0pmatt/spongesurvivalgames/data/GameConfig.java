@@ -25,19 +25,17 @@
 
 package io.github.m0pt0pmatt.spongesurvivalgames.data;
 
-import static java.lang.Double.max;
-import static java.lang.Double.min;
-
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.spongepowered.api.block.BlockSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -80,12 +78,6 @@ public class GameConfig {
     @Setting(value = "countdown-seconds", comment = "The number of seconds to countdown once the survival game starts.")
     private Integer countdownSeconds;
 
-    @Setting(value = "blocks")
-    private List<BlockSnapshot> blocks;
-
-    @Setting(value = "blocksValid")
-    private boolean blocksValid = false;
-
     @Setting(value = "chest-midpoint")
     private Integer chestMidpoint;
 
@@ -101,11 +93,13 @@ public class GameConfig {
     @Setting(value = "mobSpawnAreas")
     private List<MobSpawnArea> mobSpawnAreas = Lists.newArrayList();
 
+    @Setting(value = "event-intervals")
+    private Map<String, Integer> eventIntervals = Maps.newHashMap();
+
     public GameConfig() {
         setPlayerLimit(DEFAULT_PLAYER_LIMIT);
         setCountdownSeconds(DEFAULT_COUNTDOWN_SECONDS);
         spawnPoints = new ArrayList<>();
-        blocks = new ArrayList<>();
     }
 
     public Optional<String> getWorldName() {
@@ -160,18 +154,6 @@ public class GameConfig {
         return spawnPoints;
     }
 
-    public List<BlockSnapshot> getBlocks() {
-        return blocks;
-    }
-
-    public boolean areBlocksValid() {
-        return blocksValid;
-    }
-
-    public void setBlocksValid(boolean blocksValid) {
-        this.blocksValid = blocksValid;
-    }
-
     public Optional<Integer> getChestMidpoint() {
         return Optional.ofNullable(chestMidpoint);
     }
@@ -208,5 +190,9 @@ public class GameConfig {
 
     public List<MobSpawnArea> getMobSpawnAreas() {
         return mobSpawnAreas;
+    }
+
+    public Map<String, Integer> getEventIntervals() {
+        return eventIntervals;
     }
 }

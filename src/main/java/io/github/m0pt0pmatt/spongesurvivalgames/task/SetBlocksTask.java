@@ -37,7 +37,7 @@ public class SetBlocksTask implements Task {
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        List<BlockSnapshot> blocks = survivalGame.getConfig().getBlocks();
+        List<BlockSnapshot> blocks = survivalGame.getBlocks();
         blocks.forEach(blockSnapshot ->
 
 

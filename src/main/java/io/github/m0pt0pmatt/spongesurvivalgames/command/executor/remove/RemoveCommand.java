@@ -28,6 +28,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
@@ -40,10 +41,14 @@ public class RemoveCommand extends ParentCommand {
 
     private RemoveCommand() {
         super(
+                RootCommand.getInstance(),
                 "remove",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(RemovePlayerCommand.getInstance()))
+                        .put(toEntry(RemoveSpectatorCommand.getInstance()))
                         .put(toEntry(RemoveSpawnPointCommand.getInstance()))
+                        .put(toEntry(RemoveMobSpawnAreaCommand.getInstance()))
+                        .put(toEntry(RemoveEventIntervalsCommand.getInstance()))
                         .build()
         );
     }

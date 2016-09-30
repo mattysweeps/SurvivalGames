@@ -25,6 +25,7 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
 import com.google.common.collect.ImmutableSet;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
@@ -37,6 +38,7 @@ public class StopSurvivalGameCommand extends AbstractStateCommand {
 
     private StopSurvivalGameCommand() {
         super(
+                RootCommand.getInstance(),
                 "stop",
                 ImmutableSet.of(SurvivalGameState.RUNNING, SurvivalGameState.JOINABLE),
                 SurvivalGameStateManager::stop

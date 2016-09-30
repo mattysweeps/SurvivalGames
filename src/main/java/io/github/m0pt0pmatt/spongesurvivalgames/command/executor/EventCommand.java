@@ -24,5 +24,66 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
-public class EventCommand {
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandManager;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import java.util.Collections;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
+class EventCommand extends BaseCommand {
+
+    private static final EventCommand INSTANCE = new EventCommand();
+
+    private EventCommand() {
+        super(
+                RootCommand.getInstance(),
+                "event",
+                GenericArguments.seq(
+                        GenericArguments.string(CommandKeys.EVENT_NAME),
+                        GenericArguments.firstParsing(
+                                GenericArguments.seq(
+                                        GenericArguments.string(CommandKeys.EVENT_EXECUTOR),
+                                        GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))),
+                                GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))
+                        )),
+                Collections.emptyMap());
+    }
+
+    @Nonnull
+    @Override
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+
+        CommandSource executor = src;
+        if (args.hasAny(CommandKeys.EVENT_EXECUTOR)) {
+            String eventExecutorName = (String) getOrThrow(args, CommandKeys.EVENT_EXECUTOR);
+            Optional<Player> player = Sponge.getServer().getPlayer(eventExecutorName);
+            if (player.isPresent()) {
+                executor = player.get();
+            }
+        }
+
+        if (args.hasAny(CommandKeys.EVENT_COMMAND)) {
+            String eventCommand = (String) getOrThrow(args, CommandKeys.EVENT_COMMAND);
+            Sponge.getCommandManager().process(executor, eventCommand);
+        }
+
+        src.sendMessage(Text.of("This command is used with command blocks."));
+        return CommandResult.success();
+    }
+
+    static EventCommand getInstance() {
+        return INSTANCE;
+    }
 }

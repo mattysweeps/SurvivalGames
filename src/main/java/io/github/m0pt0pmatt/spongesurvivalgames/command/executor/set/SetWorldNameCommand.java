@@ -50,6 +50,7 @@ class SetWorldNameCommand extends BaseCommand {
 
     private SetWorldNameCommand() {
         super(
+                SetCommand.getInstance(),
                 "world-name",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
                 Collections.emptyMap()
@@ -59,7 +60,6 @@ class SetWorldNameCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Object worldInfo = getOrThrow(args, CommandKeys.WORLD_NAME);
 

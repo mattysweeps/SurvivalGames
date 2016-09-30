@@ -33,11 +33,7 @@ public class CommandKeys {
     public static final Text PLAYER_LIMIT = Text.of("player-limit");
     public static final Text WORLD = Text.of("world");
     public static final Text WORLD_NAME = Text.of("world-name");
-    public static final Text LOCATION = Text.of("location");
     public static final Text PLAYER = Text.of("player");
-    public static final Text X = Text.of("x");
-    public static final Text Y = Text.of("y");
-    public static final Text Z = Text.of("z");
     public static final Text VECTOR = Text.of("vector");
     public static final Text ITEM = Text.of("item");
     public static final Text FILE_PATH = Text.of("file-path");
@@ -49,4 +45,11 @@ public class CommandKeys {
     public static final Text ENTITY_TYPE = Text.of("entity-type");
     public static final Text SPAWN_RATE_PER_MINUTE = Text.of("spawn-rate-per-minute");
     public static final Text MOB_SPAWN_AREA = Text.of("mob-spawn-area");
+    public static final Text EVENT_NAME = Text.of("event-name");
+    public static final Text EVENT_COMMAND = Text.of("event-command");
+    public static final Text EVENT_EXECUTOR = Text.of("event-executor");
+    public static final Text LESSER_BOUNDARY = Text.of("lesser-boundary");
+    public static final Text GREATER_BOUNDARY = Text.of("greater-boundary");
+    public static final Text INTERVAL_NAME = Text.of("interval-name");
+    public static final Text SECONDS_PER_INTERVAL = Text.of("seconds-per-interval");
 }

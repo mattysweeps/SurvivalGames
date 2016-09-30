@@ -50,7 +50,9 @@ class AddMobSpawnAreaCommand extends BaseCommand {
     private static SurvivalGamesCommand INSTANCE = new AddMobSpawnAreaCommand();
 
     private AddMobSpawnAreaCommand() {
-        super("mob-spawn-area",
+        super(
+                AddCommand.getInstance(),
+                "mob-spawn-area",
                 GenericArguments.seq(
                         SurvivalGameCommandElement.getInstance(),
                         GenericArguments.vector3d(CommandKeys.VECTOR1),

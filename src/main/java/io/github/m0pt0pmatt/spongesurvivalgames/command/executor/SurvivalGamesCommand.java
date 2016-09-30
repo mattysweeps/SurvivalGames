@@ -30,6 +30,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface SurvivalGamesCommand extends CommandExecutor {
 
@@ -38,4 +39,6 @@ public interface SurvivalGamesCommand extends CommandExecutor {
     CommandElement getArguments();
 
     Map<List<String>, CommandCallable> getChildren();
+
+    String getPermission();
 }

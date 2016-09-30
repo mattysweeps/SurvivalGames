@@ -24,5 +24,12 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
-public class PlayerDeathEvent {
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
+
+public class PlayerDeathEvent extends PlayerEvent {
+    public PlayerDeathEvent(Cause cause, SurvivalGame survivalGame, Player player) {
+        super(cause, survivalGame, player);
+    }
 }

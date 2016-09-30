@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
@@ -49,7 +50,11 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
     private static final SurvivalGamesCommand INSTANCE = new DeathMatchSurvivalGameCommand();
 
     private DeathMatchSurvivalGameCommand() {
-        super("death-match", SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(
+                RootCommand.getInstance(),
+                "death-match",
+                SurvivalGameCommandElement.getInstance(),
+                Collections.emptyMap());
     }
 
     @Nonnull

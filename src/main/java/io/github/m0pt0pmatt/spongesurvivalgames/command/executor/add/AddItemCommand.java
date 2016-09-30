@@ -52,6 +52,7 @@ class AddItemCommand extends BaseCommand {
 
     private AddItemCommand() {
         super(
+                AddCommand.getInstance(),
                 "item",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)),
                 Collections.emptyMap());

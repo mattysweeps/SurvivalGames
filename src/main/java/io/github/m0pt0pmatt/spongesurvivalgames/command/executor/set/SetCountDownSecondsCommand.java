@@ -48,6 +48,7 @@ class SetCountDownSecondsCommand extends BaseCommand {
 
     private SetCountDownSecondsCommand() {
         super(
+                SetCommand.getInstance(),
                 "countdown-seconds",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.COUNT_DOWN_SECONDS)),
                 Collections.emptyMap()
@@ -57,7 +58,6 @@ class SetCountDownSecondsCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Integer countDownSeconds = (Integer) getOrThrow(args, CommandKeys.COUNT_DOWN_SECONDS);
 

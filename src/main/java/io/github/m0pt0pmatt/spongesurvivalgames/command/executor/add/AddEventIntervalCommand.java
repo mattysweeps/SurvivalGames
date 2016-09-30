@@ -24,5 +24,59 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
-public class AddEventIntervalCommand {
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
+
+class AddEventIntervalCommand extends BaseCommand {
+    private static SurvivalGamesCommand INSTANCE = new AddEventIntervalCommand();
+
+    private AddEventIntervalCommand() {
+        super(
+                AddCommand.getInstance(),
+                "event-interval",
+                GenericArguments.seq(
+                        SurvivalGameCommandElement.getInstance(),
+                        GenericArguments.string(CommandKeys.INTERVAL_NAME),
+                        GenericArguments.integer(CommandKeys.SECONDS_PER_INTERVAL)),
+                Collections.emptyMap());
+    }
+
+    @Nonnull
+    @Override
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        String intervalName = (String) getOrThrow(args, CommandKeys.INTERVAL_NAME);
+        Integer secondsPerInterval = (Integer) getOrThrow(args, CommandKeys.SECONDS_PER_INTERVAL);
+
+        if (survivalGame.getState() != SurvivalGameState.STOPPED) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.STOPPED));
+        }
+
+        survivalGame.getConfig().getEventIntervals().put(intervalName, secondsPerInterval);
+        sendSuccess(src, "Event interval added", Text.of(intervalName, " -> ", secondsPerInterval));
+        return CommandResult.success();
+    }
+
+    static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
+    }
 }

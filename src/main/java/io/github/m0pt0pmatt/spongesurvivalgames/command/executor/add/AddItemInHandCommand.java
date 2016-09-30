@@ -54,6 +54,7 @@ class AddItemInHandCommand extends BaseCommand {
 
     private AddItemInHandCommand() {
         super(
+                AddCommand.getInstance(),
                 "item-in-hand",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance()),
                 Collections.emptyMap());

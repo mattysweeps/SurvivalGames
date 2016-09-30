@@ -48,6 +48,7 @@ class SetChestMidpointCommand extends BaseCommand {
 
     private SetChestMidpointCommand() {
         super(
+                SetCommand.getInstance(),
                 "chest-midpoint",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_MIDPOINT)),
                 Collections.emptyMap()
@@ -57,7 +58,6 @@ class SetChestMidpointCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Integer chestMidpoint = (Integer) getOrThrow(args, CommandKeys.CHEST_MIDPOINT);
 

@@ -20,22 +20,24 @@ package io.github.m0pt0pmatt.spongesurvivalgames.game;
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.GameStateChangedEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearScoreBoardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StartMobSpawnersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StopEventIntervalsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.ClearScoreBoardTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearWorldBorderTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateCountdownTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.CreateCountdownTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateDeathmatchBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateScoreboardTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.CreateScoreboardTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateWorldBorderTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.DespawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.DespawnPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.FillChestsTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.FillCommandBlocksTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.HealPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.HealPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.SetBlocksTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnPlayersTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnSpectatorsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.StartMobSpawners;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.StopMobSpawners;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.SpawnPlayersTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.player.SpawnSpectatorsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StartEventIntervalsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StopMobSpawnersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.Task;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
@@ -59,7 +61,8 @@ public class SurvivalGameStateManager {
             CreateCountdownTask.getInstance(),
             CreateScoreboardTask.getInstance(),
             CreateWorldBorderTask.getInstance(),
-            StartMobSpawners.getInstance()
+            StartEventIntervalsTask.getInstance(),
+            StartMobSpawnersTask.getInstance()
     );
 
     private static final List<Task> DEATH_MATCH_TASKS = Arrays.asList(
@@ -75,7 +78,8 @@ public class SurvivalGameStateManager {
             ClearScoreBoardTask.getInstance(),
             ClearWorldBorderTask.getInstance(),
             ClearPlayersTask.getInstance(),
-            StopMobSpawners.getInstance()
+            StopMobSpawnersTask.getInstance(),
+            StopEventIntervalsTask.getInstance()
     );
 
     public static void ready(SurvivalGame survivalGame) {

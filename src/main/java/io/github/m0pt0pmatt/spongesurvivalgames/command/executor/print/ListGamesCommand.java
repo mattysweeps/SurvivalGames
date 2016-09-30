@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
@@ -48,6 +49,7 @@ public class ListGamesCommand extends BaseCommand {
 
     private ListGamesCommand() {
         super(
+                RootCommand.getInstance(),
                 "list",
                 GenericArguments.none(),
                 Collections.emptyMap()

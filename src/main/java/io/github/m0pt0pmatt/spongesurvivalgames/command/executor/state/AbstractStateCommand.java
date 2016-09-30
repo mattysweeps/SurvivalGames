@@ -31,6 +31,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import org.spongepowered.api.command.CommandException;
@@ -54,10 +55,11 @@ public class AbstractStateCommand extends BaseCommand {
     private final Consumer<SurvivalGame> action;
 
     public AbstractStateCommand(
+            SurvivalGamesCommand parentCommand,
             String name,
             Set<SurvivalGameState> states,
             Consumer<SurvivalGame> action) {
-        super(name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(parentCommand, name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
         this.states = checkNotNull(states, "states");
         this.action = checkNotNull(action, "action");
     }

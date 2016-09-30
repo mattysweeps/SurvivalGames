@@ -24,6 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
@@ -36,6 +37,7 @@ public class StartSurvivalGameCommand extends AbstractStateCommand {
 
     private StartSurvivalGameCommand() {
         super(
+                RootCommand.getInstance(),
                 "start",
                 Collections.singleton(SurvivalGameState.JOINABLE),
                 SurvivalGameStateManager::start

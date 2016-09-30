@@ -28,10 +28,6 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add.AddCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.create.CreateGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete.DeleteGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.load.LoadConfigCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.save.SaveConfigCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.ListGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.PrintCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove.RemoveCommand;
@@ -64,12 +60,22 @@ public class RootCommand extends ParentCommand {
                     .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
                     .put(toEntry(LoadConfigCommand.getInstance()))
                     .put(toEntry(SaveConfigCommand.getInstance()))
+                    .put(toEntry(EventCommand.getInstance()))
+                    .put(toEntry(DemoCommand.getInstance()))
+                    .put(toEntry(TeleportCommand.getInstance()))
+                    .put(toEntry(JoinCommand.getInstance()))
+                    .put(toEntry(SpectateCommand.getInstance()))
                     .build();
 
     private static final SurvivalGamesCommand INSTANCE = new RootCommand();
 
     private RootCommand() {
         super("ssg", TOP_LEVEL_CHILDREN);
+    }
+
+    @Override
+    public String getPermission() {
+        return "ssg";
     }
 
     public static SurvivalGamesCommand getInstance() {

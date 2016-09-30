@@ -24,5 +24,23 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
-public class EntitySurvivalGameEvent {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
+
+public class PlayerEvent extends SurvivalGameEvent {
+
+    private final Player player;
+
+    public PlayerEvent(Cause cause, SurvivalGame survivalGame, Player player) {
+        super(cause, survivalGame);
+        this.player = checkNotNull(player, "player");
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

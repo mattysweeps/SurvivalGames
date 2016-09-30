@@ -44,10 +44,6 @@ public class UpdateScoreBoardTask implements Task {
         execute(survivalGame);
     }
 
-    public static UpdateScoreBoardTask getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
         deadPlayer.getScoreboard().getObjective(DisplaySlots.SIDEBAR).ifPresent(objective -> {
@@ -57,5 +53,9 @@ public class UpdateScoreBoardTask implements Task {
                 k.setScore(k.getScore() + 1);
             }
         });
+    }
+
+    public static UpdateScoreBoardTask getInstance() {
+        return INSTANCE;
     }
 }

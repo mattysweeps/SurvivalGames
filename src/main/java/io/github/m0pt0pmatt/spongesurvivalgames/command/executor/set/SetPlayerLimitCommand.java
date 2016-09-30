@@ -48,6 +48,7 @@ class SetPlayerLimitCommand extends BaseCommand {
 
     private SetPlayerLimitCommand() {
         super(
+                SetCommand.getInstance(),
                 "player-limit",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.PLAYER_LIMIT)),
                 Collections.emptyMap()
@@ -57,7 +58,6 @@ class SetPlayerLimitCommand extends BaseCommand {
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Integer playerLimit = (Integer) getOrThrow(args, CommandKeys.PLAYER_LIMIT);
 

@@ -45,12 +45,13 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class RemoveMobSpawnAreaCommand extends BaseCommand {
+class RemoveMobSpawnAreaCommand extends BaseCommand {
 
     private static SurvivalGamesCommand INSTANCE = new RemoveMobSpawnAreaCommand();
 
     private RemoveMobSpawnAreaCommand() {
         super(
+                RemoveCommand.getInstance(),
                 "mob-spawn-area",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), MobSpawnAreaCommandElement.getInstance()),
                 Collections.emptyMap());

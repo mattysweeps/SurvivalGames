@@ -24,5 +24,56 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
-public class AddSpectatorCommand {
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
+
+class AddSpectatorCommand extends BaseCommand {
+
+    private static SurvivalGamesCommand INSTANCE = new AddSpectatorCommand();
+
+    private AddSpectatorCommand() {
+        super(
+                AddCommand.getInstance(),
+                "spectator",
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)),
+                Collections.emptyMap());
+    }
+
+    @Nonnull
+    @Override
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Player player = (Player) getOrThrow(args, CommandKeys.PLAYER);
+
+        if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
+        }
+
+        survivalGame.getSpectatorUUIDs().add(player.getUniqueId());
+        sendSuccess(src, "Player added", player.getName());
+        return CommandResult.success();
+    }
+
+    static SurvivalGamesCommand getInstance() {
+        return INSTANCE;
+    }
 }

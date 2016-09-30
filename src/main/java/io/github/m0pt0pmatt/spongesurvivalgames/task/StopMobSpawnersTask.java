@@ -28,11 +28,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.mobspawn.ActiveMobSpawnRepository;
 import org.spongepowered.api.util.TextMessageException;
 
-public class StopMobSpawners implements Task {
+public class StopMobSpawnersTask implements Task {
 
-    private static final Task INSTANCE = new StopMobSpawners();
+    private static final Task INSTANCE = new StopMobSpawnersTask();
 
-    private StopMobSpawners() {
+    private StopMobSpawnersTask() {
 
     }
 

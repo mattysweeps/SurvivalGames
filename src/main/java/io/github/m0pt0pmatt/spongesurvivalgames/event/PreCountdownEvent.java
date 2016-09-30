@@ -29,9 +29,9 @@ import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 
-public class GameStartCountdownEvent extends SurvivalGameEvent {
+public class PreCountdownEvent extends SurvivalGameEvent {
 
-    public GameStartCountdownEvent(SurvivalGame survivalGame) {
+    public PreCountdownEvent(SurvivalGame survivalGame) {
         super(Cause.of(NamedCause.of("Survival Game Started", SpongeSurvivalGamesPlugin.PLUGIN)), survivalGame);
     }
 }

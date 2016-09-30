@@ -25,8 +25,6 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.data;
 
 import com.google.common.collect.Lists;
-import ninja.leaping.configurate.objectmapping.ObjectMapper;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
@@ -35,15 +33,6 @@ import java.util.List;
 
 @ConfigSerializable
 public class ItemConfig {
-
-    public static ObjectMapper<GameConfig> OBJECT_MAPPER;
-    static {
-        try {
-            OBJECT_MAPPER = ObjectMapper.forClass(GameConfig.class);
-        } catch (ObjectMappingException ignored) {
-
-        }
-    }
 
     @Setting(value = "items")
     private List<ItemStackSnapshot> items = Lists.newArrayList();

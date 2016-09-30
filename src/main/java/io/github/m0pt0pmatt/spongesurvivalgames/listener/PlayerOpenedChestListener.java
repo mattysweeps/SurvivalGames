@@ -24,5 +24,30 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.listener;
 
-public class PlayerOpenChestListener {
+import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerOpenedChestEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+
+public class PlayerOpenedChestListener {
+
+    private static final PlayerOpenedChestListener INSTANCE = new PlayerOpenedChestListener();
+
+    private PlayerOpenedChestListener() {
+
+    }
+
+    @Listener
+    public void onPlayerOpenChest(PlayerOpenedChestEvent event) {
+        Player player = event.getPlayer();
+        SurvivalGameRepository.values().stream()
+                .filter(survivalGame -> survivalGame.getPlayerUUIDs().contains(player.getUniqueId()))
+                .forEach(survivalGame -> Sponge.getEventManager()
+                        .post(new PlayerOpenedChestEvent(event.getCause(), survivalGame, player)));
+    }
+
+    public static PlayerOpenedChestListener getInstance() {
+        return INSTANCE;
+    }
 }

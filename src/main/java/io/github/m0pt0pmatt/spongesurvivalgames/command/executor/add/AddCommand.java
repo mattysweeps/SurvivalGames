@@ -28,6 +28,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toEntry;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.ParentCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
@@ -40,12 +41,14 @@ public class AddCommand extends ParentCommand {
 
     private AddCommand() {
         super(
+                RootCommand.getInstance(),
                 "add",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(AddItemCommand.getInstance()))
                         .put(toEntry(AddItemInHandCommand.getInstance()))
                         .put(toEntry(AddMobSpawnAreaCommand.getInstance()))
                         .put(toEntry(AddPlayerCommand.getInstance()))
+                        .put(toEntry(AddSpectatorCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
                         .build()
         );

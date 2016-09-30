@@ -50,6 +50,7 @@ class RemovePlayerCommand extends BaseCommand {
 
     private RemovePlayerCommand() {
         super(
+                RemoveCommand.getInstance(),
                 "player",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)),
                 Collections.emptyMap());

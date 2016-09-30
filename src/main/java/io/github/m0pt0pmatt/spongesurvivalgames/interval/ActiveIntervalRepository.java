@@ -24,5 +24,43 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.interval;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.event.IntervalEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.scheduler.SpongeExecutorService;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
 public class ActiveIntervalRepository {
+
+    private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP = new ConcurrentHashMap<>();
+
+    private ActiveIntervalRepository() {
+
+    }
+
+    public static UUID start(SurvivalGame survivalGame, String intervalName, int intervalSeconds) {
+
+        SpongeExecutorService.SpongeFuture future =
+                SpongeSurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
+                        () -> Sponge.getEventManager().post(new IntervalEvent(survivalGame, intervalName)),
+                        0,
+                        intervalSeconds,
+                        TimeUnit.SECONDS);
+
+        UUID uuid = UUID.randomUUID();
+        FUTURE_MAP.put(uuid, future);
+        return uuid;
+    }
+
+    public static void stop(UUID uuid) {
+        SpongeExecutorService.SpongeFuture future = FUTURE_MAP.remove(uuid);
+        if (future != null) {
+            future.cancel(true);
+        }
+    }
 }
