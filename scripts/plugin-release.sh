@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 GROUP="io/github/m0pt0pmatt/survivalgames"
-PROJECT_NAME="SpongeSurvivalGames"
+PROJECT_NAME="SurvivalGames"
 VERSION=$(ls ${HOME}/.m2/repository/${GROUP}/${PROJECT_NAME} | sed 's/maven-metadata-local.xml//' | xargs)
 if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
 
@@ -16,7 +16,7 @@ if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
     # Upload assets to release
     JAR_NAME="${PROJECT_NAME}-${VERSION}.jar"
     ls ${HOME}
-    ls ${HOME}/SpongeSurvivalGames/build/libs/
-    curl --data "$(cat ${HOME}/SpongeSurvivalGames/build/libs/${JAR_NAME})" https://uploads.github.com/repos/m0pt0pmatt/SpongeSurvivalGames/releases/${VERSION}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
+    ls ${HOME}/SurvivalGames/build/libs/
+    curl --data "$(cat ${HOME}/SurvivalGames/build/libs/${JAR_NAME})" https://uploads.github.com/repos/m0pt0pmatt/SurvivalGames/releases/${VERSION}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
 fi
 

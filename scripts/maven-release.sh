@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "travis-ci"
-git clone --branch=repository https://${GH_TOKEN}@github.com/m0pt0pmatt/SpongeSurvivalGames repository
+git clone --branch=repository https://${GH_TOKEN}@github.com/m0pt0pmatt/SurvivalGames repository
 
 # Commit and Push the Changes
 cd repository
