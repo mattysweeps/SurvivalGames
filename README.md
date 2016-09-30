@@ -15,3 +15,4 @@ By placing command blocks with the "/ssg event [EventName]" command, you can hav
 
 
 This plugin was created for the Sponge Summer Plugin Competition 2016.
+
