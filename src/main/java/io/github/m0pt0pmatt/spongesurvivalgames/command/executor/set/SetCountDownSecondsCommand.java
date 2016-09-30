@@ -48,8 +48,7 @@ class SetCountDownSecondsCommand extends BaseCommand {
 
     private SetCountDownSecondsCommand() {
         super(
-                Collections.singletonList("countdown-seconds"),
-                "",
+                "countdown-seconds",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.COUNT_DOWN_SECONDS)),
                 Collections.emptyMap()
         );

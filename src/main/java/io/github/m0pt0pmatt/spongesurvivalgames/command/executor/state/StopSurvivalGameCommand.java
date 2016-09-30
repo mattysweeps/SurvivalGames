@@ -37,8 +37,7 @@ public class StopSurvivalGameCommand extends AbstractStateCommand {
 
     private StopSurvivalGameCommand() {
         super(
-                Collections.singletonList("stop"),
-                "",
+                "stop",
                 ImmutableSet.of(SurvivalGameState.RUNNING, SurvivalGameState.JOINABLE),
                 SurvivalGameStateManager::stop
         );

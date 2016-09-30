@@ -31,8 +31,10 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.event.GameCreatedEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -49,8 +51,7 @@ public class CreateGameCommand extends BaseCommand {
 
     private CreateGameCommand() {
         super(
-                Collections.singletonList("create"),
-                "",
+                "create",
                 GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME),
                 Collections.emptyMap()
         );
@@ -66,8 +67,10 @@ public class CreateGameCommand extends BaseCommand {
             return CommandResult.empty();
         }
 
-        SurvivalGameRepository.put(survivalGameName, new SurvivalGame(survivalGameName));
+        SurvivalGame survivalGame = new SurvivalGame(survivalGameName);
+        SurvivalGameRepository.put(survivalGameName, survivalGame);
         sendSuccess(src, "Created game", survivalGameName);
+        Sponge.getEventManager().post(new GameCreatedEvent(survivalGame));
         return CommandResult.success();
     }
 

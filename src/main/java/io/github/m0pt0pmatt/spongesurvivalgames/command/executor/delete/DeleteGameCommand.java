@@ -28,9 +28,10 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameNameCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -47,9 +48,8 @@ public class DeleteGameCommand extends BaseCommand {
 
     private DeleteGameCommand() {
         super(
-                Collections.singletonList("delete"),
-                "",
-                SurvivalGameNameCommandElement.getInstance(),
+                "delete",
+                SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap()
         );
     }
@@ -57,11 +57,11 @@ public class DeleteGameCommand extends BaseCommand {
     @Override
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
-        SurvivalGameRepository.remove(survivalGameName);
+        SurvivalGameRepository.remove(survivalGame.getName());
 
-        sendSuccess(src, "Deleted game", survivalGameName);
+        sendSuccess(src, "Deleted game", survivalGame.getName());
         return CommandResult.success();
     }
 

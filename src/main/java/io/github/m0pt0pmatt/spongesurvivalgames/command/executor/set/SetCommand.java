@@ -40,8 +40,7 @@ public class SetCommand extends ParentCommand {
 
     private SetCommand() {
         super(
-                Collections.singletonList("set"),
-                "",
+                "set",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(SetBlocksCommand.getInstance()))
                         .put(toEntry(SetBoundaryCommand.getInstance()))

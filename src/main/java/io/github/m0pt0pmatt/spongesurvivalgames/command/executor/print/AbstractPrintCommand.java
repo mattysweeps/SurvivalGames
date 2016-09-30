@@ -51,12 +51,11 @@ class AbstractPrintCommand extends BaseCommand {
     private final Function<SurvivalGame, Optional<Text>> function;
 
     AbstractPrintCommand(
-            List<String> aliases,
-            String permission,
+            String name,
             CommandElement arguments,
             Map<List<String>, CommandCallable> children,
             Function<SurvivalGame, Optional<Text>> function) {
-        super(aliases, permission, arguments, children);
+        super(name, arguments, children);
         this.function = checkNotNull(function, "function");
     }
 

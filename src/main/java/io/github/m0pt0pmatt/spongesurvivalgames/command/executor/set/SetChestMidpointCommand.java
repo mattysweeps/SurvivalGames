@@ -48,8 +48,7 @@ class SetChestMidpointCommand extends BaseCommand {
 
     private SetChestMidpointCommand() {
         super(
-                Collections.singletonList("chest-midpoint"),
-                "",
+                "chest-midpoint",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_MIDPOINT)),
                 Collections.emptyMap()
         );

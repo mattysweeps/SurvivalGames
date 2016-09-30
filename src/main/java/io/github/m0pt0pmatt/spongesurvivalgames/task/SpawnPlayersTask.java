@@ -62,7 +62,7 @@ public class SpawnPlayersTask extends PlayerTask {
 
     private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 0, 0.5)));
-        player.lookAt(centerVector.add(new Vector3d(0.5, 0.5, 0.5)));
+        player.lookAt(centerVector);
     }
 
     @Override

@@ -35,8 +35,7 @@ class UnsetExitVectorCommand extends AbstractUnsetCommand {
 
     private UnsetExitVectorCommand() {
         super(
-                Collections.singletonList("exit-vector"),
-                "",
+                "exit-vector",
                 survivalGame -> survivalGame.getConfig().setExitVector(null),
                 Text.of("Unset exit vector")
         );

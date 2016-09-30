@@ -22,24 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.MobSpawnAreaCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMapper;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -47,20 +41,18 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class SaveConfigCommand extends BaseCommand {
-    private static SurvivalGamesCommand INSTANCE = new SaveConfigCommand();
+public class RemoveMobSpawnAreaCommand extends BaseCommand {
 
-    private SaveConfigCommand() {
+    private static SurvivalGamesCommand INSTANCE = new RemoveMobSpawnAreaCommand();
+
+    private RemoveMobSpawnAreaCommand() {
         super(
-                Collections.singletonList("save"),
-                "",
-                GenericArguments.seq(GenericArguments.firstParsing(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.FILE_NAME)), SurvivalGameCommandElement.getInstance()),
+                "mob-spawn-area",
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), MobSpawnAreaCommandElement.getInstance()),
                 Collections.emptyMap());
     }
 
@@ -68,40 +60,20 @@ public class SaveConfigCommand extends BaseCommand {
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
-        Path potentialFile;
-
-        if (args.hasAny(CommandKeys.FILE_PATH)) {
-            potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
-        } else if (args.hasAny(CommandKeys.FILE_NAME)) {
-            String potentialFileName = (String) getOrThrow(args, CommandKeys.FILE_NAME);
-            potentialFile = SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
-        } else {
-            throw new CommandException(Text.of("No file name"));
-        }
-
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        MobSpawnArea mobSpawnArea = (MobSpawnArea) getOrThrow(args, CommandKeys.MOB_SPAWN_AREA);
 
-        ConfigurationLoader<CommentedConfigurationNode> loader =
-                HoconConfigurationLoader.builder().setPath(potentialFile).build();
-        try {
-
-            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
-
-            ObjectMapper.BoundInstance i = SurvivalGameConfig.OBJECT_MAPPER.bind(survivalGame.getConfig());
-
-            i.serialize(node);
-            loader.save(node);
-
-        } catch (IOException | ObjectMappingException | RuntimeException e) {
-            e.printStackTrace();
-            throw new CommandException(Text.of("BAAD"));
-
+        if (survivalGame.getState() != SurvivalGameState.STOPPED) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.STOPPED));
         }
 
+        survivalGame.getActiveMobSpawners().remove(mobSpawnArea.getId());
+
+        src.sendMessage(Text.of("Removed Mob Spawn Area", mobSpawnArea.getId()));
         return CommandResult.success();
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

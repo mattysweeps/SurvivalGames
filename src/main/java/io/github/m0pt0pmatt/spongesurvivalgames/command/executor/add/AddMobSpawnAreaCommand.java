@@ -22,52 +22,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.list;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.entity.EntityType;
 
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class ListGameCommand extends BaseCommand {
+class AddMobSpawnAreaCommand extends BaseCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new ListGameCommand();
+    private static SurvivalGamesCommand INSTANCE = new AddMobSpawnAreaCommand();
 
-    private ListGameCommand() {
-        super(
-                Collections.singletonList("list"),
-                "",
-                GenericArguments.none(),
-                Collections.emptyMap()
-        );
+    private AddMobSpawnAreaCommand() {
+        super("mob-spawn-area",
+                GenericArguments.seq(
+                        SurvivalGameCommandElement.getInstance(),
+                        GenericArguments.vector3d(CommandKeys.VECTOR1),
+                        GenericArguments.vector3d(CommandKeys.VECTOR2),
+                        GenericArguments.catalogedElement(CommandKeys.ENTITY_TYPE, EntityType.class),
+                        GenericArguments.integer(CommandKeys.SPAWN_RATE_PER_MINUTE)
+                ), Collections.emptyMap());
     }
 
     @Override
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-        sendSuccess(src, "Survival Games: ");
-        SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getName)
-                .map(name -> Text.of(TextColors.BLUE, name))
-                .forEach(src::sendMessage);
 
+        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        Vector3d vector1 = (Vector3d) getOrThrow(args, CommandKeys.VECTOR1);
+        Vector3d vector2 = (Vector3d) getOrThrow(args, CommandKeys.VECTOR2);
+        EntityType entityType = (EntityType) getOrThrow(args, CommandKeys.ENTITY_TYPE);
+        Integer spawnRatePerMinute = (Integer) getOrThrow(args, CommandKeys.SPAWN_RATE_PER_MINUTE);
+
+        MobSpawnArea mobSpawnArea = new MobSpawnArea();
+        mobSpawnArea.addBoundaryVector(vector1);
+        mobSpawnArea.addBoundaryVector(vector2);
+        mobSpawnArea.setEntityType(entityType);
+        mobSpawnArea.setSpawnRatePerMinute(spawnRatePerMinute);
+
+        survivalGame.getConfig().getMobSpawnAreas().add(mobSpawnArea);
+
+        sendSuccess(src, "Added mob-spawn-area");
         return CommandResult.success();
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

@@ -35,8 +35,7 @@ class UnsetExitWorldNameCommand extends AbstractUnsetCommand {
 
     private UnsetExitWorldNameCommand() {
         super(
-                Collections.singletonList("exit-world-name"),
-                "",
+                "exit-world-name",
                 survivalGame -> survivalGame.getConfig().setExitWorldName(null),
                 Text.of("Unset exit world name")
         );

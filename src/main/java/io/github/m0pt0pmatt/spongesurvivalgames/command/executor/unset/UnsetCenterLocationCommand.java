@@ -35,8 +35,7 @@ class UnsetCenterLocationCommand extends AbstractUnsetCommand {
 
     private UnsetCenterLocationCommand() {
         super(
-                Collections.singletonList("center-vector"),
-                "",
+                "center-vector",
                 survivalGame -> survivalGame.getConfig().setCenterVector(null),
                 Text.of("Unset center vector")
         );

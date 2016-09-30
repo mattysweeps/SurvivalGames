@@ -36,8 +36,7 @@ class PrintCountDownSecondsCommand extends AbstractPrintCommand {
 
     private PrintCountDownSecondsCommand() {
         super(
-                Collections.singletonList("countdown-seconds"),
-                "",
+                "countdown-seconds",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getCountdownSeconds().map(Text::of)

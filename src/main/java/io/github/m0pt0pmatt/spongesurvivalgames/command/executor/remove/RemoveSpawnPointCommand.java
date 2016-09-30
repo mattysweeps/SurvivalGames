@@ -36,8 +36,7 @@ class RemoveSpawnPointCommand extends BlockRayCommand {
 
     private RemoveSpawnPointCommand() {
         super(
-                Collections.singletonList("spawn"),
-                "",
+                "spawn",
                 (survivalGame, location) -> survivalGame.getConfig().getSpawnPoints().remove(location.getBlockPosition()),
                 Text.of("Removed spawn point")
         );

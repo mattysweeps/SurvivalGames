@@ -25,39 +25,55 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.args.SelectorCommandElement;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-public class SurvivalGameNameCommandElement extends SelectorCommandElement {
+public class MobSpawnAreaCommandElement extends SelectorCommandElement {
 
-    private static final CommandElement INSTANCE = new SurvivalGameNameCommandElement();
+    private static final CommandElement INSTANCE = new MobSpawnAreaCommandElement();
 
-    private SurvivalGameNameCommandElement() {
-        super(CommandKeys.SURVIVAL_GAME_NAME);
+    private MobSpawnAreaCommandElement() {
+        super(CommandKeys.MOB_SPAWN_AREA);
     }
 
     @Nonnull
     @Override
     protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameRepository.values().stream()
-                .map(SurvivalGame::getName)
-                .collect(Collectors.toList());
+        return SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
+                .map(SurvivalGameRepository::get)
+                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getMobSpawnAreas).orElse(Collections.emptyList()))
+                .map(list -> list.stream().map(MobSpawnArea::getId).map(UUID::toString).collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 
     @Nonnull
     @Override
     protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
-        Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
-        if (survivalGame.isPresent()) {
-            return survivalGame.get().getName();
+
+        UUID id = UUID.fromString(choice);
+
+        Optional<MobSpawnArea> mobSpawnArea = SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
+                .map(SurvivalGameRepository::get)
+                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getMobSpawnAreas).orElse(Collections.emptyList()))
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(m -> m.getId().equals(id))
+                .findAny();
+
+        if (mobSpawnArea.isPresent()) {
+            return mobSpawnArea.get();
         }
         throw new IllegalArgumentException();
     }

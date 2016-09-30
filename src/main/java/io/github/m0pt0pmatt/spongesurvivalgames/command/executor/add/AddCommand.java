@@ -40,11 +40,11 @@ public class AddCommand extends ParentCommand {
 
     private AddCommand() {
         super(
-                Collections.singletonList("add"),
-                "",
+                "add",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(AddItemCommand.getInstance()))
                         .put(toEntry(AddItemInHandCommand.getInstance()))
+                        .put(toEntry(AddMobSpawnAreaCommand.getInstance()))
                         .put(toEntry(AddPlayerCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
                         .build()

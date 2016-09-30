@@ -35,8 +35,7 @@ class UnsetWorldNameCommand extends AbstractUnsetCommand {
 
     private UnsetWorldNameCommand() {
         super(
-                Collections.singletonList("world-name"),
-                "",
+                "world-name",
                 survivalGame -> survivalGame.getConfig().setWorldName(null),
                 Text.of("Unset world name")
         );

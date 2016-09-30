@@ -48,8 +48,7 @@ class SetChestRangeCommand extends BaseCommand {
 
     private SetChestRangeCommand() {
         super(
-                Collections.singletonList("chest-range"),
-                "",
+                "chest-range",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_RANGE)),
                 Collections.emptyMap()
         );

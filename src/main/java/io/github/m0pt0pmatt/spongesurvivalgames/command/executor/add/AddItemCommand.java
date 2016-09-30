@@ -31,6 +31,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.ItemConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -41,6 +42,7 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -50,8 +52,7 @@ class AddItemCommand extends BaseCommand {
 
     private AddItemCommand() {
         super(
-                Collections.singletonList("item"),
-                "",
+                "item",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)),
                 Collections.emptyMap());
     }
@@ -63,7 +64,7 @@ class AddItemCommand extends BaseCommand {
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         ItemType itemType = (ItemType) getOrThrow(args, CommandKeys.ITEM);
 
-        survivalGame.getConfig().getItems().add(ItemStack.of(itemType, 1).createSnapshot());
+        survivalGame.getConfig().getItemConfig().getItems().add(ItemStack.of(itemType, 1).createSnapshot());
 
         sendSuccess(src, "Item added", itemType.getName());
         return CommandResult.success();

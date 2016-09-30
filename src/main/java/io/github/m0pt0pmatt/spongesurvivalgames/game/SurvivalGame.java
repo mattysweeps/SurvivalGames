@@ -27,7 +27,8 @@ package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
+import org.spongepowered.api.block.tileentity.CommandBlock;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,21 +43,25 @@ public class SurvivalGame {
     SurvivalGameRunningState runningState;
 
     private final String name;
-    private final SurvivalGameConfig config;
+    private final GameConfig config;
     private final Set<UUID> playerUUIDs;
     private final Set<UUID> spectatorUUIDs;
+    private final Set<CommandBlock> commandBlocks;
+    private final Set<UUID> activeMobSpawners;
 
-    public SurvivalGame(String name, SurvivalGameConfig config) {
+    public SurvivalGame(String name, GameConfig config) {
         this.name = checkNotNull(name);
         state = SurvivalGameState.STOPPED;
         runningState = SurvivalGameRunningState.STOPPED;
         this.config = checkNotNull(config);
         playerUUIDs = new HashSet<>();
         spectatorUUIDs = new HashSet<>();
+        commandBlocks = new HashSet<>();
+        activeMobSpawners = new HashSet<>();
     }
 
     public SurvivalGame(String name) {
-        this(name, new SurvivalGameConfig());
+        this(name, new GameConfig());
     }
 
     public String getName() {
@@ -71,7 +76,7 @@ public class SurvivalGame {
         return runningState;
     }
 
-    public SurvivalGameConfig getConfig() {
+    public GameConfig getConfig() {
         return config;
     }
 
@@ -81,5 +86,13 @@ public class SurvivalGame {
 
     public Set<UUID> getSpectatorUUIDs() {
         return spectatorUUIDs;
+    }
+
+    public Set<CommandBlock> getCommandBlocks() {
+        return commandBlocks;
+    }
+
+    public Set<UUID> getActiveMobSpawners() {
+        return activeMobSpawners;
     }
 }

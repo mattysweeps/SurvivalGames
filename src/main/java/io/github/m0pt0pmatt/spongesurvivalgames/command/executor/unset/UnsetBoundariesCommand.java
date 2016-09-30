@@ -35,9 +35,8 @@ class UnsetBoundariesCommand extends AbstractUnsetCommand {
 
     private UnsetBoundariesCommand() {
         super(
-                Collections.singletonList("boundary"),
-                "",
-                (survivalGame) -> survivalGame.getConfig().clearBoundaryVectors(),
+                "boundary",
+                (survivalGame) -> survivalGame.getConfig().getBlockArea().clearBoundaryVectors(),
                 Text.of("Unset boundary points")
         );
     }

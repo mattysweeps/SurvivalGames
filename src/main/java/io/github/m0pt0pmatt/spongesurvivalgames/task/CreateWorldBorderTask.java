@@ -48,8 +48,8 @@ public class CreateWorldBorderTask implements Task {
 
         worldBorder.setCenter(center.getX(), center.getZ());
 
-        Vector3d lesserBoundaryVector = getOrThrow(survivalGame.getConfig().getLesserBoundary(), "boundary");
-        Vector3d greaterBoundaryVector = getOrThrow(survivalGame.getConfig().getGreaterBoundary(), "boundary");
+        Vector3d lesserBoundaryVector = getOrThrow(survivalGame.getConfig().getBlockArea().getLesserBoundary(), "boundary");
+        Vector3d greaterBoundaryVector = getOrThrow(survivalGame.getConfig().getBlockArea().getGreaterBoundary(), "boundary");
 
         double diameter = Double.max(
                 abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),

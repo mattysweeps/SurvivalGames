@@ -50,8 +50,7 @@ class SetExitWorldNameCommand extends BaseCommand {
 
     private SetExitWorldNameCommand() {
         super(
-                Collections.singletonList("exit-world-name"),
-                "",
+                "exit-world-name",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
                 Collections.emptyMap()
         );

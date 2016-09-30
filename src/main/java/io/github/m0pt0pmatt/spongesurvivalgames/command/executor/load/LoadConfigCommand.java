@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.load;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
@@ -30,7 +30,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import ninja.leaping.configurate.ConfigurationOptions;
@@ -58,8 +58,7 @@ public class LoadConfigCommand extends BaseCommand {
 
     private LoadConfigCommand() {
         super(
-                Collections.singletonList("load"),
-                "",
+                "load",
                 GenericArguments.seq(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME)),
                 Collections.emptyMap());
     }
@@ -81,8 +80,8 @@ public class LoadConfigCommand extends BaseCommand {
 
             CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
 
-            ObjectMapper.BoundInstance i = SurvivalGameConfig.OBJECT_MAPPER.bindToNew();
-            SurvivalGameConfig config = (SurvivalGameConfig) i.populate(node);
+            ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bindToNew();
+            GameConfig config = (GameConfig) i.populate(node);
             SurvivalGame game = new SurvivalGame(survivalGameName, config);
             SurvivalGameRepository.put(survivalGameName, game);
 

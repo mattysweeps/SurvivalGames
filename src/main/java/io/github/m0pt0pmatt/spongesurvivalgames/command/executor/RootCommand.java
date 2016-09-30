@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add.AddCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.create.CreateGameCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.delete.DeleteGameCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file.LoadConfigCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.file.SaveConfigCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.list.ListGameCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.load.LoadConfigCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.save.SaveConfigCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.ListGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.print.PrintCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove.RemoveCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.set.SetCommand;
@@ -43,24 +43,17 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.state.StopSurvi
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset.UnsetCommand;
 import org.spongepowered.api.command.CommandCallable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class RootCommand extends ParentCommand {
-
-    private static final List<String> COMMAND_ALIASES = Arrays.asList(
-            "spongesurvivalgames",
-            "ssg");
-
-    private static final String PERMISSION = "";
 
     private static final Map<List<String>, CommandCallable> TOP_LEVEL_CHILDREN =
             ImmutableMap.<List<String>, CommandCallable>builder()
                     .put(toEntry(AddCommand.getInstance()))
                     .put(toEntry(CreateGameCommand.getInstance()))
                     .put(toEntry(DeleteGameCommand.getInstance()))
-                    .put(toEntry(ListGameCommand.getInstance()))
+                    .put(toEntry(ListGamesCommand.getInstance()))
                     .put(toEntry(PrintCommand.getInstance()))
                     .put(toEntry(RemoveCommand.getInstance()))
                     .put(toEntry(SetCommand.getInstance()))
@@ -76,7 +69,7 @@ public class RootCommand extends ParentCommand {
     private static final SurvivalGamesCommand INSTANCE = new RootCommand();
 
     private RootCommand() {
-        super(COMMAND_ALIASES, PERMISSION, TOP_LEVEL_CHILDREN);
+        super("ssg", TOP_LEVEL_CHILDREN);
     }
 
     public static SurvivalGamesCommand getInstance() {

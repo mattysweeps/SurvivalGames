@@ -36,8 +36,7 @@ class PrintCenterLocationCommand extends AbstractPrintCommand {
 
     private PrintCenterLocationCommand() {
         super(
-                Collections.singletonList("center-location"),
-                "",
+                "center-location",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getCenterVector().map(Text::of)

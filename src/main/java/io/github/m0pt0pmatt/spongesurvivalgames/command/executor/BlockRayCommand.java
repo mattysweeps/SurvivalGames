@@ -57,11 +57,10 @@ public abstract class BlockRayCommand extends BaseCommand {
     private final Text message;
 
     protected BlockRayCommand(
-            List<String> aliases,
-            String permission,
+            String name,
             BiConsumer<SurvivalGame, Location<World>> setter,
             Text message) {
-        super(aliases, permission, GenericArguments.seq(
+        super(name, GenericArguments.seq(
                 SurvivalGameCommandElement.getInstance(),
                 GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))),
                 Collections.emptyMap());

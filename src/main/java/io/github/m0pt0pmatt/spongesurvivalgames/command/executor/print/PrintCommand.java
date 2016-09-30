@@ -40,14 +40,14 @@ public class PrintCommand extends ParentCommand {
 
     private PrintCommand() {
         super(
-                Collections.singletonList("print"),
-                "",
+                "print",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(PrintBoundariesCommand.getInstance()))
                         .put(toEntry(PrintCenterLocationCommand.getInstance()))
                         .put(toEntry(PrintCountDownSecondsCommand.getInstance()))
                         .put(toEntry(PrintExitVectorCommand.getInstance()))
                         .put(toEntry(PrintExitWorldNameCommand.getInstance()))
+                        .put(toEntry(PrintMobSpawnAreasCommand.getInstance()))
                         .put(toEntry(PrintPlayerLimitCommand.getInstance()))
                         .put(toEntry(PrintPlayersCommand.getInstance()))
                         .put(toEntry(PrintSpawnsCommand.getInstance()))

@@ -44,4 +44,9 @@ public class CommandKeys {
     public static final Text FILE_NAME = Text.of("file-name");
     public static final Text CHEST_MIDPOINT = Text.of("chest-midpoint");
     public static final Text CHEST_RANGE = Text.of("chest-range");
+    public static final Text VECTOR1 = Text.of("vector-1");
+    public static final Text VECTOR2 = Text.of("vector-2");
+    public static final Text ENTITY_TYPE = Text.of("entity-type");
+    public static final Text SPAWN_RATE_PER_MINUTE = Text.of("spawn-rate-per-minute");
+    public static final Text MOB_SPAWN_AREA = Text.of("mob-spawn-area");
 }

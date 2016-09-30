@@ -51,8 +51,7 @@ class AddPlayerCommand extends BaseCommand {
 
     private AddPlayerCommand() {
         super(
-                Collections.singletonList("player"),
-                "",
+                "player",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)),
                 Collections.emptyMap());
     }

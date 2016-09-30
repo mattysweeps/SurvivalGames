@@ -50,11 +50,10 @@ class AbstractUnsetCommand extends BaseCommand {
     private final Text message;
 
     AbstractUnsetCommand(
-            List<String> aliases,
-            String permission,
+            String name,
             Consumer<SurvivalGame> consumer,
             Text message) {
-        super(aliases, permission, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
         this.consumer = checkNotNull(consumer, "consumer");
         this.message = checkNotNull(message, "message");
     }

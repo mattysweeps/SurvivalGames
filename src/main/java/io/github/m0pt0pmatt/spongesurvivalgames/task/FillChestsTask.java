@@ -46,9 +46,6 @@ public class FillChestsTask implements Task {
 
         Random random = new Random();
 
-        Vector3d lowerBoundary = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("lower")));
-        Vector3d greaterBoundary = survivalGame.getConfig().getLesserBoundary().orElseThrow(() -> new TextMessageException(Text.of("better")));
-
         String worldName = survivalGame.getConfig().getWorldName().orElseThrow(() -> new TextMessageException(Text.of("worldName")));
         World world = Sponge.getServer().getWorld(worldName).orElseThrow(() -> new TextMessageException(Text.of("world")));
 
@@ -62,7 +59,7 @@ public class FillChestsTask implements Task {
 
                 chest.getInventory().clear();
 
-                if (!survivalGame.getConfig().getItems().isEmpty()) {
+                if (!survivalGame.getConfig().getItemConfig().getItems().isEmpty()) {
 
                     double itemCount = (
                             chestMidpoint +
@@ -72,7 +69,7 @@ public class FillChestsTask implements Task {
                                     )
                     );
                     for (int i = 0; i < itemCount; i++) {
-                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItems().get(random.nextInt(survivalGame.getConfig().getItems().size()));
+                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItemConfig().getItems().get(random.nextInt(survivalGame.getConfig().getItemConfig().getItems().size()));
                         chest.getInventory().offer(stackSnapshot.createStack());
                     }
                 }

@@ -9,8 +9,12 @@ repositories {
         name = 'sponge'
         url = 'http://repo.spongepowered.org/maven'
     }
+    flatDir {
+        dirs '../SpongeForge/.gradle/minecraft'
+    }
 }
 
 dependencies {
     compile 'org.spongepowered:spongeapi:5.0.0-20160824.073152-102'
+    compile name: 'forgeSrc-1.10.2-12.18.1.2092-PROJECT(SpongeForge)'
 }

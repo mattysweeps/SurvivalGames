@@ -36,8 +36,7 @@ class PrintExitVectorCommand extends AbstractPrintCommand {
 
     private PrintExitVectorCommand() {
         super(
-                Collections.singletonList("exit-vector"),
-                "",
+                "exit-vector",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getExitVector().map(Text::of)

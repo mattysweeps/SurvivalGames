@@ -54,6 +54,10 @@ public class PlayerDeathListener {
             HealPlayersTask.getInstance()
     );
 
+    private PlayerDeathListener() {
+
+    }
+
     @Listener
     public void onPlayerDamage(DamageEntityEvent event) {
 

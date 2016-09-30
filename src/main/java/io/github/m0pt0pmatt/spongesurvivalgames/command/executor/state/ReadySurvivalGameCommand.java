@@ -37,8 +37,7 @@ public class ReadySurvivalGameCommand extends AbstractStateCommand {
 
     private ReadySurvivalGameCommand() {
         super(
-                Collections.singletonList("ready"),
-                "",
+                "ready",
                 Collections.singleton(SurvivalGameState.STOPPED),
                 ReadySurvivalGameCommand::doWork
         );

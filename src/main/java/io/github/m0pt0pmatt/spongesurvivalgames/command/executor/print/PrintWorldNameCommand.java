@@ -36,8 +36,7 @@ class PrintWorldNameCommand extends AbstractPrintCommand {
 
     private PrintWorldNameCommand() {
         super(
-                Collections.singletonList("world-name"),
-                "",
+                "world-name",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getWorldName().map(Text::of)

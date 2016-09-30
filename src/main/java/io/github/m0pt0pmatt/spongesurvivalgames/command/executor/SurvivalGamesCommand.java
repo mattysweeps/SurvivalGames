@@ -35,8 +35,6 @@ public interface SurvivalGamesCommand extends CommandExecutor {
 
     List<String> getAliases();
 
-    String getPermission();
-
     CommandElement getArguments();
 
     Map<List<String>, CommandCallable> getChildren();

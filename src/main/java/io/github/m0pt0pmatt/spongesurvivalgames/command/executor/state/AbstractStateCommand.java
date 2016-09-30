@@ -54,11 +54,10 @@ public class AbstractStateCommand extends BaseCommand {
     private final Consumer<SurvivalGame> action;
 
     public AbstractStateCommand(
-            List<String> aliases,
-            String permission,
+            String name,
             Set<SurvivalGameState> states,
             Consumer<SurvivalGame> action) {
-        super(aliases, permission, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
         this.states = checkNotNull(states, "states");
         this.action = checkNotNull(action, "action");
     }

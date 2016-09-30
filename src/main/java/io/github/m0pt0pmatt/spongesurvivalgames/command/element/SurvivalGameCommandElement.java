@@ -24,13 +24,18 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandArgs;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.args.SelectorCommandElement;
+import org.spongepowered.api.text.selector.Selector;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +43,9 @@ import javax.annotation.Nonnull;
 
 public class SurvivalGameCommandElement extends SelectorCommandElement {
 
-    private static final CommandElement INSTANCE = new SurvivalGameCommandElement();
+    private static final SurvivalGameCommandElement INSTANCE = new SurvivalGameCommandElement();
+    private static String currentSurvivalGame;
+
 
     private SurvivalGameCommandElement() {
         super(CommandKeys.SURVIVAL_GAME);
@@ -54,6 +61,27 @@ public class SurvivalGameCommandElement extends SelectorCommandElement {
 
     @Nonnull
     @Override
+    public List<String> complete(@Nonnull CommandSource src, CommandArgs args, CommandContext context) {
+        Object state = args.getState();
+        final Optional<String> nextArg = args.nextIfPresent();
+        args.setState(state);
+        List<String> choices = nextArg.isPresent() ? Selector.complete(nextArg.get()) : ImmutableList.of();
+
+        if (choices.isEmpty()) {
+            choices = super.complete(src, args, context);
+        }
+
+        if (choices.size() == 1) {
+            currentSurvivalGame = choices.get(0);
+        } else {
+            currentSurvivalGame = null;
+        }
+
+        return choices;
+    }
+
+    @Nonnull
+    @Override
     protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
         Optional<SurvivalGame> survivalGame = SurvivalGameRepository.get(choice);
         if (survivalGame.isPresent()) {
@@ -62,7 +90,11 @@ public class SurvivalGameCommandElement extends SelectorCommandElement {
         throw new IllegalArgumentException();
     }
 
-    public static CommandElement getInstance() {
+    Optional<String> getCurrentSurvivalGameName() {
+        return Optional.ofNullable(currentSurvivalGame);
+    }
+
+    public static SurvivalGameCommandElement getInstance() {
         return INSTANCE;
     }
 }

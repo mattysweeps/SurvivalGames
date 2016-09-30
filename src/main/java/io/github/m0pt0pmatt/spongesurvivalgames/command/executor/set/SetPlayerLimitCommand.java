@@ -48,8 +48,7 @@ class SetPlayerLimitCommand extends BaseCommand {
 
     private SetPlayerLimitCommand() {
         super(
-                Collections.singletonList("player-limit"),
-                "",
+                "player-limit",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.PLAYER_LIMIT)),
                 Collections.emptyMap()
         );

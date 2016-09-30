@@ -17,7 +17,8 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.event.GameStateChangedEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearScoreBoardTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.ClearWorldBorderTask;
@@ -28,10 +29,13 @@ import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateScoreboardTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateWorldBorderTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.DespawnPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.FillChestsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.FillCommandBlocksTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.HealPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.SetBlocksTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.SpawnSpectatorsTask;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StartMobSpawners;
+import io.github.m0pt0pmatt.spongesurvivalgames.task.StopMobSpawners;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.Task;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
@@ -47,13 +51,15 @@ public class SurvivalGameStateManager {
     private static final List<Task> START_TASKS = Arrays.asList(
             SetBlocksTask.getInstance(),
             FillChestsTask.getInstance(),
+            FillCommandBlocksTask.getInstance(),
             CreateCageSnapshotsTask.getInstance(),
             SpawnPlayersTask.getInstance(),
             HealPlayersTask.getInstance(),
             SpawnSpectatorsTask.getInstance(),
             CreateCountdownTask.getInstance(),
             CreateScoreboardTask.getInstance(),
-            CreateWorldBorderTask.getInstance()
+            CreateWorldBorderTask.getInstance(),
+            StartMobSpawners.getInstance()
     );
 
     private static final List<Task> DEATH_MATCH_TASKS = Arrays.asList(
@@ -68,15 +74,19 @@ public class SurvivalGameStateManager {
             HealPlayersTask.getInstance(),
             ClearScoreBoardTask.getInstance(),
             ClearWorldBorderTask.getInstance(),
-            ClearPlayersTask.getInstance()
+            ClearPlayersTask.getInstance(),
+            StopMobSpawners.getInstance()
     );
 
     public static void ready(SurvivalGame survivalGame) {
         checkConfig(survivalGame.getConfig());
         try {
+
+            SurvivalGameState oldState = survivalGame.getState();
             executeTasks(READY_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.JOINABLE;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
+            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.JOINABLE));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -85,9 +95,11 @@ public class SurvivalGameStateManager {
     public static void start(SurvivalGame survivalGame) {
         checkConfig(survivalGame.getConfig());
         try {
+            SurvivalGameState oldState = survivalGame.getState();
             executeTasks(START_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.RUNNING;
             survivalGame.runningState = SurvivalGameRunningState.IN_PROGRESS;
+            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.RUNNING));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -105,15 +117,17 @@ public class SurvivalGameStateManager {
 
     public static void stop(SurvivalGame survivalGame) {
         try {
+            SurvivalGameState oldState = survivalGame.getState();
             executeTasks(STOP_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.STOPPED;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
+            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.STOPPED));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
     }
 
-    private static void checkConfig(SurvivalGameConfig config) {
+    private static void checkConfig(GameConfig config) {
 
         String worldName = config.getWorldName()
                 .orElseThrow(() -> new IllegalArgumentException("World name is not set."));
@@ -122,7 +136,7 @@ public class SurvivalGameStateManager {
             throw new IllegalArgumentException("World " + worldName + " does not exist.");
         }
 
-        if (!config.getLesserBoundary().isPresent() || !config.getGreaterBoundary().isPresent()) {
+        if (!config.getBlockArea().getLesserBoundary().isPresent() || !config.getBlockArea().getGreaterBoundary().isPresent()) {
             throw new IllegalArgumentException("Boundaries are not set.");
         }
 

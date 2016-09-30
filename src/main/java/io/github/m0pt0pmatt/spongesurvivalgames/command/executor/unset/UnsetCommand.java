@@ -40,8 +40,7 @@ public class UnsetCommand extends ParentCommand {
 
     private UnsetCommand() {
         super(
-                Collections.singletonList("unset"),
-                "",
+                "unset",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(UnsetBoundariesCommand.getInstance()))
                         .put(toEntry(UnsetCenterLocationCommand.getInstance()))

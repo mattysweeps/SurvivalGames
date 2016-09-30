@@ -30,22 +30,20 @@ import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.args.CommandElement;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public abstract class BaseCommand implements SurvivalGamesCommand {
 
     private final List<String> aliases;
-    private final String permission;
     private final CommandElement arguments;
     private final Map<List<String>, CommandCallable> children;
 
-    protected BaseCommand(List<String> aliases,
-                          String permission,
+    protected BaseCommand(String name,
                           CommandElement arguments,
                           Map<List<String>, CommandCallable> children) {
-        this.aliases = ImmutableList.copyOf(checkNotNull(aliases, "aliases"));
-        this.permission = checkNotNull(permission, "permission");
+        this.aliases = Collections.singletonList(checkNotNull(name, "name"));
         this.arguments = checkNotNull(arguments, "arguments");
         this.children = checkNotNull(children, "children");
         children.forEach((aliasList, element) -> {
@@ -58,11 +56,6 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     @Override
     public List<String> getAliases() {
         return aliases;
-    }
-
-    @Override
-    public String getPermission() {
-        return permission;
     }
 
     @Override

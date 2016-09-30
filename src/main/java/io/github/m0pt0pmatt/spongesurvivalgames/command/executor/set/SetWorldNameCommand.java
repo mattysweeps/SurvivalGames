@@ -50,8 +50,7 @@ class SetWorldNameCommand extends BaseCommand {
 
     private SetWorldNameCommand() {
         super(
-                Collections.singletonList("world-name"),
-                "",
+                "world-name",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.world(CommandKeys.WORLD_NAME)),
                 Collections.emptyMap()
         );

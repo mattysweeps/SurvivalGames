@@ -38,13 +38,12 @@ class PrintBoundariesCommand extends AbstractPrintCommand {
 
     private PrintBoundariesCommand() {
         super(
-                Collections.singletonList("boundaries"),
-                "",
+                "boundaries",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> Stream.of(
-                        survivalGame.getConfig().getLesserBoundary(),
-                        survivalGame.getConfig().getGreaterBoundary())
+                        survivalGame.getConfig().getBlockArea().getLesserBoundary(),
+                        survivalGame.getConfig().getBlockArea().getGreaterBoundary())
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .map(Text::of)

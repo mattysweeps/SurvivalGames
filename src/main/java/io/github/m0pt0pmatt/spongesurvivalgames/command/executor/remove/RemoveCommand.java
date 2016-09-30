@@ -40,8 +40,7 @@ public class RemoveCommand extends ParentCommand {
 
     private RemoveCommand() {
         super(
-                Collections.singletonList("remove"),
-                "",
+                "remove",
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(RemovePlayerCommand.getInstance()))
                         .put(toEntry(RemoveSpawnPointCommand.getInstance()))

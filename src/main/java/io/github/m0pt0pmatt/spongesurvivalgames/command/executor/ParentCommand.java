@@ -43,8 +43,8 @@ public abstract class ParentCommand extends BaseCommand {
 
     private final Text chooseChildMessage;
 
-    protected ParentCommand(List<String> aliases, String permission, Map<List<String>, CommandCallable> children) {
-        super(aliases, permission, GenericArguments.none(), children);
+    protected ParentCommand(String name, Map<List<String>, CommandCallable> children) {
+        super(name, GenericArguments.none(), children);
         chooseChildMessage = Text.of("Select a child command: ")
                 .concat(Text.joinWith(Text.of(':'), children.keySet().stream()
                         .flatMap(Collection::stream)

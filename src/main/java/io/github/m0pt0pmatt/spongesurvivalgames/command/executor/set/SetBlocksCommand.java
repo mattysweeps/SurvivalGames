@@ -32,7 +32,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.spongesurvivalgames.config.SurvivalGameConfig;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -52,8 +52,7 @@ class SetBlocksCommand extends BaseCommand {
 
     private SetBlocksCommand() {
         super(
-                Collections.singletonList("blocks"),
-                "",
+                "blocks",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance()),
                 Collections.emptyMap()
         );
@@ -64,9 +63,9 @@ class SetBlocksCommand extends BaseCommand {
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
-        SurvivalGameConfig config = survivalGame.getConfig();
-        Vector3d lesserBoundary = getOrThrow(config.getLesserBoundary(), "1st boundary");
-        Vector3d greaterBoundary = getOrThrow(config.getGreaterBoundary(), "2nd boundary");
+        GameConfig config = survivalGame.getConfig();
+        Vector3d lesserBoundary = getOrThrow(config.getBlockArea().getLesserBoundary(), "1st boundary");
+        Vector3d greaterBoundary = getOrThrow(config.getBlockArea().getGreaterBoundary(), "2nd boundary");
         String worldName = getOrThrow(config.getWorldName(), "world name");
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
 

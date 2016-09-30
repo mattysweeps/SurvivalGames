@@ -50,8 +50,7 @@ class RemovePlayerCommand extends BaseCommand {
 
     private RemovePlayerCommand() {
         super(
-                Collections.singletonList("player"),
-                "",
+                "player",
                 GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)),
                 Collections.emptyMap());
     }
@@ -73,7 +72,7 @@ class RemovePlayerCommand extends BaseCommand {
 
         survivalGame.getPlayerUUIDs().remove(player.getUniqueId());
 
-        src.sendMessage(Text.of("Removed playerPlayer removed."));
+        src.sendMessage(Text.of("Removed player", player.getName()));
         return CommandResult.success();
     }
 

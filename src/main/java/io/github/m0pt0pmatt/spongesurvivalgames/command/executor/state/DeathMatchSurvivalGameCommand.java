@@ -49,7 +49,7 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
     private static final SurvivalGamesCommand INSTANCE = new DeathMatchSurvivalGameCommand();
 
     private DeathMatchSurvivalGameCommand() {
-        super(Collections.singletonList("death-match"), "", SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super("death-match", SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
     }
 
     @Nonnull

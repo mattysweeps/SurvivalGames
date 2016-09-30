@@ -35,8 +35,7 @@ class UnsetCountDownSecondsCommand extends AbstractUnsetCommand {
 
     private UnsetCountDownSecondsCommand() {
         super(
-                Collections.singletonList("countdown-seconds"),
-                "",
+                "countdown-seconds",
                 survivalGame -> survivalGame.getConfig().setCountdownSeconds(null),
                 Text.of("Unset countdown seconds")
         );

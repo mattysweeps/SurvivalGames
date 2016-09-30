@@ -39,8 +39,7 @@ class PrintPlayersCommand extends AbstractPrintCommand {
 
     private PrintPlayersCommand() {
         super(
-                Collections.singletonList("players"),
-                "",
+                "players",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
                 survivalGame -> Optional.of(Text.joinWith(Text.of('\n'), survivalGame.getPlayerUUIDs().stream()

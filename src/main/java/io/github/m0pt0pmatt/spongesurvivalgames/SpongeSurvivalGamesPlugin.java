@@ -29,6 +29,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.toCommandCallable;
 import com.google.inject.Inject;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerDeathListener;
+import io.github.m0pt0pmatt.spongesurvivalgames.listener.SurvivalGameEventListener;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,7 @@ public class SpongeSurvivalGamesPlugin {
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
         Sponge.getEventManager().registerListeners(this, PlayerDeathListener.getInstance());
+        Sponge.getEventManager().registerListeners(this, SurvivalGameEventListener.getInstance());
         Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
                 RootCommand.getInstance().getAliases());
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
