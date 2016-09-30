@@ -22,22 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.data;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
-import com.google.common.collect.Lists;
-import io.github.m0pt0pmatt.spongesurvivalgames.state.GameState;
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
-import java.util.List;
-
-@ConfigSerializable
-public class StateConfig {
-
-    @Setting(value = "states")
-    private List<GameState> states = Lists.newArrayList();
-
-    public List<GameState> getStates() {
-        return states;
-    }
+public class RemoveEventIntervalsCommand {
 }

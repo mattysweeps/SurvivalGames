@@ -25,12 +25,14 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.save;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
@@ -58,8 +60,13 @@ public class SaveConfigCommand extends BaseCommand {
 
     private SaveConfigCommand() {
         super(
+                RootCommand.getInstance(),
                 "save",
-                GenericArguments.seq(GenericArguments.firstParsing(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.FILE_NAME)), SurvivalGameCommandElement.getInstance()),
+                GenericArguments.seq(
+                        SurvivalGameCommandElement.getInstance(),
+                        GenericArguments.firstParsing(
+                                ConfigFileCommandElement.getInstance(),
+                                GenericArguments.string(CommandKeys.FILE_NAME))),
                 Collections.emptyMap());
     }
 
@@ -79,24 +86,19 @@ public class SaveConfigCommand extends BaseCommand {
         }
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
-
         ConfigurationLoader<CommentedConfigurationNode> loader =
                 HoconConfigurationLoader.builder().setPath(potentialFile).build();
         try {
-
             CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
-
             ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bind(survivalGame.getConfig());
-
             i.serialize(node);
             loader.save(node);
-
         } catch (IOException | ObjectMappingException | RuntimeException e) {
             e.printStackTrace();
-            throw new CommandException(Text.of("BAAD"));
-
+            throw new CommandException(Text.of("Error saving to file"), e);
         }
 
+        sendSuccess(src, "Survival Game Saved", potentialFile.getFileName());
         return CommandResult.success();
     }
 

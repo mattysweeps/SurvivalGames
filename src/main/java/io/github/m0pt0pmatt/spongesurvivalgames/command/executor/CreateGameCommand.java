@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.GameCreatedEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
@@ -51,6 +52,7 @@ public class CreateGameCommand extends BaseCommand {
 
     private CreateGameCommand() {
         super(
+                RootCommand.getInstance(),
                 "create",
                 GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME),
                 Collections.emptyMap()

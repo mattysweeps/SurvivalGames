@@ -22,22 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.data;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 
-import com.google.common.collect.Lists;
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.spongepowered.api.block.BlockSnapshot;
-
-import java.util.List;
-
-@ConfigSerializable
-public class BlockConfig {
-
-    @Setting
-    private List<BlockSnapshot> blocks = Lists.newArrayList();
-
-    public List<BlockSnapshot> getBlocks() {
-        return blocks;
-    }
+public class RemoveSpectatorCommand {
 }

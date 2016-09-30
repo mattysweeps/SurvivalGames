@@ -25,10 +25,12 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.load;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
@@ -58,8 +60,11 @@ public class LoadConfigCommand extends BaseCommand {
 
     private LoadConfigCommand() {
         super(
+                RootCommand.getInstance(),
                 "load",
-                GenericArguments.seq(ConfigFileCommandElement.getInstance(), GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME)),
+                GenericArguments.seq(
+                        GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME),
+                        ConfigFileCommandElement.getInstance()),
                 Collections.emptyMap());
     }
 
@@ -91,6 +96,7 @@ public class LoadConfigCommand extends BaseCommand {
 
         }
 
+        sendSuccess(src, "Survival Game Loaded", survivalGameName);
         return CommandResult.success();
     }
 

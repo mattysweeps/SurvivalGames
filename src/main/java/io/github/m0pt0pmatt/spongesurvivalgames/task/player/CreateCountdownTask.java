@@ -25,8 +25,8 @@
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.event.GameEndCountdownEvent;
-import io.github.m0pt0pmatt.spongesurvivalgames.event.GameStartCountdownEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.event.PostCountdownEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.event.PreCountdownEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -63,11 +63,14 @@ public class CreateCountdownTask extends PlayerTask {
             final int j = i;
             SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
                 player.sendTitle(titles.get(j));
-                Sponge.getEventManager().post(new GameEndCountdownEvent(survivalGame));
             }, i, TimeUnit.SECONDS);
         }
 
-        Sponge.getEventManager().post(new GameStartCountdownEvent(survivalGame));
+        Sponge.getEventManager().post(new PreCountdownEvent(survivalGame));
+
+        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() ->
+                Sponge.getEventManager().post(new PostCountdownEvent(survivalGame)),
+                countDown, TimeUnit.SECONDS);
     }
 
     public static PlayerTask getInstance() {

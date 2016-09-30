@@ -22,28 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.state;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.add;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.List;
-import java.util.Map;
-
-public class GameState {
-
-    private final String name;
-    private final Map<String, List<String>> tasks;
-
-    public GameState(String name, Map<String, List<String>> tasks) {
-        this.name = checkNotNull(name, "name");
-        this.tasks = checkNotNull(tasks, "tasks");
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, List<String>> getTasks() {
-        return tasks;
-    }
+public class AddEventIntervalCommand {
 }

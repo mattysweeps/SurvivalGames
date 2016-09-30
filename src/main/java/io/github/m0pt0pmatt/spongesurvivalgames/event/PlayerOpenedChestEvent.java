@@ -22,20 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.data;
+package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
-import java.util.Optional;
-
-@ConfigSerializable
-public class TaskConfig {
-
-    @Setting(value = "name")
-    private String name;
-
-    public Optional<String> getName() {
-        return Optional.ofNullable(name);
-    }
+public class PlayerOpenedChestEvent {
 }
