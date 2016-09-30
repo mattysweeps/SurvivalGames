@@ -1,26 +1,4 @@
 // Gradle plugins
-buildscript {
-    repositories {
-        maven {
-            name = 'gradle-plugins'
-            url = 'https://plugins.gradle.org/m2'
-        }
-        maven {
-            name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'sponge'
-            url = 'http://repo.spongepowered.org/maven'
-        }
-    }
-
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath 'gradle.plugin.org.spongepowered:spongegradle:0.7'
-    }
-}
-
 plugins {
     id 'idea'
     id 'java'
@@ -32,12 +10,11 @@ repositories {
         name = 'sponge'
         url = 'http://repo.spongepowered.org/maven'
     }
-    flatDir {
-        dirs '../SpongeForge/.gradle/minecraft'
-    }
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     compile 'org.spongepowered:spongeapi:5.0.0-20160824.073152-102'
-    compile name: 'forgeSrc-1.10.2-12.18.1.2092-PROJECT(SpongeForge)'
 }
