@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-group = 'io.github.m0pt0pmatt.spongesurvivalgames'
+group = 'io.github.m0pt0pmatt.survivalgames'
 version = '0.0.1'
 
 repositories {
