@@ -33,6 +33,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -102,7 +103,7 @@ public abstract class BlockRayCommand extends BaseCommand {
         }
 
         BlockRay<World> blockRay = BlockRay.from((Entity) commandSource)
-                .filter(BlockRay.continueAfterFilter(BlockRay.onlyAirFilter(), 1))
+                .stopFilter(p -> !p.getLocation().getBlock().getType().equals(BlockTypes.AIR))
                 .build();
 
         return blockRay.end()
