@@ -1,3 +1,26 @@
+// Gradle plugins
+buildscript {
+    repositories {
+        maven {
+            name = 'gradle-plugins'
+            url = 'https://plugins.gradle.org/m2'
+        }
+        maven {
+            name = 'forge'
+            url = 'http://files.minecraftforge.net/maven'
+        }
+        maven {
+            name = 'sponge'
+            url = 'http://repo.spongepowered.org/maven'
+        }
+    }
+
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'gradle.plugin.org.spongepowered:spongegradle:0.7'
+    }
+}
+
 plugins {
     id 'idea'
     id 'java'
