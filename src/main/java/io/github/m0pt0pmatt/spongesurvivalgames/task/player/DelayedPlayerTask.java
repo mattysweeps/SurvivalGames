@@ -24,7 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task.player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
@@ -49,7 +49,7 @@ public class DelayedPlayerTask extends PlayerTask {
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+        SurvivalGamesPlugin.EXECUTOR.schedule(() -> {
             try {
                 task.execute(survivalGame, player);
             } catch (TextMessageException e) {

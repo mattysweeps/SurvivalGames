@@ -26,55 +26,45 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
-import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.carrier.Chest;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
 import java.util.Random;
 
+/** Fills chests with items. */
 public class FillChestsTask implements Task {
 
     private static final Task INSTANCE = new FillChestsTask();
+    private static final Random RANDOM = new Random();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        Random random = new Random();
-
-        String worldName = survivalGame.getConfig().getWorldName().orElseThrow(() -> new TextMessageException(Text.of("worldName")));
-        World world = Sponge.getServer().getWorld(worldName).orElseThrow(() -> new TextMessageException(Text.of("world")));
-
-        Integer chestMidpoint = getOrThrow(survivalGame.getConfig().getChestMidpoint(), "chest midpoint");
-        Integer chestRange = getOrThrow(survivalGame.getConfig().getChestRange(), "chest range");
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD_NAME);
+        Integer chestMidpoint = getOrThrow(survivalGame.getConfig().getChestMidpoint(), CommandKeys.CHEST_MIDPOINT);
+        Integer chestRange = getOrThrow(survivalGame.getConfig().getChestRange(), CommandKeys.CHEST_RANGE);
 
         world.getTileEntities().forEach(tileEntity -> {
 
             if (tileEntity instanceof Chest) {
                 Chest chest = (Chest) tileEntity;
-
                 chest.getInventory().clear();
 
                 if (!survivalGame.getConfig().getItemConfig().getItems().isEmpty()) {
 
-                    double itemCount = (
-                            chestMidpoint +
-                                    (
-                                            (random.nextDouble() * chestRange)
-                                                    * (random.nextDouble() > 0.5 ? 1 : -1)
-                                    )
-                    );
+                    double itemCount = (chestMidpoint + ((RANDOM.nextDouble() * chestRange) * (RANDOM.nextDouble() > 0.5 ? 1 : -1)));
                     for (int i = 0; i < itemCount; i++) {
-                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItemConfig().getItems().get(random.nextInt(survivalGame.getConfig().getItemConfig().getItems().size()));
+                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItemConfig().getItems().get(RANDOM.nextInt(survivalGame.getConfig().getItemConfig().getItems().size()));
                         chest.getInventory().offer(stackSnapshot.createStack());
                     }
                 }
             }
-
         });
     }
 

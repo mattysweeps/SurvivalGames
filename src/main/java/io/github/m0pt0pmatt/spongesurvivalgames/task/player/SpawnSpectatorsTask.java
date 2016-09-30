@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task.player;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
 import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -38,6 +39,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+/** Spawns spectators. */
 public class SpawnSpectatorsTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new SpawnSpectatorsTask();
@@ -47,9 +49,8 @@ public class SpawnSpectatorsTask extends PlayerTask {
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), "world name");
-        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
         if (!spawnPoints.isEmpty()) {
             Vector3d spawnPoint = spawnPoints.remove(0);
@@ -66,9 +67,9 @@ public class SpawnSpectatorsTask extends PlayerTask {
     }
 
     @Override
-    protected void setup(SurvivalGame survivalGame) throws TextMessageException {
+    protected void before(SurvivalGame survivalGame) throws TextMessageException {
         spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
-        centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), "center vector");
+        centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 
     @Override

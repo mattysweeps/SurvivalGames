@@ -24,8 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.listener;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
-import io.github.m0pt0pmatt.spongesurvivalgames.event.IntervalEvent;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.PlayerEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.SurvivalGameEvent;
 import org.spongepowered.api.block.BlockSnapshot;
@@ -76,9 +75,9 @@ public class SurvivalGameEventListener {
 
                         BlockSnapshot snapshot = commandBlock.getBlock().snapshotFor(commandBlock.getLocation());
                         commandBlock.getLocation().setBlock(BlockState.builder().blockType(BlockTypes.REDSTONE_TORCH).build(),
-                                Cause.of(NamedCause.of("Survival Games Event Command", SpongeSurvivalGamesPlugin.PLUGIN_CONTAINER)));
+                                Cause.of(NamedCause.of("Survival Games Event Command", SurvivalGamesPlugin.PLUGIN_CONTAINER)));
 
-                        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> snapshot.restore(true, BlockChangeFlag.ALL), 5, TimeUnit.SECONDS);
+                        SurvivalGamesPlugin.EXECUTOR.schedule(() -> snapshot.restore(true, BlockChangeFlag.ALL), 5, TimeUnit.SECONDS);
                     }
                 }
             }

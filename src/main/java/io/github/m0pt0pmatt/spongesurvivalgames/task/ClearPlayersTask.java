@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Clears players and spectators from the game. */
 public class ClearPlayersTask implements Task {
 
     private static final Task INSTANCE = new ClearPlayersTask();
@@ -34,6 +35,7 @@ public class ClearPlayersTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
         survivalGame.getPlayerUUIDs().clear();
+        survivalGame.getSpectatorUUIDs().clear();
     }
 
     public static Task getInstance() {

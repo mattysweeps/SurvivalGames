@@ -79,33 +79,79 @@ public final class Util {
         return builder.build();
     }
 
+    /**
+     * Throws a {@link CommandException} if a given {@link Optional} is empty.
+     * @param optional The optional.
+     * @param name A name to give the Optional in case it it empty.
+     * @param <T> The type of the Optional.
+     * @return The value of the Optional.
+     * @throws CommandException If the Optional is empty.
+     */
     public static <T> T getOrThrow(Optional<T> optional, Object name) throws CommandException {
         return optional.orElseThrow(() -> new CommandException(
                 Text.of(TextColors.DARK_RED, "No value found", ": ", TextColors.BLUE, name)));
     }
 
+    /**
+     * Throws a {@link CommandException} if a given {@link Optional} is empty.
+     * @param optional The optional.
+     * @param name A name to give the Optional in case it it empty.
+     * @param value A value to display.
+     * @param <T> The type of the Optional.
+     * @return The value of the Optional.
+     * @throws CommandException If the Optional is empty.
+     */
     public static <T> T getOrThrow(Optional<T> optional, Object name, Object value) throws CommandException {
         return optional.orElseThrow(() -> new CommandException(
                 Text.of(TextColors.DARK_RED, "No ", TextColors.BLUE, name, ": ", TextColors.BLUE, value)));
     }
 
+    /**
+     * Throws a {@link CommandException} if a argument is missing.
+     * @param args The command arguments.
+     * @param key The key of the argument to return
+     * @return The argument if it exists.
+     * @throws CommandException If the argument doesn't exist.
+     */
     public static Object getOrThrow(CommandContext args, Text key) throws CommandException {
         return args.getOne(key).orElseThrow(() -> new CommandException(
                 Text.of(TextColors.DARK_RED, "Argument not found", ": ", TextColors.BLUE, key)));
     }
 
+    /**
+     * Sends a success message.
+     * @param source The source to send the message to.
+     * @param message The message to send.
+     */
     public static void sendSuccess(CommandSource source, Object message) {
         source.sendMessage(Text.of(TextColors.GREEN, message));
     }
 
+    /**
+     * Sends a success message.
+     * @param source The source to send the message to.
+     * @param message The message to send.
+     * @param object A value to be printed with the message.
+     */
     public static void sendSuccess(CommandSource source, Object message, Object object) {
         source.sendMessage(Text.of(TextColors.GREEN, message, ": ", TextColors.BLUE, object));
     }
 
+    /**
+     * Sends an error message.
+     * @param source The source to send the message to.
+     * @param message The message to send.
+     */
     public static void sendError(CommandSource source, String message) {
         source.sendMessage(Text.of(TextColors.DARK_RED, message));
     }
 
+    /**
+     * Sends an error message.
+     * @param source The source to send the message to.
+     * @param message The message to send.
+     * @param object A value to be printed with the message.
+     */
     public static void sendError(CommandSource source, Object message, Object object) {
         source.sendMessage(Text.of(TextColors.DARK_RED, message, ": ", TextColors.BLUE, object));
     }

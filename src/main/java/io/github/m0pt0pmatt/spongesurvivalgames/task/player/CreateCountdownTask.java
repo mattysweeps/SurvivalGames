@@ -24,7 +24,10 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task.player;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.PostCountdownEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.PreCountdownEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
@@ -39,13 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/** Create countdown titles for the start of the game .*/
 public class CreateCountdownTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new CreateCountdownTask();
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        int countDown = survivalGame.getConfig().getCountdownSeconds().orElseThrow(() -> new TextMessageException(Text.of("no countdown")));
+        int countDown = getOrThrow(survivalGame.getConfig().getCountdownSeconds(), CommandKeys.COUNT_DOWN_SECONDS);
 
         List<Title> titles = new ArrayList<>();
 
@@ -61,14 +65,14 @@ public class CreateCountdownTask extends PlayerTask {
 
         for (int i = 0; i < countDown + 1; i++) {
             final int j = i;
-            SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+            SurvivalGamesPlugin.EXECUTOR.schedule(() -> {
                 player.sendTitle(titles.get(j));
             }, i, TimeUnit.SECONDS);
         }
 
         Sponge.getEventManager().post(new PreCountdownEvent(survivalGame));
 
-        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() ->
+        SurvivalGamesPlugin.EXECUTOR.schedule(() ->
                 Sponge.getEventManager().post(new PostCountdownEvent(survivalGame)),
                 countDown, TimeUnit.SECONDS);
     }

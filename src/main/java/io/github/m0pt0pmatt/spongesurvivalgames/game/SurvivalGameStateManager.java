@@ -31,7 +31,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.task.player.CreateScoreboardTask
 import io.github.m0pt0pmatt.spongesurvivalgames.task.CreateWorldBorderTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.player.DespawnPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.FillChestsTask;
-import io.github.m0pt0pmatt.spongesurvivalgames.task.FillCommandBlocksTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.player.HealPlayersTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.SetBlocksTask;
 import io.github.m0pt0pmatt.spongesurvivalgames.task.player.SpawnPlayersTask;
@@ -53,7 +52,6 @@ public class SurvivalGameStateManager {
     private static final List<Task> START_TASKS = Arrays.asList(
             SetBlocksTask.getInstance(),
             FillChestsTask.getInstance(),
-            FillCommandBlocksTask.getInstance(),
             CreateCageSnapshotsTask.getInstance(),
             SpawnPlayersTask.getInstance(),
             HealPlayersTask.getInstance(),

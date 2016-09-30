@@ -30,6 +30,7 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Restore health, hunger, and exhasution for players. */
 public class HealPlayersTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new HealPlayersTask();

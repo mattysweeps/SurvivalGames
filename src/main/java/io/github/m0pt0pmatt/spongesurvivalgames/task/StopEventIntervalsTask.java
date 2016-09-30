@@ -28,6 +28,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.interval.ActiveIntervalRepository;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Stops the event intervals. */
 public class StopEventIntervalsTask implements Task {
 
     private static final Task INSTANCE = new StopEventIntervalsTask();

@@ -29,6 +29,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Clears a players scoreboard. */
 public class ClearScoreBoardTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new ClearScoreBoardTask();

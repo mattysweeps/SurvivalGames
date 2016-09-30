@@ -31,6 +31,7 @@ import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Updates a player's scoreboard with the current players and their kill counts. */
 public class UpdateScoreBoardTask implements Task {
 
     private static final UpdateScoreBoardTask INSTANCE = new UpdateScoreBoardTask();

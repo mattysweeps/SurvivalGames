@@ -28,6 +28,7 @@ import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Resets the WorldBorder to a very long distance. */
 public class ClearWorldBorderTask implements Task {
 
     private static final Task INSTANCE = new ClearWorldBorderTask();

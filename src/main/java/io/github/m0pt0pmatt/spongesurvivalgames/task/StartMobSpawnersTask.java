@@ -26,6 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.mobspawn.ActiveMobSpawnRepository;
@@ -33,6 +34,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
+/** Starts the mob spawners, which will spawn entities continuously. */
 public class StartMobSpawnersTask implements Task {
 
     private static final Task INSTANCE = new StartMobSpawnersTask();
@@ -43,8 +45,8 @@ public class StartMobSpawnersTask implements Task {
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), "world-name");
-        World world = getOrThrow(Sponge.getServer().getWorld(worldName), "world");
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
         for (MobSpawnArea mobSpawnArea: survivalGame.getConfig().getMobSpawnAreas()) {
             survivalGame.getActiveMobSpawners().add(ActiveMobSpawnRepository.start(survivalGame, mobSpawnArea, world));

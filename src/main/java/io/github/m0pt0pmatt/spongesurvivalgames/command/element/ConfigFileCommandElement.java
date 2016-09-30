@@ -24,7 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandElement;
@@ -49,7 +49,7 @@ public class ConfigFileCommandElement extends SelectorCommandElement {
     @Nonnull
     protected Iterable<String> getChoices(@Nonnull CommandSource source) {
 
-        File[] files = SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.toFile().listFiles();
+        File[] files = SurvivalGamesPlugin.CONFIG_DIRECTORY.toFile().listFiles();
         if (files == null) {
             return Collections.emptyList();
         }
@@ -62,7 +62,7 @@ public class ConfigFileCommandElement extends SelectorCommandElement {
     @Override
     @Nonnull
     protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
-        return SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(choice);
+        return SurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(choice);
     }
 
     public static CommandElement getInstance() {

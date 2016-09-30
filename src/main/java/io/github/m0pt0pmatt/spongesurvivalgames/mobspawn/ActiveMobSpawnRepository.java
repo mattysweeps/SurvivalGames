@@ -24,7 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.mobspawn;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
@@ -51,7 +51,7 @@ public class ActiveMobSpawnRepository {
                 .orElse(0);
 
         SpongeExecutorService.SpongeFuture future =
-                SpongeSurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
+                SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
                         new MobSpawnRunnable(survivalGame, mobSpawnArea, world),
                         0,
                         millisecondsPerSpawn,
@@ -63,11 +63,7 @@ public class ActiveMobSpawnRepository {
         return mobSpawnArea.getId();
     }
 
-    public static Optional<MobSpawnArea> get(UUID uuid) {
-        return Optional.ofNullable(MAP.get(uuid));
-    }
-
-    public static void remove(UUID uuid) {
+    public static void stop(UUID uuid) {
         SpongeExecutorService.SpongeFuture future = FUTURE_MAP.remove(uuid);
         if (future != null) {
             future.cancel(true);

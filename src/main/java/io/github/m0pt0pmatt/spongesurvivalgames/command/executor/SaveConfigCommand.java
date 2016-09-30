@@ -27,7 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.sendSuccess;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
@@ -77,7 +77,7 @@ public class SaveConfigCommand extends BaseCommand {
             potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
         } else if (args.hasAny(CommandKeys.FILE_NAME)) {
             String potentialFileName = (String) getOrThrow(args, CommandKeys.FILE_NAME);
-            potentialFile = SpongeSurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
+            potentialFile = SurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
         } else {
             throw new CommandException(Text.of("No file name"));
         }

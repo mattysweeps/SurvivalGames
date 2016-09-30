@@ -24,16 +24,58 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import org.spongepowered.api.util.TextMessageException;
+import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
+import static java.lang.Math.abs;
 
+import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.WorldBorder;
+
+/** Creates the smaller world border for the deathmatch. */
 public class CreateDeathmatchBorderTask implements Task {
 
     private static final Task INSTANCE = new CreateDeathmatchBorderTask();
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        Integer xMin = null;
+        Integer xMax = null;
+        Integer zMin = null;
+        Integer zMax = null;
+        for (Vector3d spawn: survivalGame.getConfig().getSpawnPoints()) {
+            if (xMin == null) {
+                xMin = spawn.getFloorX();
+            } else {
+                xMin = Math.min(xMin, spawn.getFloorX());
+            }
+            if (xMax == null) {
+                xMax = spawn.getFloorX();
+            } else {
+                xMax = Math.max(xMax, spawn.getFloorX());
+            }
+            if (zMin == null) {
+                zMin = spawn.getFloorZ();
+            } else {
+                zMin = Math.min(zMin, spawn.getFloorZ());
+            }
+            if (zMax == null) {
+                zMax = spawn.getFloorZ();
+            } else {
+                zMax = Math.max(zMax, spawn.getFloorZ());
+            }
+        }
 
+        if (xMin != null) {
+            String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+            World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
+            WorldBorder worldBorder = world.getWorldBorder();
+            double diameter = Double.max(abs(xMax - xMin), abs(zMax - zMin));
+            worldBorder.setDiameter(diameter);
+        }
     }
 
     public static Task getInstance() {

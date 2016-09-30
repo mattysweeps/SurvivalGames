@@ -26,7 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.event.cause.Cause;
@@ -37,7 +37,7 @@ public class MobSpawnedEvent extends SurvivalGameEvent {
     private final Entity entity;
 
     public MobSpawnedEvent(SurvivalGame survivalGame, Entity entity) {
-        super(Cause.of(NamedCause.of("Survival Game Spawned Entity", SpongeSurvivalGamesPlugin.PLUGIN)), survivalGame);
+        super(Cause.of(NamedCause.of("Survival Game Spawned Entity", SurvivalGamesPlugin.PLUGIN)), survivalGame);
         this.entity = checkNotNull(entity, "entity");
     }
 

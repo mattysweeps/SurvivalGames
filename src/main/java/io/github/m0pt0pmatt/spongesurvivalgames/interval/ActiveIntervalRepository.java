@@ -24,7 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.interval;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.event.IntervalEvent;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
@@ -46,7 +46,7 @@ public class ActiveIntervalRepository {
     public static UUID start(SurvivalGame survivalGame, String intervalName, int intervalSeconds) {
 
         SpongeExecutorService.SpongeFuture future =
-                SpongeSurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
+                SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
                         () -> Sponge.getEventManager().post(new IntervalEvent(survivalGame, intervalName)),
                         0,
                         intervalSeconds,

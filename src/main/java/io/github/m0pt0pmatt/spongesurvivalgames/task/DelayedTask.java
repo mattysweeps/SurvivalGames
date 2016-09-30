@@ -24,13 +24,14 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.util.TextMessageException;
 
 import java.util.concurrent.TimeUnit;
 
-public class DelayedTask implements Task {
+/** A Task which is delayed before it is executed. */
+class DelayedTask implements Task {
 
     private final Task task;
     private final long delay;
@@ -48,7 +49,7 @@ public class DelayedTask implements Task {
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() -> {
+        SurvivalGamesPlugin.EXECUTOR.schedule(() -> {
             try {
                 task.execute(survivalGame);
             } catch (TextMessageException e) {

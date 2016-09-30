@@ -31,6 +31,7 @@ import org.spongepowered.api.world.BlockChangeFlag;
 
 import java.util.List;
 
+/** Sets the blocks in the map */
 public class SetBlocksTask implements Task {
 
     private static final Task INSTANCE = new SetBlocksTask();
@@ -38,10 +39,7 @@ public class SetBlocksTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
         List<BlockSnapshot> blocks = survivalGame.getBlocks();
-        blocks.forEach(blockSnapshot ->
-
-
-                blockSnapshot.restore(true, BlockChangeFlag.ALL));
+        blocks.forEach(blockSnapshot -> blockSnapshot.restore(true, BlockChangeFlag.ALL));
     }
 
     public static Task getInstance() {

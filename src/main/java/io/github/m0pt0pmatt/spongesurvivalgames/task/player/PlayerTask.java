@@ -35,6 +35,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * A Task which does work per player.
+ * General work can be done before and after the player specific work by overriding the
+ * {@link PlayerTask#before(SurvivalGame)} and {@link PlayerTask#after(SurvivalGame)} (SurvivalGame)}
+ *  methods.
+ */
 public abstract class PlayerTask implements Task {
 
     @Override
@@ -50,8 +56,8 @@ public abstract class PlayerTask implements Task {
                 .collect(Collectors.toList()));
     }
 
-    public final void executePlayers(SurvivalGame survivalGame, Collection<Player> players) throws TextMessageException {
-        setup(survivalGame);
+    private void executePlayers(SurvivalGame survivalGame, Collection<Player> players) throws TextMessageException {
+        before(survivalGame);
         for (Player player : players) {
             execute(survivalGame, player);
         }
@@ -60,7 +66,7 @@ public abstract class PlayerTask implements Task {
 
     public abstract void execute(SurvivalGame survivalGame, Player player) throws TextMessageException;
 
-    protected void setup(SurvivalGame survivalGame) throws TextMessageException {
+    protected void before(SurvivalGame survivalGame) throws TextMessageException {
 
     }
 

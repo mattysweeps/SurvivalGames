@@ -32,6 +32,7 @@ import org.spongepowered.api.util.TextMessageException;
 
 import java.util.Optional;
 
+/** Despawn players to the exist location. */
 public class DespawnPlayersTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new DespawnPlayersTask();

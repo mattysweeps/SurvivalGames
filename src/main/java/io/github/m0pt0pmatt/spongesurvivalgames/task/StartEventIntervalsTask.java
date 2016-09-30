@@ -30,6 +30,7 @@ import org.spongepowered.api.util.TextMessageException;
 
 import java.util.Map;
 
+/** Starts the event intervals, which will continuously fire events. */
 public class StartEventIntervalsTask implements Task {
 
     private static final Task INSTANCE = new StartEventIntervalsTask();

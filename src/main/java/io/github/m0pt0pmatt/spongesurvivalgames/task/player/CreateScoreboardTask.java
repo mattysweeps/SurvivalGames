@@ -34,6 +34,7 @@ import org.spongepowered.api.scoreboard.objective.Objective;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Creates a player's scoreboard with the current players and their kill counts. */
 public class CreateScoreboardTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new CreateScoreboardTask();
@@ -47,7 +48,7 @@ public class CreateScoreboardTask extends PlayerTask {
     }
 
     @Override
-    public void setup(SurvivalGame survivalGame) {
+    public void before(SurvivalGame survivalGame) {
         scoreboard = Scoreboard.builder()
                 .build();
 

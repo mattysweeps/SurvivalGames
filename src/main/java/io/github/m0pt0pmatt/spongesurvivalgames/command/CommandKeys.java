@@ -26,6 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command;
 
 import org.spongepowered.api.text.Text;
 
+/** Keys used for referencing data throughout the commands and other parts of the plugin. */
 public class CommandKeys {
     public static final Text SURVIVAL_GAME = Text.of("survival-game");
     public static final Text SURVIVAL_GAME_NAME = Text.of("survival-game-name");
@@ -52,4 +53,5 @@ public class CommandKeys {
     public static final Text GREATER_BOUNDARY = Text.of("greater-boundary");
     public static final Text INTERVAL_NAME = Text.of("interval-name");
     public static final Text SECONDS_PER_INTERVAL = Text.of("seconds-per-interval");
+    public static final Text CENTER_VECTOR = Text.of("center-vector");
 }

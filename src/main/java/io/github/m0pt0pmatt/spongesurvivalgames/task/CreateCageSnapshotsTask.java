@@ -26,7 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.task;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.ImmutableSet;
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
@@ -61,7 +61,7 @@ public class CreateCageSnapshotsTask implements Task {
 
         int countdownSeconds = survivalGame.getConfig().getCountdownSeconds().orElse(10);
 
-        SpongeSurvivalGamesPlugin.EXECUTOR.schedule(() ->
+        SurvivalGamesPlugin.EXECUTOR.schedule(() ->
                 setBlocks(survivalGame, BlockTypes.AIR), countdownSeconds, TimeUnit.SECONDS);
     }
 
@@ -71,10 +71,7 @@ public class CreateCageSnapshotsTask implements Task {
                         survivalGame.getConfig().getSpawnPoints().forEach(spawnPoint ->
                                 SURROUNDING_BLOCKS.forEach(vector3i ->
                                         world.getLocation(spawnPoint.add(vector3i))
-                                                .setBlockType(blockType,
-
-                                                        Cause.of(NamedCause.of("CreateCageSnapshotsTask", SpongeSurvivalGamesPlugin.PLUGIN_CONTAINER))
-                                                )))));
+                                                .setBlockType(blockType, Cause.of(NamedCause.of("CreateCageSnapshotsTask", SurvivalGamesPlugin.PLUGIN_CONTAINER)))))));
     }
 
     public static Task getInstance() {

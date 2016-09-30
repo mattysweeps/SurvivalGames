@@ -31,7 +31,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerDeathListener;
 import io.github.m0pt0pmatt.spongesurvivalgames.listener.PlayerOpenedChestListener;
 import io.github.m0pt0pmatt.spongesurvivalgames.listener.SurvivalGameEventListener;
-import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
@@ -49,46 +48,56 @@ import java.nio.file.Path;
 /**
  * SpongeSurvivalGames Sponge Plugin
  */
-@Plugin(id = "sponge-survival-games", name = "Sponge Survival Games", version = "0.1", description = "Survival Games for Sponge.")
-public class SpongeSurvivalGamesPlugin {
+@Plugin(id = "survival-games", name = "Survival Games", version = "1.0", description = "Survival Games for Sponge.")
+public class SurvivalGamesPlugin {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(SpongeSurvivalGamesPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);
 
     public static SpongeExecutorService EXECUTOR;
     public static PluginContainer PLUGIN_CONTAINER;
-    public static SpongeSurvivalGamesPlugin PLUGIN;
+    public static SurvivalGamesPlugin PLUGIN;
     public static Path CONFIG_DIRECTORY;
 
     @Inject
     @ConfigDir(sharedRoot = true)
     private Path sharedRootConfig;
 
-    @Inject
-    private GuiceObjectMapperFactory factory;
-
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
+
+        PLUGIN = this;
+
+        // Register listeners.
         Sponge.getEventManager().registerListeners(this, PlayerDeathListener.getInstance());
         Sponge.getEventManager().registerListeners(this, SurvivalGameEventListener.getInstance());
         Sponge.getEventManager().registerListeners(this, PlayerOpenedChestListener.getInstance());
+
+        // Register the root command.
+        // All other commands exist under the root command.
         Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
                 RootCommand.getInstance().getAliases());
+
+        // Create an executor
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
+
+        // Get the plugin container. This is useful for making Causes.
         Sponge.getPluginManager().getPlugin("sponge-survival-games")
                 .ifPresent(pluginContainer -> PLUGIN_CONTAINER = pluginContainer);
-        PLUGIN = this;
+
+        // Create a config directory if one does not already exist.
         setupConfigDirectory();
-        LOGGER.info("Sponge Survival Games Plugin Enabled.");
+
+        LOGGER.info("Survival Games Plugin Enabled.");
     }
 
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
-        LOGGER.info("Sponge Survival Games Plugin Disabled.");
+        LOGGER.info("Survival Games Plugin Disabled.");
     }
 
     private void setupConfigDirectory() {
 
-        File configDirectory = new File(sharedRootConfig.toFile(), "sponge-survival-games");
+        File configDirectory = new File(sharedRootConfig.toFile(), "survival-games");
 
         if (!configDirectory.exists()) {
             if (!configDirectory.mkdir()) {
@@ -96,14 +105,6 @@ public class SpongeSurvivalGamesPlugin {
             }
         }
 
-        CONFIG_DIRECTORY = sharedRootConfig.resolve("sponge-survival-games");
-    }
-
-    public Path getSharedRootConfig() {
-        return sharedRootConfig;
-    }
-
-    public GuiceObjectMapperFactory getFactory() {
-        return factory;
+        CONFIG_DIRECTORY = sharedRootConfig.resolve("survival-games");
     }
 }

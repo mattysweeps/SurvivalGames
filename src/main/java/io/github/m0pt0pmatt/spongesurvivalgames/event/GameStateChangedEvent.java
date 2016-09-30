@@ -26,7 +26,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import io.github.m0pt0pmatt.spongesurvivalgames.SpongeSurvivalGamesPlugin;
+import io.github.m0pt0pmatt.spongesurvivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import org.spongepowered.api.event.cause.Cause;
@@ -38,7 +38,7 @@ public class GameStateChangedEvent extends SurvivalGameEvent {
     private final SurvivalGameState newState;
 
     public GameStateChangedEvent(SurvivalGame survivalGame, SurvivalGameState oldState, SurvivalGameState newState) {
-        super(Cause.of(NamedCause.of("Survival Game State Changed", SpongeSurvivalGamesPlugin.PLUGIN)), survivalGame);
+        super(Cause.of(NamedCause.of("Survival Game State Changed", SurvivalGamesPlugin.PLUGIN)), survivalGame);
         this.oldState = checkNotNull(oldState, "oldState");
         this.newState = checkNotNull(newState, "newState");
     }

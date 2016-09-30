@@ -29,10 +29,10 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
+/** Let the winner know he or she won. */
 public class CelebrateWinnerTask extends PlayerTask {
 
     private static final PlayerTask INSTANCE = new CelebrateWinnerTask();
-
     private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
 
     @Override
