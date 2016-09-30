@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-./scripts/upload-javadoc.sh
-./scripts/maven-release.sh
-./scripts/plugin-release.sh
-
+bash ./scripts/upload-javadoc.sh
+bash ./scripts/maven-release.sh
+bash ./scripts/plugin-release.sh

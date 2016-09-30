@@ -3,4 +3,4 @@ language: java
 jdk:
 - oraclejdk8
 script: "./gradlew clean build javadoc install"
-after_script: "./scripts/after-script.sh"
+after_script: "bash ./scripts/after-script.sh"
