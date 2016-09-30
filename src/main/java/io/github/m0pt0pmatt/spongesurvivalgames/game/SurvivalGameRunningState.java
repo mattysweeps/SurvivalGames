@@ -24,6 +24,7 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+/** The different states a Survival Game can be in once it is running. */
 public enum SurvivalGameRunningState {
     STOPPED,
     IN_PROGRESS,

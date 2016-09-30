@@ -65,9 +65,7 @@ public class CreateCountdownTask extends PlayerTask {
 
         for (int i = 0; i < countDown + 1; i++) {
             final int j = i;
-            SurvivalGamesPlugin.EXECUTOR.schedule(() -> {
-                player.sendTitle(titles.get(j));
-            }, i, TimeUnit.SECONDS);
+            SurvivalGamesPlugin.EXECUTOR.schedule(() -> player.sendTitle(titles.get(j)), i, TimeUnit.SECONDS);
         }
 
         Sponge.getEventManager().post(new PreCountdownEvent(survivalGame));

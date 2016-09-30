@@ -31,8 +31,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.util.Collections;
-
 class AddSpawnPointCommand extends BlockRayCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new AddSpawnPointCommand();

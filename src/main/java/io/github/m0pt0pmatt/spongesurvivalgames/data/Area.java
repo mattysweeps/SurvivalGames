@@ -113,5 +113,4 @@ public class Area {
         lesserBoundary = null;
         greaterBoundary = null;
     }
-
 }

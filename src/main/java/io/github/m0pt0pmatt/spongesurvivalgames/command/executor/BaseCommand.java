@@ -26,8 +26,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.args.CommandElement;
 

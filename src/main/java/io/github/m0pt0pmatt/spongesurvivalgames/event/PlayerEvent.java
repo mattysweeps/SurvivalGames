@@ -27,7 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.event;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
 

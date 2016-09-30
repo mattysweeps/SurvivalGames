@@ -40,7 +40,7 @@ import java.util.Optional;
 
 /**
  * Config for a Survival Game.
- * <p>All configurable fields are stored in this class. Getters return Optionals.</p>
+ * All configurable fields are stored in this class. Getters return Optionals.
  */
 @ConfigSerializable
 public class GameConfig {

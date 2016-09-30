@@ -29,7 +29,6 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandManager;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;

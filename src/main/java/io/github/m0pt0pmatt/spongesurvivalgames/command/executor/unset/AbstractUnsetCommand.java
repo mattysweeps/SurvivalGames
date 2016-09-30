@@ -39,7 +39,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;

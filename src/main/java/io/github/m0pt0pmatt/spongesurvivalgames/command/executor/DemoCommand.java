@@ -31,6 +31,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.BufferedOutputStream;
@@ -43,6 +44,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -98,40 +100,43 @@ class DemoCommand extends BaseCommand {
         }
     }
 
-    private void loadMap(CommandSource src, String name) throws Exception {
-        if (Sponge.getServer().getWorld(name).isPresent()) {
+    private void loadMap(CommandSource src, String worldName) throws Exception {
 
-            WorldProperties properties = Sponge.getServer().getWorld(name).get().getProperties();
+        Optional<World> existingWorld = Sponge.getServer().getWorld(worldName);
 
-            src.sendMessage(Text.of("Unloading: ", name));
-            Sponge.getServer().unloadWorld(Sponge.getServer().getWorld(name).get());
+        if (existingWorld.isPresent()) {
 
-            src.sendMessage(Text.of("Deleting: ", name));
+            WorldProperties properties = existingWorld.get().getProperties();
+
+            src.sendMessage(Text.of("Unloading: ", worldName));
+            Sponge.getServer().unloadWorld(existingWorld.get());
+
+            src.sendMessage(Text.of("Deleting: ", worldName));
             Sponge.getServer().deleteWorld(properties);
         }
 
-        src.sendMessage(Text.of("Downloading: ", name));
+        src.sendMessage(Text.of("Downloading: ", worldName));
         URL url;
         try {
-            url = new URL("http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/" + name + ".zip");
+            url = new URL("http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/" + worldName + ".zip");
             ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(name + ".zip");
+            FileOutputStream fos = new FileOutputStream(worldName + ".zip");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
         } catch (MalformedURLException e) {
-            throw new CommandException(Text.of(name + " URL is malformed"), e);
+            throw new CommandException(Text.of(worldName + " URL is malformed"), e);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        File destDir = new File("world", name);
+        File destDir = new File("world", worldName);
         if (!destDir.exists()) {
             destDir.mkdir();
         }
 
-        src.sendMessage(Text.of("Unzipping: ", name));
+        src.sendMessage(Text.of("Unzipping: ", worldName));
         try {
-            ZipInputStream zipIn = new ZipInputStream(new FileInputStream(name + ".zip"));
+            ZipInputStream zipIn = new ZipInputStream(new FileInputStream(worldName + ".zip"));
             ZipEntry entry = zipIn.getNextEntry();
             // iterates over entries in the zip file
             while (entry != null) {
@@ -152,8 +157,8 @@ class DemoCommand extends BaseCommand {
 
         }
 
-        src.sendMessage(Text.of("Loading: ", name));
-        Sponge.getServer().loadWorld(name);
+        src.sendMessage(Text.of("Loading: ", worldName));
+        Sponge.getServer().loadWorld(worldName);
 
     }
 

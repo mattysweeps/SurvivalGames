@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.game;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
-import ninja.leaping.configurate.objectmapping.Setting;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 
@@ -38,9 +37,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * represents a Survival Game.
- */
+/** Represents a Survival Game. */
 public class SurvivalGame {
 
     SurvivalGameState state;

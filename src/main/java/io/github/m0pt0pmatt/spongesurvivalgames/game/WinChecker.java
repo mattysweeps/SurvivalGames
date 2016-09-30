@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/** Checks for win conditions for a Survival Game */
 public class WinChecker {
 
     private static final long CELEBRATE_DELAY_SECONDS = 5;

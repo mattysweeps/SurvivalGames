@@ -29,20 +29,17 @@ import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.World;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -67,7 +64,8 @@ class TeleportCommand extends BaseCommand {
         }
 
         if (src instanceof Player) {
-            ((Player)src).setLocation(Sponge.getServer().getWorld(worldName).get().getSpawnLocation());
+            World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
+            ((Player)src).setLocation(world.getSpawnLocation());
         }
         return CommandResult.success();
     }

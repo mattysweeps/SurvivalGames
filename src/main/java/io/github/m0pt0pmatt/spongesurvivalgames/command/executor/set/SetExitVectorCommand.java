@@ -28,8 +28,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BlockRayCommand
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
-import java.util.Collections;
-
 class SetExitVectorCommand extends BlockRayCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetExitVectorCommand();

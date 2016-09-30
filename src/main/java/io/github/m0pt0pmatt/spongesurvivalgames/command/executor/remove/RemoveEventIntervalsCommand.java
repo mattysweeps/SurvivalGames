@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.remove;
 import static io.github.m0pt0pmatt.spongesurvivalgames.Util.getOrThrow;
 
 import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.command.element.EventIntervalCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
@@ -37,7 +38,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import java.util.Collections;
@@ -54,7 +54,7 @@ class RemoveEventIntervalsCommand extends BaseCommand {
                 "event-interval",
                 GenericArguments.seq(
                         SurvivalGameCommandElement.getInstance(),
-                        GenericArguments.string(CommandKeys.INTERVAL_NAME)),
+                        EventIntervalCommandElement.getInstance()),
                 Collections.emptyMap());
     }
 

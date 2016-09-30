@@ -73,7 +73,7 @@ public class LoadConfigCommand extends BaseCommand {
         String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
         if (SurvivalGameRepository.contains(survivalGameName)) {
-            throw new CommandException(Text.of("Already exists a game of saem name"));
+            throw new CommandException(Text.of("Already exists a game of the same name"));
         }
 
         ConfigurationLoader<CommentedConfigurationNode> loader =
@@ -89,7 +89,7 @@ public class LoadConfigCommand extends BaseCommand {
 
         } catch (IOException | ObjectMappingException | RuntimeException e) {
             e.printStackTrace();
-            throw new CommandException(Text.of("BAAD"));
+            throw new CommandException(Text.of("An error occurred when loading"));
 
         }
 

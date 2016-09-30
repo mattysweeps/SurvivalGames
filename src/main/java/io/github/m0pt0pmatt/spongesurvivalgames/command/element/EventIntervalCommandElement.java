@@ -22,33 +22,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.spongesurvivalgames.event;
+package io.github.m0pt0pmatt.spongesurvivalgames.command.element;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
+import io.github.m0pt0pmatt.spongesurvivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
-import org.spongepowered.api.event.Event;
-import org.spongepowered.api.event.cause.Cause;
+import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameRepository;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.SelectorCommandElement;
+
+import java.util.Collections;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-public abstract class SurvivalGameEvent implements Event {
+public class EventIntervalCommandElement extends SelectorCommandElement {
 
-    private final Cause cause;
-    private final SurvivalGame survivalGame;
+    private static final CommandElement INSTANCE = new EventIntervalCommandElement();
 
-    SurvivalGameEvent(Cause cause, SurvivalGame survivalGame) {
-        this.cause = checkNotNull(cause, "cause");
-        this.survivalGame = checkNotNull(survivalGame, "survivalGame");
+    private EventIntervalCommandElement() {
+        super(CommandKeys.MOB_SPAWN_AREA);
     }
 
-    @Override
     @Nonnull
-    public Cause getCause() {
-        return cause;
+    @Override
+    protected Iterable<String> getChoices(@Nonnull CommandSource source) {
+        return SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
+                .map(SurvivalGameRepository::get)
+                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getEventIntervals).orElse(Collections.emptyMap()))
+                .map(Map::keySet)
+                .orElse(Collections.emptySet());
     }
 
-    public SurvivalGame getSurvivalGame() {
-        return survivalGame;
+    @Nonnull
+    @Override
+    protected Object getValue(@Nonnull String choice) throws IllegalArgumentException {
+        return choice;
+    }
+
+    public static CommandElement getInstance() {
+        return INSTANCE;
     }
 }

@@ -24,6 +24,12 @@
  */
 package io.github.m0pt0pmatt.spongesurvivalgames.game;
 
+/**
+ * The different top-level states of a Survival Game.
+ * - Configuration is done during the STOPPED state.
+ * - Players can join and leave during the JOINABLE state.
+ * - The game is in progress during the RUNNING state.
+ */
 public enum SurvivalGameState {
     STOPPED,
     JOINABLE,

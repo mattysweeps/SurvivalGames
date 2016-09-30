@@ -27,8 +27,6 @@ package io.github.m0pt0pmatt.spongesurvivalgames.command.executor.unset;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.text.Text;
 
-import java.util.Collections;
-
 class UnsetExitVectorCommand extends AbstractUnsetCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new UnsetExitVectorCommand();

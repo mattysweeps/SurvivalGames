@@ -35,14 +35,11 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCo
 import io.github.m0pt0pmatt.spongesurvivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.world.World;
 
 import java.util.Collections;

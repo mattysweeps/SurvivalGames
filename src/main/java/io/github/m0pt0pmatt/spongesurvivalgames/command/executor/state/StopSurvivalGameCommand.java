@@ -30,8 +30,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCo
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.spongesurvivalgames.game.SurvivalGameStateManager;
 
-import java.util.Collections;
-
 public class StopSurvivalGameCommand extends AbstractStateCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new StopSurvivalGameCommand();

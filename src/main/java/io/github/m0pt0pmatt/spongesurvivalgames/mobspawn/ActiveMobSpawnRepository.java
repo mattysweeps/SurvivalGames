@@ -31,7 +31,6 @@ import org.spongepowered.api.scheduler.SpongeExecutorService;
 import org.spongepowered.api.world.World;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 public class ActiveMobSpawnRepository {
 
     private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP = new ConcurrentHashMap<>();
-    private static final Map<UUID, MobSpawnArea> MAP = new ConcurrentHashMap<>();
 
     private ActiveMobSpawnRepository() {
 
@@ -57,7 +55,6 @@ public class ActiveMobSpawnRepository {
                         millisecondsPerSpawn,
                         TimeUnit.MILLISECONDS);
 
-        MAP.put(mobSpawnArea.getId(), mobSpawnArea);
         FUTURE_MAP.put(mobSpawnArea.getId(), future);
 
         return mobSpawnArea.getId();
@@ -68,6 +65,5 @@ public class ActiveMobSpawnRepository {
         if (future != null) {
             future.cancel(true);
         }
-        MAP.remove(uuid);
     }
 }

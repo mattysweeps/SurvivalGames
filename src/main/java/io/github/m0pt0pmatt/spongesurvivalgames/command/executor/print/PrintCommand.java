@@ -32,7 +32,6 @@ import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.spongesurvivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.command.CommandCallable;
 
-import java.util.Collections;
 import java.util.List;
 
 public class PrintCommand extends ParentCommand {
