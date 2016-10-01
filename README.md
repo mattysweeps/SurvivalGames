@@ -10,14 +10,15 @@ Run these commands to get the server running:
 
 # Commands
 Everything which can be set via a config can also be adjusted through commands. The root command is ```/ssg```. Other commands include:
-- create
-- delete
-- load
-- save
-- set
-- unset
-- add
-- remove
+- ```/ssg create <game>``` Creates a new survival game
+- ```/ssg delete <game>``` Deletes a survival game
+- ```/ssg load <game> <file>``` Loads a survival game from a config file
+- ```/ssg save <game> <file>``` Saves a survival game to a config file
+- ```/ssg set <game> <property> <value>``` Sets a p\config value of a survival game
+- ```/ssg print <game> <property>``` Prints the current value of a config property
+- ```/ssg add <game> <list-propery> <value>``` Adds a value to a list property. Examples include spawn points and players.
+- ```/ssg remove <game> <list-property> <value>``` Removes a value from a list property.
+- And more!
 
 # Permissions
 Each command has it's own permission, based on the structure of the command in the command tree. For example, to run ```/ssg add player```, you need the permission ```"ssg.add.player"```.
