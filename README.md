@@ -5,6 +5,8 @@ SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survi
 This plugin was created for the Sponge Summer Plugin Competition 2016.
 
 # Demo
+NOTE: Players participating in the demo must be opped.
+
 Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command might ruin your server (still working out bugs), so please run it on a fresh server.
 Run these commands to get the server running:
 - ```/ssg demo```
