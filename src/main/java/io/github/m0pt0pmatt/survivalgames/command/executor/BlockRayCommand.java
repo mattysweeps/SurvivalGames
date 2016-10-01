@@ -96,14 +96,14 @@ public abstract class BlockRayCommand extends BaseCommand {
         return CommandResult.success();
     }
 
-    private Location<World> getLocation(CommandSource commandSource) throws CommandException {
+    protected Location<World> getLocation(CommandSource commandSource) throws CommandException {
 
         if (!(commandSource instanceof Player)) {
             throw new CommandException(Text.of("Only players can execute this command"));
         }
 
         BlockRay<World> blockRay = BlockRay.from((Entity) commandSource)
-                .stopFilter(p -> !p.getLocation().getBlock().getType().equals(BlockTypes.AIR))
+                .stopFilter(BlockRay.continueAfterFilter(BlockRay.onlyAirFilter(), 1))
                 .build();
 
         return blockRay.end()

@@ -24,10 +24,16 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.add;
 
+import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BlockRayCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.blockray.BlockRay;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -40,17 +46,18 @@ class AddSpawnPointCommand extends BlockRayCommand {
                 AddCommand.getInstance(),
                 "spawn",
                 (survivalGame, location) -> {
-
-                    Location<World> loc = location;
-
-                    while (!loc.add(0, 1, 0).getBlock().getType().equals(BlockTypes.AIR)) {
-                        loc = loc.add(0, 1, 0);
+                    Vector3d vector = location.getBlockPosition().toDouble();
+                    if (!survivalGame.getConfig().getSpawnPoints().contains(vector)) {
+                        survivalGame.getConfig().getSpawnPoints().add(vector);
                     }
-
-                    survivalGame.getConfig().getSpawnPoints().add(loc.getBlockPosition().toDouble());
                 },
                 Text.of("Spawn point added.")
         );
+    }
+
+    @Override
+    protected Location<World> getLocation(CommandSource commandSource) throws CommandException {
+        return super.getLocation(commandSource).add(0, 1, 0);
     }
 
     static SurvivalGamesCommand getInstance() {

@@ -27,7 +27,11 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.remove;
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BlockRayCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.Iterator;
 
@@ -51,6 +55,11 @@ class RemoveSpawnPointCommand extends BlockRayCommand {
                 },
                 Text.of("Removed spawn point")
         );
+    }
+
+    @Override
+    protected Location<World> getLocation(CommandSource commandSource) throws CommandException {
+        return super.getLocation(commandSource).add(0, 1, 0);
     }
 
     static SurvivalGamesCommand getInstance() {
