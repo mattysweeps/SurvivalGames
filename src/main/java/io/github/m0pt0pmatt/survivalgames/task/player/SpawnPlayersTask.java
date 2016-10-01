@@ -31,11 +31,14 @@ import com.flowpowered.math.vector.Vector3i;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.gamemode.GameModes;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** Spawns players. */
@@ -63,11 +66,13 @@ public class SpawnPlayersTask extends PlayerTask {
     private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 0, 0.5)));
         player.lookAt(centerVector);
+        player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
     }
 
     @Override
     protected void before(SurvivalGame survivalGame) throws TextMessageException {
         spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
+        Collections.shuffle(spawnPoints);
         centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 

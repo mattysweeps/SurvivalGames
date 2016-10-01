@@ -24,6 +24,8 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
+import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -39,7 +41,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -54,8 +55,8 @@ class DemoCommand extends BaseCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
-    private static final String DEMO_LOBBY_WORLD_NAME = "ssg-lobby";
-    private static final String DEMO_MAP_WORLD_NAME = "ssg-map";
+    private static final String DEMO_MAP_WORLD_NAME = "ssg-demo-map";
+    private static final String S3_BUCKET = "http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/";
 
     private static final int BUFFER_SIZE = 4096;
 
@@ -68,84 +69,56 @@ class DemoCommand extends BaseCommand {
     @Override
     @Nonnull
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
-
-        try {
-            loadMap(src, DEMO_LOBBY_WORLD_NAME);
-        } catch (Exception e) {
-            throw new CommandException(Text.of("Error Loading Lobby: " + e.getMessage()), e);
-        }
-        try {
-            loadMap(src, DEMO_MAP_WORLD_NAME);
-        } catch (Exception e) {
-            throw new CommandException(Text.of("Error Loading Map: " + e.getMessage()), e);
-        }
-
+        deleteExistingWorld(src, DEMO_MAP_WORLD_NAME);
+        loadMap(src, DEMO_MAP_WORLD_NAME);
         downloadConfig();
-
-        src.sendMessage(Text.of("Done"));
+        Sponge.getCommandManager().process(src, "/ssg create demo demo.yml");
+        Sponge.getCommandManager().process(src, "/ssg set blocks demo");
+        sendSuccess(src, "Loaded Demo Map and Config");
         return CommandResult.success();
     }
 
     private void downloadConfig() throws CommandException {
         try {
-            URL url = new URL("http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/demo.yml");
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream("config" + File.separator + "survival-games" + File.separator + "demo.yml");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
-        } catch (MalformedURLException e) {
-            throw new CommandException(Text.of("URL is malformed"), e);
-        } catch (IOException e) {
-            e.printStackTrace();
+            ReadableByteChannel readableByteChannel = Channels.newChannel(new URL(S3_BUCKET + "demo.yml").openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream("config" + File.separator + "survival-games" + File.separator + "demo.yml");
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            throw new CommandException(Text.of("Unable to download config"), e);
         }
     }
 
-    private void loadMap(CommandSource src, String worldName) throws Exception {
-
-        Optional<World> existingWorld = Sponge.getServer().getWorld(worldName);
-
-        if (existingWorld.isPresent()) {
-
-            WorldProperties properties = existingWorld.get().getProperties();
-
-            src.sendMessage(Text.of("Unloading: ", worldName));
-            Sponge.getServer().unloadWorld(existingWorld.get());
-
-            src.sendMessage(Text.of("Deleting: ", worldName));
-            Sponge.getServer().deleteWorld(properties);
-        }
+    private void loadMap(CommandSource src, String worldName) throws CommandException {
 
         src.sendMessage(Text.of("Downloading: ", worldName));
         URL url;
         try {
-            url = new URL("http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/" + worldName + ".zip");
+            url = new URL(S3_BUCKET + worldName + ".zip");
             ReadableByteChannel rbc = Channels.newChannel(url.openStream());
             FileOutputStream fos = new FileOutputStream(worldName + ".zip");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
-        } catch (MalformedURLException e) {
-            throw new CommandException(Text.of(worldName + " URL is malformed"), e);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new CommandException(Text.of("Unable to download world"), e);
         }
 
         File destDir = new File("world", worldName);
         if (!destDir.exists()) {
-            destDir.mkdir();
+            if (!destDir.mkdir()) {
+                throw new CommandException(Text.of("Unable to create folder for world"));
+            }
         }
 
         src.sendMessage(Text.of("Unzipping: ", worldName));
         try {
             ZipInputStream zipIn = new ZipInputStream(new FileInputStream(worldName + ".zip"));
             ZipEntry entry = zipIn.getNextEntry();
-            // iterates over entries in the zip file
             while (entry != null) {
                 String filePath = "world" + File.separator + entry.getName();
                 if (!entry.isDirectory()) {
-                    // if the entry is a file, extracts it
                     extractFile(zipIn, filePath);
                 } else {
-                    // if the entry is a directory, make the directory
                     File dir = new File(filePath);
                     dir.mkdir();
                 }
@@ -154,12 +127,23 @@ class DemoCommand extends BaseCommand {
             }
             zipIn.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
+            throw new CommandException(Text.of("Unable to unzip world"), e);
         }
 
         src.sendMessage(Text.of("Loading: ", worldName));
         Sponge.getServer().loadWorld(worldName);
+    }
 
+    private void deleteExistingWorld(CommandSource src, String worldName) {
+        Optional<World> existingWorld = Sponge.getServer().getWorld(worldName);
+        if (existingWorld.isPresent()) {
+            WorldProperties properties = existingWorld.get().getProperties();
+            src.sendMessage(Text.of("Unloading: ", worldName));
+            Sponge.getServer().unloadWorld(existingWorld.get());
+            src.sendMessage(Text.of("Deleting: ", worldName));
+            Sponge.getServer().deleteWorld(properties);
+        }
     }
 
     private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {

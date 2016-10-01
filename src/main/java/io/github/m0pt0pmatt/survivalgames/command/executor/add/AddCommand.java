@@ -49,6 +49,7 @@ public class AddCommand extends ParentCommand {
                         .put(toEntry(AddPlayerCommand.getInstance()))
                         .put(toEntry(AddSpectatorCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
+                        .put(toEntry(AddEventIntervalCommand.getInstance()))
                         .build()
         );
     }

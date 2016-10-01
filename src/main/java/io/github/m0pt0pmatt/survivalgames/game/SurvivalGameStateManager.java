@@ -58,16 +58,18 @@ import java.util.List;
  */
 public class SurvivalGameStateManager {
 
-    private static final List<Task> READY_TASKS = Collections.emptyList();
+    private static final List<Task> READY_TASKS = Collections.singletonList(SetBlocksTask.getInstance());
 
     private static final List<Task> START_TASKS = Arrays.asList(
-            SetBlocksTask.getInstance(),
             FillChestsTask.getInstance(),
             CreateCageSnapshotsTask.getInstance(),
             SpawnPlayersTask.getInstance(),
             HealPlayersTask.getInstance(),
             SpawnSpectatorsTask.getInstance(),
-            CreateCountdownTask.getInstance(),
+            survivalGame -> {
+                CreateCountdownTask.getInstance().execute(survivalGame, survivalGame.getPlayerUUIDs());
+                CreateCountdownTask.getInstance().execute(survivalGame, survivalGame.getSpectatorUUIDs());
+            },
             CreateScoreboardTask.getInstance(),
             CreateWorldBorderTask.getInstance(),
             StartEventIntervalsTask.getInstance(),
@@ -92,6 +94,9 @@ public class SurvivalGameStateManager {
     );
 
     public static void ready(SurvivalGame survivalGame) {
+        if (!survivalGame.areBlocksValid()) {
+            throw new IllegalArgumentException("Blocks are not set");
+        }
         checkConfig(survivalGame.getConfig());
         try {
             SurvivalGameState oldState = survivalGame.getState();
@@ -141,6 +146,10 @@ public class SurvivalGameStateManager {
 
     private static void checkConfig(GameConfig config) {
 
+        if (config.getSpawnPoints().isEmpty()) {
+            throw new IllegalArgumentException("No spawn points set.");
+        }
+
         String worldName = config.getWorldName()
                 .orElseThrow(() -> new IllegalArgumentException("World name is not set."));
 
@@ -175,8 +184,12 @@ public class SurvivalGameStateManager {
             throw new IllegalArgumentException("Player limit is not set.");
         }
 
-        if (config.getSpawnPoints().isEmpty()) {
-            throw new IllegalArgumentException("No spawn points set.");
+        if (!config.getChestMidpoint().isPresent()) {
+            throw new IllegalArgumentException("Chest midpoint is not set.");
+        }
+
+        if (!config.getChestRange().isPresent()) {
+            throw new IllegalArgumentException("Chest range is not set.");
         }
     }
 

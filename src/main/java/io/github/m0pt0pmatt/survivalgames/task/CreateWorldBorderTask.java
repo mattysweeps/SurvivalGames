@@ -57,6 +57,10 @@ public class CreateWorldBorderTask implements Task {
                 abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),
                 abs(greaterBoundaryVector.getZ() - lesserBoundaryVector.getZ()));
 
+        double xMiddle = lesserBoundaryVector.getX() + (diameter / 2);
+        double zMiddle = lesserBoundaryVector.getZ() + (diameter / 2);
+
+        worldBorder.setCenter(xMiddle, zMiddle);
         worldBorder.setDiameter(diameter);
         worldBorder.setWarningDistance(0);
     }

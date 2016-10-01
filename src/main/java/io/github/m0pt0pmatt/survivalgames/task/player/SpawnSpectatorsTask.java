@@ -30,7 +30,9 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.gamemode.GameModes;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
@@ -64,6 +66,7 @@ public class SpawnSpectatorsTask extends PlayerTask {
     private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 10, 0.5)));
         player.lookAt(centerVector);
+        player.offer(Keys.GAME_MODE, GameModes.SPECTATOR);
     }
 
     @Override

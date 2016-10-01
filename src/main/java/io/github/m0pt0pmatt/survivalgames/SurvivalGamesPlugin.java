@@ -48,7 +48,7 @@ import java.nio.file.Path;
 /**
  * SurvivalGames Sponge Plugin
  */
-@Plugin(id = "survival-games", name = "Survival Games", version = "1.0", description = "Survival Games for Sponge.")
+@Plugin(id = "survival-games", name = "Survival Games", version = "1.0.0", description = "Survival Games for Sponge.")
 public class SurvivalGamesPlugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);

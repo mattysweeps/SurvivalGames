@@ -24,6 +24,7 @@
  */
 package io.github.m0pt0pmatt.survivalgames.listener;
 
+import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.event.PlayerDeathEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
@@ -33,12 +34,18 @@ import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
 import io.github.m0pt0pmatt.survivalgames.task.UpdateScoreBoardTask;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataSerializable;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.mutable.RepresentedItemData;
 import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.cause.entity.damage.source.EntityDamageSource;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
+import org.spongepowered.api.item.inventory.Inventory;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
@@ -90,10 +97,12 @@ public class PlayerDeathListener {
 
         // Drop the dead players inventory
         World world = player.getWorld();
-        while (!player.getInventory().isEmpty()) {
-            player.getInventory().poll()
-                    .map(DataSerializable::toContainer)
-                    .ifPresent(world::createEntity);
+        Inventory inventory = player.getInventory();
+        ItemStack item;
+        while((item = inventory.poll().orElse(null)) != null) {
+            Entity entity = world.createEntity(EntityTypes.ITEM, player.getLocation().getPosition());
+            entity.offer(Keys.REPRESENTED_ITEM, item.createSnapshot());
+            world.spawnEntity(entity, Cause.of(NamedCause.of("Survival Game Dropping Inventory", SurvivalGamesPlugin.PLUGIN_CONTAINER)));
         }
 
         // Despawn the player
