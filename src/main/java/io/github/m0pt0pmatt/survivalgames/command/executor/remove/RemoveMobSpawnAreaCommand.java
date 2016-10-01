@@ -25,6 +25,7 @@
 package io.github.m0pt0pmatt.survivalgames.command.executor.remove;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.MobSpawnAreaCommandElement;
@@ -70,7 +71,7 @@ class RemoveMobSpawnAreaCommand extends BaseCommand {
 
         survivalGame.getActiveMobSpawners().remove(mobSpawnArea.getId());
 
-        src.sendMessage(Text.of("Removed Mob Spawn Area", mobSpawnArea.getId()));
+        sendSuccess(src, "Removed Mob Spawn Area", mobSpawnArea.getId());
         return CommandResult.success();
     }
 

@@ -42,7 +42,7 @@ public class EventIntervalCommandElement extends SelectorCommandElement {
     private static final CommandElement INSTANCE = new EventIntervalCommandElement();
 
     private EventIntervalCommandElement() {
-        super(CommandKeys.MOB_SPAWN_AREA);
+        super(CommandKeys.INTERVAL_NAME);
     }
 
     @Nonnull

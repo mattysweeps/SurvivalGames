@@ -6,4 +6,5 @@ script: "./gradlew clean build javadoc install"
 after_script: "bash ./scripts/after-script.sh"
 branches:
   except:
-    - mvn-repo
+    - repository
+    - gh-pages
