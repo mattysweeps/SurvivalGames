@@ -41,3 +41,7 @@ You can configure a certain region to spawn mobs when a survival game is running
 SurvivalGames has it's own events which are fired when game-related things happen. Not only can other players use these events, but SurvivalGames also can fire command blocks with the command ```/ssg event [EventName]```. This allows for map makers to do some really custom stuff!
 
 For example, If a command block is set with the command ```/ssg event MobSpawnedEvent```, then whenever a MobSpawnedEvent occurs, the command block is executed. It is then turned into a redstone torch for 5 seconds, so surronding blocks can be powered. (This is a temporary workaround)
+
+# Java Docs
+While they still need work, you can view the Javadocs here: http://m0pt0pmatt.github.io/SurvivalGames/docs/
+But I recommend you just look at the source code ;)
