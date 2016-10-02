@@ -40,7 +40,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class DeleteGameCommand extends BaseCommand {
+public class DeleteGameCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new DeleteGameCommand();
 
@@ -48,8 +48,7 @@ public class DeleteGameCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "delete",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap()
+                SurvivalGameCommandElement.getInstance()
         );
     }
 

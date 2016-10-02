@@ -42,7 +42,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class JoinCommand extends BaseCommand {
+class JoinCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new JoinCommand();
 
@@ -50,8 +50,7 @@ class JoinCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "join",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap());
+                SurvivalGameCommandElement.getInstance());
     }
 
     @Nonnull

@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
@@ -44,7 +45,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class AddEventIntervalCommand extends BaseCommand {
+class AddEventIntervalCommand extends LeafCommand {
     private static SurvivalGamesCommand INSTANCE = new AddEventIntervalCommand();
 
     private AddEventIntervalCommand() {
@@ -54,8 +55,7 @@ class AddEventIntervalCommand extends BaseCommand {
                 GenericArguments.seq(
                         SurvivalGameCommandElement.getInstance(),
                         GenericArguments.string(CommandKeys.INTERVAL_NAME),
-                        GenericArguments.integer(CommandKeys.SECONDS_PER_INTERVAL)),
-                Collections.emptyMap());
+                        GenericArguments.integer(CommandKeys.SECONDS_PER_INTERVAL)));
     }
 
     @Nonnull

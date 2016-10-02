@@ -41,7 +41,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-class EventCommand extends BaseCommand {
+class EventCommand extends LeafCommand {
 
     private static final EventCommand INSTANCE = new EventCommand();
 
@@ -56,8 +56,7 @@ class EventCommand extends BaseCommand {
                                         GenericArguments.string(CommandKeys.EVENT_EXECUTOR),
                                         GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))),
                                 GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))
-                        )),
-                Collections.emptyMap());
+                        )));
     }
 
     @Nonnull

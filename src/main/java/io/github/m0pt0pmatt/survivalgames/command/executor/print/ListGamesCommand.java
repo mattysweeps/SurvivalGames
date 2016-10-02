@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
@@ -43,7 +44,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class ListGamesCommand extends BaseCommand {
+public class ListGamesCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new ListGamesCommand();
 
@@ -51,8 +52,7 @@ public class ListGamesCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "list",
-                GenericArguments.none(),
-                Collections.emptyMap()
+                GenericArguments.none()
         );
     }
 

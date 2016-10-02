@@ -51,7 +51,7 @@ import java.util.function.BiConsumer;
 
 import javax.annotation.Nonnull;
 
-public abstract class BlockRayCommand extends BaseCommand {
+public abstract class BlockRayCommand extends LeafCommand {
 
     private final BiConsumer<SurvivalGame, Location<World>> setter;
     private final Text message;
@@ -63,8 +63,7 @@ public abstract class BlockRayCommand extends BaseCommand {
             Text message) {
         super(parentCommand, name, GenericArguments.seq(
                 SurvivalGameCommandElement.getInstance(),
-                GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))),
-                Collections.emptyMap());
+                GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))));
         this.setter = checkNotNull(setter, "setter");
         this.message = checkNotNull(message, "message");
     }

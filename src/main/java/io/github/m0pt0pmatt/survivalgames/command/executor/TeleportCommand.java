@@ -42,12 +42,12 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class TeleportCommand extends BaseCommand {
+class TeleportCommand extends LeafCommand {
 
     private static final TeleportCommand INSTANCE = new TeleportCommand();
 
     private TeleportCommand() {
-        super(RootCommand.getInstance(), "teleport", GenericArguments.world(CommandKeys.WORLD), Collections.emptyMap());
+        super(RootCommand.getInstance(), "teleport", GenericArguments.world(CommandKeys.WORLD));
     }
 
     @Override

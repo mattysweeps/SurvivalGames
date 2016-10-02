@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
@@ -44,7 +45,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class AddItemCommand extends BaseCommand {
+class AddItemCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new AddItemCommand();
 
@@ -52,8 +53,7 @@ class AddItemCommand extends BaseCommand {
         super(
                 AddCommand.getInstance(),
                 "item",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)),
-                Collections.emptyMap());
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)));
     }
 
     @Nonnull

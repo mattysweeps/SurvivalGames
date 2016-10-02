@@ -30,6 +30,7 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.EventIntervalCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
@@ -44,7 +45,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class RemoveEventIntervalsCommand extends BaseCommand {
+class RemoveEventIntervalsCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new RemoveEventIntervalsCommand();
 
@@ -54,8 +55,7 @@ class RemoveEventIntervalsCommand extends BaseCommand {
                 "event-interval",
                 GenericArguments.seq(
                         SurvivalGameCommandElement.getInstance(),
-                        EventIntervalCommandElement.getInstance()),
-                Collections.emptyMap());
+                        EventIntervalCommandElement.getInstance()));
     }
 
     @Nonnull

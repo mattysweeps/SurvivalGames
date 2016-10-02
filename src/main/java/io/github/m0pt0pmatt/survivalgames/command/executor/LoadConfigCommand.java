@@ -51,7 +51,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class LoadConfigCommand extends BaseCommand {
+public class LoadConfigCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new LoadConfigCommand();
 
@@ -61,8 +61,7 @@ public class LoadConfigCommand extends BaseCommand {
                 "load",
                 GenericArguments.seq(
                         GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME),
-                        ConfigFileCommandElement.getInstance()),
-                Collections.emptyMap());
+                        ConfigFileCommandElement.getInstance()));
     }
 
     @Nonnull

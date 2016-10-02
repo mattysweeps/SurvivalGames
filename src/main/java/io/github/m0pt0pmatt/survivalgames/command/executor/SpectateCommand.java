@@ -42,7 +42,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SpectateCommand extends BaseCommand {
+class SpectateCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SpectateCommand();
 
@@ -50,8 +50,7 @@ class SpectateCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "spectate",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap());
+                SurvivalGameCommandElement.getInstance());
     }
 
     @Nonnull

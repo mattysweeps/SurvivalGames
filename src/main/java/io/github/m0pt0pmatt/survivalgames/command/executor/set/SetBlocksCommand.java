@@ -31,6 +31,7 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
@@ -46,7 +47,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SetBlocksCommand extends BaseCommand {
+class SetBlocksCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetBlocksCommand();
 
@@ -54,8 +55,7 @@ class SetBlocksCommand extends BaseCommand {
         super(
                 SetCommand.getInstance(),
                 "blocks",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap()
+                SurvivalGameCommandElement.getInstance()
         );
     }
 

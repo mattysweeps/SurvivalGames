@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
@@ -42,7 +43,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SetCountDownSecondsCommand extends BaseCommand {
+class SetCountDownSecondsCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetCountDownSecondsCommand();
 
@@ -50,8 +51,7 @@ class SetCountDownSecondsCommand extends BaseCommand {
         super(
                 SetCommand.getInstance(),
                 "countdown-seconds",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.COUNT_DOWN_SECONDS)),
-                Collections.emptyMap()
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.COUNT_DOWN_SECONDS))
         );
     }
 

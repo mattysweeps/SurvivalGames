@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
@@ -42,7 +43,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SetChestMidpointCommand extends BaseCommand {
+class SetChestMidpointCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetChestMidpointCommand();
 
@@ -50,8 +51,7 @@ class SetChestMidpointCommand extends BaseCommand {
         super(
                 SetCommand.getInstance(),
                 "chest-midpoint",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_MIDPOINT)),
-                Collections.emptyMap()
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.CHEST_MIDPOINT))
         );
     }
 

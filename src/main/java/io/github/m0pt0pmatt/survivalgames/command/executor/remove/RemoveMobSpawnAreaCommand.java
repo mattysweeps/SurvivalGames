@@ -31,6 +31,7 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.MobSpawnAreaCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
@@ -46,7 +47,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class RemoveMobSpawnAreaCommand extends BaseCommand {
+class RemoveMobSpawnAreaCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new RemoveMobSpawnAreaCommand();
 
@@ -54,8 +55,7 @@ class RemoveMobSpawnAreaCommand extends BaseCommand {
         super(
                 RemoveCommand.getInstance(),
                 "mob-spawn-area",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), MobSpawnAreaCommandElement.getInstance()),
-                Collections.emptyMap());
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), MobSpawnAreaCommandElement.getInstance()));
     }
 
     @Nonnull

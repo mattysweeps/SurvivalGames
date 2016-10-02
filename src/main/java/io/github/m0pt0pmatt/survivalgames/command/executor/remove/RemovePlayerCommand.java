@@ -29,6 +29,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
@@ -44,7 +45,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class RemovePlayerCommand extends BaseCommand {
+class RemovePlayerCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new RemovePlayerCommand();
 
@@ -52,8 +53,7 @@ class RemovePlayerCommand extends BaseCommand {
         super(
                 RemoveCommand.getInstance(),
                 "player",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)),
-                Collections.emptyMap());
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.player(CommandKeys.PLAYER)));
     }
 
     @Nonnull

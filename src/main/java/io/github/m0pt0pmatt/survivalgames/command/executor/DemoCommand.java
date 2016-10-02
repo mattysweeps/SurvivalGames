@@ -51,7 +51,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
-class DemoCommand extends BaseCommand {
+class DemoCommand extends LeafCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
@@ -61,9 +61,9 @@ class DemoCommand extends BaseCommand {
     private static final int BUFFER_SIZE = 4096;
 
     private DemoCommand() {
-        super(
-                RootCommand.getInstance(),
-                "demo", GenericArguments.none(), Collections.emptyMap());
+        super(RootCommand.getInstance(), "demo",
+                GenericArguments.none()
+        );
     }
 
     @Override

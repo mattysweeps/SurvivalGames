@@ -31,6 +31,7 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
@@ -45,7 +46,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class AddMobSpawnAreaCommand extends BaseCommand {
+class AddMobSpawnAreaCommand extends LeafCommand {
 
     private static SurvivalGamesCommand INSTANCE = new AddMobSpawnAreaCommand();
 
@@ -59,7 +60,7 @@ class AddMobSpawnAreaCommand extends BaseCommand {
                         GenericArguments.vector3d(CommandKeys.VECTOR2),
                         GenericArguments.catalogedElement(CommandKeys.ENTITY_TYPE, EntityType.class),
                         GenericArguments.integer(CommandKeys.SPAWN_RATE_PER_MINUTE)
-                ), Collections.emptyMap());
+                ));
     }
 
     @Override

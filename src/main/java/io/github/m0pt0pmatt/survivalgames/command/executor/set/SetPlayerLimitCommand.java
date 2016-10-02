@@ -30,6 +30,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
@@ -42,7 +43,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-class SetPlayerLimitCommand extends BaseCommand {
+class SetPlayerLimitCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetPlayerLimitCommand();
 
@@ -50,8 +51,7 @@ class SetPlayerLimitCommand extends BaseCommand {
         super(
                 SetCommand.getInstance(),
                 "player-limit",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.PLAYER_LIMIT)),
-                Collections.emptyMap()
+                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.integer(CommandKeys.PLAYER_LIMIT))
         );
     }
 

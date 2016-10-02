@@ -31,6 +31,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
@@ -48,17 +49,17 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-public class AbstractStateCommand extends BaseCommand {
+class AbstractStateCommand extends LeafCommand {
 
     private final Set<SurvivalGameState> states;
     private final Consumer<SurvivalGame> action;
 
-    public AbstractStateCommand(
+    AbstractStateCommand(
             SurvivalGamesCommand parentCommand,
             String name,
             Set<SurvivalGameState> states,
             Consumer<SurvivalGame> action) {
-        super(parentCommand, name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(parentCommand, name, SurvivalGameCommandElement.getInstance());
         this.states = checkNotNull(states, "states");
         this.action = checkNotNull(action, "action");
     }

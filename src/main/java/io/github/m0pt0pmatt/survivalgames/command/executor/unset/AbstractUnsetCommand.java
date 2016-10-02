@@ -31,6 +31,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -43,7 +44,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-class AbstractUnsetCommand extends BaseCommand {
+class AbstractUnsetCommand extends LeafCommand {
 
     private final Consumer<SurvivalGame> consumer;
     private final Text message;
@@ -52,7 +53,7 @@ class AbstractUnsetCommand extends BaseCommand {
             String name,
             Consumer<SurvivalGame> consumer,
             Text message) {
-        super(name, SurvivalGameCommandElement.getInstance(), Collections.emptyMap());
+        super(UnsetCommand.getInstance(), name, SurvivalGameCommandElement.getInstance());
         this.consumer = checkNotNull(consumer, "consumer");
         this.message = checkNotNull(message, "message");
     }

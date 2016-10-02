@@ -52,7 +52,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class SaveConfigCommand extends BaseCommand {
+public class SaveConfigCommand extends LeafCommand {
     private static SurvivalGamesCommand INSTANCE = new SaveConfigCommand();
 
     private SaveConfigCommand() {
@@ -63,8 +63,7 @@ public class SaveConfigCommand extends BaseCommand {
                         SurvivalGameCommandElement.getInstance(),
                         GenericArguments.firstParsing(
                                 ConfigFileCommandElement.getInstance(),
-                                GenericArguments.string(CommandKeys.FILE_NAME))),
-                Collections.emptyMap());
+                                GenericArguments.string(CommandKeys.FILE_NAME))));
     }
 
     @Nonnull

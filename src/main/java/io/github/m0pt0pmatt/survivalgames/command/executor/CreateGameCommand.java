@@ -43,7 +43,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class CreateGameCommand extends BaseCommand {
+public class CreateGameCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new CreateGameCommand();
 
@@ -51,8 +51,7 @@ public class CreateGameCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "create",
-                GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME),
-                Collections.emptyMap()
+                GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME)
         );
     }
 

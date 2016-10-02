@@ -42,7 +42,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-public class LeaveCommand extends BaseCommand {
+public class LeaveCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new LeaveCommand();
 
@@ -50,8 +50,7 @@ public class LeaveCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "leave",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap());
+                SurvivalGameCommandElement.getInstance());
     }
 
     @Nonnull

@@ -43,7 +43,7 @@ public abstract class ParentCommand extends BaseCommand {
 
     private final Text chooseChildMessage;
 
-    protected ParentCommand(String name, Map<List<String>, CommandCallable> children) {
+    ParentCommand(String name, Map<List<String>, CommandCallable> children) {
         this(null, name, children);
     }
 
