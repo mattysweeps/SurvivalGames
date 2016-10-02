@@ -1,4 +1,4 @@
-# SurvivalGames [![Build Status](https://travis-ci.org/m0pt0pmatt/SpongeSurvivalGames.svg)](https://travis-ci.org/m0pt0pmatt/SpongeSurvivalGames)
+# SurvivalGames [![Build Status](https://travis-ci.org/m0pt0pmatt/SurvivalGames.svg)](https://travis-ci.org/m0pt0pmatt/SurvivalGames)
 
 SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survival Games game mode on your Sponge Server! You can run multiple survival games at once, and each game is customizable. Config files for survival games can be saved and loaded from file.
 
