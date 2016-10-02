@@ -22,24 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.survivalgames.command.executor.unset;
 
-import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.text.Text;
-
-class UnsetPlayerLimitCommand extends AbstractUnsetCommand {
-
-    private static final SurvivalGamesCommand INSTANCE = new UnsetPlayerLimitCommand();
-
-    private UnsetPlayerLimitCommand() {
-        super(
-                "player-limit",
-                survivalGame -> survivalGame.getConfig().setPlayerLimit(null),
-                Text.of("Unset player limit")
-        );
-    }
-
-    static SurvivalGamesCommand getInstance() {
-        return INSTANCE;
-    }
-}
+/**
+ * SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survival Games,
+ * powered by the Sponge platform.
+ * <p>
+ * This plugin was created for the Sponge Summer Plugin Competition 2016.
+ * @author m0tp0pmatt
+ */
+package io.github.m0pt0pmatt.survivalgames;

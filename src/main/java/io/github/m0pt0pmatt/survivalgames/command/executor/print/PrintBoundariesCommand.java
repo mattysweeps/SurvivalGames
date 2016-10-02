@@ -1,5 +1,5 @@
 /*
- * This file is part of SurvivalGamesPlugin, licensed under the MIT License (MIT).
+ * This file is part of SurvivalGames, licensed under the MIT License (MIT).
  *
  * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
  * Copyright (c) contributors

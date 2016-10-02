@@ -1,5 +1,5 @@
 /*
- * This file is part of SurvivalGamesPlugin, licensed under the MIT License (MIT).
+ * This file is part of SurvivalGames, licensed under the MIT License (MIT).
  *
  * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
  * Copyright (c) contributors
@@ -24,7 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.game;
 
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+
 import io.github.m0pt0pmatt.survivalgames.Util;
+import io.github.m0pt0pmatt.survivalgames.task.DelayedTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.CelebrateWinnerTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.DelayedPlayerTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.PlayerTask;
@@ -42,26 +45,22 @@ public class WinChecker {
 
     private static final long CELEBRATE_DELAY_SECONDS = 5;
 
-    private static final List<PlayerTask> WINNER_TASKS = Arrays.asList(
-            CelebrateWinnerTask.getInstance(),
-            DelayedPlayerTask.of(new PlayerTask() {
-                @Override
-                public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-                    SurvivalGameStateManager.stop(survivalGame);
-                }
-            }, CELEBRATE_DELAY_SECONDS, TimeUnit.SECONDS));
-
     private WinChecker() {
 
     }
 
     public static void checkWin(SurvivalGame survivalGame) throws TextMessageException {
-        if (survivalGame.getPlayerUUIDs().size() == 1) {
-            UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
-            Player winner = Util.getOrThrow(Sponge.getServer().getPlayer(winnerId), "winner");
-            for (PlayerTask task : WINNER_TASKS) {
-                task.execute(survivalGame, winner);
+        if (survivalGame.getPlayerUUIDs().size() <= 1) {
+
+            // If there is a winner
+            if (survivalGame.getPlayerUUIDs().size() == 1) {
+                UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
+                Player winner = getOrThrow(Sponge.getServer().getPlayer(winnerId), "winner");
+                CelebrateWinnerTask.getInstance().execute(survivalGame, winner);
             }
+
+            // Stop the game
+            DelayedTask.of(SurvivalGameStateManager::stop, CELEBRATE_DELAY_SECONDS, TimeUnit.SECONDS).execute(survivalGame);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of SurvivalGamesPlugin, licensed under the MIT License (MIT).
+ * This file is part of SurvivalGames, licensed under the MIT License (MIT).
  *
  * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
  * Copyright (c) contributors
@@ -31,7 +31,7 @@ import org.spongepowered.api.util.TextMessageException;
 import java.util.concurrent.TimeUnit;
 
 /** A Task which is delayed before it is executed. */
-class DelayedTask implements Task {
+public class DelayedTask implements Task {
 
     private final Task task;
     private final long delay;

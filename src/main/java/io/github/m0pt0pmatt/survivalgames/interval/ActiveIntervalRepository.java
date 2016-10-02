@@ -1,5 +1,5 @@
 /*
- * This file is part of SurvivalGamesPlugin, licensed under the MIT License (MIT).
+ * This file is part of SurvivalGames, licensed under the MIT License (MIT).
  *
  * Copyright (c) Matthew Broomfield <m0pt0pmatt17@gmail.com>
  * Copyright (c) contributors
@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public class ActiveIntervalRepository {
+public final class ActiveIntervalRepository {
 
     private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP = new ConcurrentHashMap<>();
 
