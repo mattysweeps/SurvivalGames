@@ -9,6 +9,8 @@ if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
     echo "Version is a release."
 
     if [ "$(curl https://api.github.com/repos/${USER}/${PROJECT}/releases/tags/v${VERSION} | grep '"message": "Not Found"')" = "" ]; then
+        echo "Version is already released"
+    else
         echo "Version is not yet released"
 
         # Create new release
@@ -29,7 +31,5 @@ if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
         # Upload assets to release
         JAR_NAME="${PROJECT}-${VERSION}.jar"
         curl --data "@../build/libs/${JAR_NAME}" https://uploads.github.com/repos/${USER}/${PROJECT}/releases/${ID}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
-    else
-        echo "Version is already released"
     fi
 fi

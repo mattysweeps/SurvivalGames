@@ -10,6 +10,7 @@ source ./scripts/variables.sh
 git clone https://${GH_TOKEN}@github.com/${USER}/${PROJECT}
 cd ${PROJECT}
 git fetch origin
+git branch
 
 source ./scripts/upload-javadoc.sh
 source ./scripts/maven-release.sh

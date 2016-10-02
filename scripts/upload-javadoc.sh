@@ -12,7 +12,9 @@ fi
 
 # Remove existing docs
 echo "Removing existing docs"
-git rm -rf ./docs
+rm -fr ./*
+rm .travis.yml
+git add -A
 
 # Add current docs
 echo "Adding new docs"

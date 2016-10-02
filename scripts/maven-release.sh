@@ -10,6 +10,10 @@ else
     git checkout -b ${BRANCH_NAME}
 fi
 
+rm -fr ./*
+rm .travis.yml
+git add -A
+
 # Commit Maven build
 echo "Adding maven build"
 mkdir -p ${MAVEN_GROUP}
