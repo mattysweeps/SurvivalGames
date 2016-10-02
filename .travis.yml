@@ -2,5 +2,5 @@ sudo: false
 language: java
 jdk:
 - oraclejdk8
-script: "./gradlew clean build javadoc install"
+script: "./gradlew clean build jar javadoc install"
 after_script: "bash ./scripts/after-script.sh"
