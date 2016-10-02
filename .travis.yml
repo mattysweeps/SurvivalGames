@@ -4,10 +4,12 @@ jdk:
 - oraclejdk8
 script: "./gradlew clean build jar javadoc install"
 after_script: "bash ./scripts/after-script.sh"
+before_deploy:
+  - export FILE=$(ls build/libs/*.jar)
 deploy:
   provider: releases
   api_key: "$GH_TOKEN"
-  file: "buils/libs/*"
+  file: "${FILE}"
   skip_cleanup: true
   on:
-    condition: '"$(ls ${HOME}/.m2/repository/${MAVEN_GROUP}/${PROJECT} | sed s:maven-metadata-local.xml:: | xargs | grep -o SNAPHOT)" != "SNAPSHOT"'
+    tags: true
