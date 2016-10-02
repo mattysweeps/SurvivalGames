@@ -13,5 +13,8 @@ git fetch origin
 git branch
 
 source ./scripts/upload-javadoc.sh
+git checkout master
 source ./scripts/maven-release.sh
+git checkout master
 source ./scripts/plugin-release.sh
+git checkout master
