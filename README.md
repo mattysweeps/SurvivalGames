@@ -1,12 +1,20 @@
-# SurvivalGames [![Build Status](https://travis-ci.org/m0pt0pmatt/SpongeSurvivalGames.svg)](https://travis-ci.org/m0pt0pmatt/SpongeSurvivalGames)
+# SurvivalGames [![Build Status](https://travis-ci.org/m0pt0pmatt/SurvivalGames.svg)](https://travis-ci.org/m0pt0pmatt/SurvivalGames)
 
 SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survival Games game mode on your Sponge Server! You can run multiple survival games at once, and each game is customizable. Config files for survival games can be saved and loaded from file.
 
 This plugin was created for the Sponge Summer Plugin Competition 2016.
 
 # Demo
+NOTE: Players participating in the demo must be opped.
+
 Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command might ruin your server (still working out bugs), so please run it on a fresh server.
 Run these commands to get the server running:
+- ```/ssg demo```
+- ```/ssg load demo demo.yml```
+- ```/ssg set blocks demo```
+- ```/ssg ready demo```
+- For each player: ```/ssg add player demo <player>```
+- ```/ssg start demo```
 
 # Commands
 Everything which can be set via a config can also be adjusted through commands. The root command is ```/ssg```. Other commands include:
@@ -41,3 +49,7 @@ You can configure a certain region to spawn mobs when a survival game is running
 SurvivalGames has it's own events which are fired when game-related things happen. Not only can other players use these events, but SurvivalGames also can fire command blocks with the command ```/ssg event [EventName]```. This allows for map makers to do some really custom stuff!
 
 For example, If a command block is set with the command ```/ssg event MobSpawnedEvent```, then whenever a MobSpawnedEvent occurs, the command block is executed. It is then turned into a redstone torch for 5 seconds, so surronding blocks can be powered. (This is a temporary workaround)
+
+# Java Docs
+While they still need work, you can view the Javadocs here: http://m0pt0pmatt.github.io/SurvivalGames/docs/
+But I recommend you just look at the source code ;)
