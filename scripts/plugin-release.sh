@@ -18,9 +18,10 @@ if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
         }
     "
 
-    curl --data "$API_JSON" https://api.github.com/repos/${USER}/${PROJECT}/releases?access_token=${GH_TOKEN}
+    RESPONSE=$(curl --data "$API_JSON" https://api.github.com/repos/${USER}/${PROJECT}/releases?access_token=${GH_TOKEN})
+    ID=$(echo ${RESPONSE} | jq .id)
 
     # Upload assets to release
     JAR_NAME="${PROJECT}-${VERSION}.jar"
-    curl --data "$(cat ../build/libs/${JAR_NAME})" https://uploads.github.com/repos/${USER}/${PROJECT}/releases/${VERSION}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
+    curl --data "$(cat ../build/libs/${JAR_NAME})" https://uploads.github.com/repos/${USER}/${PROJECT}/releases/${ID}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
 fi
