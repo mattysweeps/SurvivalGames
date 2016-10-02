@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "travis-ci"
-git clone --branch=gh-pages https://${GH_TOKEN}@github.com/m0pt0pmatt/SurvivalGames gh-pages
+# Checkout branch. Create if it doesn't exist.
+BRANCH_NAME=${PAGES_BRANCH_NAME}
+if [ "$(git branch | grep -o ${BRANCH_NAME})" = "${BRANCH_NAME}" ]; then
+  git checkout ${BRANCH_NAME}
+else
+  git checkout -b ${BRANCH_NAME}
+fi
 
-# Commit and Push the Changes
-cd gh-pages
+# Remove existing docs
 git rm -rf ./docs
+
+# Add current docs
 mkdir ./docs
 cp -rf ../build/docs/javadoc/* ./docs/
 git add -f .
-git commit -m "Lastest javadoc on successful travis build ${TRAVIS_BUILD_NUMBER} auto-pushed to gh-pages"
+git commit -m "Latest javadoc on successful travis build ${TRAVIS_BUILD_NUMBER} auto-pushed to gh-pages"
+
+# Push up
 git push -f origin gh-pages
 

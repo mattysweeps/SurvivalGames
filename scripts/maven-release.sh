@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "travis-ci"
-git clone --branch=repository https://${GH_TOKEN}@github.com/m0pt0pmatt/SurvivalGames repository
 
-# Commit and Push the Changes
-cd repository
+# Checkout branch. Create if it doesn't exist.
+BRANCH_NAME=${MAVEN_BRANCH_NAME}
+if [ "$(git branch | grep -o ${BRANCH_NAME})" = "${BRANCH_NAME}" ]; then
+  git checkout ${BRANCH_NAME}
+else
+  git checkout -b ${BRANCH_NAME}
+fi
 
-DIR='io/github/m0pt0pmatt/survivalgames'
-mkdir -p ${DIR}
-cp -rf ${HOME}/.m2/repository/${DIR}* ${DIR}
+# Commit Maven build
+mkdir -p ${MAVEN_GROUP}
+cp -rf ${HOME}/.m2/repository/${MAVEN_GROUP}* ${MAVEN_GROUP}
 git add -f .
-git commit -m "Latest maven dependency on successful travis build ${TRAVIS_BUILD_NUMBER} auto-pushed to repository"
-git push -f origin repository
+git commit -m "Latest maven dependency on successful travis build ${TRAVIS_BUILD_NUMBER} auto-pushed to ${BRANCH_NAME}"
 
+# Push up
+git push -f origin ${BRANCH_NAME}

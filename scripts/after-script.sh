@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
-bash ./scripts/upload-javadoc.sh
-bash ./scripts/maven-release.sh
-bash ./scripts/plugin-release.sh
+
+# Setup git
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "travis-ci"
+
+# Clone and fetch
+git clone https://${GH_TOKEN}@github.com/${USER}/${PROJECT}
+pushd ${PROJECT}
+git fetch
+
+source ./scripts/variables.sh
+source ./scripts/upload-javadoc.sh
+source ./scripts/maven-release.sh
+source ./scripts/plugin-release.sh
+
+popd
