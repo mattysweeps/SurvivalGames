@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 group = 'io.github.m0pt0pmatt.survivalgames'
-version = '1.0.2'
+version = '1.0.3'
 
 repositories {
     mavenCentral()
