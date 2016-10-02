@@ -10,5 +10,4 @@ deploy:
   file: "buils/libs/*"
   skip_cleanup: true
   on:
-    tags: true
-    condition: '"$(ls ${HOME}/.m2/repository/${MAVEN_GROUP}/${PROJECT} | sed \"s/maven-metadata-local.xml//\" | xargs | grep -o SNAPHOT)" != "SNAPSHOT"'
+    condition: '"$(ls ${HOME}/.m2/repository/${MAVEN_GROUP}/${PROJECT} | sed s:maven-metadata-local.xml:: | xargs | grep -o SNAPHOT)" != "SNAPSHOT"'
