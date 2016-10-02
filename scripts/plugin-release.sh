@@ -30,6 +30,6 @@ if [ "$(echo ${VERSION} | grep -o SNAPHOT)" != "SNAPSHOT" ]; then
 
         # Upload assets to release
         JAR_NAME="${PROJECT}-${VERSION}.jar"
-        curl --data "@../build/libs/${JAR_NAME}" https://uploads.github.com/repos/${USER}/${PROJECT}/releases/${ID}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
+        curl --data "@./build/libs/${JAR_NAME}" https://uploads.github.com/repos/${USER}/${PROJECT}/releases/${ID}/assets?name=${JAR_NAME}&access_token=${GH_TOKEN}
     fi
 fi

@@ -2,17 +2,8 @@
 
 # Checkout branch. Create if it doesn't exist.
 BRANCH_NAME=${MAVEN_BRANCH_NAME}
-if [ "$(git branch | grep -o ${BRANCH_NAME})" = "${BRANCH_NAME}" ]; then
-    echo "Checking out branch ${BRANCH_NAME}"
-    git checkout ${BRANCH_NAME}
-else
-    echo "Checking out new branch ${BRANCH_NAME}"
-    git checkout -b ${BRANCH_NAME}
-fi
-
-rm -fr ./*
-rm .travis.yml
-git add -A
+git clone --single-branch --branch ${BRANCH_NAME} https://${GH_TOKEN}@github.com/${USER}/${PROJECT} ${BRANCH_NAME}
+cd ${BRANCH_NAME}
 
 # Commit Maven build
 echo "Adding maven build"
@@ -24,3 +15,5 @@ git commit -m "Latest maven dependency on successful travis build ${TRAVIS_BUILD
 # Push up
 echo "Pushing up to origin"
 git push -f origin ${BRANCH_NAME}
+
+cd ../

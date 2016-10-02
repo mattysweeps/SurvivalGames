@@ -5,16 +5,6 @@ git config --global user.email "travis@travis-ci.org"
 git config --global user.name "travis-ci"
 
 source ./scripts/variables.sh
-
-# Clone and fetch
-git clone https://${GH_TOKEN}@github.com/${USER}/${PROJECT}
-cd ${PROJECT}
-git fetch origin
-git branch
-
 source ./scripts/upload-javadoc.sh
-git checkout master
 source ./scripts/maven-release.sh
-git checkout master
 source ./scripts/plugin-release.sh
-git checkout master
