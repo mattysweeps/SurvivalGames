@@ -9,7 +9,7 @@
     <dependency>
       <groupId>org.spongepowered</groupId>
       <artifactId>spongeapi</artifactId>
-      <version>5.0.0-20161001.034652-138</version>
+      <version>6.0.0-20170201.184449-36</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
