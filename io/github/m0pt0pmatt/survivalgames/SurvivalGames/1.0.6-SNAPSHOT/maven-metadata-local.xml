@@ -2,10 +2,11 @@
 <metadata>
   <groupId>io.github.m0pt0pmatt.survivalgames</groupId>
   <artifactId>SurvivalGames</artifactId>
+  <version>1.0.6-SNAPSHOT</version>
   <versioning>
-    <versions>
-      <version>1.0.6-SNAPSHOT</version>
-    </versions>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
     <lastUpdated>20170206020621</lastUpdated>
   </versioning>
 </metadata>
