@@ -18,5 +18,5 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:5.0.0-20161001.034652-138'
+    compile 'org.spongepowered:spongeapi:6.0.0-20170201.184449-36'
 }
