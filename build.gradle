@@ -1,22 +1,12 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
-group = 'io.github.m0pt0pmatt.survivalgames'
-version = '1.0.6-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-    maven {
-        name = 'sponge'
-        url = 'http://repo.spongepowered.org/maven'
-    }
+plugins {
+    id 'org.spongepowered.plugin' version '0.8.1'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = pluginGroup
+version = pluginVersion
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:6.0.0-20170208.122041-38'
+    compile 'org.spongepowered:spongeapi:6.0.0-SNAPSHOT'
 }
+
+sponge.plugin.id = pluginId
