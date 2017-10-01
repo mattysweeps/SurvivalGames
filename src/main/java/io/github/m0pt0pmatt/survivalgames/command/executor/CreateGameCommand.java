@@ -32,16 +32,13 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.event.GameCreatedEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
-
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 public class CreateGameCommand extends LeafCommand {
 
@@ -51,13 +48,13 @@ public class CreateGameCommand extends LeafCommand {
         super(
                 RootCommand.getInstance(),
                 "create",
-                GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME)
-        );
+                GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME));
     }
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
         String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
         if (SurvivalGameRepository.contains(survivalGameName)) {

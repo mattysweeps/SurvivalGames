@@ -28,10 +28,9 @@ import static java.lang.Double.max;
 import static java.lang.Double.min;
 
 import com.flowpowered.math.vector.Vector3d;
+import java.util.Optional;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
-import java.util.Optional;
 
 @ConfigSerializable
 public class Area {
@@ -77,15 +76,13 @@ public class Area {
                 double z2 = greaterBoundary.getZ();
                 double z3 = vector3i.getZ();
 
-                lesserBoundary = new Vector3d(
-                        min(min(x1, x2), x3),
-                        min(min(y1, y2), y3),
-                        min(min(z1, z2), z3));
+                lesserBoundary =
+                        new Vector3d(
+                                min(min(x1, x2), x3), min(min(y1, y2), y3), min(min(z1, z2), z3));
 
-                greaterBoundary = new Vector3d(
-                        max(max(x1, x2), x3),
-                        max(max(y1, y2), y3),
-                        max(max(z1, z2), z3));
+                greaterBoundary =
+                        new Vector3d(
+                                max(max(x1, x2), x3), max(max(y1, y2), y3), max(max(z1, z2), z3));
             } else {
                 double x1 = lesserBoundary.getX();
                 double x2 = vector3i.getX();
@@ -96,15 +93,9 @@ public class Area {
                 double z1 = lesserBoundary.getZ();
                 double z2 = vector3i.getZ();
 
-                lesserBoundary = new Vector3d(
-                        min(x1, x2),
-                        min(y1, y2),
-                        min(z1, z2));
+                lesserBoundary = new Vector3d(min(x1, x2), min(y1, y2), min(z1, z2));
 
-                greaterBoundary = new Vector3d(
-                        max(x1, x2),
-                        max(y1, y2),
-                        max(z1, z2));
+                greaterBoundary = new Vector3d(max(x1, x2), max(y1, y2), max(z1, z2));
             }
         }
     }

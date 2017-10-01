@@ -29,16 +29,14 @@ import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.SelectorCommandElement;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.SelectorCommandElement;
 
 public class MobSpawnAreaCommandElement extends SelectorCommandElement {
 
@@ -51,10 +49,20 @@ public class MobSpawnAreaCommandElement extends SelectorCommandElement {
     @Nonnull
     @Override
     protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
+        return SurvivalGameCommandElement.getInstance()
+                .getCurrentSurvivalGameName()
                 .map(SurvivalGameRepository::get)
-                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getMobSpawnAreas).orElse(Collections.emptyList()))
-                .map(list -> list.stream().map(MobSpawnArea::getId).map(UUID::toString).collect(Collectors.toList()))
+                .map(
+                        o ->
+                                o.map(SurvivalGame::getConfig)
+                                        .map(GameConfig::getMobSpawnAreas)
+                                        .orElse(Collections.emptyList()))
+                .map(
+                        list ->
+                                list.stream()
+                                        .map(MobSpawnArea::getId)
+                                        .map(UUID::toString)
+                                        .collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
     }
 
@@ -64,13 +72,19 @@ public class MobSpawnAreaCommandElement extends SelectorCommandElement {
 
         UUID id = UUID.fromString(choice);
 
-        Optional<MobSpawnArea> mobSpawnArea = SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
-                .map(SurvivalGameRepository::get)
-                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getMobSpawnAreas).orElse(Collections.emptyList()))
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(m -> m.getId().equals(id))
-                .findAny();
+        Optional<MobSpawnArea> mobSpawnArea =
+                SurvivalGameCommandElement.getInstance()
+                        .getCurrentSurvivalGameName()
+                        .map(SurvivalGameRepository::get)
+                        .map(
+                                o ->
+                                        o.map(SurvivalGame::getConfig)
+                                                .map(GameConfig::getMobSpawnAreas)
+                                                .orElse(Collections.emptyList()))
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .filter(m -> m.getId().equals(id))
+                        .findAny();
 
         if (mobSpawnArea.isPresent()) {
             return mobSpawnArea.get();

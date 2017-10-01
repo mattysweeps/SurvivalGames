@@ -32,6 +32,8 @@ import org.spongepowered.api.event.cause.NamedCause;
 public class PreCountdownEvent extends SurvivalGameEvent {
 
     public PreCountdownEvent(SurvivalGame survivalGame) {
-        super(Cause.of(NamedCause.of("Survival Game Started", SurvivalGamesPlugin.PLUGIN)), survivalGame);
+        super(
+                Cause.of(NamedCause.of("Survival Game Started", SurvivalGamesPlugin.PLUGIN)),
+                survivalGame);
     }
 }

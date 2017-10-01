@@ -26,10 +26,9 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
 import java.util.Optional;
+import org.spongepowered.api.text.Text;
 
 class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
 
@@ -40,8 +39,7 @@ class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
                 "state",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Optional.of(survivalGame.getState()).map(Text::of)
-        );
+                survivalGame -> Optional.of(survivalGame.getState()).map(Text::of));
     }
 
     static SurvivalGamesCommand getInstance() {

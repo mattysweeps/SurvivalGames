@@ -26,12 +26,12 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
-import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -40,27 +40,21 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
-
 public class ListGamesCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new ListGamesCommand();
 
     private ListGamesCommand() {
-        super(
-                RootCommand.getInstance(),
-                "list",
-                GenericArguments.none()
-        );
+        super(RootCommand.getInstance(), "list", GenericArguments.none());
     }
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
         sendSuccess(src, "Survival Games: ");
-        SurvivalGameRepository.values().stream()
+        SurvivalGameRepository.values()
+                .stream()
                 .map(SurvivalGame::getName)
                 .map(name -> Text.of(TextColors.BLUE, name))
                 .forEach(src::sendMessage);

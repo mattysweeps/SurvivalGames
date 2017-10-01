@@ -31,6 +31,8 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.listener.PlayerDeathListener;
 import io.github.m0pt0pmatt.survivalgames.listener.PlayerOpenedChestListener;
 import io.github.m0pt0pmatt.survivalgames.listener.SurvivalGameEventListener;
+import java.io.File;
+import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
@@ -42,13 +44,13 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
 
-import java.io.File;
-import java.nio.file.Path;
-
-/**
- * SurvivalGames Sponge Plugin
- */
-@Plugin(id = "survival-games", name = "Survival Games", version = "1.0.0", description = "Survival Games for Sponge.")
+/** SurvivalGames Sponge Plugin */
+@Plugin(
+    id = "survival-games",
+    name = "Survival Games",
+    version = "1.0.0",
+    description = "Survival Games for Sponge."
+)
 public class SurvivalGamesPlugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);
@@ -74,14 +76,18 @@ public class SurvivalGamesPlugin {
 
         // Register the root command.
         // All other commands exist under the root command.
-        Sponge.getCommandManager().register(this, toCommandCallable(RootCommand.getInstance()),
-                RootCommand.getInstance().getAliases());
+        Sponge.getCommandManager()
+                .register(
+                        this,
+                        toCommandCallable(RootCommand.getInstance()),
+                        RootCommand.getInstance().getAliases());
 
         // Create an executor
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
 
         // Get the plugin container. This is useful for making Causes.
-        Sponge.getPluginManager().getPlugin("survival-games")
+        Sponge.getPluginManager()
+                .getPlugin("survival-games")
                 .ifPresent(pluginContainer -> PLUGIN_CONTAINER = pluginContainer);
 
         // Create a config directory if one does not already exist.

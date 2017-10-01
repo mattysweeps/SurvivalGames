@@ -30,11 +30,11 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.command.CommandException;
@@ -43,30 +43,26 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.world.World;
 
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
-
 class SetBlocksCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetBlocksCommand();
 
     private SetBlocksCommand() {
-        super(
-                SetCommand.getInstance(),
-                "blocks",
-                SurvivalGameCommandElement.getInstance()
-        );
+        super(SetCommand.getInstance(), "blocks", SurvivalGameCommandElement.getInstance());
     }
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         GameConfig config = survivalGame.getConfig();
-        Vector3d lesserBoundary = getOrThrow(config.getBlockArea().getLesserBoundary(), CommandKeys.LESSER_BOUNDARY);
-        Vector3d greaterBoundary = getOrThrow(config.getBlockArea().getGreaterBoundary(), CommandKeys.GREATER_BOUNDARY);
+        Vector3d lesserBoundary =
+                getOrThrow(config.getBlockArea().getLesserBoundary(), CommandKeys.LESSER_BOUNDARY);
+        Vector3d greaterBoundary =
+                getOrThrow(
+                        config.getBlockArea().getGreaterBoundary(), CommandKeys.GREATER_BOUNDARY);
         String worldName = getOrThrow(config.getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
@@ -81,9 +77,12 @@ class SetBlocksCommand extends LeafCommand {
             }
         }
 
-        world.getTileEntities().stream()
+        world.getTileEntities()
+                .stream()
                 .filter(tileEntity -> tileEntity instanceof CommandBlock)
-                .forEach(tileEntity -> survivalGame.getCommandBlocks().add((CommandBlock) tileEntity));
+                .forEach(
+                        tileEntity ->
+                                survivalGame.getCommandBlocks().add((CommandBlock) tileEntity));
 
         survivalGame.setBlocksValid(true);
 

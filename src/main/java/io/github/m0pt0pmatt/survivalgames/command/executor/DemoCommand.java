@@ -26,6 +26,18 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -36,39 +48,24 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.storage.WorldProperties;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.annotation.Nonnull;
-
 class DemoCommand extends LeafCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
     private static final String DEMO_MAP_WORLD_NAME = "ssg-demo-map";
-    private static final String S3_BUCKET = "http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/";
+    private static final String S3_BUCKET =
+            "http://com.cloudcraftnetwork.survivalgames.maps.s3-website-us-east-1.amazonaws.com/";
 
     private static final int BUFFER_SIZE = 4096;
 
     private DemoCommand() {
-        super(RootCommand.getInstance(), "demo",
-                GenericArguments.none()
-        );
+        super(RootCommand.getInstance(), "demo", GenericArguments.none());
     }
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
         deleteExistingWorld(src, DEMO_MAP_WORLD_NAME);
         loadMap(src, DEMO_MAP_WORLD_NAME);
         downloadConfig();
@@ -80,8 +77,15 @@ class DemoCommand extends LeafCommand {
 
     private void downloadConfig() throws CommandException {
         try {
-            ReadableByteChannel readableByteChannel = Channels.newChannel(new URL(S3_BUCKET + "demo.yml").openStream());
-            FileOutputStream fileOutputStream = new FileOutputStream("config" + File.separator + "survival-games" + File.separator + "demo.yml");
+            ReadableByteChannel readableByteChannel =
+                    Channels.newChannel(new URL(S3_BUCKET + "demo.yml").openStream());
+            FileOutputStream fileOutputStream =
+                    new FileOutputStream(
+                            "config"
+                                    + File.separator
+                                    + "survival-games"
+                                    + File.separator
+                                    + "demo.yml");
             fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
             fileOutputStream.close();
         } catch (Exception e) {
@@ -137,13 +141,14 @@ class DemoCommand extends LeafCommand {
 
     private void deleteExistingWorld(CommandSource src, String worldName) {
         Optional<World> existingWorld = Sponge.getServer().getWorld(worldName);
-        if (existingWorld.isPresent()) {
-            WorldProperties properties = existingWorld.get().getProperties();
-            src.sendMessage(Text.of("Unloading: ", worldName));
-            Sponge.getServer().unloadWorld(existingWorld.get());
-            src.sendMessage(Text.of("Deleting: ", worldName));
-            Sponge.getServer().deleteWorld(properties);
-        }
+        existingWorld.ifPresent(
+                world -> {
+                    WorldProperties properties = world.getProperties();
+                    src.sendMessage(Text.of("Unloading: ", worldName));
+                    Sponge.getServer().unloadWorld(world);
+                    src.sendMessage(Text.of("Deleting: ", worldName));
+                    Sponge.getServer().deleteWorld(properties);
+                });
     }
 
     private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
@@ -156,7 +161,7 @@ class DemoCommand extends LeafCommand {
         bos.close();
     }
 
-    static DemoCommand getInstance(){
+    static DemoCommand getInstance() {
         return INSTANCE;
     }
 }

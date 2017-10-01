@@ -28,14 +28,12 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
+import java.util.Collections;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.args.SelectorCommandElement;
-
-import java.util.Collections;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 public class EventIntervalCommandElement extends SelectorCommandElement {
 
@@ -48,9 +46,14 @@ public class EventIntervalCommandElement extends SelectorCommandElement {
     @Nonnull
     @Override
     protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameCommandElement.getInstance().getCurrentSurvivalGameName()
+        return SurvivalGameCommandElement.getInstance()
+                .getCurrentSurvivalGameName()
                 .map(SurvivalGameRepository::get)
-                .map(o -> o.map(SurvivalGame::getConfig).map(GameConfig::getEventIntervals).orElse(Collections.emptyMap()))
+                .map(
+                        o ->
+                                o.map(SurvivalGame::getConfig)
+                                        .map(GameConfig::getEventIntervals)
+                                        .orElse(Collections.emptyMap()))
                 .map(Map::keySet)
                 .orElse(Collections.emptySet());
     }

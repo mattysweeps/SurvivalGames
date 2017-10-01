@@ -29,17 +29,16 @@ import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
 /** Spawns spectators. */
 public class SpawnSpectatorsTask extends PlayerTask {
@@ -51,19 +50,23 @@ public class SpawnSpectatorsTask extends PlayerTask {
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        String worldName =
+                getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
         if (!spawnPoints.isEmpty()) {
             Vector3d spawnPoint = spawnPoints.remove(0);
 
-            spawnPlayer(player, world,
+            spawnPlayer(
+                    player,
+                    world,
                     new Vector3d(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ()),
                     new Vector3d(centerVector.getX(), centerVector.getY(), centerVector.getZ()));
         }
     }
 
-    private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
+    private static void spawnPlayer(
+            Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 10, 0.5)));
         player.lookAt(centerVector);
         player.offer(Keys.GAME_MODE, GameModes.SPECTATOR);
@@ -72,7 +75,8 @@ public class SpawnSpectatorsTask extends PlayerTask {
     @Override
     protected void before(SurvivalGame survivalGame) throws TextMessageException {
         spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
-        centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
+        centerVector =
+                getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 
     @Override

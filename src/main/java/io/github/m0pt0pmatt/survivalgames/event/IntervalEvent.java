@@ -36,7 +36,12 @@ public class IntervalEvent extends SurvivalGameEvent {
     private final String intervalName;
 
     public IntervalEvent(SurvivalGame survivalGame, String intervalName) {
-        super(Cause.of(NamedCause.of("Survival Game Interval Event", SurvivalGamesPlugin.PLUGIN_CONTAINER)), survivalGame);
+        super(
+                Cause.of(
+                        NamedCause.of(
+                                "Survival Game Interval Event",
+                                SurvivalGamesPlugin.PLUGIN_CONTAINER)),
+                survivalGame);
         this.intervalName = checkNotNull(intervalName, "intervalName");
     }
 

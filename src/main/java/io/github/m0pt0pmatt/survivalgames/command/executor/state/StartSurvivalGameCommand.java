@@ -28,7 +28,6 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameStateManager;
-
 import java.util.Collections;
 
 public class StartSurvivalGameCommand extends AbstractStateCommand {
@@ -40,8 +39,7 @@ public class StartSurvivalGameCommand extends AbstractStateCommand {
                 RootCommand.getInstance(),
                 "start",
                 Collections.singleton(SurvivalGameState.JOINABLE),
-                SurvivalGameStateManager::start
-        );
+                SurvivalGameStateManager::start);
     }
 
     public static SurvivalGamesCommand getInstance() {

@@ -27,10 +27,9 @@ package io.github.m0pt0pmatt.survivalgames.event;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
-
-import javax.annotation.Nonnull;
 
 public abstract class SurvivalGameEvent extends AbstractEvent {
 

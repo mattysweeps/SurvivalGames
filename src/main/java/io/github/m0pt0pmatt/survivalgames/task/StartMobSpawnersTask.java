@@ -39,17 +39,18 @@ public class StartMobSpawnersTask implements Task {
 
     private static final Task INSTANCE = new StartMobSpawnersTask();
 
-    private StartMobSpawnersTask() {
-
-    }
+    private StartMobSpawnersTask() {}
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        String worldName =
+                getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
-        for (MobSpawnArea mobSpawnArea: survivalGame.getConfig().getMobSpawnAreas()) {
-            survivalGame.getActiveMobSpawners().add(ActiveMobSpawnRepository.start(survivalGame, mobSpawnArea, world));
+        for (MobSpawnArea mobSpawnArea : survivalGame.getConfig().getMobSpawnAreas()) {
+            survivalGame
+                    .getActiveMobSpawners()
+                    .add(ActiveMobSpawnRepository.start(survivalGame, mobSpawnArea, world));
         }
     }
 

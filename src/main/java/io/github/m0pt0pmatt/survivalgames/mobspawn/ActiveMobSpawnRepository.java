@@ -27,26 +27,23 @@ package io.github.m0pt0pmatt.survivalgames.mobspawn;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import org.spongepowered.api.scheduler.SpongeExecutorService;
-import org.spongepowered.api.world.World;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import org.spongepowered.api.scheduler.SpongeExecutorService;
+import org.spongepowered.api.world.World;
 
 public final class ActiveMobSpawnRepository {
 
-    private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP =
+            new ConcurrentHashMap<>();
 
-    private ActiveMobSpawnRepository() {
-
-    }
+    private ActiveMobSpawnRepository() {}
 
     public static UUID start(SurvivalGame survivalGame, MobSpawnArea mobSpawnArea, World world) {
-        int millisecondsPerSpawn = mobSpawnArea.getSpawnRatePerMinute()
-                .map(integer -> 1000 * 60 / integer)
-                .orElse(0);
+        int millisecondsPerSpawn =
+                mobSpawnArea.getSpawnRatePerMinute().map(integer -> 1000 * 60 / integer).orElse(0);
 
         SpongeExecutorService.SpongeFuture future =
                 SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(

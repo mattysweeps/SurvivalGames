@@ -37,10 +37,9 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.state.ReadySurvivalGa
 import io.github.m0pt0pmatt.survivalgames.command.executor.state.StartSurvivalGameCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.state.StopSurvivalGameCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.unset.UnsetCommand;
-import org.spongepowered.api.command.CommandCallable;
-
 import java.util.List;
 import java.util.Map;
+import org.spongepowered.api.command.CommandCallable;
 
 public class RootCommand extends ParentCommand {
 

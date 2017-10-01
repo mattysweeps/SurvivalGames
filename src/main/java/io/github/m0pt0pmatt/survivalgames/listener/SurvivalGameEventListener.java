@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.listener;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.event.PlayerEvent;
 import io.github.m0pt0pmatt.survivalgames.event.SurvivalGameEvent;
+import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockTypes;
@@ -37,35 +38,44 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.BlockChangeFlag;
 
-import java.util.concurrent.TimeUnit;
-
 public class SurvivalGameEventListener {
 
     private static SurvivalGameEventListener INSTANCE = new SurvivalGameEventListener();
     private static final String COMMAND_BLOCK_STRING = "/ssg event ";
 
-    private SurvivalGameEventListener() {
-
-    }
+    private SurvivalGameEventListener() {}
 
     @Listener
     public void fireCommandBlocks(SurvivalGameEvent event) {
         String eventName = event.getClass().getSimpleName();
 
-        for(CommandBlock commandBlock: event.getSurvivalGame().getCommandBlocks()) {
+        for (CommandBlock commandBlock : event.getSurvivalGame().getCommandBlocks()) {
 
             Value<String> storedCommand = commandBlock.storedCommand();
             if (storedCommand.exists()) {
                 if (storedCommand.get().startsWith(COMMAND_BLOCK_STRING)) {
 
-                    String commandBlockCommandName = storedCommand.get().substring(COMMAND_BLOCK_STRING.length());
+                    String commandBlockCommandName =
+                            storedCommand.get().substring(COMMAND_BLOCK_STRING.length());
 
                     if (eventName.equalsIgnoreCase(commandBlockCommandName)) {
 
                         if (event instanceof PlayerEvent) {
                             String originalCommand = storedCommand.get();
-                            String restOfCommand = storedCommand.get().substring(COMMAND_BLOCK_STRING.length() + commandBlockCommandName.length() + 1);
-                            String newCommand = COMMAND_BLOCK_STRING + commandBlockCommandName + " " + ((PlayerEvent) event).getPlayer().getName() + " " + restOfCommand;
+                            String restOfCommand =
+                                    storedCommand
+                                            .get()
+                                            .substring(
+                                                    COMMAND_BLOCK_STRING.length()
+                                                            + commandBlockCommandName.length()
+                                                            + 1);
+                            String newCommand =
+                                    COMMAND_BLOCK_STRING
+                                            + commandBlockCommandName
+                                            + " "
+                                            + ((PlayerEvent) event).getPlayer().getName()
+                                            + " "
+                                            + restOfCommand;
                             storedCommand.set(newCommand);
                             commandBlock.execute();
                             storedCommand.set(originalCommand);
@@ -73,11 +83,23 @@ public class SurvivalGameEventListener {
                             commandBlock.execute();
                         }
 
-                        BlockSnapshot snapshot = commandBlock.getBlock().snapshotFor(commandBlock.getLocation());
-                        commandBlock.getLocation().setBlock(BlockState.builder().blockType(BlockTypes.REDSTONE_TORCH).build(),
-                                Cause.of(NamedCause.of("Survival Games Event Command", SurvivalGamesPlugin.PLUGIN_CONTAINER)));
+                        BlockSnapshot snapshot =
+                                commandBlock.getBlock().snapshotFor(commandBlock.getLocation());
+                        commandBlock
+                                .getLocation()
+                                .setBlock(
+                                        BlockState.builder()
+                                                .blockType(BlockTypes.REDSTONE_TORCH)
+                                                .build(),
+                                        Cause.of(
+                                                NamedCause.of(
+                                                        "Survival Games Event Command",
+                                                        SurvivalGamesPlugin.PLUGIN_CONTAINER)));
 
-                        SurvivalGamesPlugin.EXECUTOR.schedule(() -> snapshot.restore(true, BlockChangeFlag.ALL), 5, TimeUnit.SECONDS);
+                        SurvivalGamesPlugin.EXECUTOR.schedule(
+                                () -> snapshot.restore(true, BlockChangeFlag.ALL),
+                                5,
+                                TimeUnit.SECONDS);
                     }
                 }
             }

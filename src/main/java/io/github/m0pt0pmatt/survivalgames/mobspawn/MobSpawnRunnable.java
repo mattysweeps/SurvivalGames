@@ -30,14 +30,13 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.event.MobSpawnedEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.Optional;
+import java.util.Random;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-
-import java.util.Optional;
-import java.util.Random;
 
 class MobSpawnRunnable implements Runnable {
 
@@ -64,11 +63,11 @@ class MobSpawnRunnable implements Runnable {
             double yDiff = greaterBoundary.get().getY() - lesserBoundary.get().getY();
             double zDiff = greaterBoundary.get().getZ() - lesserBoundary.get().getZ();
 
-            Location<World> location = world.getLocation(
-                    lesserBoundary.get().getX() + random.nextInt((int) xDiff),
-                    lesserBoundary.get().getY() + random.nextInt((int) yDiff),
-                    lesserBoundary.get().getZ() + random.nextInt((int) zDiff)
-            );
+            Location<World> location =
+                    world.getLocation(
+                            lesserBoundary.get().getX() + random.nextInt((int) xDiff),
+                            lesserBoundary.get().getY() + random.nextInt((int) yDiff),
+                            lesserBoundary.get().getZ() + random.nextInt((int) zDiff));
 
             Entity entity = world.createEntity(entityType.get(), location.getPosition());
 

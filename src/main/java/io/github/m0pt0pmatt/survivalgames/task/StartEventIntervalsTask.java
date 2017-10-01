@@ -26,23 +26,25 @@ package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.interval.ActiveIntervalRepository;
-import org.spongepowered.api.util.TextMessageException;
-
 import java.util.Map;
+import org.spongepowered.api.util.TextMessageException;
 
 /** Starts the event intervals, which will continuously fire events. */
 public class StartEventIntervalsTask implements Task {
 
     private static final Task INSTANCE = new StartEventIntervalsTask();
 
-    private StartEventIntervalsTask() {
-
-    }
+    private StartEventIntervalsTask() {}
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        for (Map.Entry<String, Integer> entry: survivalGame.getConfig().getEventIntervals().entrySet()) {
-            survivalGame.getActiveEventIntervals().add(ActiveIntervalRepository.start(survivalGame, entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, Integer> entry :
+                survivalGame.getConfig().getEventIntervals().entrySet()) {
+            survivalGame
+                    .getActiveEventIntervals()
+                    .add(
+                            ActiveIntervalRepository.start(
+                                    survivalGame, entry.getKey(), entry.getValue()));
         }
     }
 

@@ -49,14 +49,14 @@ public class CreateScoreboardTask extends PlayerTask {
 
     @Override
     public void before(SurvivalGame survivalGame) {
-        scoreboard = Scoreboard.builder()
-                .build();
+        scoreboard = Scoreboard.builder().build();
 
-        objective = Objective.builder()
-                .criterion(Criteria.DUMMY)
-                .name("ssg-" + survivalGame.getName())
-                .displayName(Text.of("Remaining Players"))
-                .build();
+        objective =
+                Objective.builder()
+                        .criterion(Criteria.DUMMY)
+                        .name("ssg-" + survivalGame.getName())
+                        .displayName(Text.of("Remaining Players"))
+                        .build();
 
         scoreboard.addObjective(objective);
         scoreboard.updateDisplaySlot(objective, DisplaySlots.SIDEBAR);
@@ -64,7 +64,13 @@ public class CreateScoreboardTask extends PlayerTask {
 
     @Override
     public void after(SurvivalGame survivalGame) {
-        survivalGame.getPlayerUUIDs().forEach(id -> Sponge.getServer().getPlayer(id).ifPresent(player -> player.setScoreboard(scoreboard)));
+        survivalGame
+                .getPlayerUUIDs()
+                .forEach(
+                        id ->
+                                Sponge.getServer()
+                                        .getPlayer(id)
+                                        .ifPresent(player -> player.setScoreboard(scoreboard)));
     }
 
     public static PlayerTask getInstance() {

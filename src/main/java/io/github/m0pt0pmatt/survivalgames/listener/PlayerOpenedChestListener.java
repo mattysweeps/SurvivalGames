@@ -34,17 +34,22 @@ public class PlayerOpenedChestListener {
 
     private static final PlayerOpenedChestListener INSTANCE = new PlayerOpenedChestListener();
 
-    private PlayerOpenedChestListener() {
-
-    }
+    private PlayerOpenedChestListener() {}
 
     @Listener
     public void onPlayerOpenChest(PlayerOpenedChestEvent event) {
         Player player = event.getPlayer();
-        SurvivalGameRepository.values().stream()
-                .filter(survivalGame -> survivalGame.getPlayerUUIDs().contains(player.getUniqueId()))
-                .forEach(survivalGame -> Sponge.getEventManager()
-                        .post(new PlayerOpenedChestEvent(event.getCause(), survivalGame, player)));
+        SurvivalGameRepository.values()
+                .stream()
+                .filter(
+                        survivalGame ->
+                                survivalGame.getPlayerUUIDs().contains(player.getUniqueId()))
+                .forEach(
+                        survivalGame ->
+                                Sponge.getEventManager()
+                                        .post(
+                                                new PlayerOpenedChestEvent(
+                                                        event.getCause(), survivalGame, player)));
     }
 
     public static PlayerOpenedChestListener getInstance() {

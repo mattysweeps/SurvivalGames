@@ -27,6 +27,8 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
+import java.util.Optional;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -35,11 +37,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-
-import java.util.Collections;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
 
 class EventCommand extends LeafCommand {
 
@@ -54,14 +51,17 @@ class EventCommand extends LeafCommand {
                         GenericArguments.firstParsing(
                                 GenericArguments.seq(
                                         GenericArguments.string(CommandKeys.EVENT_EXECUTOR),
-                                        GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))),
-                                GenericArguments.optional(GenericArguments.string(CommandKeys.EVENT_COMMAND))
-                        )));
+                                        GenericArguments.optional(
+                                                GenericArguments.string(
+                                                        CommandKeys.EVENT_COMMAND))),
+                                GenericArguments.optional(
+                                        GenericArguments.string(CommandKeys.EVENT_COMMAND)))));
     }
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         CommandSource executor = src;
         if (args.hasAny(CommandKeys.EVENT_EXECUTOR)) {

@@ -26,11 +26,10 @@ package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.Optional;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
-
-import java.util.Optional;
 
 /** Despawn players to the exist location. */
 public class DespawnPlayersTask extends PlayerTask {
@@ -42,7 +41,8 @@ public class DespawnPlayersTask extends PlayerTask {
         Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
         Optional<Vector3d> exitVector = survivalGame.getConfig().getExitVector();
         if (exitWorldName.isPresent() && exitVector.isPresent()) {
-            Sponge.getServer().getWorld(exitWorldName.get())
+            Sponge.getServer()
+                    .getWorld(exitWorldName.get())
                     .ifPresent(world -> player.setLocation(world.getLocation(exitVector.get())));
         }
     }

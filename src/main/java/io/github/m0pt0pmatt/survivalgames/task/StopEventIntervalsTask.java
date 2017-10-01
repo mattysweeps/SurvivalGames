@@ -33,9 +33,7 @@ public class StopEventIntervalsTask implements Task {
 
     private static final Task INSTANCE = new StopEventIntervalsTask();
 
-    private StopEventIntervalsTask() {
-
-    }
+    private StopEventIntervalsTask() {}
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {

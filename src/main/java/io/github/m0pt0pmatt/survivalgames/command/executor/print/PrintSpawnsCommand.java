@@ -27,11 +27,10 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.spongepowered.api.text.Text;
 
 class PrintSpawnsCommand extends AbstractPrintCommand {
 
@@ -42,12 +41,17 @@ class PrintSpawnsCommand extends AbstractPrintCommand {
                 "spawns",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Optional.of(Text.joinWith(Text.of('\n'),
-                        survivalGame.getConfig().getSpawnPoints().stream()
-                                .map(Vector3d::toString)
-                                .map(Text::of)
-                                .collect(Collectors.toList())))
-        );
+                survivalGame ->
+                        Optional.of(
+                                Text.joinWith(
+                                        Text.of('\n'),
+                                        survivalGame
+                                                .getConfig()
+                                                .getSpawnPoints()
+                                                .stream()
+                                                .map(Vector3d::toString)
+                                                .map(Text::of)
+                                                .collect(Collectors.toList()))));
     }
 
     static SurvivalGamesCommand getInstance() {

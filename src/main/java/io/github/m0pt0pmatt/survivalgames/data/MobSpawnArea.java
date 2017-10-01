@@ -24,12 +24,11 @@
  */
 package io.github.m0pt0pmatt.survivalgames.data;
 
+import java.util.Optional;
+import java.util.UUID;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.entity.EntityType;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @ConfigSerializable
 public class MobSpawnArea extends Area {

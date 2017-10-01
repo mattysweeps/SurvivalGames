@@ -25,11 +25,10 @@
 package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.spongepowered.api.text.Text;
 
 class PrintEventIntervalsCommand extends AbstractPrintCommand {
 
@@ -40,10 +39,17 @@ class PrintEventIntervalsCommand extends AbstractPrintCommand {
                 "event-intervals",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Optional.of(Text.joinWith(Text.of('\n'),
-                        survivalGame.getConfig().getEventIntervals().entrySet().stream()
-                                .map(e -> Text.of(e.getKey(), " -> ", e.getValue()))
-                                .collect(Collectors.toList()))));
+                survivalGame ->
+                        Optional.of(
+                                Text.joinWith(
+                                        Text.of('\n'),
+                                        survivalGame
+                                                .getConfig()
+                                                .getEventIntervals()
+                                                .entrySet()
+                                                .stream()
+                                                .map(e -> Text.of(e.getKey(), " -> ", e.getValue()))
+                                                .collect(Collectors.toList()))));
     }
 
     static PrintEventIntervalsCommand getInstance() {

@@ -35,15 +35,13 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameStateManager;
+import java.util.Collections;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.text.Text;
-
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 public class DeathMatchSurvivalGameCommand extends BaseCommand {
 
@@ -59,12 +57,14 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
         if (survivalGame.getState() != SurvivalGameState.RUNNING) {
-            throw new CommandException(Text.of("Must be in the " + SurvivalGameState.RUNNING + " states."));
+            throw new CommandException(
+                    Text.of("Must be in the " + SurvivalGameState.RUNNING + " states."));
         }
 
         SurvivalGameStateManager.deathMatch(survivalGame);

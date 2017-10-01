@@ -46,7 +46,7 @@ public class CreateDeathmatchBorderTask implements Task {
         Integer xMax = null;
         Integer zMin = null;
         Integer zMax = null;
-        for (Vector3d spawn: survivalGame.getConfig().getSpawnPoints()) {
+        for (Vector3d spawn : survivalGame.getConfig().getSpawnPoints()) {
             if (xMin == null) {
                 xMin = spawn.getFloorX();
             } else {
@@ -70,7 +70,8 @@ public class CreateDeathmatchBorderTask implements Task {
         }
 
         if (xMin != null) {
-            String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+            String worldName =
+                    getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
             World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
             WorldBorder worldBorder = world.getWorldBorder();
             double diameter = Double.max(abs(xMax - xMin), abs(zMax - zMin));

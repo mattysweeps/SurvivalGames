@@ -26,12 +26,11 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.spongepowered.api.command.CommandCallable;
-import org.spongepowered.api.command.args.CommandElement;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.args.CommandElement;
 
 public abstract class BaseCommand implements SurvivalGamesCommand {
 
@@ -41,9 +40,7 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     private final SurvivalGamesCommand parentCommand;
 
     protected BaseCommand(
-            String name,
-            CommandElement arguments,
-            Map<List<String>, CommandCallable> children) {
+            String name, CommandElement arguments, Map<List<String>, CommandCallable> children) {
         this(null, name, arguments, children);
     }
 
@@ -56,11 +53,12 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
         this.aliases = Collections.singletonList(checkNotNull(name, "name"));
         this.arguments = checkNotNull(arguments, "arguments");
         this.children = checkNotNull(children, "children");
-        children.forEach((aliasList, element) -> {
-            checkNotNull(aliasList, "aliasList");
-            checkNotNull(element, "childCommand");
-            aliasList.forEach(alias -> checkNotNull(alias, "alias"));
-        });
+        children.forEach(
+                (aliasList, element) -> {
+                    checkNotNull(aliasList, "aliasList");
+                    checkNotNull(element, "childCommand");
+                    aliasList.forEach(alias -> checkNotNull(alias, "alias"));
+                });
     }
 
     @Override

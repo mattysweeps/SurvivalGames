@@ -37,8 +37,11 @@ public class GameStateChangedEvent extends SurvivalGameEvent {
     private final SurvivalGameState oldState;
     private final SurvivalGameState newState;
 
-    public GameStateChangedEvent(SurvivalGame survivalGame, SurvivalGameState oldState, SurvivalGameState newState) {
-        super(Cause.of(NamedCause.of("Survival Game State Changed", SurvivalGamesPlugin.PLUGIN)), survivalGame);
+    public GameStateChangedEvent(
+            SurvivalGame survivalGame, SurvivalGameState oldState, SurvivalGameState newState) {
+        super(
+                Cause.of(NamedCause.of("Survival Game State Changed", SurvivalGamesPlugin.PLUGIN)),
+                survivalGame);
         this.oldState = checkNotNull(oldState, "oldState");
         this.newState = checkNotNull(newState, "newState");
     }

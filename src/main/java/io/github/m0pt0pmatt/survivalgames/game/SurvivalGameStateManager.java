@@ -27,71 +27,73 @@ package io.github.m0pt0pmatt.survivalgames.game;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.event.GameStateChangedEvent;
 import io.github.m0pt0pmatt.survivalgames.task.ClearPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.StartMobSpawnersTask;
-import io.github.m0pt0pmatt.survivalgames.task.StopEventIntervalsTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.ClearScoreBoardTask;
 import io.github.m0pt0pmatt.survivalgames.task.ClearWorldBorderTask;
 import io.github.m0pt0pmatt.survivalgames.task.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.CreateCountdownTask;
 import io.github.m0pt0pmatt.survivalgames.task.CreateDeathmatchBorderTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.CreateScoreboardTask;
 import io.github.m0pt0pmatt.survivalgames.task.CreateWorldBorderTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.DespawnPlayersTask;
 import io.github.m0pt0pmatt.survivalgames.task.FillChestsTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
 import io.github.m0pt0pmatt.survivalgames.task.SetBlocksTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.SpawnPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.SpawnSpectatorsTask;
 import io.github.m0pt0pmatt.survivalgames.task.StartEventIntervalsTask;
+import io.github.m0pt0pmatt.survivalgames.task.StartMobSpawnersTask;
+import io.github.m0pt0pmatt.survivalgames.task.StopEventIntervalsTask;
 import io.github.m0pt0pmatt.survivalgames.task.StopMobSpawnersTask;
 import io.github.m0pt0pmatt.survivalgames.task.Task;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.util.TextMessageException;
-
+import io.github.m0pt0pmatt.survivalgames.task.player.ClearScoreBoardTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.CreateCountdownTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.CreateScoreboardTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.DespawnPlayersTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.SpawnPlayersTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.SpawnSpectatorsTask;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.util.TextMessageException;
 
 /**
- * Manages the transitions between states for Survival Games.
- * Contains the knowledge of what tasks to run for what state transitions.
+ * Manages the transitions between states for Survival Games. Contains the knowledge of what tasks
+ * to run for what state transitions.
  */
 public class SurvivalGameStateManager {
 
-    private static final List<Task> READY_TASKS = Collections.singletonList(SetBlocksTask.getInstance());
+    private static final List<Task> READY_TASKS =
+            Collections.singletonList(SetBlocksTask.getInstance());
 
-    private static final List<Task> START_TASKS = Arrays.asList(
-            FillChestsTask.getInstance(),
-            CreateCageSnapshotsTask.getInstance(),
-            SpawnPlayersTask.getInstance(),
-            HealPlayersTask.getInstance(),
-            SpawnSpectatorsTask.getInstance(),
-            survivalGame -> {
-                CreateCountdownTask.getInstance().execute(survivalGame, survivalGame.getPlayerUUIDs());
-                CreateCountdownTask.getInstance().execute(survivalGame, survivalGame.getSpectatorUUIDs());
-            },
-            CreateScoreboardTask.getInstance(),
-            CreateWorldBorderTask.getInstance(),
-            StartEventIntervalsTask.getInstance(),
-            StartMobSpawnersTask.getInstance()
-    );
+    private static final List<Task> START_TASKS =
+            Arrays.asList(
+                    FillChestsTask.getInstance(),
+                    CreateCageSnapshotsTask.getInstance(),
+                    SpawnPlayersTask.getInstance(),
+                    HealPlayersTask.getInstance(),
+                    SpawnSpectatorsTask.getInstance(),
+                    survivalGame -> {
+                        CreateCountdownTask.getInstance()
+                                .execute(survivalGame, survivalGame.getPlayerUUIDs());
+                        CreateCountdownTask.getInstance()
+                                .execute(survivalGame, survivalGame.getSpectatorUUIDs());
+                    },
+                    CreateScoreboardTask.getInstance(),
+                    CreateWorldBorderTask.getInstance(),
+                    StartEventIntervalsTask.getInstance(),
+                    StartMobSpawnersTask.getInstance());
 
-    private static final List<Task> DEATH_MATCH_TASKS = Arrays.asList(
-            CreateCageSnapshotsTask.getInstance(),
-            SpawnPlayersTask.getInstance(),
-            CreateCountdownTask.getInstance(),
-            CreateDeathmatchBorderTask.getInstance()
-    );
+    private static final List<Task> DEATH_MATCH_TASKS =
+            Arrays.asList(
+                    CreateCageSnapshotsTask.getInstance(),
+                    SpawnPlayersTask.getInstance(),
+                    CreateCountdownTask.getInstance(),
+                    CreateDeathmatchBorderTask.getInstance());
 
-    private static final List<Task> STOP_TASKS = Arrays.asList(
-            DespawnPlayersTask.getInstance(),
-            HealPlayersTask.getInstance(),
-            ClearScoreBoardTask.getInstance(),
-            ClearWorldBorderTask.getInstance(),
-            ClearPlayersTask.getInstance(),
-            StopMobSpawnersTask.getInstance(),
-            StopEventIntervalsTask.getInstance()
-    );
+    private static final List<Task> STOP_TASKS =
+            Arrays.asList(
+                    DespawnPlayersTask.getInstance(),
+                    HealPlayersTask.getInstance(),
+                    ClearScoreBoardTask.getInstance(),
+                    ClearWorldBorderTask.getInstance(),
+                    ClearPlayersTask.getInstance(),
+                    StopMobSpawnersTask.getInstance(),
+                    StopEventIntervalsTask.getInstance());
 
     public static void ready(SurvivalGame survivalGame) {
         if (!survivalGame.areBlocksValid()) {
@@ -103,7 +105,10 @@ public class SurvivalGameStateManager {
             executeTasks(READY_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.JOINABLE;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
-            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.JOINABLE));
+            Sponge.getEventManager()
+                    .post(
+                            new GameStateChangedEvent(
+                                    survivalGame, oldState, SurvivalGameState.JOINABLE));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -116,7 +121,10 @@ public class SurvivalGameStateManager {
             executeTasks(START_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.RUNNING;
             survivalGame.runningState = SurvivalGameRunningState.IN_PROGRESS;
-            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.RUNNING));
+            Sponge.getEventManager()
+                    .post(
+                            new GameStateChangedEvent(
+                                    survivalGame, oldState, SurvivalGameState.RUNNING));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -138,7 +146,10 @@ public class SurvivalGameStateManager {
             executeTasks(STOP_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.STOPPED;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
-            Sponge.getEventManager().post(new GameStateChangedEvent(survivalGame, oldState, SurvivalGameState.STOPPED));
+            Sponge.getEventManager()
+                    .post(
+                            new GameStateChangedEvent(
+                                    survivalGame, oldState, SurvivalGameState.STOPPED));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -150,19 +161,23 @@ public class SurvivalGameStateManager {
             throw new IllegalArgumentException("No spawn points set.");
         }
 
-        String worldName = config.getWorldName()
-                .orElseThrow(() -> new IllegalArgumentException("World name is not set."));
+        String worldName =
+                config.getWorldName()
+                        .orElseThrow(() -> new IllegalArgumentException("World name is not set."));
 
         if (!Sponge.getServer().getWorld(worldName).isPresent()) {
             throw new IllegalArgumentException("World " + worldName + " does not exist.");
         }
 
-        if (!config.getBlockArea().getLesserBoundary().isPresent() || !config.getBlockArea().getGreaterBoundary().isPresent()) {
+        if (!config.getBlockArea().getLesserBoundary().isPresent()
+                || !config.getBlockArea().getGreaterBoundary().isPresent()) {
             throw new IllegalArgumentException("Boundaries are not set.");
         }
 
-        String exitWorldName = config.getExitWorldName()
-                .orElseThrow(() -> new IllegalArgumentException("Exit world name is not set."));
+        String exitWorldName =
+                config.getExitWorldName()
+                        .orElseThrow(
+                                () -> new IllegalArgumentException("Exit world name is not set."));
 
         if (!Sponge.getServer().getWorld(exitWorldName).isPresent()) {
             throw new IllegalArgumentException("Exit world " + worldName + " does not exist.");
@@ -193,10 +208,10 @@ public class SurvivalGameStateManager {
         }
     }
 
-    private static void executeTasks(List<Task> tasks, SurvivalGame survivalGame) throws TextMessageException {
+    private static void executeTasks(List<Task> tasks, SurvivalGame survivalGame)
+            throws TextMessageException {
         for (Task task : tasks) {
             task.execute(survivalGame);
         }
     }
-
 }

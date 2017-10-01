@@ -27,6 +27,8 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
+import java.lang.reflect.InvocationTargetException;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -36,11 +38,6 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.World;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 class TeleportCommand extends LeafCommand {
 
@@ -52,7 +49,8 @@ class TeleportCommand extends LeafCommand {
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
         Object worldInfo = getOrThrow(args, CommandKeys.WORLD);
 
         String worldName;
@@ -64,7 +62,7 @@ class TeleportCommand extends LeafCommand {
 
         if (src instanceof Player) {
             World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
-            ((Player)src).setLocation(world.getSpawnLocation());
+            ((Player) src).setLocation(world.getSpawnLocation());
         }
         return CommandResult.success();
     }

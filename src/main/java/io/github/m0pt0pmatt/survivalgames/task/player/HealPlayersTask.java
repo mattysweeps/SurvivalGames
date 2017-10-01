@@ -37,8 +37,13 @@ public class HealPlayersTask extends PlayerTask {
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        survivalGame.getPlayerUUIDs().forEach(playerId ->
-                Sponge.getServer().getPlayer(playerId).ifPresent(HealPlayersTask::healPlayer));
+        survivalGame
+                .getPlayerUUIDs()
+                .forEach(
+                        playerId ->
+                                Sponge.getServer()
+                                        .getPlayer(playerId)
+                                        .ifPresent(HealPlayersTask::healPlayer));
     }
 
     private static void healPlayer(Player player) {

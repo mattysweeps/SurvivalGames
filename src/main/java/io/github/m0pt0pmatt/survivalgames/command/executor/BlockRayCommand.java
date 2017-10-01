@@ -32,8 +32,9 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -46,11 +47,6 @@ import org.spongepowered.api.util.blockray.BlockRay;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import java.util.Collections;
-import java.util.function.BiConsumer;
-
-import javax.annotation.Nonnull;
-
 public abstract class BlockRayCommand extends LeafCommand {
 
     private final BiConsumer<SurvivalGame, Location<World>> setter;
@@ -61,9 +57,12 @@ public abstract class BlockRayCommand extends LeafCommand {
             String name,
             BiConsumer<SurvivalGame, Location<World>> setter,
             Text message) {
-        super(parentCommand, name, GenericArguments.seq(
-                SurvivalGameCommandElement.getInstance(),
-                GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))));
+        super(
+                parentCommand,
+                name,
+                GenericArguments.seq(
+                        SurvivalGameCommandElement.getInstance(),
+                        GenericArguments.optional(GenericArguments.vector3d(CommandKeys.VECTOR))));
         this.setter = checkNotNull(setter, "setter");
         this.message = checkNotNull(message, "message");
     }
@@ -71,14 +70,16 @@ public abstract class BlockRayCommand extends LeafCommand {
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
 
         Location<World> location;
 
         if (args.hasAny(CommandKeys.VECTOR)) {
-            String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+            String worldName =
+                    getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
             World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
             location = world.getLocation((Vector3d) getOrThrow(args, CommandKeys.VECTOR));
         } else {
@@ -101,9 +102,10 @@ public abstract class BlockRayCommand extends LeafCommand {
             throw new CommandException(Text.of("Only players can execute this command"));
         }
 
-        BlockRay<World> blockRay = BlockRay.from((Entity) commandSource)
-                .stopFilter(BlockRay.continueAfterFilter(BlockRay.onlyAirFilter(), 1))
-                .build();
+        BlockRay<World> blockRay =
+                BlockRay.from((Entity) commandSource)
+                        .stopFilter(BlockRay.continueAfterFilter(BlockRay.onlyAirFilter(), 1))
+                        .build();
 
         return blockRay.end()
                 .orElseThrow(() -> new CommandException(Text.of("Block Ray Didn't Hit")))

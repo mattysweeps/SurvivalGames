@@ -25,11 +25,10 @@
 package io.github.m0pt0pmatt.survivalgames.data;
 
 import com.google.common.collect.Lists;
+import java.util.List;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-
-import java.util.List;
 
 @ConfigSerializable
 public class ItemConfig {

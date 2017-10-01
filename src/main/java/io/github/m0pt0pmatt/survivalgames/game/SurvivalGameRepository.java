@@ -34,9 +34,7 @@ public final class SurvivalGameRepository {
 
     private static final Map<String, SurvivalGame> MAP = new ConcurrentHashMap<>();
 
-    private SurvivalGameRepository() {
-
-    }
+    private SurvivalGameRepository() {}
 
     public static void put(String name, SurvivalGame survivalGame) {
         MAP.put(name, survivalGame);

@@ -43,19 +43,28 @@ public class CreateWorldBorderTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        String worldName =
+                getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
         WorldBorder worldBorder = world.getWorldBorder();
-        Vector3d center = getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
+        Vector3d center =
+                getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
 
         worldBorder.setCenter(center.getX(), center.getZ());
 
-        Vector3d lesserBoundaryVector = getOrThrow(survivalGame.getConfig().getBlockArea().getLesserBoundary(), CommandKeys.LESSER_BOUNDARY);
-        Vector3d greaterBoundaryVector = getOrThrow(survivalGame.getConfig().getBlockArea().getGreaterBoundary(), CommandKeys.GREATER_BOUNDARY);
+        Vector3d lesserBoundaryVector =
+                getOrThrow(
+                        survivalGame.getConfig().getBlockArea().getLesserBoundary(),
+                        CommandKeys.LESSER_BOUNDARY);
+        Vector3d greaterBoundaryVector =
+                getOrThrow(
+                        survivalGame.getConfig().getBlockArea().getGreaterBoundary(),
+                        CommandKeys.GREATER_BOUNDARY);
 
-        double diameter = Double.max(
-                abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),
-                abs(greaterBoundaryVector.getZ() - lesserBoundaryVector.getZ()));
+        double diameter =
+                Double.max(
+                        abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),
+                        abs(greaterBoundaryVector.getZ() - lesserBoundaryVector.getZ()));
 
         double xMiddle = lesserBoundaryVector.getX() + (diameter / 2);
         double zMiddle = lesserBoundaryVector.getZ() + (diameter / 2);

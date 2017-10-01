@@ -29,7 +29,6 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameStateManager;
-
 import java.util.Collections;
 
 public class ReadySurvivalGameCommand extends AbstractStateCommand {
@@ -41,8 +40,7 @@ public class ReadySurvivalGameCommand extends AbstractStateCommand {
                 RootCommand.getInstance(),
                 "ready",
                 Collections.singleton(SurvivalGameState.STOPPED),
-                ReadySurvivalGameCommand::doWork
-        );
+                ReadySurvivalGameCommand::doWork);
     }
 
     private static void doWork(SurvivalGame survivalGame) {

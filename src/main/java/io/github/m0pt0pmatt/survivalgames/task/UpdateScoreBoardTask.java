@@ -39,7 +39,8 @@ public class UpdateScoreBoardTask implements Task {
     private Player deadPlayer;
     private Player killingPlayer;
 
-    public void update(SurvivalGame survivalGame, Player deadPlayer, Player killingPlayer) throws TextMessageException {
+    public void update(SurvivalGame survivalGame, Player deadPlayer, Player killingPlayer)
+            throws TextMessageException {
         this.deadPlayer = deadPlayer;
         this.killingPlayer = killingPlayer;
         execute(survivalGame);
@@ -47,13 +48,19 @@ public class UpdateScoreBoardTask implements Task {
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        deadPlayer.getScoreboard().getObjective(DisplaySlots.SIDEBAR).ifPresent(objective -> {
-            objective.removeScore(Text.of(deadPlayer.getName()));
-            if (killingPlayer != null) {
-                Score k = objective.getOrCreateScore(Text.of(killingPlayer.getName()));
-                k.setScore(k.getScore() + 1);
-            }
-        });
+        deadPlayer
+                .getScoreboard()
+                .getObjective(DisplaySlots.SIDEBAR)
+                .ifPresent(
+                        objective -> {
+                            objective.removeScore(Text.of(deadPlayer.getName()));
+                            if (killingPlayer != null) {
+                                Score k =
+                                        objective.getOrCreateScore(
+                                                Text.of(killingPlayer.getName()));
+                                k.setScore(k.getScore() + 1);
+                            }
+                        });
     }
 
     public static UpdateScoreBoardTask getInstance() {

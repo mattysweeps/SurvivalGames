@@ -28,13 +28,12 @@ import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.Random;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.carrier.Chest;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
-
-import java.util.Random;
 
 /** Fills chests with items. */
 public class FillChestsTask implements Task {
@@ -45,27 +44,51 @@ public class FillChestsTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
 
-        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+        String worldName =
+                getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD_NAME);
-        Integer chestMidpoint = getOrThrow(survivalGame.getConfig().getChestMidpoint(), CommandKeys.CHEST_MIDPOINT);
-        Integer chestRange = getOrThrow(survivalGame.getConfig().getChestRange(), CommandKeys.CHEST_RANGE);
+        Integer chestMidpoint =
+                getOrThrow(survivalGame.getConfig().getChestMidpoint(), CommandKeys.CHEST_MIDPOINT);
+        Integer chestRange =
+                getOrThrow(survivalGame.getConfig().getChestRange(), CommandKeys.CHEST_RANGE);
 
-        world.getTileEntities().forEach(tileEntity -> {
+        world.getTileEntities()
+                .forEach(
+                        tileEntity -> {
+                            if (tileEntity instanceof Chest) {
+                                Chest chest = (Chest) tileEntity;
+                                chest.getInventory().clear();
 
-            if (tileEntity instanceof Chest) {
-                Chest chest = (Chest) tileEntity;
-                chest.getInventory().clear();
+                                if (!survivalGame
+                                        .getConfig()
+                                        .getItemConfig()
+                                        .getItems()
+                                        .isEmpty()) {
 
-                if (!survivalGame.getConfig().getItemConfig().getItems().isEmpty()) {
-
-                    double itemCount = (chestMidpoint + ((RANDOM.nextDouble() * chestRange) * (RANDOM.nextDouble() > 0.5 ? 1 : -1)));
-                    for (int i = 0; i < itemCount; i++) {
-                        ItemStackSnapshot stackSnapshot = survivalGame.getConfig().getItemConfig().getItems().get(RANDOM.nextInt(survivalGame.getConfig().getItemConfig().getItems().size()));
-                        chest.getInventory().offer(stackSnapshot.createStack());
-                    }
-                }
-            }
-        });
+                                    double itemCount =
+                                            (chestMidpoint
+                                                    + ((RANDOM.nextDouble() * chestRange)
+                                                            * (RANDOM.nextDouble() > 0.5
+                                                                    ? 1
+                                                                    : -1)));
+                                    for (int i = 0; i < itemCount; i++) {
+                                        ItemStackSnapshot stackSnapshot =
+                                                survivalGame
+                                                        .getConfig()
+                                                        .getItemConfig()
+                                                        .getItems()
+                                                        .get(
+                                                                RANDOM.nextInt(
+                                                                        survivalGame
+                                                                                .getConfig()
+                                                                                .getItemConfig()
+                                                                                .getItems()
+                                                                                .size()));
+                                        chest.getInventory().offer(stackSnapshot.createStack());
+                                    }
+                                }
+                            }
+                        });
     }
 
     public static Task getInstance() {

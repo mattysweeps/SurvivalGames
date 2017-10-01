@@ -35,8 +35,7 @@ class UnsetCenterLocationCommand extends AbstractUnsetCommand {
         super(
                 "center-vector",
                 survivalGame -> survivalGame.getConfig().setCenterVector(null),
-                Text.of("Unset center vector")
-        );
+                Text.of("Unset center vector"));
     }
 
     static SurvivalGamesCommand getInstance() {

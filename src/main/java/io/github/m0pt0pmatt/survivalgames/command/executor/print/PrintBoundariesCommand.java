@@ -26,11 +26,10 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.spongepowered.api.text.Text;
 
 class PrintBoundariesCommand extends AbstractPrintCommand {
 
@@ -41,14 +40,17 @@ class PrintBoundariesCommand extends AbstractPrintCommand {
                 "boundaries",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Stream.of(
-                        survivalGame.getConfig().getBlockArea().getLesserBoundary(),
-                        survivalGame.getConfig().getBlockArea().getGreaterBoundary())
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .map(Text::of)
-                        .reduce((v1, v2) -> Text.of(v1, " ", v2))
-        );
+                survivalGame ->
+                        Stream.of(
+                                        survivalGame.getConfig().getBlockArea().getLesserBoundary(),
+                                        survivalGame
+                                                .getConfig()
+                                                .getBlockArea()
+                                                .getGreaterBoundary())
+                                .filter(Optional::isPresent)
+                                .map(Optional::get)
+                                .map(Text::of)
+                                .reduce((v1, v2) -> Text.of(v1, " ", v2)));
     }
 
     static SurvivalGamesCommand getInstance() {

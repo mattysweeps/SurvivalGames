@@ -26,28 +26,20 @@ package io.github.m0pt0pmatt.survivalgames.game;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
-import io.github.m0pt0pmatt.survivalgames.Util;
 import io.github.m0pt0pmatt.survivalgames.task.DelayedTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.CelebrateWinnerTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.DelayedPlayerTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.PlayerTask;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /** Checks for win conditions for a Survival Game */
 public class WinChecker {
 
     private static final long CELEBRATE_DELAY_SECONDS = 5;
 
-    private WinChecker() {
-
-    }
+    private WinChecker() {}
 
     public static void checkWin(SurvivalGame survivalGame) throws TextMessageException {
         if (survivalGame.getPlayerUUIDs().size() <= 1) {
@@ -60,7 +52,11 @@ public class WinChecker {
             }
 
             // Stop the game
-            DelayedTask.of(SurvivalGameStateManager::stop, CELEBRATE_DELAY_SECONDS, TimeUnit.SECONDS).execute(survivalGame);
+            DelayedTask.of(
+                            SurvivalGameStateManager::stop,
+                            CELEBRATE_DELAY_SECONDS,
+                            TimeUnit.SECONDS)
+                    .execute(survivalGame);
         }
     }
 }

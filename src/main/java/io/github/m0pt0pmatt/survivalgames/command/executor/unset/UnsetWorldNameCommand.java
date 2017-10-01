@@ -35,8 +35,7 @@ class UnsetWorldNameCommand extends AbstractUnsetCommand {
         super(
                 "world-name",
                 survivalGame -> survivalGame.getConfig().setWorldName(null),
-                Text.of("Unset world name")
-        );
+                Text.of("Unset world name"));
     }
 
     static SurvivalGamesCommand getInstance() {

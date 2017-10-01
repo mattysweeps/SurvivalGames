@@ -26,12 +26,11 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.text.Text;
 
 class PrintPlayersCommand extends AbstractPrintCommand {
 
@@ -42,12 +41,18 @@ class PrintPlayersCommand extends AbstractPrintCommand {
                 "players",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> Optional.of(Text.joinWith(Text.of('\n'), survivalGame.getPlayerUUIDs().stream()
-                        .map(id -> Sponge.getServer().getPlayer(id))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .map(Text::of).collect(Collectors.toList())))
-        );
+                survivalGame ->
+                        Optional.of(
+                                Text.joinWith(
+                                        Text.of('\n'),
+                                        survivalGame
+                                                .getPlayerUUIDs()
+                                                .stream()
+                                                .map(id -> Sponge.getServer().getPlayer(id))
+                                                .filter(Optional::isPresent)
+                                                .map(Optional::get)
+                                                .map(Text::of)
+                                                .collect(Collectors.toList()))));
     }
 
     static SurvivalGamesCommand getInstance() {

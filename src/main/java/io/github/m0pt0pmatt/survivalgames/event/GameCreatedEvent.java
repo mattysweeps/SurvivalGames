@@ -32,6 +32,8 @@ import org.spongepowered.api.event.cause.NamedCause;
 public class GameCreatedEvent extends SurvivalGameEvent {
 
     public GameCreatedEvent(SurvivalGame survivalGame) {
-        super(Cause.of(NamedCause.of("Survival Game Created", SurvivalGamesPlugin.PLUGIN)), survivalGame);
+        super(
+                Cause.of(NamedCause.of("Survival Game Created", SurvivalGamesPlugin.PLUGIN)),
+                survivalGame);
     }
 }

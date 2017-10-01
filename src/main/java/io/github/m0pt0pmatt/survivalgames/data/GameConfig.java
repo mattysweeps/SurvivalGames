@@ -28,19 +28,18 @@ package io.github.m0pt0pmatt.survivalgames.data;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 /**
- * Config for a Survival Game.
- * All configurable fields are stored in this class. Getters return Optionals.
+ * Config for a Survival Game. All configurable fields are stored in this class. Getters return
+ * Optionals.
  */
 @ConfigSerializable
 public class GameConfig {
@@ -49,6 +48,7 @@ public class GameConfig {
     private static final int DEFAULT_COUNTDOWN_SECONDS = 10;
 
     public static ObjectMapper<GameConfig> OBJECT_MAPPER;
+
     static {
         try {
             OBJECT_MAPPER = ObjectMapper.forClass(GameConfig.class);
@@ -60,13 +60,22 @@ public class GameConfig {
     @Setting(value = "spawn-points", comment = "Where players spawn when the game starts.")
     private List<Vector3d> spawnPoints;
 
-    @Setting(value = "world-name", comment = "The name of the world where the survival game will take place.")
+    @Setting(
+        value = "world-name",
+        comment = "The name of the world where the survival game will take place."
+    )
     private String worldName;
 
-    @Setting(value = "exit-world-name", comment = "The name of the world where players teleport to once they leave the game.")
+    @Setting(
+        value = "exit-world-name",
+        comment = "The name of the world where players teleport to once they leave the game."
+    )
     private String exitWorldName;
 
-    @Setting(value = "exit-vector", comment = "The location where players teleport to once they leave the game.")
+    @Setting(
+        value = "exit-vector",
+        comment = "The location where players teleport to once they leave the game."
+    )
     private Vector3d exitVector;
 
     @Setting(value = "center-vector", comment = "The center of the survival game map.")
@@ -75,7 +84,10 @@ public class GameConfig {
     @Setting(value = "player-limit", comment = "The max number of players which can join the game.")
     private Integer playerLimit;
 
-    @Setting(value = "countdown-seconds", comment = "The number of seconds to countdown once the survival game starts.")
+    @Setting(
+        value = "countdown-seconds",
+        comment = "The number of seconds to countdown once the survival game starts."
+    )
     private Integer countdownSeconds;
 
     @Setting(value = "chest-midpoint")

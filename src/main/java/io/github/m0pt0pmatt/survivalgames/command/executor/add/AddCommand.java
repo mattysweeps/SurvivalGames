@@ -30,9 +30,8 @@ import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.command.CommandCallable;
-
 import java.util.List;
+import org.spongepowered.api.command.CommandCallable;
 
 public class AddCommand extends ParentCommand {
 
@@ -50,8 +49,7 @@ public class AddCommand extends ParentCommand {
                         .put(toEntry(AddSpectatorCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
                         .put(toEntry(AddEventIntervalCommand.getInstance()))
-                        .build()
-        );
+                        .build());
     }
 
     public static SurvivalGamesCommand getInstance() {

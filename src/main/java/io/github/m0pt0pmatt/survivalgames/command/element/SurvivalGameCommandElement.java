@@ -28,17 +28,15 @@ import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandArgs;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.SelectorCommandElement;
 import org.spongepowered.api.text.selector.Selector;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
 
 public class SurvivalGameCommandElement extends SelectorCommandElement {
 
@@ -52,18 +50,20 @@ public class SurvivalGameCommandElement extends SelectorCommandElement {
     @Nonnull
     @Override
     protected Iterable<String> getChoices(@Nonnull CommandSource source) {
-        return SurvivalGameRepository.values().stream()
+        return SurvivalGameRepository.values()
+                .stream()
                 .map(SurvivalGame::getName)
                 .collect(Collectors.toList());
     }
 
     @Nonnull
     @Override
-    public List<String> complete(@Nonnull CommandSource src, CommandArgs args, CommandContext context) {
+    public List<String> complete(
+            @Nonnull CommandSource src, CommandArgs args, CommandContext context) {
         Object state = args.getState();
         final Optional<String> nextArg = args.nextIfPresent();
         args.setState(state);
-        List<String> choices = nextArg.isPresent() ? Selector.complete(nextArg.get()) : ImmutableList.of();
+        List<String> choices = nextArg.map(Selector::complete).orElseGet(ImmutableList::of);
 
         if (choices.isEmpty()) {
             choices = super.complete(src, args, context);

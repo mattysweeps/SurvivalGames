@@ -32,6 +32,9 @@ import io.github.m0pt0pmatt.survivalgames.command.element.ConfigFileCommandEleme
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
+import java.io.IOException;
+import java.nio.file.Path;
+import javax.annotation.Nonnull;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -44,12 +47,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 public class LoadConfigCommand extends LeafCommand {
 
@@ -66,7 +63,8 @@ public class LoadConfigCommand extends LeafCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         Path potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
         String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
@@ -89,7 +87,6 @@ public class LoadConfigCommand extends LeafCommand {
         } catch (IOException | ObjectMappingException | RuntimeException e) {
             e.printStackTrace();
             throw new CommandException(Text.of("An error occurred when loading"));
-
         }
 
         sendSuccess(src, "Survival Game Loaded", survivalGameName);

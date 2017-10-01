@@ -24,9 +24,8 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
-import org.spongepowered.api.command.args.CommandElement;
-
 import java.util.Collections;
+import org.spongepowered.api.command.args.CommandElement;
 
 public abstract class LeafCommand extends BaseCommand {
     protected LeafCommand(SurvivalGamesCommand parent, String name, CommandElement arguments) {

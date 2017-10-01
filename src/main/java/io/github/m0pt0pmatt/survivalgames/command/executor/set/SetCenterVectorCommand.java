@@ -36,9 +36,11 @@ class SetCenterVectorCommand extends BlockRayCommand {
         super(
                 SetCommand.getInstance(),
                 "center-vector",
-                (survivalGame, location) -> survivalGame.getConfig().setCenterVector(location.getBlockPosition().toDouble()),
-                Text.of("Set center vector")
-        );
+                (survivalGame, location) ->
+                        survivalGame
+                                .getConfig()
+                                .setCenterVector(location.getBlockPosition().toDouble()),
+                Text.of("Set center vector"));
     }
 
     static SurvivalGamesCommand getInstance() {

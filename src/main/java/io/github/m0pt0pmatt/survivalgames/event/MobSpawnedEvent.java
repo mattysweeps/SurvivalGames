@@ -37,7 +37,9 @@ public class MobSpawnedEvent extends SurvivalGameEvent {
     private final Entity entity;
 
     public MobSpawnedEvent(SurvivalGame survivalGame, Entity entity) {
-        super(Cause.of(NamedCause.of("Survival Game Spawned Entity", SurvivalGamesPlugin.PLUGIN)), survivalGame);
+        super(
+                Cause.of(NamedCause.of("Survival Game Spawned Entity", SurvivalGamesPlugin.PLUGIN)),
+                survivalGame);
         this.entity = checkNotNull(entity, "entity");
     }
 

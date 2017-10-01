@@ -27,27 +27,27 @@ package io.github.m0pt0pmatt.survivalgames.interval;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.event.IntervalEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.scheduler.SpongeExecutorService;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.scheduler.SpongeExecutorService;
 
 public final class ActiveIntervalRepository {
 
-    private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP =
+            new ConcurrentHashMap<>();
 
-    private ActiveIntervalRepository() {
-
-    }
+    private ActiveIntervalRepository() {}
 
     public static UUID start(SurvivalGame survivalGame, String intervalName, int intervalSeconds) {
 
         SpongeExecutorService.SpongeFuture future =
                 SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
-                        () -> Sponge.getEventManager().post(new IntervalEvent(survivalGame, intervalName)),
+                        () ->
+                                Sponge.getEventManager()
+                                        .post(new IntervalEvent(survivalGame, intervalName)),
                         0,
                         intervalSeconds,
                         TimeUnit.SECONDS);

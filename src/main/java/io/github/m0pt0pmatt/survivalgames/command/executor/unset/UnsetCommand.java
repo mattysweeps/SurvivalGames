@@ -30,9 +30,8 @@ import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.command.CommandCallable;
-
 import java.util.List;
+import org.spongepowered.api.command.CommandCallable;
 
 public class UnsetCommand extends ParentCommand {
 
@@ -50,8 +49,7 @@ public class UnsetCommand extends ParentCommand {
                         .put(toEntry(UnsetExitWorldNameCommand.getInstance()))
                         .put(toEntry(UnsetPlayerLimitCommand.getInstance()))
                         .put(toEntry(UnsetWorldNameCommand.getInstance()))
-                        .build()
-        );
+                        .build());
     }
 
     public static SurvivalGamesCommand getInstance() {

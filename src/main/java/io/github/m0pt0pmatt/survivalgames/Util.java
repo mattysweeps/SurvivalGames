@@ -25,6 +25,10 @@
 package io.github.m0pt0pmatt.survivalgames;
 
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
@@ -33,33 +37,27 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 /** Utility methods used across the plugin. */
 public final class Util {
 
-    private Util() {
-
-    }
+    private Util() {}
 
     /**
-     * Create a {@link Map.Entry} from a {@link SurvivalGamesCommand}, where the key is the {@link SurvivalGamesCommand}'s aliases.
-     * This is useful when adding child commands.
+     * Create a {@link Map.Entry} from a {@link SurvivalGamesCommand}, where the key is the {@link
+     * SurvivalGamesCommand}'s aliases. This is useful when adding child commands.
+     *
      * @param command The CommandCallable.
      * @return A single {@link Map.Entry}
      */
     public static Map.Entry<List<String>, ? extends CommandCallable> toEntry(
             SurvivalGamesCommand command) {
         return new AbstractMap.SimpleImmutableEntry<>(
-                command.getAliases(),
-                toCommandCallable(command));
+                command.getAliases(), toCommandCallable(command));
     }
 
     /**
      * Creates a {@link CommandCallable} from a {@link SurvivalGamesCommand}.
+     *
      * @param command the {@link SurvivalGamesCommand}.
      * @return a {@link CommandCallable}.
      */
@@ -81,6 +79,7 @@ public final class Util {
 
     /**
      * Throws a {@link CommandException} if a given {@link Optional} is empty.
+     *
      * @param optional The optional.
      * @param name A name to give the Optional in case it it empty.
      * @param <T> The type of the Optional.
@@ -88,12 +87,20 @@ public final class Util {
      * @throws CommandException If the Optional is empty.
      */
     public static <T> T getOrThrow(Optional<T> optional, Object name) throws CommandException {
-        return optional.orElseThrow(() -> new CommandException(
-                Text.of(TextColors.DARK_RED, "No value found", ": ", TextColors.BLUE, name)));
+        return optional.orElseThrow(
+                () ->
+                        new CommandException(
+                                Text.of(
+                                        TextColors.DARK_RED,
+                                        "No value found",
+                                        ": ",
+                                        TextColors.BLUE,
+                                        name)));
     }
 
     /**
      * Throws a {@link CommandException} if a given {@link Optional} is empty.
+     *
      * @param optional The optional.
      * @param name A name to give the Optional in case it it empty.
      * @param value A value to display.
@@ -101,25 +108,45 @@ public final class Util {
      * @return The value of the Optional.
      * @throws CommandException If the Optional is empty.
      */
-    public static <T> T getOrThrow(Optional<T> optional, Object name, Object value) throws CommandException {
-        return optional.orElseThrow(() -> new CommandException(
-                Text.of(TextColors.DARK_RED, "No ", TextColors.BLUE, name, ": ", TextColors.BLUE, value)));
+    public static <T> T getOrThrow(Optional<T> optional, Object name, Object value)
+            throws CommandException {
+        return optional.orElseThrow(
+                () ->
+                        new CommandException(
+                                Text.of(
+                                        TextColors.DARK_RED,
+                                        "No ",
+                                        TextColors.BLUE,
+                                        name,
+                                        ": ",
+                                        TextColors.BLUE,
+                                        value)));
     }
 
     /**
      * Throws a {@link CommandException} if a argument is missing.
+     *
      * @param args The command arguments.
      * @param key The key of the argument to return
      * @return The argument if it exists.
      * @throws CommandException If the argument doesn't exist.
      */
     public static Object getOrThrow(CommandContext args, Text key) throws CommandException {
-        return args.getOne(key).orElseThrow(() -> new CommandException(
-                Text.of(TextColors.DARK_RED, "Argument not found", ": ", TextColors.BLUE, key)));
+        return args.getOne(key)
+                .orElseThrow(
+                        () ->
+                                new CommandException(
+                                        Text.of(
+                                                TextColors.DARK_RED,
+                                                "Argument not found",
+                                                ": ",
+                                                TextColors.BLUE,
+                                                key)));
     }
 
     /**
      * Sends a success message.
+     *
      * @param source The source to send the message to.
      * @param message The message to send.
      */
@@ -129,6 +156,7 @@ public final class Util {
 
     /**
      * Sends a success message.
+     *
      * @param source The source to send the message to.
      * @param message The message to send.
      * @param object A value to be printed with the message.
@@ -139,6 +167,7 @@ public final class Util {
 
     /**
      * Sends an error message.
+     *
      * @param source The source to send the message to.
      * @param message The message to send.
      */
@@ -148,6 +177,7 @@ public final class Util {
 
     /**
      * Sends an error message.
+     *
      * @param source The source to send the message to.
      * @param message The message to send.
      * @param object A value to be printed with the message.

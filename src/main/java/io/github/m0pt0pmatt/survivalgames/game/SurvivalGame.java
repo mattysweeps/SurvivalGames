@@ -28,14 +28,13 @@ package io.github.m0pt0pmatt.survivalgames.game;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
-import org.spongepowered.api.block.BlockSnapshot;
-import org.spongepowered.api.block.tileentity.CommandBlock;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.block.tileentity.CommandBlock;
 
 /** Represents a Survival Game. */
 public class SurvivalGame {

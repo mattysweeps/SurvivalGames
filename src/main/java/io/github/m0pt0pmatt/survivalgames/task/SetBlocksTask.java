@@ -25,11 +25,10 @@
 package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.List;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.BlockChangeFlag;
-
-import java.util.List;
 
 /** Sets the blocks in the map */
 public class SetBlocksTask implements Task {

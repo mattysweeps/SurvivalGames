@@ -26,9 +26,8 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.text.Text;
-
 import java.util.Collections;
+import org.spongepowered.api.text.Text;
 
 class PrintExitWorldNameCommand extends AbstractPrintCommand {
 
@@ -39,8 +38,7 @@ class PrintExitWorldNameCommand extends AbstractPrintCommand {
                 "exit-world-name",
                 SurvivalGameCommandElement.getInstance(),
                 Collections.emptyMap(),
-                survivalGame -> survivalGame.getConfig().getExitWorldName().map(Text::of)
-        );
+                survivalGame -> survivalGame.getConfig().getExitWorldName().map(Text::of));
     }
 
     static SurvivalGamesCommand getInstance() {

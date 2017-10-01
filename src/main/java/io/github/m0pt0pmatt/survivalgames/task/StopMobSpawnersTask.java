@@ -33,9 +33,7 @@ public class StopMobSpawnersTask implements Task {
 
     private static final Task INSTANCE = new StopMobSpawnersTask();
 
-    private StopMobSpawnersTask() {
-
-    }
+    private StopMobSpawnersTask() {}
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {

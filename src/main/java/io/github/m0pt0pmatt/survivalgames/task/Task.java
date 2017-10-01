@@ -32,6 +32,7 @@ public interface Task {
 
     /**
      * Perform work on a given {@link SurvivalGame}.
+     *
      * @param survivalGame the survival game.
      * @throws TextMessageException If any error occurs during this task.
      */

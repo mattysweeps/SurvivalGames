@@ -35,9 +35,17 @@ public class ClearWorldBorderTask implements Task {
 
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        survivalGame.getConfig().getWorldName().ifPresent(worldName ->
-                Sponge.getServer().getWorld(worldName).ifPresent(world ->
-                        world.getWorldBorder().setDiameter(60000000)));
+        survivalGame
+                .getConfig()
+                .getWorldName()
+                .ifPresent(
+                        worldName ->
+                                Sponge.getServer()
+                                        .getWorld(worldName)
+                                        .ifPresent(
+                                                world ->
+                                                        world.getWorldBorder()
+                                                                .setDiameter(60000000)));
     }
 
     public static Task getInstance() {

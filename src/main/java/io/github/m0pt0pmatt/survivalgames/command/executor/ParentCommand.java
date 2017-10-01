@@ -24,6 +24,11 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -31,13 +36,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
 
 public abstract class ParentCommand extends BaseCommand {
 
@@ -47,18 +45,27 @@ public abstract class ParentCommand extends BaseCommand {
         this(null, name, children);
     }
 
-    protected ParentCommand(SurvivalGamesCommand parentCommand, String name, Map<List<String>, CommandCallable> children) {
+    protected ParentCommand(
+            SurvivalGamesCommand parentCommand,
+            String name,
+            Map<List<String>, CommandCallable> children) {
         super(parentCommand, name, GenericArguments.none(), children);
-        chooseChildMessage = Text.of("Select a child command: ")
-                .concat(Text.joinWith(Text.of(':'), children.keySet().stream()
-                        .flatMap(Collection::stream)
-                        .map(Text::of)
-                        .collect(Collectors.toList())));
+        chooseChildMessage =
+                Text.of("Select a child command: ")
+                        .concat(
+                                Text.joinWith(
+                                        Text.of(':'),
+                                        children.keySet()
+                                                .stream()
+                                                .flatMap(Collection::stream)
+                                                .map(Text::of)
+                                                .collect(Collectors.toList())));
     }
 
     @Nonnull
     @Override
-    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
         throw new CommandException(chooseChildMessage);
     }
 }

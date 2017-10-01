@@ -35,8 +35,7 @@ class UnsetCountDownSecondsCommand extends AbstractUnsetCommand {
         super(
                 "countdown-seconds",
                 survivalGame -> survivalGame.getConfig().setCountdownSeconds(null),
-                Text.of("Unset countdown seconds")
-        );
+                Text.of("Unset countdown seconds"));
     }
 
     static SurvivalGamesCommand getInstance() {

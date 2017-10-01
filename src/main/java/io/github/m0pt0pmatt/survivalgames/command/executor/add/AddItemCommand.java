@@ -29,10 +29,10 @@ import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -40,10 +40,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
-
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 class AddItemCommand extends LeafCommand {
 
@@ -53,17 +49,24 @@ class AddItemCommand extends LeafCommand {
         super(
                 AddCommand.getInstance(),
                 "item",
-                GenericArguments.seq(SurvivalGameCommandElement.getInstance(), GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)));
+                GenericArguments.seq(
+                        SurvivalGameCommandElement.getInstance(),
+                        GenericArguments.catalogedElement(CommandKeys.ITEM, ItemType.class)));
     }
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+            throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         ItemType itemType = (ItemType) getOrThrow(args, CommandKeys.ITEM);
 
-        survivalGame.getConfig().getItemConfig().getItems().add(ItemStack.of(itemType, 1).createSnapshot());
+        survivalGame
+                .getConfig()
+                .getItemConfig()
+                .getItems()
+                .add(ItemStack.of(itemType, 1).createSnapshot());
 
         sendSuccess(src, "Item added", itemType.getName());
         return CommandResult.success();

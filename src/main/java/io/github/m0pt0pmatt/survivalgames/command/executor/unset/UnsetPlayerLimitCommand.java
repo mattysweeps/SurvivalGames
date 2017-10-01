@@ -35,8 +35,7 @@ class UnsetPlayerLimitCommand extends AbstractUnsetCommand {
         super(
                 "player-limit",
                 survivalGame -> survivalGame.getConfig().setPlayerLimit(null),
-                Text.of("Unset player limit")
-        );
+                Text.of("Unset player limit"));
     }
 
     static SurvivalGamesCommand getInstance() {

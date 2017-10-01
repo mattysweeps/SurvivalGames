@@ -35,8 +35,7 @@ class UnsetBoundariesCommand extends AbstractUnsetCommand {
         super(
                 "boundary",
                 (survivalGame) -> survivalGame.getConfig().getBlockArea().clearBoundaryVectors(),
-                Text.of("Unset boundary points")
-        );
+                Text.of("Unset boundary points"));
     }
 
     static SurvivalGamesCommand getInstance() {

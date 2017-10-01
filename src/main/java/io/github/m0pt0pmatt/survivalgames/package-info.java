@@ -26,8 +26,9 @@
 /**
  * SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survival Games,
  * powered by the Sponge platform.
- * <p>
- * This plugin was created for the Sponge Summer Plugin Competition 2016.
+ *
+ * <p>This plugin was created for the Sponge Summer Plugin Competition 2016.
+ *
  * @author m0tp0pmatt
  */
 package io.github.m0pt0pmatt.survivalgames;

@@ -29,13 +29,11 @@ import io.github.m0pt0pmatt.survivalgames.event.PlayerDeathEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
 import io.github.m0pt0pmatt.survivalgames.game.WinChecker;
+import io.github.m0pt0pmatt.survivalgames.task.UpdateScoreBoardTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.DespawnPlayersTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.UpdateScoreBoardTask;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.DataSerializable;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.mutable.RepresentedItemData;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
@@ -53,9 +51,7 @@ public class PlayerDeathListener {
 
     private static final PlayerDeathListener INSTANCE = new PlayerDeathListener();
 
-    private PlayerDeathListener() {
-
-    }
+    private PlayerDeathListener() {}
 
     @Listener
     public void onPlayerDamage(DamageEntityEvent event) {
@@ -82,11 +78,12 @@ public class PlayerDeathListener {
     private static void performDeadPlayer(SurvivalGame survivalGame, Player player, Cause cause) {
 
         // Get the player who killed the dead player.
-        Player killingPlayer = cause.first(EntityDamageSource.class)
-                .map(EntityDamageSource::getSource)
-                .filter(e -> e instanceof Player)
-                .map(e -> (Player) e)
-                .orElse(null);
+        Player killingPlayer =
+                (Player)
+                        cause.first(EntityDamageSource.class)
+                                .map(EntityDamageSource::getSource)
+                                .filter(e -> e instanceof Player)
+                                .orElse(null);
 
         // Update the scoreboard
         try {
@@ -99,10 +96,16 @@ public class PlayerDeathListener {
         World world = player.getWorld();
         Inventory inventory = player.getInventory();
         ItemStack item;
-        while((item = inventory.poll().orElse(null)) != null) {
-            Entity entity = world.createEntity(EntityTypes.ITEM, player.getLocation().getPosition());
+        while ((item = inventory.poll().orElse(null)) != null) {
+            Entity entity =
+                    world.createEntity(EntityTypes.ITEM, player.getLocation().getPosition());
             entity.offer(Keys.REPRESENTED_ITEM, item.createSnapshot());
-            world.spawnEntity(entity, Cause.of(NamedCause.of("Survival Game Dropping Inventory", SurvivalGamesPlugin.PLUGIN_CONTAINER)));
+            world.spawnEntity(
+                    entity,
+                    Cause.of(
+                            NamedCause.of(
+                                    "Survival Game Dropping Inventory",
+                                    SurvivalGamesPlugin.PLUGIN_CONTAINER)));
         }
 
         // Despawn the player

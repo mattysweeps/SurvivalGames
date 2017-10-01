@@ -26,16 +26,14 @@ package io.github.m0pt0pmatt.survivalgames.command.element;
 
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.args.SelectorCommandElement;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.command.args.SelectorCommandElement;
 
 public class ConfigFileCommandElement extends SelectorCommandElement {
 
@@ -54,9 +52,7 @@ public class ConfigFileCommandElement extends SelectorCommandElement {
             return Collections.emptyList();
         }
 
-        return Arrays.stream(files)
-                .map(File::getName)
-                .collect(Collectors.toList());
+        return Arrays.stream(files).map(File::getName).collect(Collectors.toList());
     }
 
     @Override

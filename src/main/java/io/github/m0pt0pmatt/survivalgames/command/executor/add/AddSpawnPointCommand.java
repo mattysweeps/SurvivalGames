@@ -27,13 +27,9 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.add;
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.executor.BlockRayCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.blockray.BlockRay;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -51,8 +47,7 @@ class AddSpawnPointCommand extends BlockRayCommand {
                         survivalGame.getConfig().getSpawnPoints().add(vector);
                     }
                 },
-                Text.of("Spawn point added.")
-        );
+                Text.of("Spawn point added."));
     }
 
     @Override
