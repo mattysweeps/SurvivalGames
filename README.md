@@ -36,7 +36,7 @@ Each survival game config has the following options:
 - World name
 - A vector for the center of the map
 - Spawn locations
-- Boundarys for the game (World borders are created from this)
+- Boundaries for the game (World borders are created from this)
 - An exit world and vector, for teleporting players who have perished in the games.
 - Loot for spawning items in chests
 - Mob spawners
@@ -53,3 +53,9 @@ For example, If a command block is set with the command ```/ssg event MobSpawned
 # Java Docs
 While they still need work, you can view the Javadocs here: http://m0pt0pmatt.github.io/SurvivalGames/docs/
 But I recommend you just look at the source code ;)
+
+# Contributing
+Don't forget to add the git hooks:
+```
+cp scripts/pre-commit .git/hooks
+```
