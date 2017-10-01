@@ -34,8 +34,6 @@ import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.BlockChangeFlag;
 
 public class SurvivalGameEventListener {
@@ -91,10 +89,7 @@ public class SurvivalGameEventListener {
                                         BlockState.builder()
                                                 .blockType(BlockTypes.REDSTONE_TORCH)
                                                 .build(),
-                                        Cause.of(
-                                                NamedCause.of(
-                                                        "Survival Games Event Command",
-                                                        SurvivalGamesPlugin.PLUGIN_CONTAINER)));
+                                        BlockChangeFlag.ALL);
 
                         SurvivalGamesPlugin.EXECUTOR.schedule(
                                 () -> snapshot.restore(true, BlockChangeFlag.ALL),

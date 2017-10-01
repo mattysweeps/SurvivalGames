@@ -30,16 +30,14 @@ import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 
 public class MobSpawnedEvent extends SurvivalGameEvent {
 
     private final Entity entity;
 
     public MobSpawnedEvent(SurvivalGame survivalGame, Entity entity) {
-        super(
-                Cause.of(NamedCause.of("Survival Game Spawned Entity", SurvivalGamesPlugin.PLUGIN)),
-                survivalGame);
+        super(Cause.of(EventContext.empty(), SurvivalGamesPlugin.PLUGIN), survivalGame);
         this.entity = checkNotNull(entity, "entity");
     }
 

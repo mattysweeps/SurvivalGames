@@ -33,9 +33,8 @@ import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.BlockChangeFlag;
 
 public class CreateCageSnapshotsTask implements Task {
 
@@ -89,13 +88,8 @@ public class CreateCageSnapshotsTask implements Task {
                                                                                                                                         vector3i))
                                                                                                                 .setBlockType(
                                                                                                                         blockType,
-                                                                                                                        Cause
-                                                                                                                                .of(
-                                                                                                                                        NamedCause
-                                                                                                                                                .of(
-                                                                                                                                                        "CreateCageSnapshotsTask",
-                                                                                                                                                        SurvivalGamesPlugin
-                                                                                                                                                                .PLUGIN_CONTAINER)))))));
+                                                                                                                        BlockChangeFlag
+                                                                                                                                .ALL)))));
     }
 
     public static Task getInstance() {

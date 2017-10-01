@@ -30,7 +30,7 @@ import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 
 public class GameStateChangedEvent extends SurvivalGameEvent {
 
@@ -39,9 +39,7 @@ public class GameStateChangedEvent extends SurvivalGameEvent {
 
     public GameStateChangedEvent(
             SurvivalGame survivalGame, SurvivalGameState oldState, SurvivalGameState newState) {
-        super(
-                Cause.of(NamedCause.of("Survival Game State Changed", SurvivalGamesPlugin.PLUGIN)),
-                survivalGame);
+        super(Cause.of(EventContext.empty(), SurvivalGamesPlugin.PLUGIN), survivalGame);
         this.oldState = checkNotNull(oldState, "oldState");
         this.newState = checkNotNull(newState, "newState");
     }

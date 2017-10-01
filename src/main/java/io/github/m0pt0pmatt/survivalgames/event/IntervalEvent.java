@@ -29,19 +29,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 
 public class IntervalEvent extends SurvivalGameEvent {
 
     private final String intervalName;
 
     public IntervalEvent(SurvivalGame survivalGame, String intervalName) {
-        super(
-                Cause.of(
-                        NamedCause.of(
-                                "Survival Game Interval Event",
-                                SurvivalGamesPlugin.PLUGIN_CONTAINER)),
-                survivalGame);
+        super(Cause.of(EventContext.empty(), SurvivalGamesPlugin.PLUGIN), survivalGame);
         this.intervalName = checkNotNull(intervalName, "intervalName");
     }
 

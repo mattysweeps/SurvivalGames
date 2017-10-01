@@ -27,13 +27,11 @@ package io.github.m0pt0pmatt.survivalgames.event;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
+import org.spongepowered.api.event.cause.EventContext;
 
 public class PostCountdownEvent extends SurvivalGameEvent {
 
     public PostCountdownEvent(SurvivalGame survivalGame) {
-        super(
-                Cause.of(NamedCause.of("Survival Game Started", SurvivalGamesPlugin.PLUGIN)),
-                survivalGame);
+        super(Cause.of(EventContext.empty(), SurvivalGamesPlugin.PLUGIN), survivalGame);
     }
 }

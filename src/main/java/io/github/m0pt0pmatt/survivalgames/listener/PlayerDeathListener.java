@@ -24,7 +24,6 @@
  */
 package io.github.m0pt0pmatt.survivalgames.listener;
 
-import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.event.PlayerDeathEvent;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
@@ -39,7 +38,6 @@ import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.cause.entity.damage.source.EntityDamageSource;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -100,12 +98,7 @@ public class PlayerDeathListener {
             Entity entity =
                     world.createEntity(EntityTypes.ITEM, player.getLocation().getPosition());
             entity.offer(Keys.REPRESENTED_ITEM, item.createSnapshot());
-            world.spawnEntity(
-                    entity,
-                    Cause.of(
-                            NamedCause.of(
-                                    "Survival Game Dropping Inventory",
-                                    SurvivalGamesPlugin.PLUGIN_CONTAINER)));
+            world.spawnEntity(entity);
         }
 
         // Despawn the player

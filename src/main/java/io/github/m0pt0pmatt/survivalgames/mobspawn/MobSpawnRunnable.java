@@ -72,7 +72,7 @@ class MobSpawnRunnable implements Runnable {
             Entity entity = world.createEntity(entityType.get(), location.getPosition());
 
             MobSpawnedEvent event = new MobSpawnedEvent(survivalGame, entity);
-            boolean spawned = world.spawnEntity(entity, event.getCause());
+            boolean spawned = world.spawnEntity(entity);
 
             if (spawned) {
                 Sponge.getEventManager().post(event);
