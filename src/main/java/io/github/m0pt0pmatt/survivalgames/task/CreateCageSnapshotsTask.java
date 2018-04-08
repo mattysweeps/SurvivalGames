@@ -28,13 +28,15 @@ import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.ImmutableSet;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.util.TextMessageException;
-import org.spongepowered.api.world.BlockChangeFlag;
+import org.spongepowered.api.world.BlockChangeFlags;
+import org.spongepowered.api.world.World;
 
 public class CreateCageSnapshotsTask implements Task {
 
@@ -65,31 +67,28 @@ public class CreateCageSnapshotsTask implements Task {
     }
 
     private void setBlocks(SurvivalGame survivalGame, BlockType blockType) {
+
+        Optional<String> worldName = survivalGame.getConfig().getWorldName();
+        if (!worldName.isPresent()) {
+            return;
+        }
+
+        Optional<World> world = Sponge.getServer().getWorld(worldName.get());
+        if (!world.isPresent()) {
+            return;
+        }
+
         survivalGame
                 .getConfig()
-                .getWorldName()
-                .ifPresent(
-                        worldName ->
-                                Sponge.getServer()
-                                        .getWorld(worldName)
-                                        .ifPresent(
-                                                world ->
-                                                        survivalGame
-                                                                .getConfig()
-                                                                .getSpawnPoints()
-                                                                .forEach(
-                                                                        spawnPoint ->
-                                                                                SURROUNDING_BLOCKS
-                                                                                        .forEach(
-                                                                                                vector3i ->
-                                                                                                        world.getLocation(
-                                                                                                                        spawnPoint
-                                                                                                                                .add(
-                                                                                                                                        vector3i))
-                                                                                                                .setBlockType(
-                                                                                                                        blockType,
-                                                                                                                        BlockChangeFlag
-                                                                                                                                .ALL)))));
+                .getSpawnPoints()
+                .forEach(
+                        spawnPoint ->
+                                SURROUNDING_BLOCKS.forEach(
+                                        vector3i ->
+                                                world.get()
+                                                        .getLocation(spawnPoint.add(vector3i))
+                                                        .setBlockType(
+                                                                blockType, BlockChangeFlags.ALL)));
     }
 
     public static Task getInstance() {

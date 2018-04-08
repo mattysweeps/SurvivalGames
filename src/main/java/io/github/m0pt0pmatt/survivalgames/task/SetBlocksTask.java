@@ -28,7 +28,7 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.List;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.util.TextMessageException;
-import org.spongepowered.api.world.BlockChangeFlag;
+import org.spongepowered.api.world.BlockChangeFlags;
 
 /** Sets the blocks in the map */
 public class SetBlocksTask implements Task {
@@ -38,7 +38,7 @@ public class SetBlocksTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
         List<BlockSnapshot> blocks = survivalGame.getBlocks();
-        blocks.forEach(blockSnapshot -> blockSnapshot.restore(true, BlockChangeFlag.ALL));
+        blocks.forEach(blockSnapshot -> blockSnapshot.restore(true, BlockChangeFlags.ALL));
     }
 
     public static Task getInstance() {

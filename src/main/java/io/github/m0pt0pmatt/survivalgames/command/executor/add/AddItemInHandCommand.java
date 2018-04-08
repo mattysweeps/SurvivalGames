@@ -70,7 +70,7 @@ class AddItemInHandCommand extends LeafCommand {
 
         survivalGame.getConfig().getItemConfig().getItems().add(itemStack.createSnapshot());
 
-        sendSuccess(src, "Item added", itemStack.getItem().getName());
+        sendSuccess(src, "Item added", itemStack.getType().getName());
         return CommandResult.success();
     }
 
