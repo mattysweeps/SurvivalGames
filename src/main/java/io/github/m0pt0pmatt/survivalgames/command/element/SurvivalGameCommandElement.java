@@ -60,9 +60,7 @@ public class SurvivalGameCommandElement extends SelectorCommandElement {
     @Override
     public List<String> complete(
             @Nonnull CommandSource src, CommandArgs args, CommandContext context) {
-        Object state = args.getState();
         final Optional<String> nextArg = args.nextIfPresent();
-        args.setState(state);
         List<String> choices = nextArg.map(Selector::complete).orElseGet(ImmutableList::of);
 
         if (choices.isEmpty()) {
