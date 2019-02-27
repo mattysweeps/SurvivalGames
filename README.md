@@ -1,4 +1,4 @@
-# SurvivalGames [![Build Status](https://travis-ci.org/m0pt0pmatt/SurvivalGames.svg)](https://travis-ci.org/m0pt0pmatt/SurvivalGames)
+# SurvivalGames [![Build Status](https://travis-ci.org/mattysweeps/SurvivalGames.svg)](https://travis-ci.org/mattysweeps/SurvivalGames)
 
 SurvivalGames is a Sponge Plugin which lets you play the classic Minecraft Survival Games game mode on your Sponge Server! You can run multiple survival games at once, and each game is customizable. Config files for survival games can be saved and loaded from file.
 
@@ -51,7 +51,7 @@ SurvivalGames has it's own events which are fired when game-related things happe
 For example, If a command block is set with the command ```/ssg event MobSpawnedEvent```, then whenever a MobSpawnedEvent occurs, the command block is executed. It is then turned into a redstone torch for 5 seconds, so surronding blocks can be powered. (This is a temporary workaround)
 
 # Java Docs
-While they still need work, you can view the Javadocs here: http://m0pt0pmatt.github.io/SurvivalGames/docs/
+While they still need work, you can view the Javadocs here: http://mattysweeps.github.io/SurvivalGames/docs/
 But I recommend you just look at the source code ;)
 
 # Contributing
