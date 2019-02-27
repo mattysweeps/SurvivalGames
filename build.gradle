@@ -1,5 +1,4 @@
 plugins {
-    id 'com.github.sherter.google-java-format' version '0.6'
     id 'org.spongepowered.plugin' version '0.8.1'
     id 'maven'
 }
@@ -8,11 +7,7 @@ group = pluginGroup
 version = pluginVersion
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.1.0'
 }
 
 sponge.plugin.id = pluginId
-
-googleJavaFormat {
-    options style: 'AOSP'
-}
