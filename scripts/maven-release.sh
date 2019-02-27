@@ -8,7 +8,10 @@ cd ${BRANCH_NAME}
 # Commit Maven build
 echo "Adding maven build"
 mkdir -p ${MAVEN_GROUP}
-cp -rf ${HOME}/.m2/repository/${MAVEN_GROUP}/* ${MAVEN_GROUP}
+ls -R ${HOME}/.m2/repository/
+ls -R ${HOME}/.m2/repository/${MAVEN_GROUP}/
+ls ${MAVEN_GROUP}/
+cp -R ${HOME}/.m2/repository/${MAVEN_GROUP}/* ${MAVEN_GROUP}/
 git add -f .
 git commit -m "Latest maven dependency on successful travis build ${TRAVIS_BUILD_NUMBER} auto-pushed to ${BRANCH_NAME}"
 
