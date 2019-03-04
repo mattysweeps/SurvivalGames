@@ -7,9 +7,10 @@ This plugin was created for the Sponge Summer Plugin Competition 2016.
 # Demo
 NOTE: Players participating in the demo must be opped.
 
-Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command might ruin your server (still working out bugs), so please run it on a fresh server.
+Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command replaces your world with another one (still working out bugs), so please run it on a fresh server.
 Run these commands to get the server running:
 - ```/ssg demo```
+- (Watch the terminal for a prompt to enter `/fml confirm`. This is necessary because the demo map is from an older version of Minecraft.)
 - ```/ssg load demo demo.yml```
 - ```/ssg set blocks demo```
 - ```/ssg ready demo```

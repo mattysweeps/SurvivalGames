@@ -33,6 +33,8 @@ import io.github.m0pt0pmatt.survivalgames.listener.PlayerOpenedChestListener;
 import io.github.m0pt0pmatt.survivalgames.listener.SurvivalGameEventListener;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
@@ -59,6 +61,8 @@ public class SurvivalGamesPlugin {
     public static PluginContainer PLUGIN_CONTAINER;
     public static SurvivalGamesPlugin PLUGIN;
     public static Path CONFIG_DIRECTORY;
+    public static ExecutorService ASYNC_EXECUTOR;
+    public static ExecutorService SYNC_EXECUTOR;
 
     @Inject
     @ConfigDir(sharedRoot = true)
@@ -92,6 +96,10 @@ public class SurvivalGamesPlugin {
 
         // Create a config directory if one does not already exist.
         setupConfigDirectory();
+
+        // Create an asynchronous executor for background tasks.
+        ASYNC_EXECUTOR = Sponge.getScheduler().createAsyncExecutor(this);
+        SYNC_EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
 
         LOGGER.info("Survival Games Plugin Enabled.");
     }
