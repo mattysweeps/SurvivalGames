@@ -5,6 +5,8 @@ BRANCH_NAME=${MAVEN_BRANCH_NAME}
 git clone --single-branch --branch ${BRANCH_NAME} https://${GH_TOKEN}@github.com/${USER}/${PROJECT} ${BRANCH_NAME}
 cd ${BRANCH_NAME}
 
+pwd
+
 # Commit Maven build
 echo "Adding maven build"
 mkdir -p ${MAVEN_GROUP}
