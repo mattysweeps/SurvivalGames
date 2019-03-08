@@ -63,6 +63,7 @@ public class RootCommand extends ParentCommand {
                     .put(toEntry(DemoCommand.getInstance()))
                     .put(toEntry(TeleportCommand.getInstance()))
                     .put(toEntry(JoinCommand.getInstance()))
+                    .put(toEntry(LeaveCommand.getInstance()))
                     .put(toEntry(SpectateCommand.getInstance()))
                     .build();
 

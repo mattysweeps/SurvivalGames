@@ -32,9 +32,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
 /** Despawn players to the exist location. */
-public class DespawnPlayersTask extends PlayerTask {
+public class ExitPlayerTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new DespawnPlayersTask();
+    private static final PlayerTask INSTANCE = new ExitPlayerTask();
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {

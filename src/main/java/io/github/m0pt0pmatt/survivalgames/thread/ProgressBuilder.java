@@ -54,7 +54,6 @@ public class ProgressBuilder {
 
     public ProgressBuilder runSync(Progressable progressable, String name, TemporalAmount timeout) {
         checkNotNull(progressable, "progressable");
-        checkNotNull(timeout, "timeout");
 
         WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageReceiver, syncExecutor);
         tasks.add(watcher);
@@ -64,7 +63,6 @@ public class ProgressBuilder {
 
     public ProgressBuilder runAsync(Progressable progressable, String name, TemporalAmount timeout) {
         checkNotNull(progressable, "progressable");
-        checkNotNull(timeout, "timeout");
 
         WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageReceiver, asyncExecutor);
         tasks.add(watcher);

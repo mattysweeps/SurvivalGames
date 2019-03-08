@@ -28,14 +28,17 @@ package io.github.m0pt0pmatt.survivalgames.data;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.spongepowered.api.block.BlockSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Config for a Survival Game. All configurable fields are stored in this class. Getters return
@@ -52,8 +55,8 @@ public class GameConfig {
     static {
         try {
             OBJECT_MAPPER = ObjectMapper.forClass(GameConfig.class);
-        } catch (ObjectMappingException ignored) {
-
+        } catch (ObjectMappingException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -107,6 +110,10 @@ public class GameConfig {
 
     @Setting(value = "event-intervals")
     private Map<String, Integer> eventIntervals = Maps.newHashMap();
+
+    // @Setting(value = "blocks")
+    // Do not save blocks yet: this needs to be replaced with a more scalable solution.
+    private List<BlockSnapshot> blocks = Lists.newArrayList();
 
     public GameConfig() {
         setPlayerLimit(DEFAULT_PLAYER_LIMIT);
@@ -206,5 +213,13 @@ public class GameConfig {
 
     public Map<String, Integer> getEventIntervals() {
         return eventIntervals;
+    }
+
+    public List<BlockSnapshot> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(List<BlockSnapshot> blocks) {
+        this.blocks = blocks;
     }
 }

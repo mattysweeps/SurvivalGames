@@ -25,12 +25,16 @@
 
 package io.github.m0pt0pmatt.survivalgames.thread;
 
+import com.google.common.base.Strings;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.channel.MessageReceiver;
+import org.spongepowered.api.text.chat.ChatTypes;
 
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -45,7 +49,7 @@ public class WatcherRunnable implements Runnable {
     private final Progressable progressable;
     private final String name;
     private final TemporalAmount timeout;
-    private final MessageReceiver messageReceiver;
+    private final MessageChannel messageChannel;
     private final Executor executor;
 
     WatcherRunnable(
@@ -56,8 +60,9 @@ public class WatcherRunnable implements Runnable {
             Executor executor) {
         this.progressable = checkNotNull(progressable, "future");
         this.name = checkNotNull(name, "name");
-        this.timeout = checkNotNull(timeout, "timeout");
-        this.messageReceiver = checkNotNull(messageReceiver, "messageReceiver");
+        this.timeout = timeout;
+        checkNotNull(messageReceiver, "messageReceiver");
+        this.messageChannel = MessageChannel.fixed(messageReceiver);
         this.executor = checkNotNull(executor, "executor");
     }
 
@@ -71,17 +76,18 @@ public class WatcherRunnable implements Runnable {
             return r;
         });
 
-        Instant later =  Instant.now().plus(timeout);
+
+        Optional<Instant> later = Optional.ofNullable(timeout).map(t -> Instant.now().plus(t));
 
         while (true) {
-            messageReceiver.sendMessage(Text.of(name + ": " + progressable.getProgress()));
+            sendMessage();
 
             if (future.isDone()) {
                 break;
             }
 
-            if (Instant.now().isAfter(later)) {
-                messageReceiver.sendMessage(Text.of("Timed out"));
+            if (later.isPresent() && Instant.now().isAfter(later.get())) {
+                messageChannel.send(Text.of("Timed out"), ChatTypes.CHAT);
                 future.cancel(true);
                 throw new RuntimeException("timeout");
             }
@@ -96,6 +102,12 @@ public class WatcherRunnable implements Runnable {
         Throwable t = throwable.iterator().next();
         if (t != null) {
             throw new RuntimeException(t);
+        }
+    }
+
+    private void sendMessage() {
+        if (!Strings.isNullOrEmpty(name)) {
+            messageChannel.send(Text.of(name + ": " + progressable.getProgress()), ChatTypes.ACTION_BAR);
         }
     }
 }

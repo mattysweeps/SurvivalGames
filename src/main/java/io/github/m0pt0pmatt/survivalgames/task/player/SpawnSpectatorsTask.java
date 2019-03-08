@@ -57,7 +57,7 @@ public class SpawnSpectatorsTask extends PlayerTask {
         if (!spawnPoints.isEmpty()) {
             Vector3d spawnPoint = spawnPoints.remove(0);
 
-            spawnPlayer(
+            spawnPlayer(survivalGame,
                     player,
                     world,
                     new Vector3d(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ()),
@@ -65,8 +65,10 @@ public class SpawnSpectatorsTask extends PlayerTask {
         }
     }
 
-    private static void spawnPlayer(
+    private static void spawnPlayer(SurvivalGame survivalGame,
             Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
+
+        survivalGame.getPlayerSnapshots().put(player.getUniqueId(), player.createSnapshot());
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 10, 0.5)));
         player.lookAt(centerVector);
         player.offer(Keys.GAME_MODE, GameModes.SPECTATOR);

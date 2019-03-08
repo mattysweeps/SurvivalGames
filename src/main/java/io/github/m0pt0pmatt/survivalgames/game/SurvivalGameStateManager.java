@@ -26,25 +26,9 @@ package io.github.m0pt0pmatt.survivalgames.game;
 
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.event.GameStateChangedEvent;
-import io.github.m0pt0pmatt.survivalgames.task.ClearPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.ClearWorldBorderTask;
-import io.github.m0pt0pmatt.survivalgames.task.CreateCageSnapshotsTask;
-import io.github.m0pt0pmatt.survivalgames.task.CreateDeathmatchBorderTask;
-import io.github.m0pt0pmatt.survivalgames.task.CreateWorldBorderTask;
-import io.github.m0pt0pmatt.survivalgames.task.FillChestsTask;
-import io.github.m0pt0pmatt.survivalgames.task.SetBlocksTask;
-import io.github.m0pt0pmatt.survivalgames.task.StartEventIntervalsTask;
-import io.github.m0pt0pmatt.survivalgames.task.StartMobSpawnersTask;
-import io.github.m0pt0pmatt.survivalgames.task.StopEventIntervalsTask;
-import io.github.m0pt0pmatt.survivalgames.task.StopMobSpawnersTask;
-import io.github.m0pt0pmatt.survivalgames.task.Task;
-import io.github.m0pt0pmatt.survivalgames.task.player.ClearScoreBoardTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.CreateCountdownTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.CreateScoreboardTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.DespawnPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.SpawnPlayersTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.SpawnSpectatorsTask;
+import io.github.m0pt0pmatt.survivalgames.task.*;
+import io.github.m0pt0pmatt.survivalgames.task.player.*;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +42,7 @@ import org.spongepowered.api.util.TextMessageException;
 public class SurvivalGameStateManager {
 
     private static final List<Task> READY_TASKS =
-            Collections.singletonList(SetBlocksTask.getInstance());
+            Collections.singletonList(RestoreBlocksTask.getInstance());
 
     private static final List<Task> START_TASKS =
             Arrays.asList(
@@ -87,28 +71,26 @@ public class SurvivalGameStateManager {
 
     private static final List<Task> STOP_TASKS =
             Arrays.asList(
-                    DespawnPlayersTask.getInstance(),
+                    ReturnPlayerTask.getInstance(),
                     HealPlayersTask.getInstance(),
                     ClearScoreBoardTask.getInstance(),
                     ClearWorldBorderTask.getInstance(),
                     ClearPlayersTask.getInstance(),
                     StopMobSpawnersTask.getInstance(),
-                    StopEventIntervalsTask.getInstance());
+                    StopEventIntervalsTask.getInstance(),
+                    CleanStateTask.getInstance());
 
     public static void ready(SurvivalGame survivalGame) {
-        if (!survivalGame.areBlocksValid()) {
-            throw new IllegalArgumentException("Blocks are not set");
-        }
         checkConfig(survivalGame.getConfig());
         try {
             SurvivalGameState oldState = survivalGame.getState();
             executeTasks(READY_TASKS, survivalGame);
-            survivalGame.state = SurvivalGameState.JOINABLE;
+            survivalGame.state = SurvivalGameState.READY;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
             Sponge.getEventManager()
                     .post(
                             new GameStateChangedEvent(
-                                    survivalGame, oldState, SurvivalGameState.JOINABLE));
+                                    survivalGame, oldState, SurvivalGameState.READY));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }

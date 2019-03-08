@@ -36,6 +36,9 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.io.IOException;
 import java.nio.file.Path;
 import javax.annotation.Nonnull;
+
+import io.github.m0pt0pmatt.survivalgames.thread.DotProgressable;
+import io.github.m0pt0pmatt.survivalgames.thread.ProgressBuilder;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -68,31 +71,40 @@ public class SaveConfigCommand extends LeafCommand {
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
-        Path potentialFile;
+        ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
+                .runAsync(new DotProgressable(() -> {
+                    try {
+                        Path potentialFile;
 
-        if (args.hasAny(CommandKeys.FILE_PATH)) {
-            potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
-        } else if (args.hasAny(CommandKeys.FILE_NAME)) {
-            String potentialFileName = (String) getOrThrow(args, CommandKeys.FILE_NAME);
-            potentialFile = SurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
-        } else {
-            throw new CommandException(Text.of("No file name"));
-        }
+                        if (args.hasAny(CommandKeys.FILE_PATH)) {
+                            potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
+                        } else if (args.hasAny(CommandKeys.FILE_NAME)) {
+                            String potentialFileName = (String) getOrThrow(args, CommandKeys.FILE_NAME);
+                            potentialFile = SurvivalGamesPlugin.CONFIG_DIRECTORY.resolve(potentialFileName);
+                        } else {
+                            throw new CommandException(Text.of("No file name"));
+                        }
 
-        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
-        ConfigurationLoader<CommentedConfigurationNode> loader =
-                HoconConfigurationLoader.builder().setPath(potentialFile).build();
-        try {
-            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
-            ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bind(survivalGame.getConfig());
-            i.serialize(node);
-            loader.save(node);
-        } catch (IOException | ObjectMappingException | RuntimeException e) {
-            e.printStackTrace();
-            throw new CommandException(Text.of("Error saving to file"), e);
-        }
+                        SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+                        ConfigurationLoader<CommentedConfigurationNode> loader =
+                                HoconConfigurationLoader.builder().setPath(potentialFile).build();
+                        try {
+                            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
+                            ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bind(survivalGame.getConfig());
+                            i.serialize(node);
+                            loader.save(node);
+                        } catch (IOException | ObjectMappingException | RuntimeException e) {
+                            e.printStackTrace();
+                            throw new CommandException(Text.of("Error saving to file"), e);
+                        }
 
-        sendSuccess(src, "Survival Game Saved", potentialFile.getFileName());
+                        sendSuccess(src, "Survival Game Saved", potentialFile.getFileName());
+                    } catch (CommandException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }), "Saving", null).start();
+
         return CommandResult.success();
     }
 

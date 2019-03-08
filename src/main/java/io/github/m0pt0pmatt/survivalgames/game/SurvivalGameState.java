@@ -24,13 +24,24 @@
  */
 package io.github.m0pt0pmatt.survivalgames.game;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The different top-level states of a Survival Game. - Configuration is done during the STOPPED
- * state. - Players can join and leave during the JOINABLE state. - The game is in progress during
+ * state. - Players can join and leave during the READY state. - The game is in progress during
  * the RUNNING state.
  */
 public enum SurvivalGameState {
-    STOPPED,
-    JOINABLE,
-    RUNNING
-}
+    STOPPED("stopping"),
+    READY("readying"),
+    RUNNING("starting");
+
+    private final String adjective;
+
+    SurvivalGameState(String adjective) {
+        this.adjective = checkNotNull(adjective, "adjective");
+    }
+
+    public String getAdjective() {
+        return adjective;
+    }}

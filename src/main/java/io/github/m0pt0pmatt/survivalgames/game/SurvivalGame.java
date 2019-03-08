@@ -25,16 +25,14 @@
 
 package io.github.m0pt0pmatt.survivalgames.game;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.tileentity.CommandBlock;
+import org.spongepowered.api.entity.EntitySnapshot;
+import org.spongepowered.api.world.BlockChangeFlags;
+
+import java.util.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /** Represents a Survival Game. */
 public class SurvivalGame {
@@ -49,8 +47,7 @@ public class SurvivalGame {
     private final Set<CommandBlock> commandBlocks;
     private final Set<UUID> activeMobSpawners;
     private final Set<UUID> activeEventIntervals;
-    private final List<BlockSnapshot> blocks;
-    private boolean blocksValid = false;
+    private final Map<UUID, EntitySnapshot> playerSnapshots;
 
     public SurvivalGame(String name, GameConfig config) {
         this.name = checkNotNull(name);
@@ -62,7 +59,7 @@ public class SurvivalGame {
         commandBlocks = new HashSet<>();
         activeMobSpawners = new HashSet<>();
         activeEventIntervals = new HashSet<>();
-        blocks = new ArrayList<>();
+        playerSnapshots = new HashMap<>();
     }
 
     public SurvivalGame(String name) {
@@ -105,15 +102,11 @@ public class SurvivalGame {
         return activeEventIntervals;
     }
 
-    public List<BlockSnapshot> getBlocks() {
-        return blocks;
+    public Map<UUID, EntitySnapshot> getPlayerSnapshots() {
+        return playerSnapshots;
     }
 
-    public boolean areBlocksValid() {
-        return blocksValid;
-    }
-
-    public void setBlocksValid(boolean blocksValid) {
-        this.blocksValid = blocksValid;
+    public void restoreBlocks() {
+        getConfig().getBlocks().forEach(blockSnapshot -> blockSnapshot.restore(true, BlockChangeFlags.ALL));
     }
 }

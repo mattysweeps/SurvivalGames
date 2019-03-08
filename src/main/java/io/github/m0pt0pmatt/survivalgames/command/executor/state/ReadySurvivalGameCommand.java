@@ -40,6 +40,7 @@ public class ReadySurvivalGameCommand extends AbstractStateCommand {
                 RootCommand.getInstance(),
                 "ready",
                 Collections.singleton(SurvivalGameState.STOPPED),
+                SurvivalGameState.READY,
                 ReadySurvivalGameCommand::doWork);
     }
 

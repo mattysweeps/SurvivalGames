@@ -26,9 +26,10 @@ package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
+
+import java.util.concurrent.TimeUnit;
 
 public class DelayedPlayerTask extends PlayerTask {
 

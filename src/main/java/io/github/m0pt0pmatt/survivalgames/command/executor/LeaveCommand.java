@@ -59,8 +59,8 @@ public class LeaveCommand extends LeafCommand {
 
         Player player = (Player) src;
 
-        if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
-            throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
+        if (survivalGame.getState() != SurvivalGameState.READY) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
         survivalGame.getPlayerUUIDs().remove(player.getUniqueId());

@@ -38,7 +38,9 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.DimensionTypes;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.WorldArchetype;
 import org.spongepowered.api.world.storage.WorldProperties;
 
 import javax.annotation.Nonnull;
@@ -53,6 +55,9 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
@@ -60,11 +65,9 @@ class DemoCommand extends LeafCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
-    private static final String DEMO_MAP_OBJECT = "ssg-demo-map_v2.zip";
+    private static final String DEMO_MAP_OBJECT = "ssg-demo-map_v3.zip";
 
     private static final String DEMO_MAP_WORLD_NAME = "ssg-demo-map";
-
-    private static final String DEMO_MAP_ID = "e6514a90-390f-4481-8d4d-56d30660c849";
 
     private static final String S3_BUCKET =
             "https://s3.amazonaws.com/com.cloudcraftnetwork.survivalgames.maps/";
@@ -78,8 +81,6 @@ class DemoCommand extends LeafCommand {
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
-        deleteExistingWorld(src, DEMO_MAP_WORLD_NAME);
-
         URL url;
         try {
             url = new URL(S3_BUCKET + DEMO_MAP_OBJECT);
@@ -90,7 +91,7 @@ class DemoCommand extends LeafCommand {
         UrlDownloadRunnable urlDownloadRunnable = new UrlDownloadRunnable(url, DEMO_MAP_OBJECT, 24869722);
         Runnable unzipRunnable = () -> {
 
-            File existing = new File("world", DEMO_MAP_WORLD_NAME);
+            File existing = new File(Sponge.getServer().getDefaultWorldName(), DEMO_MAP_WORLD_NAME);
             if (existing.exists()) {
                 try {
                     MoreFiles.deleteRecursively(existing.toPath(), RecursiveDeleteOption.ALLOW_INSECURE);
@@ -99,18 +100,29 @@ class DemoCommand extends LeafCommand {
                 }
             }
 
-            new UnzipRunnable(DEMO_MAP_OBJECT, "world").run();
+            new UnzipRunnable(DEMO_MAP_OBJECT, Sponge.getServer().getDefaultWorldName()).run();
         };
 
         TemporalAmount timeout = Duration.of(60, ChronoUnit.SECONDS);
 
         ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
+                .runSync(new DotProgressable(this::deleteExistingWorld), "Deleting Old World", timeout)
                 .runAsync(urlDownloadRunnable, "Downloading World", timeout)
                 .runAsync(new DotProgressable(unzipRunnable), "Unzipping World", timeout)
                 .runSync(new DotProgressable(() ->  {
 
-                    if (!Sponge.getServer().loadWorld(DEMO_MAP_WORLD_NAME).isPresent()) {
-                        throw new RuntimeException("Could not load world, check logs");
+                    try {
+                        WorldProperties props = Sponge.getServer().createWorldProperties(DEMO_MAP_WORLD_NAME, WorldArchetype.builder()
+                                .dimension(DimensionTypes.OVERWORLD)
+                                .enabled(true)
+                                .pvp(true)
+                                .build(UUID.randomUUID().toString(), DEMO_MAP_WORLD_NAME));
+
+                        if (!Sponge.getServer().loadWorld(props).isPresent()) {
+                            throw new RuntimeException("Could not load world, check logs");
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
 
                 }), "Loading World", timeout)
@@ -141,16 +153,30 @@ class DemoCommand extends LeafCommand {
         }
     }
 
-    private void deleteExistingWorld(CommandSource src, String worldName) {
-        Optional<World> existingWorld = Sponge.getServer().getWorld(worldName);
-        existingWorld.ifPresent(
-                world -> {
-                    WorldProperties properties = world.getProperties();
-                    src.sendMessage(Text.of("Unloading: ", worldName));
-                    Sponge.getServer().unloadWorld(world);
-                    src.sendMessage(Text.of("Deleting: ", worldName));
-                    Sponge.getServer().deleteWorld(properties);
-                });
+    private void deleteExistingWorld() {
+
+        Optional<World> world = Sponge.getServer().getWorld(DEMO_MAP_WORLD_NAME);
+        if (world.isPresent()) {
+            World w = world.get();
+            if (!Sponge.getServer().unloadWorld(w)) {
+                throw new RuntimeException("Could not unload demo world");
+            }
+        }
+
+        Optional<WorldProperties> worldProperties = Sponge.getServer().getWorldProperties(DEMO_MAP_WORLD_NAME);
+        if (worldProperties.isPresent()) {
+            WorldProperties wp = worldProperties.get();
+            CompletableFuture<Boolean> future = Sponge.getServer().deleteWorld(wp);
+            try {
+                if (!future.get(60, TimeUnit.SECONDS)) {
+                    throw new RuntimeException("Could not delete demo world");
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException("Could not delete demo world");
+            }
+        }
     }
 
     static DemoCommand getInstance() {

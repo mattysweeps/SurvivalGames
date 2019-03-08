@@ -38,7 +38,8 @@ public class StartSurvivalGameCommand extends AbstractStateCommand {
         super(
                 RootCommand.getInstance(),
                 "start",
-                Collections.singleton(SurvivalGameState.JOINABLE),
+                Collections.singleton(SurvivalGameState.READY),
+                SurvivalGameState.RUNNING,
                 SurvivalGameStateManager::start);
     }
 

@@ -29,7 +29,7 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
 import io.github.m0pt0pmatt.survivalgames.game.WinChecker;
 import io.github.m0pt0pmatt.survivalgames.task.UpdateScoreBoardTask;
-import io.github.m0pt0pmatt.survivalgames.task.player.DespawnPlayersTask;
+import io.github.m0pt0pmatt.survivalgames.task.player.ExitPlayerTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.HealPlayersTask;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -103,7 +103,7 @@ public class PlayerDeathListener {
 
         // Despawn the player
         try {
-            DespawnPlayersTask.getInstance().execute(survivalGame, player);
+            ExitPlayerTask.getInstance().execute(survivalGame, player);
         } catch (TextMessageException e) {
             e.printStackTrace();
         }

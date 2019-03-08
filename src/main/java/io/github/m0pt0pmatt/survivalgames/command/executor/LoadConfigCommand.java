@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
+import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.ConfigFileCommandElement;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
@@ -35,6 +36,9 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
 import java.io.IOException;
 import java.nio.file.Path;
 import javax.annotation.Nonnull;
+
+import io.github.m0pt0pmatt.survivalgames.thread.DotProgressable;
+import io.github.m0pt0pmatt.survivalgames.thread.ProgressBuilder;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -66,30 +70,39 @@ public class LoadConfigCommand extends LeafCommand {
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
-        Path potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
-        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
+        ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
+                .runAsync(new DotProgressable(() -> {
+                    try {
+                        Path potentialFile = (Path) getOrThrow(args, CommandKeys.FILE_PATH);
+                        String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 
-        if (SurvivalGameRepository.contains(survivalGameName)) {
-            throw new CommandException(Text.of("Already exists a game of the same name"));
-        }
+                        if (SurvivalGameRepository.contains(survivalGameName)) {
+                            throw new CommandException(Text.of("Already exists a game of the same name"));
+                        }
 
-        ConfigurationLoader<CommentedConfigurationNode> loader =
-                HoconConfigurationLoader.builder().setPath(potentialFile).build();
-        try {
+                        ConfigurationLoader<CommentedConfigurationNode> loader =
+                                HoconConfigurationLoader.builder().setPath(potentialFile).build();
+                        try {
 
-            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
+                            CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
 
-            ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bindToNew();
-            GameConfig config = (GameConfig) i.populate(node);
-            SurvivalGame game = new SurvivalGame(survivalGameName, config);
-            SurvivalGameRepository.put(survivalGameName, game);
+                            ObjectMapper.BoundInstance i = GameConfig.OBJECT_MAPPER.bindToNew();
+                            GameConfig config = (GameConfig) i.populate(node);
+                            SurvivalGame game = new SurvivalGame(survivalGameName, config);
+                            SurvivalGameRepository.put(survivalGameName, game);
 
-        } catch (IOException | ObjectMappingException | RuntimeException e) {
-            e.printStackTrace();
-            throw new CommandException(Text.of("An error occurred when loading"));
-        }
+                        } catch (IOException | ObjectMappingException | RuntimeException e) {
+                            e.printStackTrace();
+                            throw new CommandException(Text.of("An error occurred when loading"));
+                        }
 
-        sendSuccess(src, "Survival Game Loaded", survivalGameName);
+                        sendSuccess(src, "Survival Game Loaded", survivalGameName);
+                    } catch (CommandException e) {
+                        throw new RuntimeException(e);
+                    }
+                }), "Loading", null)
+                .start();
+
         return CommandResult.success();
     }
 

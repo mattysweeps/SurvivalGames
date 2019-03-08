@@ -63,8 +63,8 @@ class AddSpectatorCommand extends LeafCommand {
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Player player = (Player) getOrThrow(args, CommandKeys.PLAYER);
 
-        if (survivalGame.getState() != SurvivalGameState.JOINABLE) {
-            throw new CommandException(Text.of("State must be " + SurvivalGameState.JOINABLE));
+        if (survivalGame.getState() != SurvivalGameState.READY) {
+            throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
         survivalGame.getSpectatorUUIDs().add(player.getUniqueId());

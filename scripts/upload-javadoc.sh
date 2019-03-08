@@ -6,6 +6,7 @@ git clone --single-branch --branch ${BRANCH_NAME} https://${GH_TOKEN}@github.com
 cd ${BRANCH_NAME}
 
 pwd
+ls -R ../build/
 
 # Remove existing docs
 echo "Removing existing docs"

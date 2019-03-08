@@ -24,24 +24,26 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.set;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
-
-import com.flowpowered.math.vector.Vector3d;
+import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import javax.annotation.Nonnull;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.tileentity.CommandBlock;
+import io.github.m0pt0pmatt.survivalgames.thread.BlankProgressable;
+import io.github.m0pt0pmatt.survivalgames.thread.ProgressBuilder;
+import io.github.m0pt0pmatt.survivalgames.thread.SetBlocksProgressable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.world.World;
+
+import javax.annotation.Nonnull;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
 class SetBlocksCommand extends LeafCommand {
 
@@ -57,36 +59,12 @@ class SetBlocksCommand extends LeafCommand {
             throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
-        GameConfig config = survivalGame.getConfig();
-        Vector3d lesserBoundary =
-                getOrThrow(config.getBlockArea().getLesserBoundary(), CommandKeys.LESSER_BOUNDARY);
-        Vector3d greaterBoundary =
-                getOrThrow(
-                        config.getBlockArea().getGreaterBoundary(), CommandKeys.GREATER_BOUNDARY);
-        String worldName = getOrThrow(config.getWorldName(), CommandKeys.WORLD_NAME);
-        World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
-        survivalGame.getBlocks().clear();
-        survivalGame.getCommandBlocks().clear();
+        ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
+                .runSync(new SetBlocksProgressable(survivalGame), "Setting Blocks", Duration.of(600, ChronoUnit.SECONDS))
+                .runSync(new BlankProgressable(() -> sendSuccess(src, "Set map blocks and command blocks")), "", Duration.of(600, ChronoUnit.SECONDS))
+                .start();
 
-        for (int x = lesserBoundary.getFloorX(); x < greaterBoundary.getFloorX() + 1; x++) {
-            for (int y = lesserBoundary.getFloorY(); y < greaterBoundary.getFloorY() + 1; y++) {
-                for (int z = lesserBoundary.getFloorZ(); z < greaterBoundary.getFloorZ() + 1; z++) {
-                    survivalGame.getBlocks().add(world.getLocation(x, y, z).createSnapshot());
-                }
-            }
-        }
-
-        world.getTileEntities()
-                .stream()
-                .filter(tileEntity -> tileEntity instanceof CommandBlock)
-                .forEach(
-                        tileEntity ->
-                                survivalGame.getCommandBlocks().add((CommandBlock) tileEntity));
-
-        survivalGame.setBlocksValid(true);
-
-        sendSuccess(src, "Set map blocks and command blocks");
         return CommandResult.success();
     }
 

@@ -38,7 +38,8 @@ public class StopSurvivalGameCommand extends AbstractStateCommand {
         super(
                 RootCommand.getInstance(),
                 "stop",
-                ImmutableSet.of(SurvivalGameState.RUNNING, SurvivalGameState.JOINABLE),
+                ImmutableSet.of(SurvivalGameState.RUNNING, SurvivalGameState.READY),
+                SurvivalGameState.STOPPED,
                 SurvivalGameStateManager::stop);
     }
 
