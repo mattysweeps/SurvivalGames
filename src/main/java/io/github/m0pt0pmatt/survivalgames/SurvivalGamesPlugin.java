@@ -50,7 +50,7 @@ import org.spongepowered.api.scheduler.SpongeExecutorService;
 @Plugin(
     id = "survival-games",
     name = "Survival Games",
-    version = "1.0.7",
+    version = "1.0.8",
     description = "Survival Games for Sponge."
 )
 public class SurvivalGamesPlugin {
