@@ -65,7 +65,6 @@ public class RootCommand extends ParentCommand {
                     .put(toEntry(JoinCommand.getInstance()))
                     .put(toEntry(LeaveCommand.getInstance()))
                     .put(toEntry(SpectateCommand.getInstance()))
-                    .put(toEntry(new TestCommand()))
                     .build();
 
     private static final SurvivalGamesCommand INSTANCE = new RootCommand();
