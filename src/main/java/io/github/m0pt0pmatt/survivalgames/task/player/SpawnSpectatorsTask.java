@@ -28,6 +28,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.survivalgames.game.PlayerRestorer;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,7 +69,7 @@ public class SpawnSpectatorsTask extends PlayerTask {
     private static void spawnPlayer(SurvivalGame survivalGame,
             Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
 
-        survivalGame.getPlayerSnapshots().put(player.getUniqueId(), player.createSnapshot());
+        survivalGame.getPlayerSnapshots().put(player.getUniqueId(), new PlayerRestorer(player));
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 10, 0.5)));
         player.lookAt(centerVector);
         player.offer(Keys.GAME_MODE, GameModes.SPECTATOR);

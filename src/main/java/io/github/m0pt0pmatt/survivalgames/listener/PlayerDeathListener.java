@@ -42,6 +42,7 @@ import org.spongepowered.api.event.cause.entity.damage.source.EntityDamageSource
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
@@ -120,6 +121,9 @@ public class PlayerDeathListener {
 
         // Post the death event
         Sponge.getEventManager().post(new PlayerDeathEvent(cause, survivalGame, player));
+
+        // Tell the poor player
+        player.sendMessage(Text.of("You were killed. Wait for the game to end."));
 
         // Check for a win condition.
         try {

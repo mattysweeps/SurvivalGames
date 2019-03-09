@@ -47,7 +47,7 @@ public class SurvivalGame {
     private final Set<CommandBlock> commandBlocks;
     private final Set<UUID> activeMobSpawners;
     private final Set<UUID> activeEventIntervals;
-    private final Map<UUID, EntitySnapshot> playerSnapshots;
+    private final Map<UUID, PlayerRestorer> playerSnapshots;
 
     public SurvivalGame(String name, GameConfig config) {
         this.name = checkNotNull(name);
@@ -102,7 +102,7 @@ public class SurvivalGame {
         return activeEventIntervals;
     }
 
-    public Map<UUID, EntitySnapshot> getPlayerSnapshots() {
+    public Map<UUID, PlayerRestorer> getPlayerSnapshots() {
         return playerSnapshots;
     }
 
