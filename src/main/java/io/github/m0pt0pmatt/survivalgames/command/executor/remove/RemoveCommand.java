@@ -35,19 +35,22 @@ import org.spongepowered.api.command.CommandCallable;
 
 public class RemoveCommand extends ParentCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new RemoveCommand();
-
-    private RemoveCommand() {
-        super(
-                RootCommand.getInstance(),
-                "remove",
+    private static final SurvivalGamesCommand INSTANCE;
+    static {
+        INSTANCE = new RemoveCommand();
+        ((RemoveCommand) INSTANCE).setChildren(
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(RemovePlayerCommand.getInstance()))
                         .put(toEntry(RemoveSpectatorCommand.getInstance()))
                         .put(toEntry(RemoveSpawnPointCommand.getInstance()))
                         .put(toEntry(RemoveMobSpawnAreaCommand.getInstance()))
                         .put(toEntry(RemoveEventIntervalsCommand.getInstance()))
-                        .build());
+                        .build()
+        );
+    }
+
+    private RemoveCommand() {
+        super(RootCommand.getInstance(), "remove");
     }
 
     public static SurvivalGamesCommand getInstance() {

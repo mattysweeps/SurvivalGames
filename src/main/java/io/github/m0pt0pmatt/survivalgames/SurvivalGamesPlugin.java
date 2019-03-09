@@ -50,7 +50,7 @@ import org.spongepowered.api.scheduler.SpongeExecutorService;
 @Plugin(
     id = "survival-games",
     name = "Survival Games",
-    version = "1.0.10",
+    version = "1.0.11",
     description = "Survival Games for Sponge."
 )
 public class SurvivalGamesPlugin {
@@ -80,10 +80,11 @@ public class SurvivalGamesPlugin {
 
         // Register the root command.
         // All other commands exist under the root command.
+        RootCommand rootCommand = RootCommand.getInstance();
         Sponge.getCommandManager()
                 .register(
                         this,
-                        toCommandCallable(RootCommand.getInstance()),
+                        toCommandCallable(rootCommand),
                         RootCommand.getInstance().getAliases());
 
         // Create an executor

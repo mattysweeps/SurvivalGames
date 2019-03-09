@@ -38,39 +38,40 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.state.StartSurvivalGa
 import io.github.m0pt0pmatt.survivalgames.command.executor.state.StopSurvivalGameCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.unset.UnsetCommand;
 import java.util.List;
-import java.util.Map;
 import org.spongepowered.api.command.CommandCallable;
 
 public class RootCommand extends ParentCommand {
 
-    private static final Map<List<String>, CommandCallable> TOP_LEVEL_CHILDREN =
-            ImmutableMap.<List<String>, CommandCallable>builder()
-                    .put(toEntry(AddCommand.getInstance()))
-                    .put(toEntry(CreateGameCommand.getInstance()))
-                    .put(toEntry(DeleteGameCommand.getInstance()))
-                    .put(toEntry(ListGamesCommand.getInstance()))
-                    .put(toEntry(PrintCommand.getInstance()))
-                    .put(toEntry(RemoveCommand.getInstance()))
-                    .put(toEntry(SetCommand.getInstance()))
-                    .put(toEntry(UnsetCommand.getInstance()))
-                    .put(toEntry(ReadySurvivalGameCommand.getInstance()))
-                    .put(toEntry(StartSurvivalGameCommand.getInstance()))
-                    .put(toEntry(StopSurvivalGameCommand.getInstance()))
-                    .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
-                    .put(toEntry(LoadConfigCommand.getInstance()))
-                    .put(toEntry(SaveConfigCommand.getInstance()))
-                    .put(toEntry(EventCommand.getInstance()))
-                    .put(toEntry(DemoCommand.getInstance()))
-                    .put(toEntry(TeleportCommand.getInstance()))
-                    .put(toEntry(JoinCommand.getInstance()))
-                    .put(toEntry(LeaveCommand.getInstance()))
-                    .put(toEntry(SpectateCommand.getInstance()))
-                    .build();
-
-    private static final SurvivalGamesCommand INSTANCE = new RootCommand();
+    private static final RootCommand INSTANCE = new RootCommand();
+    static {
+        INSTANCE.setChildren(
+                ImmutableMap.<List<String>, CommandCallable>builder()
+                        .put(toEntry(AddCommand.getInstance()))
+                        .put(toEntry(CreateGameCommand.getInstance()))
+                        .put(toEntry(DeleteGameCommand.getInstance()))
+                        .put(toEntry(ListGamesCommand.getInstance()))
+                        .put(toEntry(PrintCommand.getInstance()))
+                        .put(toEntry(RemoveCommand.getInstance()))
+                        .put(toEntry(SetCommand.getInstance()))
+                        .put(toEntry(UnsetCommand.getInstance()))
+                        .put(toEntry(ReadySurvivalGameCommand.getInstance()))
+                        .put(toEntry(StartSurvivalGameCommand.getInstance()))
+                        .put(toEntry(StopSurvivalGameCommand.getInstance()))
+                        .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
+                        .put(toEntry(LoadConfigCommand.getInstance()))
+                        .put(toEntry(SaveConfigCommand.getInstance()))
+                        .put(toEntry(EventCommand.getInstance()))
+                        .put(toEntry(DemoCommand.getInstance()))
+                        .put(toEntry(TeleportCommand.getInstance()))
+                        .put(toEntry(JoinCommand.getInstance()))
+                        .put(toEntry(LeaveCommand.getInstance()))
+                        .put(toEntry(SpectateCommand.getInstance()))
+                        .build()
+        );
+    }
 
     private RootCommand() {
-        super("ssg", TOP_LEVEL_CHILDREN);
+        super("ssg");
     }
 
     @Override
@@ -78,7 +79,7 @@ public class RootCommand extends ParentCommand {
         return "ssg";
     }
 
-    public static SurvivalGamesCommand getInstance() {
+    public static RootCommand getInstance() {
         return INSTANCE;
     }
 }

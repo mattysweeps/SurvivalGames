@@ -35,12 +35,10 @@ import org.spongepowered.api.command.CommandCallable;
 
 public class PrintCommand extends ParentCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new PrintCommand();
-
-    private PrintCommand() {
-        super(
-                RootCommand.getInstance(),
-                "print",
+    private static final SurvivalGamesCommand INSTANCE;
+    static {
+        INSTANCE = new PrintCommand();
+        ((PrintCommand) INSTANCE).setChildren(
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(PrintBoundariesCommand.getInstance()))
                         .put(toEntry(PrintCenterLocationCommand.getInstance()))
@@ -54,7 +52,12 @@ public class PrintCommand extends ParentCommand {
                         .put(toEntry(PrintSurvivalGameStateCommand.getInstance()))
                         .put(toEntry(PrintWorldNameCommand.getInstance()))
                         .put(toEntry(PrintEventIntervalsCommand.getInstance()))
-                        .build());
+                        .build()
+        );
+    }
+
+    private PrintCommand() {
+        super(RootCommand.getInstance(), "print");
     }
 
     public static SurvivalGamesCommand getInstance() {

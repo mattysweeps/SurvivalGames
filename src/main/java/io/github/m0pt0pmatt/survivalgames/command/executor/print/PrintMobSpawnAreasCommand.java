@@ -40,7 +40,6 @@ class PrintMobSpawnAreasCommand extends AbstractPrintCommand {
         super(
                 "mob-spawn-area",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame ->
                         Optional.of(
                                 Text.joinWith(

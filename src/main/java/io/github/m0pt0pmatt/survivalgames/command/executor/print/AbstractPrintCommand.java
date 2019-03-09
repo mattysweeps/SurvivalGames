@@ -24,19 +24,9 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
-
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import javax.annotation.Nonnull;
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -44,16 +34,23 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.text.Text;
 
-class AbstractPrintCommand extends BaseCommand {
+import javax.annotation.Nonnull;
+import java.util.Optional;
+import java.util.function.Function;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
+
+class AbstractPrintCommand extends LeafCommand {
 
     private final Function<SurvivalGame, Optional<Text>> function;
 
     AbstractPrintCommand(
             String name,
             CommandElement arguments,
-            Map<List<String>, CommandCallable> children,
             Function<SurvivalGame, Optional<Text>> function) {
-        super(PrintCommand.getInstance(), name, arguments, children);
+        super(PrintCommand.getInstance(), name, arguments);
         this.function = checkNotNull(function, "function");
     }
 

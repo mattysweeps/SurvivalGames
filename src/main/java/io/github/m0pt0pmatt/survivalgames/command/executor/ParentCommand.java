@@ -25,6 +25,7 @@
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,19 +38,24 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class ParentCommand extends BaseCommand {
 
-    private final Text chooseChildMessage;
+    private Text chooseChildMessage;
+    private Map<List<String>, CommandCallable> children = new HashMap<>();
 
-    ParentCommand(String name, Map<List<String>, CommandCallable> children) {
-        this(null, name, children);
+    ParentCommand(String name) {
+        this(null, name);
     }
 
     protected ParentCommand(
             SurvivalGamesCommand parentCommand,
-            String name,
-            Map<List<String>, CommandCallable> children) {
-        super(parentCommand, name, GenericArguments.none(), children);
+            String name) {
+        super(parentCommand, name, GenericArguments.none());
+    }
+
+    protected void setChildren(Map<List<String>, CommandCallable> children){
         chooseChildMessage =
                 Text.of("Select a child command: ")
                         .concat(
@@ -60,6 +66,18 @@ public abstract class ParentCommand extends BaseCommand {
                                                 .flatMap(Collection::stream)
                                                 .map(Text::of)
                                                 .collect(Collectors.toList())));
+        children.forEach(
+                (aliasList, element) -> {
+                    checkNotNull(aliasList, "aliasList");
+                    checkNotNull(element, "childCommand");
+                    aliasList.forEach(alias -> checkNotNull(alias, "alias"));
+                });
+        this.children = children;
+    }
+
+    @Override
+    public final Map<List<String>, CommandCallable> getChildren() {
+        return children;
     }
 
     @Nonnull

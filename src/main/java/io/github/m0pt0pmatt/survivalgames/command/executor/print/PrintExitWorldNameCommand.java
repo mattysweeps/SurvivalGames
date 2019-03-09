@@ -37,7 +37,6 @@ class PrintExitWorldNameCommand extends AbstractPrintCommand {
         super(
                 "exit-world-name",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getExitWorldName().map(Text::of));
     }
 

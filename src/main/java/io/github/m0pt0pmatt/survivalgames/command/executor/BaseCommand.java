@@ -36,29 +36,20 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
 
     private final List<String> aliases;
     private final CommandElement arguments;
-    private final Map<List<String>, CommandCallable> children;
     private final SurvivalGamesCommand parentCommand;
 
     protected BaseCommand(
             String name, CommandElement arguments, Map<List<String>, CommandCallable> children) {
-        this(null, name, arguments, children);
+        this(null, name, arguments);
     }
 
     protected BaseCommand(
             SurvivalGamesCommand parentCommand,
             String name,
-            CommandElement arguments,
-            Map<List<String>, CommandCallable> children) {
+            CommandElement arguments) {
         this.parentCommand = parentCommand;
         this.aliases = Collections.singletonList(checkNotNull(name, "name"));
         this.arguments = checkNotNull(arguments, "arguments");
-        this.children = checkNotNull(children, "children");
-        children.forEach(
-                (aliasList, element) -> {
-                    checkNotNull(aliasList, "aliasList");
-                    checkNotNull(element, "childCommand");
-                    aliasList.forEach(alias -> checkNotNull(alias, "alias"));
-                });
     }
 
     @Override
@@ -69,11 +60,6 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     @Override
     public final CommandElement getArguments() {
         return arguments;
-    }
-
-    @Override
-    public final Map<List<String>, CommandCallable> getChildren() {
-        return children;
     }
 
     @Override

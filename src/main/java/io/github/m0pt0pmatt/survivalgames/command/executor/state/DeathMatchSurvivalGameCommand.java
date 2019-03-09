@@ -24,26 +24,26 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.state;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
-
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
-import io.github.m0pt0pmatt.survivalgames.command.executor.BaseCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.LeafCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameStateManager;
-import java.util.Collections;
-import javax.annotation.Nonnull;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.text.Text;
 
-public class DeathMatchSurvivalGameCommand extends BaseCommand {
+import javax.annotation.Nonnull;
+
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
+
+public class DeathMatchSurvivalGameCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new DeathMatchSurvivalGameCommand();
 
@@ -51,8 +51,7 @@ public class DeathMatchSurvivalGameCommand extends BaseCommand {
         super(
                 RootCommand.getInstance(),
                 "death-match",
-                SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap());
+                SurvivalGameCommandElement.getInstance());
     }
 
     @Nonnull

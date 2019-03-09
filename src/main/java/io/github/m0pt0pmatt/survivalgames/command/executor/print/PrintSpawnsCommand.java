@@ -40,7 +40,6 @@ class PrintSpawnsCommand extends AbstractPrintCommand {
         super(
                 "spawns",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame ->
                         Optional.of(
                                 Text.joinWith(

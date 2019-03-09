@@ -37,7 +37,6 @@ class PrintExitVectorCommand extends AbstractPrintCommand {
         super(
                 "exit-vector",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getExitVector().map(Text::of));
     }
 

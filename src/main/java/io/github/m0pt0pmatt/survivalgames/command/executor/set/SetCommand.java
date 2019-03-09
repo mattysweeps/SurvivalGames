@@ -35,12 +35,10 @@ import org.spongepowered.api.command.CommandCallable;
 
 public class SetCommand extends ParentCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new SetCommand();
-
-    private SetCommand() {
-        super(
-                RootCommand.getInstance(),
-                "set",
+    private static final SurvivalGamesCommand INSTANCE;
+    static {
+        INSTANCE = new SetCommand();
+        ((SetCommand) INSTANCE).setChildren(
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(SetBlocksCommand.getInstance()))
                         .put(toEntry(SetBoundaryCommand.getInstance()))
@@ -53,6 +51,10 @@ public class SetCommand extends ParentCommand {
                         .put(toEntry(SetPlayerLimitCommand.getInstance()))
                         .put(toEntry(SetWorldNameCommand.getInstance()))
                         .build());
+    }
+
+    private SetCommand() {
+        super(RootCommand.getInstance(), "set");
     }
 
     public static SurvivalGamesCommand getInstance() {

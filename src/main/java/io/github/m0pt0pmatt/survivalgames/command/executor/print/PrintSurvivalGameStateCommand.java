@@ -38,7 +38,6 @@ class PrintSurvivalGameStateCommand extends AbstractPrintCommand {
         super(
                 "state",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame -> Optional.of(survivalGame.getState()).map(Text::of));
     }
 

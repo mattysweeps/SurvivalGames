@@ -38,7 +38,6 @@ class PrintEventIntervalsCommand extends AbstractPrintCommand {
         super(
                 "event-intervals",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame ->
                         Optional.of(
                                 Text.joinWith(

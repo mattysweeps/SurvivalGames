@@ -39,7 +39,6 @@ class PrintBoundariesCommand extends AbstractPrintCommand {
         super(
                 "boundaries",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame ->
                         Stream.of(
                                         survivalGame.getConfig().getBlockArea().getLesserBoundary(),

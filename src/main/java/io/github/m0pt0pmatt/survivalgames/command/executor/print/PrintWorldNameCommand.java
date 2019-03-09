@@ -37,7 +37,6 @@ class PrintWorldNameCommand extends AbstractPrintCommand {
         super(
                 "world-name",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getWorldName().map(Text::of));
     }
 

@@ -35,12 +35,10 @@ import org.spongepowered.api.command.CommandCallable;
 
 public class AddCommand extends ParentCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new AddCommand();
-
-    private AddCommand() {
-        super(
-                RootCommand.getInstance(),
-                "add",
+    private static final SurvivalGamesCommand INSTANCE;
+    static {
+        INSTANCE = new AddCommand();
+        ((AddCommand) INSTANCE).setChildren(
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(AddItemCommand.getInstance()))
                         .put(toEntry(AddItemInHandCommand.getInstance()))
@@ -49,7 +47,12 @@ public class AddCommand extends ParentCommand {
                         .put(toEntry(AddSpectatorCommand.getInstance()))
                         .put(toEntry(AddSpawnPointCommand.getInstance()))
                         .put(toEntry(AddEventIntervalCommand.getInstance()))
-                        .build());
+                        .build()
+        );
+    }
+
+    private AddCommand() {
+        super(RootCommand.getInstance(), "add");
     }
 
     public static SurvivalGamesCommand getInstance() {

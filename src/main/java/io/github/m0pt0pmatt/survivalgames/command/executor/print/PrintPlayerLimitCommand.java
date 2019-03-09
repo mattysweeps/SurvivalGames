@@ -37,7 +37,6 @@ class PrintPlayerLimitCommand extends AbstractPrintCommand {
         super(
                 "player-limit",
                 SurvivalGameCommandElement.getInstance(),
-                Collections.emptyMap(),
                 survivalGame -> survivalGame.getConfig().getPlayerLimit().map(Text::of));
     }
 

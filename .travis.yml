@@ -11,6 +11,7 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+    name: "${TRAVIS_TAG}"
   - provider: script
     script: bash scripts/deploy.sh
     skip_cleanup: true

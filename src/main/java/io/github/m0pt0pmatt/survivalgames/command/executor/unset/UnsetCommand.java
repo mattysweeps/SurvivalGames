@@ -35,12 +35,10 @@ import org.spongepowered.api.command.CommandCallable;
 
 public class UnsetCommand extends ParentCommand {
 
-    private static final SurvivalGamesCommand INSTANCE = new UnsetCommand();
-
-    private UnsetCommand() {
-        super(
-                RootCommand.getInstance(),
-                "unset",
+    private static final SurvivalGamesCommand INSTANCE;
+    static {
+        INSTANCE = new UnsetCommand();
+        ((UnsetCommand) INSTANCE).setChildren(
                 ImmutableMap.<List<String>, CommandCallable>builder()
                         .put(toEntry(UnsetBoundariesCommand.getInstance()))
                         .put(toEntry(UnsetCenterLocationCommand.getInstance()))
@@ -49,7 +47,12 @@ public class UnsetCommand extends ParentCommand {
                         .put(toEntry(UnsetExitWorldNameCommand.getInstance()))
                         .put(toEntry(UnsetPlayerLimitCommand.getInstance()))
                         .put(toEntry(UnsetWorldNameCommand.getInstance()))
-                        .build());
+                        .build()
+        );
+    }
+
+    private UnsetCommand() {
+        super(RootCommand.getInstance(), "unset");
     }
 
     public static SurvivalGamesCommand getInstance() {
