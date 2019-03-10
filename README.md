@@ -9,6 +9,8 @@ This plugin was created for the Sponge Summer Plugin Competition 2016.
 # Demo
 NOTE: Players participating in the demo must be opped.
 
+NOTE: you must have command blocks enabled in your server.properties so you can see the cool stuff.
+
 Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command replaces your world with another one (still working out bugs), so please run it on a fresh server.
 Run these commands to get the server running:
 - ```/ssg demo```
