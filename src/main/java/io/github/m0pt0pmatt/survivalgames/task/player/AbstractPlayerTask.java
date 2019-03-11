@@ -22,23 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.github.m0pt0pmatt.survivalgames.task;
+package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.survivalgames.task.Task;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
-/** Clears players and spectators from the game. */
-public class ClearPlayersTask implements Task {
-
-    private static final Task INSTANCE = new ClearPlayersTask();
+/**
+ * A Task which does work per player. General work can be done before and after the player specific
+ * work by overriding the {@link AbstractPlayerTask#before(SurvivalGame)} and {@link
+ * AbstractPlayerTask#after(SurvivalGame)} (SurvivalGame)} methods.
+ */
+public abstract class AbstractPlayerTask implements Task {
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
-        survivalGame.clearPlayerUUIDs();
-        survivalGame.clearSpectatorUUIDs();
+    public final void execute(SurvivalGame survivalGame) throws TextMessageException {
+        before(survivalGame);
+        run(survivalGame);
+        after(survivalGame);
     }
 
-    public static Task getInstance() {
-        return INSTANCE;
-    }
+    public abstract void execute(SurvivalGame survivalGame, Player player)
+            throws TextMessageException;
+
+    protected void before(SurvivalGame survivalGame) throws TextMessageException {}
+
+    protected abstract void run(SurvivalGame survivalGame) throws TextMessageException;
+
+    protected void after(SurvivalGame survivalGame) throws TextMessageException {}
 }

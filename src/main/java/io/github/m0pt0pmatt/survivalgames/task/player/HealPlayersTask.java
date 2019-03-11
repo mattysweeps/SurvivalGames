@@ -33,27 +33,17 @@ import org.spongepowered.api.util.TextMessageException;
 /** Restore health, hunger, and exhaustion for players. */
 public class HealPlayersTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new HealPlayersTask();
+    private static final AbstractPlayerTask INSTANCE = new HealPlayersTask();
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        survivalGame
-                .getPlayerUUIDs()
-                .forEach(
-                        playerId ->
-                                Sponge.getServer()
-                                        .getPlayer(playerId)
-                                        .ifPresent(HealPlayersTask::healPlayer));
-    }
-
-    private static void healPlayer(Player player) {
         player.offer(Keys.HEALTH, 20.0);
         player.offer(Keys.EXHAUSTION, 0.0);
         player.offer(Keys.FOOD_LEVEL, 20);
         player.offer(Keys.SATURATION, 20.0);
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

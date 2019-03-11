@@ -45,7 +45,7 @@ import java.time.temporal.ChronoUnit;
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
-class SetBlocksCommand extends LeafCommand {
+public class SetBlocksCommand extends LeafCommand {
 
     private static final SurvivalGamesCommand INSTANCE = new SetBlocksCommand();
 
@@ -68,7 +68,7 @@ class SetBlocksCommand extends LeafCommand {
         return CommandResult.success();
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static SurvivalGamesCommand getInstance() {
         return INSTANCE;
     }
 }

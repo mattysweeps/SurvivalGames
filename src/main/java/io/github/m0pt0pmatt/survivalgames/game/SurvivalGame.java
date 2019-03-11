@@ -25,12 +25,19 @@
 
 package io.github.m0pt0pmatt.survivalgames.game;
 
+import com.google.common.collect.ImmutableSet;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.CommandBlock;
-import org.spongepowered.api.entity.EntitySnapshot;
-import org.spongepowered.api.world.BlockChangeFlags;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.channel.MessageChannel;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -48,6 +55,7 @@ public class SurvivalGame {
     private final Set<UUID> activeMobSpawners;
     private final Set<UUID> activeEventIntervals;
     private final Map<UUID, PlayerRestorer> playerSnapshots;
+    private final MessageChannel messageChannel;
 
     public SurvivalGame(String name, GameConfig config) {
         this.name = checkNotNull(name);
@@ -60,6 +68,12 @@ public class SurvivalGame {
         activeMobSpawners = new HashSet<>();
         activeEventIntervals = new HashSet<>();
         playerSnapshots = new HashMap<>();
+        messageChannel = MessageChannel.combined(MessageChannel.TO_CONSOLE, () -> Stream.of(playerUUIDs, spectatorUUIDs)
+                .flatMap(Collection::stream)
+                .map(uuid -> Sponge.getServer().getPlayer(uuid))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList()));
     }
 
     public SurvivalGame(String name) {
@@ -82,12 +96,50 @@ public class SurvivalGame {
         return config;
     }
 
-    public Set<UUID> getPlayerUUIDs() {
-        return playerUUIDs;
+    public void forEachPlayer(Consumer<? super UUID> action) {
+        playerUUIDs.forEach(action);
     }
 
-    public Set<UUID> getSpectatorUUIDs() {
-        return spectatorUUIDs;
+    public void addPlayer(Player player) {
+        playerUUIDs.add(player.getUniqueId());
+        sendMessage(Text.of(player.getName(), " joined the game"));
+    }
+
+    public void clearPlayerUUIDs() {
+        playerUUIDs.clear();
+    }
+
+    public void removePlayer(UUID uuid) {
+        playerUUIDs.remove(uuid);
+    }
+
+    public int getPlayerCount() {
+        return playerUUIDs.size();
+    }
+
+    public boolean containsPlayer(UUID uuid) {
+        return playerUUIDs.contains(uuid);
+    }
+
+    public void forEachSpectator(Consumer<? super UUID> action) {
+        spectatorUUIDs.forEach(action);
+    }
+
+    public void addSpectator(Player player) {
+        spectatorUUIDs.add(player.getUniqueId());
+        messageChannel.send(Text.of(player.getName(), " now spectating the game"));
+    }
+
+    public boolean containsSpectator(UUID uuid) {
+        return spectatorUUIDs.contains(uuid);
+    }
+
+    public void removeSpectator(UUID uuid) {
+        spectatorUUIDs.remove(uuid);
+    }
+
+    public void clearSpectatorUUIDs() {
+        spectatorUUIDs.clear();
     }
 
     public Set<CommandBlock> getCommandBlocks() {
@@ -106,7 +158,24 @@ public class SurvivalGame {
         return playerSnapshots;
     }
 
-    public void restoreBlocks() {
-        getConfig().getBlocks().forEach(blockSnapshot -> blockSnapshot.restore(true, BlockChangeFlags.ALL));
+    public MessageChannel getMessageChannel() {
+        return messageChannel;
+    }
+
+    public void sendMessage(Text text) {
+        messageChannel.send(Text.of(TextColors.YELLOW, "[ssg:", getName(), "] ", TextColors.GRAY, text));
+    }
+
+    public Text printPlayers() {
+        return Text.joinWith(
+                Text.of('\n'),
+                playerUUIDs
+                        .stream()
+                        .map(id -> Sponge.getServer().getPlayer(id))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(Player::getName)
+                        .map(Text::of)
+                        .collect(Collectors.toList()));
     }
 }

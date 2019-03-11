@@ -60,21 +60,11 @@ public class SurvivalGameEventListener {
 
                         if (event instanceof PlayerEvent) {
                             String originalCommand = storedCommand.get();
-                            String restOfCommand =
-                                    storedCommand
-                                            .get()
-                                            .substring(
-                                                    COMMAND_BLOCK_STRING.length()
-                                                            + commandBlockCommandName.length()
-                                                            + 1);
-                            String newCommand =
-                                    COMMAND_BLOCK_STRING
-                                            + commandBlockCommandName
-                                            + " "
-                                            + ((PlayerEvent) event).getPlayer().getName()
-                                            + " "
-                                            + restOfCommand;
-                            storedCommand.set(newCommand);
+
+                            // Strip off "/ssg event [evant]" to get the real command
+                            String actual = storedCommand.get()
+                                    .substring(COMMAND_BLOCK_STRING.length() + commandBlockCommandName.length() + 1);
+                            storedCommand.set(actual);
                             commandBlock.execute();
                             storedCommand.set(originalCommand);
                         } else {

@@ -33,17 +33,17 @@ import java.util.concurrent.TimeUnit;
 
 public class DelayedPlayerTask extends PlayerTask {
 
-    private final PlayerTask task;
+    private final AbstractPlayerTask task;
     private final long delay;
     private final TimeUnit timeUnit;
 
-    private DelayedPlayerTask(PlayerTask task, long delay, TimeUnit timeUnit) {
+    private DelayedPlayerTask(AbstractPlayerTask task, long delay, TimeUnit timeUnit) {
         this.task = task;
         this.delay = delay;
         this.timeUnit = timeUnit;
     }
 
-    public static PlayerTask of(PlayerTask task, long delay, TimeUnit timeUnit) {
+    public static AbstractPlayerTask of(AbstractPlayerTask task, long delay, TimeUnit timeUnit) {
         return new DelayedPlayerTask(task, delay, timeUnit);
     }
 

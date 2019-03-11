@@ -31,9 +31,10 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.PlayerRestorer;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
+
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
@@ -42,9 +43,9 @@ import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
 /** Spawns spectators. */
-public class SpawnSpectatorsTask extends PlayerTask {
+public class SpawnSpectatorsTask extends SpectatorTask {
 
-    private static final PlayerTask INSTANCE = new SpawnSpectatorsTask();
+    private static final AbstractPlayerTask INSTANCE = new SpawnSpectatorsTask();
 
     private List<Vector3d> spawnPoints;
     private Vector3d centerVector;
@@ -82,12 +83,7 @@ public class SpawnSpectatorsTask extends PlayerTask {
                 getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 
-    @Override
-    protected Collection<UUID> getPlayerIds(SurvivalGame survivalGame) {
-        return survivalGame.getSpectatorUUIDs();
-    }
-
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

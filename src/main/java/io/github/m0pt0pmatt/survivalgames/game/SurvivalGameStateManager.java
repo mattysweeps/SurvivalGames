@@ -46,17 +46,13 @@ public class SurvivalGameStateManager {
 
     private static final List<Task> START_TASKS =
             Arrays.asList(
+                    SetCommandBlocksTask.getInstance(),
                     FillChestsTask.getInstance(),
                     CreateCageSnapshotsTask.getInstance(),
                     SpawnPlayersTask.getInstance(),
                     HealPlayersTask.getInstance(),
                     SpawnSpectatorsTask.getInstance(),
-                    survivalGame -> {
-                        CreateCountdownTask.getInstance()
-                                .execute(survivalGame, survivalGame.getPlayerUUIDs());
-                        CreateCountdownTask.getInstance()
-                                .execute(survivalGame, survivalGame.getSpectatorUUIDs());
-                    },
+                    CreateCountdownTask.getInstance(),
                     CreateScoreboardTask.getInstance(),
                     CreateWorldBorderTask.getInstance(),
                     StartEventIntervalsTask.getInstance(),

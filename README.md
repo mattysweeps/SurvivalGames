@@ -11,13 +11,11 @@ NOTE: Players participating in the demo must be opped.
 
 NOTE: you must have command blocks enabled in your server.properties so you can see the cool stuff.
 
-Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. BE WARNED: running this command replaces your world with another one (still working out bugs), so please run it on a fresh server.
+Installing the plugin on your server gives you instant access to survival games. just run ```/ssg demo``` to have the demo worlds and config files automatically downloaded. I'm still working out bugs, so please run it on a fresh server.
 Run these commands to get the server running:
 - ```/ssg demo```
-- ```/ssg load demo demo.yml```
-- ```/ssg set blocks demo```
-- ```/ssg ready demo```
-- For each player: ```/ssg add player demo <player>```
+- Wait for all steps to be completed
+- For each player: ```/ssg add player demo <player>``` or for youself: ```/ssg join demo```
 - ```/ssg start demo```
 
 # Commands

@@ -66,7 +66,7 @@ class RemoveSpectatorCommand extends LeafCommand {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
-        if (!survivalGame.getPlayerUUIDs().contains(player.getUniqueId())) {
+        if (!survivalGame.containsSpectator(player.getUniqueId())) {
             throw new CommandException(
                     Text.of(
                             "Player "
@@ -75,7 +75,7 @@ class RemoveSpectatorCommand extends LeafCommand {
                                     + survivalGame.getName()));
         }
 
-        survivalGame.getSpectatorUUIDs().remove(player.getUniqueId());
+        survivalGame.removeSpectator(player.getUniqueId());
 
         src.sendMessage(Text.of("Removed spectator", player.getName()));
         return CommandResult.success();

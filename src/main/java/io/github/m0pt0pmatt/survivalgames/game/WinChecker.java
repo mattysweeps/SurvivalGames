@@ -24,15 +24,12 @@
  */
 package io.github.m0pt0pmatt.survivalgames.game;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-
 import io.github.m0pt0pmatt.survivalgames.task.DelayedTask;
 import io.github.m0pt0pmatt.survivalgames.task.player.CelebrateWinnerTask;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
+
+import java.util.concurrent.TimeUnit;
 
 /** Checks for win conditions for a Survival Game */
 public class WinChecker {
@@ -42,21 +39,21 @@ public class WinChecker {
     private WinChecker() {}
 
     public static void checkWin(SurvivalGame survivalGame) throws TextMessageException {
-        if (survivalGame.getPlayerUUIDs().size() <= 1) {
+        if (survivalGame.getPlayerCount() <= 1) {
 
             // If there is a winner
-            if (survivalGame.getPlayerUUIDs().size() == 1) {
-                UUID winnerId = survivalGame.getPlayerUUIDs().iterator().next();
-                Player winner = getOrThrow(Sponge.getServer().getPlayer(winnerId), "winner");
-                CelebrateWinnerTask.getInstance().execute(survivalGame, winner);
+            if (survivalGame.getPlayerCount() == 1) {
+                survivalGame.forEachPlayer(winnerId -> Sponge.getServer().getPlayer(winnerId).ifPresent(p -> {
+                    try {
+                        CelebrateWinnerTask.getInstance().execute(survivalGame, p);
+                    } catch (TextMessageException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }));
             }
 
             // Stop the game
-            DelayedTask.of(
-                            SurvivalGameStateManager::stop,
-                            CELEBRATE_DELAY_SECONDS,
-                            TimeUnit.SECONDS)
-                    .execute(survivalGame);
+            DelayedTask.of(SurvivalGameStateManager::stop, CELEBRATE_DELAY_SECONDS, TimeUnit.SECONDS).execute(survivalGame);
         }
     }
 }

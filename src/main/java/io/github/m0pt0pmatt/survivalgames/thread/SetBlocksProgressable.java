@@ -30,7 +30,6 @@ import com.google.common.collect.Lists;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockSnapshot;
-import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class SetBlocksProgressable extends PercentageProgressable {
         setBlocks();
     }
 
-    public void setBlocks() {
+    private void setBlocks() {
         Vector3d lesser = survivalGame.getConfig().getBlockArea().getLesserBoundary().orElseThrow(() -> new IllegalStateException("Missing boundaries"));
         Vector3d greater = survivalGame.getConfig().getBlockArea().getGreaterBoundary().orElseThrow(() -> new IllegalStateException("Missing boundaries"));
 
@@ -73,10 +72,5 @@ public class SetBlocksProgressable extends PercentageProgressable {
         }
 
         survivalGame.getConfig().setBlocks(blocks);
-
-        world.getTileEntities()
-                .stream()
-                .filter(tileEntity -> tileEntity instanceof CommandBlock)
-                .forEach(tileEntity -> survivalGame.getCommandBlocks().add((CommandBlock) tileEntity));
     }
 }

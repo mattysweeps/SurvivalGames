@@ -71,7 +71,8 @@ public class CreateWorldBorderTask implements Task {
 
         worldBorder.setCenter(xMiddle, zMiddle);
         worldBorder.setDiameter(diameter);
-        worldBorder.setWarningDistance(0);
+        worldBorder.setWarningDistance(5);
+        worldBorder.setDamageThreshold(0);
     }
 
     public static Task getInstance() {

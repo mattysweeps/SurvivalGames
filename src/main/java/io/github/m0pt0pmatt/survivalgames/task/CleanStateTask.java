@@ -39,8 +39,8 @@ public class CleanStateTask implements Task {
     @Override
     public void execute(SurvivalGame survivalGame) throws TextMessageException {
         survivalGame.getPlayerSnapshots().clear();
-        survivalGame.getPlayerUUIDs().clear();
-        survivalGame.getSpectatorUUIDs().clear();
+        survivalGame.clearPlayerUUIDs();
+        survivalGame.clearSpectatorUUIDs();
         survivalGame.getCommandBlocks().clear();
         survivalGame.getActiveMobSpawners().clear();
         survivalGame.getActiveEventIntervals().clear();

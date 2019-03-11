@@ -42,9 +42,9 @@ import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.util.TextMessageException;
 
 /** Create countdown titles for the start of the game . */
-public class CreateCountdownTask extends PlayerTask {
+public class CreateCountdownTask extends PlayerAndSpectatorTask {
 
-    private static final PlayerTask INSTANCE = new CreateCountdownTask();
+    private static final AbstractPlayerTask INSTANCE = new CreateCountdownTask();
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
@@ -80,7 +80,7 @@ public class CreateCountdownTask extends PlayerTask {
                 TimeUnit.SECONDS);
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

@@ -44,7 +44,7 @@ import org.spongepowered.api.world.World;
 /** Spawns players. */
 public class SpawnPlayersTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new SpawnPlayersTask();
+    private static final AbstractPlayerTask INSTANCE = new SpawnPlayersTask();
 
     private List<Vector3d> spawnPoints;
     private Vector3d centerVector;
@@ -84,7 +84,7 @@ public class SpawnPlayersTask extends PlayerTask {
                 getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

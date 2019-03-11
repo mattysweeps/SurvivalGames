@@ -27,7 +27,9 @@ package io.github.m0pt0pmatt.survivalgames.command.executor;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.RecursiveDeleteOption;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
-import io.github.m0pt0pmatt.survivalgames.thread.DotProgressable;
+import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
+import io.github.m0pt0pmatt.survivalgames.command.executor.set.SetBlocksCommand;
+import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRepository;
 import io.github.m0pt0pmatt.survivalgames.thread.ProgressBuilder;
 import io.github.m0pt0pmatt.survivalgames.thread.UnzipRunnable;
 import io.github.m0pt0pmatt.survivalgames.thread.UrlDownloadRunnable;
@@ -65,7 +67,7 @@ class DemoCommand extends LeafCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
-    private static final String DEMO_MAP_OBJECT = "ssg-demo-map_v3.zip";
+    private static final String DEMO_MAP_OBJECT = "ssg-demo-map_v4.zip";
 
     private static final String DEMO_MAP_WORLD_NAME = "ssg-demo-map";
 
@@ -88,69 +90,23 @@ class DemoCommand extends LeafCommand {
             throw new CommandException(Text.of("Bad url"), e);
         }
 
-        UrlDownloadRunnable urlDownloadRunnable = new UrlDownloadRunnable(url, DEMO_MAP_OBJECT, 24869722);
-        Runnable unzipRunnable = () -> {
-
-            File existing = new File(Sponge.getServer().getDefaultWorldName(), DEMO_MAP_WORLD_NAME);
-            if (existing.exists()) {
-                try {
-                    MoreFiles.deleteRecursively(existing.toPath(), RecursiveDeleteOption.ALLOW_INSECURE);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            new UnzipRunnable(DEMO_MAP_OBJECT, Sponge.getServer().getDefaultWorldName()).run();
-        };
-
-        TemporalAmount timeout = Duration.of(60, ChronoUnit.SECONDS);
+        UrlDownloadRunnable urlDownloadRunnable = new UrlDownloadRunnable(url, DEMO_MAP_OBJECT, 25657717);
+        TemporalAmount timeout = Duration.of(5, ChronoUnit.MINUTES);
 
         ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
-                .runSync(new DotProgressable(this::deleteExistingWorld), "Deleting Old World", timeout)
+                .runSync(this::deleteExistingWorld, "Deleting Old World", timeout)
                 .runAsync(urlDownloadRunnable, "Downloading World", timeout)
-                .runAsync(new DotProgressable(unzipRunnable), "Unzipping World", timeout)
-                .runSync(new DotProgressable(() ->  {
-
-                    try {
-                        WorldProperties props = Sponge.getServer().createWorldProperties(DEMO_MAP_WORLD_NAME, WorldArchetype.builder()
-                                .dimension(DimensionTypes.OVERWORLD)
-                                .enabled(true)
-                                .pvp(true)
-                                .build(UUID.randomUUID().toString(), DEMO_MAP_WORLD_NAME));
-
-                        if (!Sponge.getServer().loadWorld(props).isPresent()) {
-                            throw new RuntimeException("Could not load world, check logs");
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }), "Loading World", timeout)
-                .runSync(new DotProgressable(() -> {
-                    downloadConfig();
-                    sendSuccess(src, "Loaded Demo Map and Config");
-                }), "Downloading Config", timeout)
+                .runAsync(this::unzipWorld, "Unzipping World", timeout)
+                .runSync(this::loadWorld, "Loading World", timeout)
+                .runSync(this::downloadConfig, "Downloading Config", timeout)
+                .runSync(() -> loadConfig(src), "Loading Config", timeout)
+                .runSync(() -> setBlocks(src), "Setting Blocks", timeout)
+                .runAsync(this::downloadSchedule, "Downloading Schedule", timeout)
+                .runSync(() -> scheduleGame(src), "Scheduling Game", timeout)
+                .runSync(() -> sendSuccess(src, "Demo ready! Join with /ssg join demo"), "", timeout)
                 .start();
 
         return CommandResult.success();
-    }
-
-    private void downloadConfig() {
-        try {
-            ReadableByteChannel readableByteChannel =
-                    Channels.newChannel(new URL(S3_BUCKET + "demo.yml").openStream());
-            FileOutputStream fileOutputStream =
-                    new FileOutputStream(
-                            "config"
-                                    + File.separator
-                                    + "survival-games"
-                                    + File.separator
-                                    + "demo.yml");
-            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-            fileOutputStream.close();
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to download config", e);
-        }
     }
 
     private void deleteExistingWorld() {
@@ -176,6 +132,117 @@ class DemoCommand extends LeafCommand {
             } catch (Exception e) {
                 throw new RuntimeException("Could not delete demo world");
             }
+        }
+    }
+
+    private void unzipWorld() {
+        File existing = new File(Sponge.getServer().getDefaultWorldName(), DEMO_MAP_WORLD_NAME);
+        if (existing.exists()) {
+            try {
+                MoreFiles.deleteRecursively(existing.toPath(), RecursiveDeleteOption.ALLOW_INSECURE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        new UnzipRunnable(DEMO_MAP_OBJECT, Sponge.getServer().getDefaultWorldName()).run();
+    }
+
+    private void loadWorld() {
+        try {
+            WorldProperties props = Sponge.getServer().createWorldProperties(DEMO_MAP_WORLD_NAME, WorldArchetype.builder()
+                    .dimension(DimensionTypes.OVERWORLD)
+                    .enabled(true)
+                    .pvp(true)
+                    .build(UUID.randomUUID().toString(), DEMO_MAP_WORLD_NAME));
+
+            if (!Sponge.getServer().loadWorld(props).isPresent()) {
+                throw new RuntimeException("Could not load world, check logs");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void downloadConfig() {
+        try {
+            ReadableByteChannel readableByteChannel =
+                    Channels.newChannel(new URL(S3_BUCKET + "demo.yml").openStream());
+            FileOutputStream fileOutputStream =
+                    new FileOutputStream(
+                            "config"
+                                    + File.separator
+                                    + "survival-games"
+                                    + File.separator
+                                    + "demo.yml");
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to download config", e);
+        }
+    }
+
+    private void loadConfig(CommandSource src) {
+        CommandContext loadContext = new CommandContext();
+        loadContext.putArg(CommandKeys.SURVIVAL_GAME_NAME, "demo");
+        loadContext.putArg(CommandKeys.FILE_PATH, new File("config"
+                + File.separator
+                + "survival-games"
+                + File.separator
+                + "demo.yml").toPath());
+
+        try {
+            LoadConfigCommand.getInstance().execute(src, loadContext);
+        } catch (CommandException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setBlocks(CommandSource src) {
+        CommandContext context = new CommandContext();
+        context.putArg(CommandKeys.SURVIVAL_GAME, SurvivalGameRepository.get("demo")
+                .orElseThrow(() -> new RuntimeException("Demo map didn't exist")));
+
+        try {
+            SetBlocksCommand.getInstance().execute(src, context);
+        } catch (CommandException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void downloadSchedule() {
+        try {
+            ReadableByteChannel readableByteChannel =
+                    Channels.newChannel(new URL(S3_BUCKET + "demo-schedule.yml").openStream());
+            FileOutputStream fileOutputStream =
+                    new FileOutputStream(
+                            "config"
+                                    + File.separator
+                                    + "survival-games"
+                                    + File.separator
+                                    + "demo-schedule.yml");
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to download config", e);
+        }
+    }
+
+    private void scheduleGame(CommandSource src) {
+        CommandContext context = new CommandContext();
+        context.putArg(CommandKeys.SURVIVAL_GAME, SurvivalGameRepository.get("demo")
+                .orElseThrow(() -> new RuntimeException("Demo map didn't exist")));
+
+        context.putArg(CommandKeys.FILE_PATH, new File("config"
+                + File.separator
+                + "survival-games"
+                + File.separator
+                + "demo-schedule.yml").toPath());
+
+        try {
+            ScheduleCommand.getInstance().execute(src, context);
+        } catch (CommandException e) {
+            throw new RuntimeException(e);
         }
     }
 

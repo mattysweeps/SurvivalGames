@@ -28,7 +28,6 @@ package io.github.m0pt0pmatt.survivalgames.thread;
 import com.google.common.base.Strings;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
-import org.spongepowered.api.text.channel.MessageReceiver;
 import org.spongepowered.api.text.chat.ChatTypes;
 
 import java.time.Instant;
@@ -56,13 +55,12 @@ public class WatcherRunnable implements Runnable {
             Progressable progressable,
             String name,
             TemporalAmount timeout,
-            MessageReceiver messageReceiver,
+            MessageChannel messageChannel,
             Executor executor) {
         this.progressable = checkNotNull(progressable, "future");
         this.name = checkNotNull(name, "name");
         this.timeout = timeout;
-        checkNotNull(messageReceiver, "messageReceiver");
-        this.messageChannel = MessageChannel.fixed(messageReceiver);
+        this.messageChannel = checkNotNull(messageChannel, "messageChannel");
         this.executor = checkNotNull(executor, "executor");
     }
 

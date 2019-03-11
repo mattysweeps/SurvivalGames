@@ -66,6 +66,8 @@ public class RootCommand extends ParentCommand {
                         .put(toEntry(JoinCommand.getInstance()))
                         .put(toEntry(LeaveCommand.getInstance()))
                         .put(toEntry(SpectateCommand.getInstance()))
+                        .put(toEntry(ScheduleCommand.getInstance()))
+                        .put(toEntry(UnscheduleCommand.getInstance()))
                         .build()
         );
     }

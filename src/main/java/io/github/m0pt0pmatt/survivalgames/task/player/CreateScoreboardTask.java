@@ -37,7 +37,7 @@ import org.spongepowered.api.util.TextMessageException;
 /** Creates a player's scoreboard with the current players and their kill counts. */
 public class CreateScoreboardTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new CreateScoreboardTask();
+    private static final AbstractPlayerTask INSTANCE = new CreateScoreboardTask();
 
     private Scoreboard scoreboard;
     private Objective objective;
@@ -64,16 +64,13 @@ public class CreateScoreboardTask extends PlayerTask {
 
     @Override
     public void after(SurvivalGame survivalGame) {
-        survivalGame
-                .getPlayerUUIDs()
-                .forEach(
-                        id ->
-                                Sponge.getServer()
-                                        .getPlayer(id)
-                                        .ifPresent(player -> player.setScoreboard(scoreboard)));
+        survivalGame.forEachPlayer(id ->
+                Sponge.getServer()
+                        .getPlayer(id)
+                        .ifPresent(player -> player.setScoreboard(scoreboard)));
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

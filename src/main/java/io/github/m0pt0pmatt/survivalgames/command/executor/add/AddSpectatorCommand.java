@@ -67,7 +67,7 @@ class AddSpectatorCommand extends LeafCommand {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
-        survivalGame.getSpectatorUUIDs().add(player.getUniqueId());
+        survivalGame.addSpectator(player);
         sendSuccess(src, "Player added", player.getName());
         return CommandResult.success();
     }

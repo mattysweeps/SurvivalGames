@@ -63,7 +63,7 @@ class JoinCommand extends LeafCommand {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
-        survivalGame.getPlayerUUIDs().add(player.getUniqueId());
+        survivalGame.addPlayer(player);
         sendSuccess(src, "Joined game", survivalGame.getName());
         return CommandResult.success();
     }

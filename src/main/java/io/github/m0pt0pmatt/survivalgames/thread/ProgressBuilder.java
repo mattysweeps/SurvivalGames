@@ -25,14 +25,20 @@
 
 package io.github.m0pt0pmatt.survivalgames.thread;
 
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.channel.MessageReceiver;
+import org.spongepowered.api.text.channel.MessageChannel;
 
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /*
  * This file is part of SurvivalGames, licensed under the MIT License (MIT).
  *
@@ -58,21 +64,17 @@ import java.util.concurrent.CompletableFuture;
  * THE SOFTWARE.
  */
 
-import java.util.concurrent.Executor;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public class ProgressBuilder {
 
-    private final MessageReceiver messageReceiver;
+    private final MessageChannel messageChannel;
     private final Executor syncExecutor;
     private final Executor asyncExecutor;
     private final List<WatcherRunnable> tasks = new ArrayList<>();
 
     private boolean error = false;
 
-    private ProgressBuilder(MessageReceiver messageReceiver, Executor syncExecutor, Executor asyncExecutor) {
-        this.messageReceiver = checkNotNull(messageReceiver, "messageReceiver");
+    private ProgressBuilder(MessageChannel messageChannel, Executor syncExecutor, Executor asyncExecutor) {
+        this.messageChannel = checkNotNull(messageChannel, "messageReceiver");
         this.syncExecutor = checkNotNull(syncExecutor, "syncExecutor");
         this.asyncExecutor = checkNotNull(asyncExecutor, "asyncExecutor");
     }
@@ -80,7 +82,25 @@ public class ProgressBuilder {
     public ProgressBuilder runSync(Progressable progressable, String name, TemporalAmount timeout) {
         checkNotNull(progressable, "progressable");
 
-        WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageReceiver, syncExecutor);
+        WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageChannel, syncExecutor);
+        tasks.add(watcher);
+
+        return this;
+    }
+
+    public ProgressBuilder runSync(Runnable runnable, String name, TemporalAmount timeout) {
+        checkNotNull(runnable, "runnable");
+
+        WatcherRunnable watcher = new WatcherRunnable(new DotProgressable(runnable), name, timeout, messageChannel, syncExecutor);
+        tasks.add(watcher);
+
+        return this;
+    }
+
+    public ProgressBuilder runSync(Consumer<MessageChannel> consumer, String name, TemporalAmount timeout) {
+        checkNotNull(consumer, "consumer");
+
+        WatcherRunnable watcher = new WatcherRunnable(new DotProgressable(() -> consumer.accept(messageChannel)), name, timeout, messageChannel, syncExecutor);
         tasks.add(watcher);
 
         return this;
@@ -89,7 +109,25 @@ public class ProgressBuilder {
     public ProgressBuilder runAsync(Progressable progressable, String name, TemporalAmount timeout) {
         checkNotNull(progressable, "progressable");
 
-        WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageReceiver, asyncExecutor);
+        WatcherRunnable watcher = new WatcherRunnable(progressable, name, timeout, messageChannel, asyncExecutor);
+        tasks.add(watcher);
+
+        return this;
+    }
+
+    public ProgressBuilder runAsync(Runnable runnable, String name, TemporalAmount timeout) {
+        checkNotNull(runnable, "runnable");
+
+        WatcherRunnable watcher = new WatcherRunnable(new DotProgressable(runnable), name, timeout, messageChannel, asyncExecutor);
+        tasks.add(watcher);
+
+        return this;
+    }
+
+    public ProgressBuilder runAsync(Consumer<MessageChannel> consumer, String name, TemporalAmount timeout) {
+        checkNotNull(consumer, "consumer");
+
+        WatcherRunnable watcher = new WatcherRunnable(new DotProgressable(() -> consumer.accept(messageChannel)), name, timeout, messageChannel, asyncExecutor);
         tasks.add(watcher);
 
         return this;
@@ -114,7 +152,7 @@ public class ProgressBuilder {
                 try {
                     runnable.run();
                 } catch (Throwable throwable) {
-                    messageReceiver.sendMessage(Text.of("Error running command. Check the server logs for more details"));
+                    messageChannel.send(Text.of("Error running command. Check the server logs for more details"));
                     Optional.ofNullable(throwable.getCause()).ifPresent(Throwable::printStackTrace);
                     error = true;
                 }
@@ -122,7 +160,11 @@ public class ProgressBuilder {
         };
     }
 
-    public static ProgressBuilder builder(MessageReceiver messageReceiver, Executor syncExecutor, Executor asyncExecutor) {
-        return new ProgressBuilder(messageReceiver, syncExecutor, asyncExecutor);
+    public static ProgressBuilder builder(MessageChannel messageChannel, Executor syncExecutor, Executor asyncExecutor) {
+        return new ProgressBuilder(messageChannel, syncExecutor, asyncExecutor);
+    }
+
+    public static ProgressBuilder builder(CommandSource commandSource, Executor syncExecutor, Executor asyncExecutor) {
+        return new ProgressBuilder(MessageChannel.fixed(commandSource), syncExecutor, asyncExecutor);
     }
 }

@@ -32,14 +32,14 @@ import org.spongepowered.api.util.TextMessageException;
 /** Clears a players scoreboard. */
 public class ClearScoreBoardTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new ClearScoreBoardTask();
+    private static final AbstractPlayerTask INSTANCE = new ClearScoreBoardTask();
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
         player.setScoreboard(Scoreboard.builder().build());
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

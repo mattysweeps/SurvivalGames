@@ -66,7 +66,7 @@ class RemovePlayerCommand extends LeafCommand {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
-        if (!survivalGame.getPlayerUUIDs().contains(player.getUniqueId())) {
+        if (!survivalGame.containsPlayer(player.getUniqueId())) {
             throw new CommandException(
                     Text.of(
                             "Player "
@@ -75,7 +75,7 @@ class RemovePlayerCommand extends LeafCommand {
                                     + survivalGame.getName()));
         }
 
-        survivalGame.getPlayerUUIDs().remove(player.getUniqueId());
+        survivalGame.removePlayer(player.getUniqueId());
 
         src.sendMessage(Text.of("Removed player", player.getName()));
         return CommandResult.success();

@@ -24,52 +24,43 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
-
+import io.github.m0pt0pmatt.survivalgames.Util;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameState;
-import javax.annotation.Nonnull;
+import io.github.m0pt0pmatt.survivalgames.schedule.ScheduleRepository;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.text.Text;
 
-public class LeaveCommand extends LeafCommand {
+import javax.annotation.Nonnull;
 
-    private static final SurvivalGamesCommand INSTANCE = new LeaveCommand();
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
-    private LeaveCommand() {
-        super(RootCommand.getInstance(), "leave", SurvivalGameCommandElement.getInstance());
+public class UnscheduleCommand extends LeafCommand {
+
+    private static final UnscheduleCommand INSTANCE = new UnscheduleCommand(RootCommand.getInstance(), "unschedule", SurvivalGameCommandElement.getInstance());
+
+    private UnscheduleCommand(SurvivalGamesCommand parent, String name, CommandElement arguments) {
+        super(parent, name, arguments);
     }
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
-            throws CommandException {
+    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
+        ScheduleRepository.unschedule(survivalGame);
 
-        if (!(src instanceof Player)) {
-            throw new CommandException(Text.of("Must be a player to execute this command"));
-        }
+        Util.sendSuccess(src, Text.of("Unscheduled ", survivalGame.getName()));
 
-        Player player = (Player) src;
-
-        if (survivalGame.getState() != SurvivalGameState.READY) {
-            throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
-        }
-
-        survivalGame.removePlayer(player.getUniqueId());
-        survivalGame.removeSpectator(player.getUniqueId());
-        sendSuccess(src, "Left game", survivalGame.getName());
         return CommandResult.success();
     }
 
-    static SurvivalGamesCommand getInstance() {
+    public static UnscheduleCommand getInstance() {
         return INSTANCE;
     }
 }

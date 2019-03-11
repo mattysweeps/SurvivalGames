@@ -63,7 +63,7 @@ class SpectateCommand extends LeafCommand {
             throw new CommandException(Text.of("State must be " + SurvivalGameState.READY));
         }
 
-        survivalGame.getSpectatorUUIDs().add(player.getUniqueId());
+        survivalGame.addSpectator(player);
         sendSuccess(src, "Joined game", survivalGame.getName());
         return CommandResult.success();
     }

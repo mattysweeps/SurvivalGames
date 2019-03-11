@@ -66,7 +66,7 @@ public class PlayerDeathListener {
         }
 
         for (SurvivalGame survivalGame : SurvivalGameRepository.values()) {
-            if (survivalGame.getPlayerUUIDs().contains(player.getUniqueId())) {
+            if (survivalGame.containsPlayer(player.getUniqueId())) {
                 performDeadPlayer(survivalGame, player, event.getCause());
                 event.setCancelled(true);
                 break;
@@ -117,7 +117,7 @@ public class PlayerDeathListener {
         }
 
         // Remove the player from the game
-        survivalGame.getPlayerUUIDs().remove(player.getUniqueId());
+        survivalGame.removePlayer(player.getUniqueId());
 
         // Post the death event
         Sponge.getEventManager().post(new PlayerDeathEvent(cause, survivalGame, player));

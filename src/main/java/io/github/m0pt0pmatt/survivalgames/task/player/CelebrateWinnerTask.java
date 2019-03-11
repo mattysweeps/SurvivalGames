@@ -32,7 +32,7 @@ import org.spongepowered.api.util.TextMessageException;
 /** Let the winner know he or she won. */
 public class CelebrateWinnerTask extends PlayerTask {
 
-    private static final PlayerTask INSTANCE = new CelebrateWinnerTask();
+    private static final AbstractPlayerTask INSTANCE = new CelebrateWinnerTask();
     private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
 
     @Override
@@ -40,7 +40,7 @@ public class CelebrateWinnerTask extends PlayerTask {
         player.sendMessage(WINNER_MESSAGE);
     }
 
-    public static PlayerTask getInstance() {
+    public static AbstractPlayerTask getInstance() {
         return INSTANCE;
     }
 }

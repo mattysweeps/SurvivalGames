@@ -40,18 +40,7 @@ class PrintPlayersCommand extends AbstractPrintCommand {
         super(
                 "players",
                 SurvivalGameCommandElement.getInstance(),
-                survivalGame ->
-                        Optional.of(
-                                Text.joinWith(
-                                        Text.of('\n'),
-                                        survivalGame
-                                                .getPlayerUUIDs()
-                                                .stream()
-                                                .map(id -> Sponge.getServer().getPlayer(id))
-                                                .filter(Optional::isPresent)
-                                                .map(Optional::get)
-                                                .map(Text::of)
-                                                .collect(Collectors.toList()))));
+                survivalGame -> Optional.ofNullable(survivalGame.printPlayers()));
     }
 
     static SurvivalGamesCommand getInstance() {
