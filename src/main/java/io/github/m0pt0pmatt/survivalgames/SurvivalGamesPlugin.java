@@ -63,7 +63,7 @@ import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
 @Plugin(
     id = "survival-games",
     name = "Survival Games",
-    version = "1.1.1",
+    version = "1.1.3",
     description = "Survival Games for Sponge."
 )
 public class SurvivalGamesPlugin {
