@@ -24,20 +24,25 @@
  */
 package io.github.m0pt0pmatt.survivalgames;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
-
 import com.google.inject.Inject;
+import io.github.m0pt0pmatt.survivalgames.command.executor.DemoCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
+import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.listener.PlayerDeathListener;
 import io.github.m0pt0pmatt.survivalgames.listener.PlayerOpenedChestListener;
 import io.github.m0pt0pmatt.survivalgames.listener.SurvivalGameEventListener;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.concurrent.ExecutorService;
-
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMapper;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -45,6 +50,14 @@ import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+
+import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
 
 /** SurvivalGames Sponge Plugin */
 @Plugin(
@@ -68,6 +81,8 @@ public class SurvivalGamesPlugin {
     @ConfigDir(sharedRoot = true)
     private Path sharedRootConfig;
 
+    private SurvivalGamesPluginConfig config;
+
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
@@ -81,11 +96,7 @@ public class SurvivalGamesPlugin {
         // Register the root command.
         // All other commands exist under the root command.
         RootCommand rootCommand = RootCommand.getInstance();
-        Sponge.getCommandManager()
-                .register(
-                        this,
-                        toCommandCallable(rootCommand),
-                        RootCommand.getInstance().getAliases());
+        registerCommandTree(rootCommand);
 
         // Create an executor
         EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
@@ -98,9 +109,14 @@ public class SurvivalGamesPlugin {
         // Create a config directory if one does not already exist.
         setupConfigDirectory();
 
+        // Load plugin config
+        loadConfig();
+
         // Create an asynchronous executor for background tasks.
         ASYNC_EXECUTOR = Sponge.getScheduler().createAsyncExecutor(this);
         SYNC_EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
+
+        checkStartDemo();
 
         LOGGER.info("Survival Games Plugin Enabled.");
     }
@@ -108,6 +124,14 @@ public class SurvivalGamesPlugin {
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
         LOGGER.info("Survival Games Plugin Disabled.");
+    }
+
+    private void registerCommandTree(SurvivalGamesCommand survivalGamesCommand) {
+        Sponge.getCommandManager()
+                .register(
+                        this,
+                        toCommandCallable(survivalGamesCommand),
+                        survivalGamesCommand.getAliases());
     }
 
     private void setupConfigDirectory() {
@@ -121,5 +145,50 @@ public class SurvivalGamesPlugin {
         }
 
         CONFIG_DIRECTORY = sharedRootConfig.resolve("survival-games");
+    }
+
+    private void loadConfig() {
+        try {
+
+            File file = SurvivalGamesPlugin.CONFIG_DIRECTORY.resolve("plugin.yml").toFile();
+            if (file.exists()) {
+                ConfigurationLoader<CommentedConfigurationNode> loader =
+                        HoconConfigurationLoader.builder().setPath(file.toPath()).build();
+
+                CommentedConfigurationNode node = loader.load(ConfigurationOptions.defaults());
+                ObjectMapper.BoundInstance i = SurvivalGamesPluginConfig.OBJECT_MAPPER.bindToNew();
+                config = (SurvivalGamesPluginConfig) i.populate(node);
+            } else {
+                config = new SurvivalGamesPluginConfig();
+            }
+
+        } catch (IOException | ObjectMappingException | RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void checkStartDemo() {
+
+        Optional<Boolean> autoRun = config.getAutoStartDemo();
+        if (!autoRun.isPresent()) {
+            return;
+        }
+
+        if (!autoRun.get()) {
+            return;
+        }
+
+        Optional<CommandSource> source = Sponge.getServer().getConsole().getCommandSource();
+        if (!source.isPresent()) {
+            throw new RuntimeException("Console command source was missing");
+        }
+
+        LOGGER.info("Automatically running the demo command");
+        CommandContext context = new CommandContext();
+        try {
+            DemoCommand.getInstance().execute(source.get(), context);
+        } catch (CommandException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

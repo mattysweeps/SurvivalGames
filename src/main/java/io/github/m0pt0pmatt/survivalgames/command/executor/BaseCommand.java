@@ -29,8 +29,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
+import org.spongepowered.api.text.Text;
+
+import javax.annotation.Nonnull;
 
 public abstract class BaseCommand implements SurvivalGamesCommand {
 
@@ -39,17 +48,30 @@ public abstract class BaseCommand implements SurvivalGamesCommand {
     private final SurvivalGamesCommand parentCommand;
 
     protected BaseCommand(
-            String name, CommandElement arguments, Map<List<String>, CommandCallable> children) {
-        this(null, name, arguments);
-    }
-
-    protected BaseCommand(
             SurvivalGamesCommand parentCommand,
             String name,
             CommandElement arguments) {
         this.parentCommand = parentCommand;
         this.aliases = Collections.singletonList(checkNotNull(name, "name"));
         this.arguments = checkNotNull(arguments, "arguments");
+    }
+
+    @Nonnull
+    public abstract CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException;
+
+    @Override
+    public boolean testPermission(CommandSource source) {
+        return getPermission() == null || source.hasPermission(getPermission())
+                || Optional.ofNullable(parentCommand).map(p -> p.testPermission(source)).orElse(false);
+    }
+
+    @Override
+    @Nonnull
+    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) throws CommandException {
+        if (!testPermission(src)) {
+            throw new CommandException(Text.of("You do not have permission to run this command"));
+        }
+        return executeCommand(src, args);
     }
 
     @Override

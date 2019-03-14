@@ -49,7 +49,7 @@ class TeleportCommand extends LeafCommand {
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
         Object worldInfo = getOrThrow(args, CommandKeys.WORLD);
 

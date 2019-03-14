@@ -24,14 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.add;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class AddCommand extends ParentCommand {
 
@@ -39,14 +35,14 @@ public class AddCommand extends ParentCommand {
     static {
         INSTANCE = new AddCommand();
         ((AddCommand) INSTANCE).setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(AddItemCommand.getInstance()))
-                        .put(toEntry(AddItemInHandCommand.getInstance()))
-                        .put(toEntry(AddMobSpawnAreaCommand.getInstance()))
-                        .put(toEntry(AddPlayerCommand.getInstance()))
-                        .put(toEntry(AddSpectatorCommand.getInstance()))
-                        .put(toEntry(AddSpawnPointCommand.getInstance()))
-                        .put(toEntry(AddEventIntervalCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(AddItemCommand.getInstance())
+                        .add(AddItemInHandCommand.getInstance())
+                        .add(AddMobSpawnAreaCommand.getInstance())
+                        .add(AddPlayerCommand.getInstance())
+                        .add(AddSpectatorCommand.getInstance())
+                        .add(AddSpawnPointCommand.getInstance())
+                        .add(AddEventIntervalCommand.getInstance())
                         .build()
         );
     }

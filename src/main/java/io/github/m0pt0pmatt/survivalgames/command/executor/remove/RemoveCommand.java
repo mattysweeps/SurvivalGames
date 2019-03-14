@@ -24,14 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.remove;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class RemoveCommand extends ParentCommand {
 
@@ -39,12 +35,12 @@ public class RemoveCommand extends ParentCommand {
     static {
         INSTANCE = new RemoveCommand();
         ((RemoveCommand) INSTANCE).setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(RemovePlayerCommand.getInstance()))
-                        .put(toEntry(RemoveSpectatorCommand.getInstance()))
-                        .put(toEntry(RemoveSpawnPointCommand.getInstance()))
-                        .put(toEntry(RemoveMobSpawnAreaCommand.getInstance()))
-                        .put(toEntry(RemoveEventIntervalsCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(RemovePlayerCommand.getInstance())
+                        .add(RemoveSpectatorCommand.getInstance())
+                        .add(RemoveSpawnPointCommand.getInstance())
+                        .add(RemoveMobSpawnAreaCommand.getInstance())
+                        .add(RemoveEventIntervalsCommand.getInstance())
                         .build()
         );
     }

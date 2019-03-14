@@ -24,9 +24,7 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.add.AddCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.print.ListGamesCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.print.PrintCommand;
@@ -37,37 +35,35 @@ import io.github.m0pt0pmatt.survivalgames.command.executor.state.ReadySurvivalGa
 import io.github.m0pt0pmatt.survivalgames.command.executor.state.StartSurvivalGameCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.state.StopSurvivalGameCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.unset.UnsetCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class RootCommand extends ParentCommand {
 
     private static final RootCommand INSTANCE = new RootCommand();
     static {
         INSTANCE.setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(AddCommand.getInstance()))
-                        .put(toEntry(CreateGameCommand.getInstance()))
-                        .put(toEntry(DeleteGameCommand.getInstance()))
-                        .put(toEntry(ListGamesCommand.getInstance()))
-                        .put(toEntry(PrintCommand.getInstance()))
-                        .put(toEntry(RemoveCommand.getInstance()))
-                        .put(toEntry(SetCommand.getInstance()))
-                        .put(toEntry(UnsetCommand.getInstance()))
-                        .put(toEntry(ReadySurvivalGameCommand.getInstance()))
-                        .put(toEntry(StartSurvivalGameCommand.getInstance()))
-                        .put(toEntry(StopSurvivalGameCommand.getInstance()))
-                        .put(toEntry(DeathMatchSurvivalGameCommand.getInstance()))
-                        .put(toEntry(LoadConfigCommand.getInstance()))
-                        .put(toEntry(SaveConfigCommand.getInstance()))
-                        .put(toEntry(EventCommand.getInstance()))
-                        .put(toEntry(DemoCommand.getInstance()))
-                        .put(toEntry(TeleportCommand.getInstance()))
-                        .put(toEntry(JoinCommand.getInstance()))
-                        .put(toEntry(LeaveCommand.getInstance()))
-                        .put(toEntry(SpectateCommand.getInstance()))
-                        .put(toEntry(ScheduleCommand.getInstance()))
-                        .put(toEntry(UnscheduleCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(AddCommand.getInstance())
+                        .add(CreateGameCommand.getInstance())
+                        .add(DeleteGameCommand.getInstance())
+                        .add(ListGamesCommand.getInstance())
+                        .add(PrintCommand.getInstance())
+                        .add(RemoveCommand.getInstance())
+                        .add(SetCommand.getInstance())
+                        .add(UnsetCommand.getInstance())
+                        .add(ReadySurvivalGameCommand.getInstance())
+                        .add(StartSurvivalGameCommand.getInstance())
+                        .add(StopSurvivalGameCommand.getInstance())
+                        .add(DeathMatchSurvivalGameCommand.getInstance())
+                        .add(LoadConfigCommand.getInstance())
+                        .add(SaveConfigCommand.getInstance())
+                        .add(EventCommand.getInstance())
+                        .add(DemoCommand.getInstance())
+                        .add(TeleportCommand.getInstance())
+                        .add(JoinCommand.getInstance())
+                        .add(LeaveCommand.getInstance())
+                        .add(SpectateCommand.getInstance())
+                        .add(ScheduleCommand.getInstance())
+                        .add(UnscheduleCommand.getInstance())
                         .build()
         );
     }

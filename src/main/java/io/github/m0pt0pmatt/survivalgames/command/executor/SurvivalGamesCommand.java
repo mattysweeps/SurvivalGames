@@ -24,11 +24,11 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
-import java.util.List;
-import java.util.Map;
-import org.spongepowered.api.command.CommandCallable;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.command.spec.CommandExecutor;
+
+import java.util.List;
 
 public interface SurvivalGamesCommand extends CommandExecutor {
 
@@ -36,7 +36,9 @@ public interface SurvivalGamesCommand extends CommandExecutor {
 
     CommandElement getArguments();
 
-    Map<List<String>, CommandCallable> getChildren();
+    List<SurvivalGamesCommand> getChildren();
 
     String getPermission();
+
+    boolean testPermission(CommandSource source);
 }

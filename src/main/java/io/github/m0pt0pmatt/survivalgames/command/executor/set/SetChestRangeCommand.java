@@ -54,7 +54,7 @@ class SetChestRangeCommand extends LeafCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);
         Integer chestRange = (Integer) getOrThrow(args, CommandKeys.CHEST_RANGE);

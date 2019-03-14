@@ -50,7 +50,7 @@ public class ListGamesCommand extends LeafCommand {
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
         sendSuccess(src, "Survival Games: ");
         SurvivalGameRepository.values()

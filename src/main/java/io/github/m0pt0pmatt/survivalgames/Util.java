@@ -29,6 +29,8 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
@@ -43,19 +45,6 @@ public final class Util {
     private Util() {}
 
     /**
-     * Create a {@link Map.Entry} from a {@link SurvivalGamesCommand}, where the key is the {@link
-     * SurvivalGamesCommand}'s aliases. This is useful when adding child commands.
-     *
-     * @param command The CommandCallable.
-     * @return A single {@link Map.Entry}
-     */
-    public static Map.Entry<List<String>, ? extends CommandCallable> toEntry(
-            SurvivalGamesCommand command) {
-        return new AbstractMap.SimpleImmutableEntry<>(
-                command.getAliases(), toCommandCallable(command));
-    }
-
-    /**
      * Creates a {@link CommandCallable} from a {@link SurvivalGamesCommand}.
      *
      * @param command the {@link SurvivalGamesCommand}.
@@ -67,13 +56,15 @@ public final class Util {
         builder.executor(command);
         if (command.getChildren().size() > 0) {
             // This is a parent command.
-            builder.children(command.getChildren());
+            builder.children(command.getChildren().stream()
+                    .collect(Collectors.toMap(SurvivalGamesCommand::getAliases, Util::toCommandCallable)));
         } else {
             // This is a leaf command.
             builder.arguments(command.getArguments());
         }
 
-        builder.permission(command.getPermission());
+        // We handle permissions ourselves.
+
         return builder.build();
     }
 

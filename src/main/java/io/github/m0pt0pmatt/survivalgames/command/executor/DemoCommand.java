@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.sendSuccess;
 
-class DemoCommand extends LeafCommand {
+public class DemoCommand extends LeafCommand {
 
     private static final DemoCommand INSTANCE = new DemoCommand();
 
@@ -80,7 +80,7 @@ class DemoCommand extends LeafCommand {
 
     @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
         URL url;
@@ -246,7 +246,7 @@ class DemoCommand extends LeafCommand {
         }
     }
 
-    static DemoCommand getInstance() {
+    public static DemoCommand getInstance() {
         return INSTANCE;
     }
 }

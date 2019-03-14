@@ -26,10 +26,10 @@ package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
 import io.github.m0pt0pmatt.survivalgames.command.element.SurvivalGameCommandElement;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.Collections;
+import org.spongepowered.api.text.Text;
+
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.spongepowered.api.text.Text;
 
 class PrintBoundariesCommand extends AbstractPrintCommand {
 

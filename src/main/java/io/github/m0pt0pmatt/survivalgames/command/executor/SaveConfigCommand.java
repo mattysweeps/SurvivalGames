@@ -68,7 +68,7 @@ public class SaveConfigCommand extends LeafCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
         ProgressBuilder.builder(src, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)

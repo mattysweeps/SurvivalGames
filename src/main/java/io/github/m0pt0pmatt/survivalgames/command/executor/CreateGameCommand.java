@@ -51,9 +51,8 @@ public class CreateGameCommand extends LeafCommand {
                 GenericArguments.string(CommandKeys.SURVIVAL_GAME_NAME));
     }
 
-    @Override
     @Nonnull
-    public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
         String survivalGameName = (String) getOrThrow(args, CommandKeys.SURVIVAL_GAME_NAME);
 

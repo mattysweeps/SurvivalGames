@@ -24,12 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
+import org.spongepowered.api.command.args.CommandElement;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.spongepowered.api.command.CommandCallable;
-import org.spongepowered.api.command.args.CommandElement;
 
 public abstract class LeafCommand extends BaseCommand {
     protected LeafCommand(SurvivalGamesCommand parent, String name, CommandElement arguments) {
@@ -37,7 +35,7 @@ public abstract class LeafCommand extends BaseCommand {
     }
 
     @Override
-    public Map<List<String>, CommandCallable> getChildren() {
-        return Collections.emptyMap();
+    public List<SurvivalGamesCommand> getChildren() {
+        return Collections.emptyList();
     }
 }

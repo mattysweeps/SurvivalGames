@@ -24,13 +24,6 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -38,12 +31,18 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class ParentCommand extends BaseCommand {
 
     private Text chooseChildMessage;
-    private Map<List<String>, CommandCallable> children = new HashMap<>();
+    private List<SurvivalGamesCommand> children = new ArrayList<>();
 
     ParentCommand(String name) {
         this(null, name);
@@ -55,34 +54,31 @@ public abstract class ParentCommand extends BaseCommand {
         super(parentCommand, name, GenericArguments.none());
     }
 
-    protected void setChildren(Map<List<String>, CommandCallable> children){
+    protected void setChildren(List<SurvivalGamesCommand> children){
         chooseChildMessage =
                 Text.of("Select a child command: ")
                         .concat(
                                 Text.joinWith(
                                         Text.of(':'),
-                                        children.keySet()
+                                        children
                                                 .stream()
+                                                .map(SurvivalGamesCommand::getAliases)
                                                 .flatMap(Collection::stream)
                                                 .map(Text::of)
                                                 .collect(Collectors.toList())));
-        children.forEach(
-                (aliasList, element) -> {
-                    checkNotNull(aliasList, "aliasList");
-                    checkNotNull(element, "childCommand");
-                    aliasList.forEach(alias -> checkNotNull(alias, "alias"));
-                });
+        children.forEach(c -> checkNotNull(c, "child"));
+
         this.children = children;
     }
 
     @Override
-    public final Map<List<String>, CommandCallable> getChildren() {
+    public final List<SurvivalGamesCommand> getChildren() {
         return children;
     }
 
     @Nonnull
     @Override
-    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public final CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
         throw new CommandException(chooseChildMessage);
     }

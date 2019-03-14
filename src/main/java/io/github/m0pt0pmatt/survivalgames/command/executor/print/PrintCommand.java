@@ -24,14 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.print;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class PrintCommand extends ParentCommand {
 
@@ -39,19 +35,19 @@ public class PrintCommand extends ParentCommand {
     static {
         INSTANCE = new PrintCommand();
         ((PrintCommand) INSTANCE).setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(PrintBoundariesCommand.getInstance()))
-                        .put(toEntry(PrintCenterLocationCommand.getInstance()))
-                        .put(toEntry(PrintCountDownSecondsCommand.getInstance()))
-                        .put(toEntry(PrintExitVectorCommand.getInstance()))
-                        .put(toEntry(PrintExitWorldNameCommand.getInstance()))
-                        .put(toEntry(PrintMobSpawnAreasCommand.getInstance()))
-                        .put(toEntry(PrintPlayerLimitCommand.getInstance()))
-                        .put(toEntry(PrintPlayersCommand.getInstance()))
-                        .put(toEntry(PrintSpawnsCommand.getInstance()))
-                        .put(toEntry(PrintSurvivalGameStateCommand.getInstance()))
-                        .put(toEntry(PrintWorldNameCommand.getInstance()))
-                        .put(toEntry(PrintEventIntervalsCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(PrintBoundariesCommand.getInstance())
+                        .add(PrintCenterLocationCommand.getInstance())
+                        .add(PrintCountDownSecondsCommand.getInstance())
+                        .add(PrintExitVectorCommand.getInstance())
+                        .add(PrintExitWorldNameCommand.getInstance())
+                        .add(PrintMobSpawnAreasCommand.getInstance())
+                        .add(PrintPlayerLimitCommand.getInstance())
+                        .add(PrintPlayersCommand.getInstance())
+                        .add(PrintSpawnsCommand.getInstance())
+                        .add(PrintSurvivalGameStateCommand.getInstance())
+                        .add(PrintWorldNameCommand.getInstance())
+                        .add(PrintEventIntervalsCommand.getInstance())
                         .build()
         );
     }

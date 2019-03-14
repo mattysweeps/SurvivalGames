@@ -24,14 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.unset;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class UnsetCommand extends ParentCommand {
 
@@ -39,14 +35,14 @@ public class UnsetCommand extends ParentCommand {
     static {
         INSTANCE = new UnsetCommand();
         ((UnsetCommand) INSTANCE).setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(UnsetBoundariesCommand.getInstance()))
-                        .put(toEntry(UnsetCenterLocationCommand.getInstance()))
-                        .put(toEntry(UnsetCountDownSecondsCommand.getInstance()))
-                        .put(toEntry(UnsetExitVectorCommand.getInstance()))
-                        .put(toEntry(UnsetExitWorldNameCommand.getInstance()))
-                        .put(toEntry(UnsetPlayerLimitCommand.getInstance()))
-                        .put(toEntry(UnsetWorldNameCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(UnsetBoundariesCommand.getInstance())
+                        .add(UnsetCenterLocationCommand.getInstance())
+                        .add(UnsetCountDownSecondsCommand.getInstance())
+                        .add(UnsetExitVectorCommand.getInstance())
+                        .add(UnsetExitWorldNameCommand.getInstance())
+                        .add(UnsetPlayerLimitCommand.getInstance())
+                        .add(UnsetWorldNameCommand.getInstance())
                         .build()
         );
     }

@@ -68,9 +68,8 @@ public abstract class BlockRayCommand extends LeafCommand {
     }
 
     @Nonnull
-    @Override
     @SuppressWarnings("unchecked")
-    public final CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args)
+    public final CommandResult executeCommand(@Nonnull CommandSource src, @Nonnull CommandContext args)
             throws CommandException {
 
         SurvivalGame survivalGame = (SurvivalGame) getOrThrow(args, CommandKeys.SURVIVAL_GAME);

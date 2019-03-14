@@ -24,14 +24,10 @@
  */
 package io.github.m0pt0pmatt.survivalgames.command.executor.set;
 
-import static io.github.m0pt0pmatt.survivalgames.Util.toEntry;
-
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import io.github.m0pt0pmatt.survivalgames.command.executor.ParentCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.RootCommand;
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.List;
-import org.spongepowered.api.command.CommandCallable;
 
 public class SetCommand extends ParentCommand {
 
@@ -39,17 +35,17 @@ public class SetCommand extends ParentCommand {
     static {
         INSTANCE = new SetCommand();
         ((SetCommand) INSTANCE).setChildren(
-                ImmutableMap.<List<String>, CommandCallable>builder()
-                        .put(toEntry(SetBlocksCommand.getInstance()))
-                        .put(toEntry(SetBoundaryCommand.getInstance()))
-                        .put(toEntry(SetCenterVectorCommand.getInstance()))
-                        .put(toEntry(SetChestMidpointCommand.getInstance()))
-                        .put(toEntry(SetChestRangeCommand.getInstance()))
-                        .put(toEntry(SetCountDownSecondsCommand.getInstance()))
-                        .put(toEntry(SetExitVectorCommand.getInstance()))
-                        .put(toEntry(SetExitWorldNameCommand.getInstance()))
-                        .put(toEntry(SetPlayerLimitCommand.getInstance()))
-                        .put(toEntry(SetWorldNameCommand.getInstance()))
+                ImmutableList.<SurvivalGamesCommand>builder()
+                        .add(SetBlocksCommand.getInstance())
+                        .add(SetBoundaryCommand.getInstance())
+                        .add(SetCenterVectorCommand.getInstance())
+                        .add(SetChestMidpointCommand.getInstance())
+                        .add(SetChestRangeCommand.getInstance())
+                        .add(SetCountDownSecondsCommand.getInstance())
+                        .add(SetExitVectorCommand.getInstance())
+                        .add(SetExitWorldNameCommand.getInstance())
+                        .add(SetPlayerLimitCommand.getInstance())
+                        .add(SetWorldNameCommand.getInstance())
                         .build());
     }
 
