@@ -22,17 +22,6 @@ public class SetCommandBlocksTask implements Task {
 
         survivalGame.getCommandBlocks().clear();
 
-        // Force chunks to be loaded
-        int minX = world.getLocation(survivalGame.getConfig().getBlockArea().getLesserBoundary().get()).getChunkPosition().getX();
-        int maxX = world.getLocation(survivalGame.getConfig().getBlockArea().getGreaterBoundary().get()).getChunkPosition().getX();
-        int minZ = world.getLocation(survivalGame.getConfig().getBlockArea().getLesserBoundary().get()).getChunkPosition().getZ();
-        int maxZ = world.getLocation(survivalGame.getConfig().getBlockArea().getGreaterBoundary().get()).getChunkPosition().getZ();
-        for (; minX <= maxX; minX++) {
-            for (; minZ <= maxZ; minZ++) {
-                world.loadChunk(minX, 0, minZ, false);
-            }
-        }
-
         world.getTileEntities()
                 .stream()
                 .filter(tileEntity -> tileEntity instanceof CommandBlock)

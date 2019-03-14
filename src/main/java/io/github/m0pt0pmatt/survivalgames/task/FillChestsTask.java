@@ -26,13 +26,19 @@ package io.github.m0pt0pmatt.survivalgames.task;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
+import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+
+import java.util.Optional;
 import java.util.Random;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.carrier.Chest;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.util.TextMessageException;
+import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.world.Locatable;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 /** Fills chests with items. */
@@ -52,43 +58,30 @@ public class FillChestsTask implements Task {
         Integer chestRange =
                 getOrThrow(survivalGame.getConfig().getChestRange(), CommandKeys.CHEST_RANGE);
 
-        world.getTileEntities()
-                .forEach(
-                        tileEntity -> {
-                            if (tileEntity instanceof Chest) {
-                                Chest chest = (Chest) tileEntity;
-                                chest.getInventory().clear();
+        world.getTileEntities().forEach(
+                tileEntity -> {
+                    if (tileEntity instanceof Chest) {
+                        Chest chest = (Chest) tileEntity;
+                        chest.getInventory().clear();
 
-                                if (!survivalGame
-                                        .getConfig()
-                                        .getItemConfig()
-                                        .getItems()
-                                        .isEmpty()) {
+                        if (!survivalGame.getConfig().getItemConfig().getItems().isEmpty()) {
 
-                                    double itemCount =
-                                            (chestMidpoint
-                                                    + ((RANDOM.nextDouble() * chestRange)
-                                                            * (RANDOM.nextDouble() > 0.5
-                                                                    ? 1
-                                                                    : -1)));
-                                    for (int i = 0; i < itemCount; i++) {
-                                        ItemStackSnapshot stackSnapshot =
-                                                survivalGame
+                            double itemCount = (chestMidpoint + ((RANDOM.nextDouble() * chestRange) * (RANDOM.nextDouble() > 0.5 ? 1 : -1)));
+                            for (int i = 0; i < itemCount; i++) {
+                                ItemStackSnapshot stackSnapshot = survivalGame
+                                                .getConfig()
+                                                .getItemConfig()
+                                                .getItems()
+                                                .get(RANDOM.nextInt(survivalGame
                                                         .getConfig()
                                                         .getItemConfig()
                                                         .getItems()
-                                                        .get(
-                                                                RANDOM.nextInt(
-                                                                        survivalGame
-                                                                                .getConfig()
-                                                                                .getItemConfig()
-                                                                                .getItems()
-                                                                                .size()));
-                                        chest.getInventory().offer(stackSnapshot.createStack());
-                                    }
-                                }
+                                                        .size()));
+                                chest.getInventory().offer(stackSnapshot.createStack());
                             }
-                        });
+                        }
+                    }
+                });
     }
 
     public static Task getInstance() {

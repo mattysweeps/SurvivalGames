@@ -46,6 +46,8 @@ public class SurvivalGameStateManager {
 
     private static final List<Task> START_TASKS =
             Arrays.asList(
+                    LoadChunksTask.getInstance(),
+                    ClearEntitiesTask.getInstance(),
                     SetCommandBlocksTask.getInstance(),
                     FillChestsTask.getInstance(),
                     CreateCageSnapshotsTask.getInstance(),

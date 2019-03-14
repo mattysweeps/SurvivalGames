@@ -63,12 +63,12 @@ import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
 @Plugin(
     id = "survival-games",
     name = "Survival Games",
-    version = "1.1.3",
+    version = "1.1.4",
     description = "Survival Games for Sponge."
 )
 public class SurvivalGamesPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);
 
     public static SpongeExecutorService EXECUTOR;
     public static PluginContainer PLUGIN_CONTAINER;
