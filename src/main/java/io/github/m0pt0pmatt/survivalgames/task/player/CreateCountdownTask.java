@@ -24,6 +24,7 @@
  */
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
@@ -44,7 +45,11 @@ import org.spongepowered.api.util.TextMessageException;
 /** Create countdown titles for the start of the game . */
 public class CreateCountdownTask extends PlayerAndSpectatorTask {
 
-    private static final AbstractPlayerTask INSTANCE = new CreateCountdownTask();
+    private final String text;
+
+    private CreateCountdownTask(String text) {
+        this.text = checkNotNull(text, "text");
+    }
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
@@ -61,7 +66,7 @@ public class CreateCountdownTask extends PlayerAndSpectatorTask {
                             .fadeIn(5)
                             .stay(20)
                             .fadeOut(5)
-                            .title(Text.of(TextColors.RED, "Game begins in..."))
+                            .title(Text.of(TextColors.RED, this.text + " begins in..."))
                             .subtitle(Text.of(TextColors.RED, countDown - i))
                             .build());
         }
@@ -80,7 +85,7 @@ public class CreateCountdownTask extends PlayerAndSpectatorTask {
                 TimeUnit.SECONDS);
     }
 
-    public static AbstractPlayerTask getInstance() {
-        return INSTANCE;
+    public static CreateCountdownTask withText(String text) {
+        return new CreateCountdownTask(text);
     }
 }

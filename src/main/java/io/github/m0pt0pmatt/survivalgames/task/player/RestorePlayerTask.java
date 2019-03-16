@@ -35,11 +35,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-public class ReturnPlayerTask implements Task {
+public class RestorePlayerTask implements Task {
 
-    private static final Task TASK = new ReturnPlayerTask();
+    private static final Task TASK = new RestorePlayerTask();
 
-    private ReturnPlayerTask() {
+    private RestorePlayerTask() {
     }
 
     public static Task getInstance() {
