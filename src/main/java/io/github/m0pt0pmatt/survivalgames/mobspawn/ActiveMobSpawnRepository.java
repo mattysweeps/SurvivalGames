@@ -46,7 +46,7 @@ public final class ActiveMobSpawnRepository {
                 mobSpawnArea.getSpawnRatePerMinute().map(integer -> 1000 * 60 / integer).orElse(0);
 
         SpongeExecutorService.SpongeFuture future =
-                SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
+                SurvivalGamesPlugin.SYNC_EXECUTOR.scheduleAtFixedRate(
                         new MobSpawnRunnable(survivalGame, mobSpawnArea, world),
                         0,
                         millisecondsPerSpawn,

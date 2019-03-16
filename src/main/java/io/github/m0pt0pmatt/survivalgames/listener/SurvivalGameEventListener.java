@@ -33,6 +33,7 @@ import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.data.value.mutable.Value;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.world.BlockChangeFlags;
 
@@ -61,12 +62,14 @@ public class SurvivalGameEventListener {
                         if (event instanceof PlayerEvent) {
                             String originalCommand = storedCommand.get();
 
-                            // Strip off "/ssg event [evant]" to get the real command
+                            // Strip off "/ssg event [event]" to get the real command
                             String actual = storedCommand.get()
                                     .substring(COMMAND_BLOCK_STRING.length() + commandBlockCommandName.length() + 1);
                             storedCommand.set(actual);
                             commandBlock.execute();
                             storedCommand.set(originalCommand);
+
+
                         } else {
                             commandBlock.execute();
                         }
@@ -81,7 +84,7 @@ public class SurvivalGameEventListener {
                                                 .build(),
                                         BlockChangeFlags.ALL);
 
-                        SurvivalGamesPlugin.EXECUTOR.schedule(
+                        SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
                                 () -> snapshot.restore(true, BlockChangeFlags.ALL),
                                 5,
                                 TimeUnit.SECONDS);

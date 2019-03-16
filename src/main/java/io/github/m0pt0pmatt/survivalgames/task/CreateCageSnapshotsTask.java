@@ -62,7 +62,7 @@ public class CreateCageSnapshotsTask implements Task {
 
         int countdownSeconds = survivalGame.getConfig().getCountdownSeconds().orElse(10);
 
-        SurvivalGamesPlugin.EXECUTOR.schedule(
+        SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
                 () -> setBlocks(survivalGame, BlockTypes.AIR), countdownSeconds, TimeUnit.SECONDS);
     }
 

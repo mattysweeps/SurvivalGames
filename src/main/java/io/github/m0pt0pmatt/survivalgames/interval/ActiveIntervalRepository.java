@@ -43,14 +43,11 @@ public final class ActiveIntervalRepository {
 
     public static UUID start(SurvivalGame survivalGame, String intervalName, int intervalSeconds) {
 
-        SpongeExecutorService.SpongeFuture future =
-                SurvivalGamesPlugin.EXECUTOR.scheduleAtFixedRate(
-                        () ->
-                                Sponge.getEventManager()
-                                        .post(new IntervalEvent(survivalGame, intervalName)),
-                        0,
-                        intervalSeconds,
-                        TimeUnit.SECONDS);
+        SpongeExecutorService.SpongeFuture future = SurvivalGamesPlugin.SYNC_EXECUTOR.scheduleAtFixedRate(
+                () -> Sponge.getEventManager().post(new IntervalEvent(survivalGame, intervalName)),
+                0,
+                intervalSeconds,
+                TimeUnit.SECONDS);
 
         UUID uuid = UUID.randomUUID();
         FUTURE_MAP.put(uuid, future);

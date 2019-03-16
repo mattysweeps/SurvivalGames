@@ -48,14 +48,12 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
 
@@ -63,19 +61,19 @@ import static io.github.m0pt0pmatt.survivalgames.Util.toCommandCallable;
 @Plugin(
     id = "survival-games",
     name = "Survival Games",
-    version = "1.1.4",
-    description = "Survival Games for Sponge."
+    version = "1.1.5",
+    description = "Survival Games for Sponge.",
+    url = "https://github.com/mattysweeps/SurvivalGames"
 )
 public class SurvivalGamesPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(SurvivalGamesPlugin.class);
 
-    public static SpongeExecutorService EXECUTOR;
-    public static PluginContainer PLUGIN_CONTAINER;
+    public static SpongeExecutorService SYNC_EXECUTOR;
+    public static SpongeExecutorService ASYNC_EXECUTOR;
+
     public static SurvivalGamesPlugin PLUGIN;
     public static Path CONFIG_DIRECTORY;
-    public static ExecutorService ASYNC_EXECUTOR;
-    public static ExecutorService SYNC_EXECUTOR;
 
     @Inject
     @ConfigDir(sharedRoot = true)
@@ -99,22 +97,14 @@ public class SurvivalGamesPlugin {
         registerCommandTree(rootCommand);
 
         // Create an executor
-        EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
-
-        // Get the plugin container. This is useful for making Causes.
-        Sponge.getPluginManager()
-                .getPlugin("survival-games")
-                .ifPresent(pluginContainer -> PLUGIN_CONTAINER = pluginContainer);
+        SYNC_EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
+        ASYNC_EXECUTOR = Sponge.getScheduler().createAsyncExecutor(this);
 
         // Create a config directory if one does not already exist.
         setupConfigDirectory();
 
         // Load plugin config
         loadConfig();
-
-        // Create an asynchronous executor for background tasks.
-        ASYNC_EXECUTOR = Sponge.getScheduler().createAsyncExecutor(this);
-        SYNC_EXECUTOR = Sponge.getScheduler().createSyncExecutor(this);
 
         checkStartDemo();
 

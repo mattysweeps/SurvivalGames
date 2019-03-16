@@ -49,7 +49,7 @@ public class DelayedPlayerTask extends PlayerTask {
 
     @Override
     public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        SurvivalGamesPlugin.EXECUTOR.schedule(
+        SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
                 () -> {
                     try {
                         task.execute(survivalGame, player);
