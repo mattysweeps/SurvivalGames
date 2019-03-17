@@ -28,12 +28,11 @@ import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.event.GameStateChangedEvent;
 import io.github.m0pt0pmatt.survivalgames.task.*;
 import io.github.m0pt0pmatt.survivalgames.task.player.*;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.util.TextMessageException;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Manages the transitions between states for Survival Games. Contains the knowledge of what tasks
@@ -42,7 +41,10 @@ import org.spongepowered.api.util.TextMessageException;
 public class SurvivalGameStateManager {
 
     private static final List<Task> READY_TASKS =
-            Collections.singletonList(RestoreBlocksTask.getInstance());
+            Arrays.asList(
+                    RestoreBlocksTask.getInstance(),
+                    CreateScoreboardTask.getInstance()
+            );
 
     private static final List<Task> START_TASKS =
             Arrays.asList(
@@ -55,8 +57,8 @@ public class SurvivalGameStateManager {
                     SpawnPlayersTask.getInstance(),
                     HealPlayersTask.getInstance(),
                     SpawnSpectatorsTask.getInstance(),
+                    AdjustScoreboardForStartTask.getInstance(),
                     CreateCountdownTask.withText("Game"),
-                    CreateScoreboardTask.getInstance(),
                     CreateWorldBorderTask.getInstance(),
                     StartEventIntervalsTask.getInstance(),
                     StartMobSpawnersTask.getInstance());

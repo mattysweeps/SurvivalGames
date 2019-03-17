@@ -25,8 +25,8 @@
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
+import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
+import io.github.m0pt0pmatt.survivalgames.task.Task;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.scoreboard.critieria.Criteria;
 import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
@@ -35,42 +35,27 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
 /** Creates a player's scoreboard with the current players and their kill counts. */
-public class CreateScoreboardTask extends PlayerTask {
+public class CreateScoreboardTask implements Task {
 
-    private static final AbstractPlayerTask INSTANCE = new CreateScoreboardTask();
-
-    private Scoreboard scoreboard;
-    private Objective objective;
+    private static final CreateScoreboardTask INSTANCE = new CreateScoreboardTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        objective.getOrCreateScore(Text.of(player.getName())).setScore(0);
-    }
+    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+        Scoreboard scoreboard = Scoreboard.builder().build();
 
-    @Override
-    public void before(SurvivalGame survivalGame) {
-        scoreboard = Scoreboard.builder().build();
-
-        objective =
+        Objective objective =
                 Objective.builder()
                         .criterion(Criteria.DUMMY)
                         .name("ssg-" + survivalGame.getName())
-                        .displayName(Text.of("Remaining Players"))
+                        .displayName(Text.of("Players"))
                         .build();
 
         scoreboard.addObjective(objective);
         scoreboard.updateDisplaySlot(objective, DisplaySlots.SIDEBAR);
+        ScoreboardRepository.put(survivalGame, scoreboard);
     }
 
-    @Override
-    public void after(SurvivalGame survivalGame) {
-        survivalGame.forEachPlayer(id ->
-                Sponge.getServer()
-                        .getPlayer(id)
-                        .ifPresent(player -> player.setScoreboard(scoreboard)));
-    }
-
-    public static AbstractPlayerTask getInstance() {
+    public static CreateScoreboardTask getInstance() {
         return INSTANCE;
     }
 }

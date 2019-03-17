@@ -25,6 +25,7 @@
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.util.TextMessageException;
@@ -41,5 +42,10 @@ public class ClearScoreBoardTask extends PlayerTask {
 
     public static AbstractPlayerTask getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    protected void after(SurvivalGame survivalGame) throws TextMessageException {
+        ScoreboardRepository.remove(survivalGame);
     }
 }

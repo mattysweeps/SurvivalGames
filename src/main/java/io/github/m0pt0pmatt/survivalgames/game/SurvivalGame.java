@@ -26,7 +26,9 @@
 package io.github.m0pt0pmatt.survivalgames.game;
 
 import com.google.common.collect.ImmutableSet;
+import io.github.m0pt0pmatt.survivalgames.Util;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
+import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.CommandBlock;
 import org.spongepowered.api.entity.living.player.Player;
@@ -103,6 +105,10 @@ public class SurvivalGame {
     public void addPlayer(Player player) {
         playerUUIDs.add(player.getUniqueId());
         sendMessage(Text.of(player.getName(), " joined the game"));
+        ScoreboardRepository.get(this).ifPresent(s -> {
+            s.getObjective("ssg-" + getName()).ifPresent(o -> o.getOrCreateScore(Text.of(player.getName())).setScore(0));
+            player.setScoreboard(s);
+        });
     }
 
     public void clearPlayerUUIDs() {
@@ -163,7 +169,7 @@ public class SurvivalGame {
     }
 
     public void sendMessage(Text text) {
-        messageChannel.send(Text.of(TextColors.YELLOW, "[ssg:", getName(), "] ", TextColors.GRAY, text));
+        messageChannel.send(Text.of(Util.gamePrefix(this), TextColors.GRAY, text));
     }
 
     public Text printPlayers() {

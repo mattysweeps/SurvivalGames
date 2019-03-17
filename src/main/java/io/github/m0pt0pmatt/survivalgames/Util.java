@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import io.github.m0pt0pmatt.survivalgames.task.Task;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;
@@ -175,5 +177,9 @@ public final class Util {
      */
     public static void sendError(CommandSource source, Object message, Object object) {
         source.sendMessage(Text.of(TextColors.DARK_RED, message, ": ", TextColors.BLUE, object));
+    }
+
+    public static Text gamePrefix(SurvivalGame survivalGame) {
+        return Text.of(TextColors.YELLOW, "[ssg:", survivalGame.getName(), "] ");
     }
 }
