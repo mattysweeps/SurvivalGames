@@ -15,6 +15,7 @@ io.github.m0pt0pmatt.survivalgames.interval
 io.github.m0pt0pmatt.survivalgames.listener
 io.github.m0pt0pmatt.survivalgames.mobspawn
 io.github.m0pt0pmatt.survivalgames.schedule
+io.github.m0pt0pmatt.survivalgames.scoreboard
 io.github.m0pt0pmatt.survivalgames.task
 io.github.m0pt0pmatt.survivalgames.task.player
 io.github.m0pt0pmatt.survivalgames.thread
