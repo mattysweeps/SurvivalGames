@@ -25,7 +25,7 @@
 package io.github.m0pt0pmatt.survivalgames.game;
 
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
-import io.github.m0pt0pmatt.survivalgames.event.GameStateChangedEvent;
+import io.github.m0pt0pmatt.survivalgames.event.*;
 import io.github.m0pt0pmatt.survivalgames.task.*;
 import io.github.m0pt0pmatt.survivalgames.task.player.*;
 import org.spongepowered.api.Sponge;
@@ -87,10 +87,7 @@ public class SurvivalGameStateManager {
             executeTasks(READY_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.READY;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
-            Sponge.getEventManager()
-                    .post(
-                            new GameStateChangedEvent(
-                                    survivalGame, oldState, SurvivalGameState.READY));
+            Sponge.getEventManager().post(new GameReadyEvent(survivalGame, oldState));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -103,10 +100,7 @@ public class SurvivalGameStateManager {
             executeTasks(START_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.RUNNING;
             survivalGame.runningState = SurvivalGameRunningState.IN_PROGRESS;
-            Sponge.getEventManager()
-                    .post(
-                            new GameStateChangedEvent(
-                                    survivalGame, oldState, SurvivalGameState.RUNNING));
+            Sponge.getEventManager().post(new GameStartedEvent(survivalGame, oldState));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -117,6 +111,7 @@ public class SurvivalGameStateManager {
             executeTasks(DEATH_MATCH_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.RUNNING;
             survivalGame.runningState = SurvivalGameRunningState.DEATH_MATCH;
+            Sponge.getEventManager().post(new GameDeathmatchEvent(survivalGame));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
@@ -128,10 +123,7 @@ public class SurvivalGameStateManager {
             executeTasks(STOP_TASKS, survivalGame);
             survivalGame.state = SurvivalGameState.STOPPED;
             survivalGame.runningState = SurvivalGameRunningState.STOPPED;
-            Sponge.getEventManager()
-                    .post(
-                            new GameStateChangedEvent(
-                                    survivalGame, oldState, SurvivalGameState.STOPPED));
+            Sponge.getEventManager().post(new GameStoppedEvent(survivalGame, oldState));
         } catch (TextMessageException e) {
             e.printStackTrace();
         }
