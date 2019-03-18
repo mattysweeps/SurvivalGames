@@ -24,17 +24,12 @@
  */
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
-
+import com.google.common.collect.ImmutableMap;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
-import io.github.m0pt0pmatt.survivalgames.event.PostCountdownEvent;
-import io.github.m0pt0pmatt.survivalgames.event.PreCountdownEvent;
+import io.github.m0pt0pmatt.survivalgames.event.*;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRunningState;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -42,13 +37,37 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 import org.spongepowered.api.util.TextMessageException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
+
 /** Create countdown titles for the start of the game . */
 public class CreateCountdownTask extends PlayerAndSpectatorTask {
 
-    private final String text;
+    private static final Map<SurvivalGameRunningState, Function<SurvivalGame, PostCountdownEvent>> postEvents
+            = ImmutableMap.<SurvivalGameRunningState, Function<SurvivalGame, PostCountdownEvent>>builder()
+            .put(SurvivalGameRunningState.STOPPED, GameStartedPostCountdownEvent::new)
+            .put(SurvivalGameRunningState.IN_PROGRESS, DeathmatchPostCountdownEvent::new)
+            .build();
 
-    private CreateCountdownTask(String text) {
-        this.text = checkNotNull(text, "text");
+    private static final Map<SurvivalGameRunningState, Function<SurvivalGame, PreCountdownEvent>> preEvents
+            = ImmutableMap.<SurvivalGameRunningState, Function<SurvivalGame, PreCountdownEvent>>builder()
+            .put(SurvivalGameRunningState.STOPPED, GameStartedPreCountdownEvent::new)
+            .put(SurvivalGameRunningState.IN_PROGRESS, DeathmatchPreCountdownEvent::new)
+            .build();
+
+    private static final Map<SurvivalGameRunningState, Text> text = ImmutableMap.<SurvivalGameRunningState, Text>builder()
+            .put(SurvivalGameRunningState.STOPPED, Text.of("Game"))
+            .put(SurvivalGameRunningState.IN_PROGRESS, Text.of("Deathmatch"))
+            .build();
+
+
+    private CreateCountdownTask() {
     }
 
     @Override
@@ -60,13 +79,15 @@ public class CreateCountdownTask extends PlayerAndSpectatorTask {
 
         List<Title> titles = new ArrayList<>();
 
+        Text title = Optional.ofNullable(text.get(survivalGame.getRunningState())).orElse(Text.of("Game"));
+
         for (int i = 0; i < countDown + 1; i++) {
             titles.add(
                     Title.builder()
                             .fadeIn(5)
                             .stay(20)
                             .fadeOut(5)
-                            .title(Text.of(TextColors.RED, this.text + " begins in..."))
+                            .title(Text.of(TextColors.RED, title, " begins in..."))
                             .subtitle(Text.of(TextColors.RED, countDown - i))
                             .build());
         }
@@ -77,15 +98,20 @@ public class CreateCountdownTask extends PlayerAndSpectatorTask {
                     () -> player.sendTitle(titles.get(j)), i, TimeUnit.SECONDS);
         }
 
-        Sponge.getEventManager().post(new PreCountdownEvent(survivalGame));
+        Optional.ofNullable(preEvents.get(survivalGame.getRunningState()))
+                .map(f -> f.apply(survivalGame))
+                .ifPresent(e -> Sponge.getEventManager().post(e));
 
-        SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
-                () -> Sponge.getEventManager().post(new PostCountdownEvent(survivalGame)),
-                countDown,
-                TimeUnit.SECONDS);
+        Optional.ofNullable(postEvents.get(survivalGame.getRunningState()))
+                .map(f -> f.apply(survivalGame))
+                .ifPresent(e ->
+                        SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
+                                () -> Sponge.getEventManager().post(e),
+                                countDown,
+                                TimeUnit.SECONDS));
     }
 
-    public static CreateCountdownTask withText(String text) {
-        return new CreateCountdownTask(text);
+    public static CreateCountdownTask getInstance() {
+        return new CreateCountdownTask();
     }
 }

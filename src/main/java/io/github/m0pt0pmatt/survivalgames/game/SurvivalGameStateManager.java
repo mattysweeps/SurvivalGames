@@ -58,7 +58,7 @@ public class SurvivalGameStateManager {
                     HealPlayersTask.getInstance(),
                     SpawnSpectatorsTask.getInstance(),
                     AdjustScoreboardForStartTask.getInstance(),
-                    CreateCountdownTask.withText("Game"),
+                    CreateCountdownTask.getInstance(),
                     CreateWorldBorderTask.getInstance(),
                     StartEventIntervalsTask.getInstance(),
                     StartMobSpawnersTask.getInstance());
@@ -67,7 +67,7 @@ public class SurvivalGameStateManager {
             Arrays.asList(
                     CreateCageSnapshotsTask.getInstance(),
                     SpawnPlayersTask.getInstance(),
-                    CreateCountdownTask.withText("Deathmatch"),
+                    CreateCountdownTask.getInstance(),
                     CreateDeathmatchBorderTask.getInstance());
 
     private static final List<Task> STOP_TASKS =

@@ -32,11 +32,17 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.scheduler.SpongeExecutorService;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 public final class ActiveIntervalRepository {
 
     private static final Map<UUID, SpongeExecutorService.SpongeFuture> FUTURE_MAP =
+            new ConcurrentHashMap<>();
+
+    private static final Map<Location<World>, BlockSnapshot> BLOCK_MAP =
             new ConcurrentHashMap<>();
 
     private ActiveIntervalRepository() {}
@@ -59,5 +65,15 @@ public final class ActiveIntervalRepository {
         if (future != null) {
             future.cancel(true);
         }
+    }
+
+    public static BlockSnapshot getSnapshot(Location<World> location) {
+        BlockSnapshot blockSnapshot = BLOCK_MAP.get(location);
+        if (blockSnapshot == null) {
+            blockSnapshot = location.createSnapshot();
+            BLOCK_MAP.put(location, blockSnapshot);
+        }
+
+        return blockSnapshot;
     }
 }
