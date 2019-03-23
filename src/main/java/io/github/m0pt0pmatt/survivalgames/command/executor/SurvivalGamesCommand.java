@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import org.spongepowered.api.command.CommandSource;

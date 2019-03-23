@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
@@ -53,7 +54,7 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
 public class SaveConfigCommand extends LeafCommand {
-    private static SurvivalGamesCommand INSTANCE = new SaveConfigCommand();
+    private static final SurvivalGamesCommand INSTANCE = new SaveConfigCommand();
 
     private SaveConfigCommand() {
         super(

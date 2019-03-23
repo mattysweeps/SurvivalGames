@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.command.executor.add;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
@@ -45,7 +46,7 @@ import org.spongepowered.api.text.Text;
 
 class AddItemInHandCommand extends LeafCommand {
 
-    private static SurvivalGamesCommand INSTANCE = new AddItemInHandCommand();
+    private static final SurvivalGamesCommand INSTANCE = new AddItemInHandCommand();
 
     private AddItemInHandCommand() {
         super(

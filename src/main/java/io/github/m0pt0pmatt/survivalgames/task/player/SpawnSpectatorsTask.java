@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
@@ -32,8 +33,6 @@ import io.github.m0pt0pmatt.survivalgames.game.PlayerRestorer;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;

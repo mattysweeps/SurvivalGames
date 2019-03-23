@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.data;
 
 import com.google.common.collect.Lists;
@@ -34,7 +35,7 @@ import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 public class ItemConfig {
 
     @Setting(value = "items")
-    private List<ItemStackSnapshot> items = Lists.newArrayList();
+    private final List<ItemStackSnapshot> items = Lists.newArrayList();
 
     public List<ItemStackSnapshot> getItems() {
         return items;

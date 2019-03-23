@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames.command.executor;
 
 import io.github.m0pt0pmatt.survivalgames.Util;
@@ -42,10 +43,10 @@ import static io.github.m0pt0pmatt.survivalgames.Util.getOrThrow;
 
 public class UnscheduleCommand extends LeafCommand {
 
-    private static final UnscheduleCommand INSTANCE = new UnscheduleCommand(RootCommand.getInstance(), "unschedule", SurvivalGameCommandElement.getInstance());
+    private static final UnscheduleCommand INSTANCE = new UnscheduleCommand(RootCommand.getInstance(), SurvivalGameCommandElement.getInstance());
 
-    private UnscheduleCommand(SurvivalGamesCommand parent, String name, CommandElement arguments) {
-        super(parent, name, arguments);
+    private UnscheduleCommand(SurvivalGamesCommand parent, CommandElement arguments) {
+        super(parent, "unschedule", arguments);
     }
 
     @Nonnull

@@ -25,7 +25,6 @@
 
 package io.github.m0pt0pmatt.survivalgames.game;
 
-import com.google.common.collect.ImmutableSet;
 import io.github.m0pt0pmatt.survivalgames.Util;
 import io.github.m0pt0pmatt.survivalgames.data.GameConfig;
 import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;

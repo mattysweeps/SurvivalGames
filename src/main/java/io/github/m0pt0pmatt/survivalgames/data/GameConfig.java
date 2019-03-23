@@ -50,7 +50,7 @@ public class GameConfig {
     private static final int DEFAULT_PLAYER_LIMIT = 4;
     private static final int DEFAULT_COUNTDOWN_SECONDS = 10;
 
-    public static ObjectMapper<GameConfig> OBJECT_MAPPER;
+    public static final ObjectMapper<GameConfig> OBJECT_MAPPER;
 
     static {
         try {
@@ -106,10 +106,10 @@ public class GameConfig {
     private Area blockArea;
 
     @Setting(value = "mobSpawnAreas")
-    private List<MobSpawnArea> mobSpawnAreas = Lists.newArrayList();
+    private final List<MobSpawnArea> mobSpawnAreas = Lists.newArrayList();
 
     @Setting(value = "event-intervals")
-    private Map<String, Integer> eventIntervals = Maps.newHashMap();
+    private final Map<String, Integer> eventIntervals = Maps.newHashMap();
 
     // @Setting(value = "blocks")
     // Do not save blocks yet: this needs to be replaced with a more scalable solution.

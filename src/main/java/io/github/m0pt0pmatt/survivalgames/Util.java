@@ -22,17 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package io.github.m0pt0pmatt.survivalgames;
 
 import io.github.m0pt0pmatt.survivalgames.command.executor.SurvivalGamesCommand;
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
-import io.github.m0pt0pmatt.survivalgames.task.Task;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandSource;

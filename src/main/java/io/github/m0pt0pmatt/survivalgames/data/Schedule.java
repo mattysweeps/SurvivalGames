@@ -39,7 +39,7 @@ import java.util.Optional;
 @ConfigSerializable
 public class Schedule {
 
-    public static ObjectMapper<Schedule> OBJECT_MAPPER;
+    public static final ObjectMapper<Schedule> OBJECT_MAPPER;
 
     static {
         try {
