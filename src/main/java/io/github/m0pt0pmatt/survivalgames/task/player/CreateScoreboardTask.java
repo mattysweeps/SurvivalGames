@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.survivalgames.task.player;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
 import io.github.m0pt0pmatt.survivalgames.task.Task;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.scoreboard.critieria.Criteria;
 import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
@@ -41,7 +42,7 @@ public class CreateScoreboardTask implements Task {
     private static final CreateScoreboardTask INSTANCE = new CreateScoreboardTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         Scoreboard scoreboard = Scoreboard.builder().build();
 
         Objective objective =

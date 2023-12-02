@@ -50,15 +50,14 @@ public class SetBlocksProgressable extends PercentageProgressable {
     private void setBlocks() {
         Vector3d lesser = survivalGame.getConfig().getBlockArea().getLesserBoundary().orElseThrow(() -> new IllegalStateException("Missing boundaries"));
         Vector3d greater = survivalGame.getConfig().getBlockArea().getGreaterBoundary().orElseThrow(() -> new IllegalStateException("Missing boundaries"));
-
-        ArrayList<BlockSnapshot> blocks = Lists.newArrayList();
         World world = survivalGame.getConfig().getWorldName().flatMap(n -> Sponge.getServer().getWorld(n)).orElseThrow(() -> new IllegalStateException("No world yet"));
 
-        long totalBlocks = (greater.getFloorX() - lesser.getFloorX())
+        int totalBlocks = (greater.getFloorX() - lesser.getFloorX())
                 * (greater.getFloorY() - lesser.getFloorY())
                 * (greater.getFloorZ() - lesser.getFloorZ());
-        long count = 0;
+        int count = 0;
 
+        ArrayList<BlockSnapshot> blocks = Lists.newArrayList();
         for (int x = lesser.getFloorX(); x < greater.getFloorX(); x++) {
             for (int y = lesser.getFloorY(); y < greater.getFloorY(); y++) {
                 for (int z = lesser.getFloorZ(); z < greater.getFloorZ(); z++) {

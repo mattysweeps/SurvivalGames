@@ -51,13 +51,11 @@ public final class Util {
      * @return a {@link CommandCallable}.
      */
     static CommandCallable toCommandCallable(SurvivalGamesCommand command) {
-
         CommandSpec.Builder builder = CommandSpec.builder();
         builder.executor(command);
         if (command.getChildren().size() > 0) {
             // This is a parent command.
-            builder.children(command.getChildren().stream()
-                    .collect(Collectors.toMap(SurvivalGamesCommand::getAliases, Util::toCommandCallable)));
+            builder.children(command.getChildren().stream().collect(Collectors.toMap(SurvivalGamesCommand::getAliases, Util::toCommandCallable)));
         } else {
             // This is a leaf command.
             builder.arguments(command.getArguments());
@@ -78,15 +76,7 @@ public final class Util {
      * @throws CommandException If the Optional is empty.
      */
     public static <T> T getOrThrow(Optional<T> optional, Object name) throws CommandException {
-        return optional.orElseThrow(
-                () ->
-                        new CommandException(
-                                Text.of(
-                                        TextColors.DARK_RED,
-                                        "No value found",
-                                        ": ",
-                                        TextColors.BLUE,
-                                        name)));
+        return optional.orElseThrow(() -> new CommandException(Text.of(TextColors.DARK_RED, "No value found: ", TextColors.BLUE, name)));
     }
 
     /**
@@ -99,19 +89,8 @@ public final class Util {
      * @return The value of the Optional.
      * @throws CommandException If the Optional is empty.
      */
-    public static <T> T getOrThrow(Optional<T> optional, Object name, Object value)
-            throws CommandException {
-        return optional.orElseThrow(
-                () ->
-                        new CommandException(
-                                Text.of(
-                                        TextColors.DARK_RED,
-                                        "No ",
-                                        TextColors.BLUE,
-                                        name,
-                                        ": ",
-                                        TextColors.BLUE,
-                                        value)));
+    public static <T> T getOrThrow(Optional<T> optional, Object name, Object value) throws CommandException {
+        return optional.orElseThrow(() -> new CommandException(Text.of(TextColors.DARK_RED, "No ", TextColors.BLUE, name, ": ", TextColors.BLUE, value)));
     }
 
     /**
@@ -123,16 +102,7 @@ public final class Util {
      * @throws CommandException If the argument doesn't exist.
      */
     public static Object getOrThrow(CommandContext args, Text key) throws CommandException {
-        return args.getOne(key)
-                .orElseThrow(
-                        () ->
-                                new CommandException(
-                                        Text.of(
-                                                TextColors.DARK_RED,
-                                                "Argument not found",
-                                                ": ",
-                                                TextColors.BLUE,
-                                                key)));
+        return args.getOne(key).orElseThrow(() -> new CommandException(Text.of(TextColors.DARK_RED, "Argument not found: ", TextColors.BLUE, key)));
     }
 
     /**

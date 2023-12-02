@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.task.Task;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
@@ -38,18 +39,17 @@ import org.spongepowered.api.util.TextMessageException;
 public abstract class AbstractPlayerTask implements Task {
 
     @Override
-    public final void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public final void execute(SurvivalGame survivalGame) throws CommandException {
         before(survivalGame);
         run(survivalGame);
         after(survivalGame);
     }
 
-    public abstract void execute(SurvivalGame survivalGame, Player player)
-            throws TextMessageException;
+    public abstract void execute(SurvivalGame survivalGame, Player player) throws CommandException;
 
-    protected void before(SurvivalGame survivalGame) throws TextMessageException {}
+    protected void before(SurvivalGame survivalGame) throws CommandException {}
 
-    protected abstract void run(SurvivalGame survivalGame) throws TextMessageException;
+    protected abstract void run(SurvivalGame survivalGame) throws CommandException;
 
-    protected void after(SurvivalGame survivalGame) throws TextMessageException {}
+    protected void after(SurvivalGame survivalGame) throws CommandException {}
 }

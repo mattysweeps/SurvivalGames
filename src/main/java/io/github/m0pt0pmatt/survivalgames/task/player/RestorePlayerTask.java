@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.survivalgames.game.PlayerRestorer;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.task.Task;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 import java.util.Iterator;
@@ -47,7 +48,7 @@ public class RestorePlayerTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         for(Iterator<Map.Entry<UUID, PlayerRestorer>> i = survivalGame.getPlayerSnapshots().entrySet().iterator(); i.hasNext();) {
             Map.Entry<UUID, PlayerRestorer> entry = i.next();
             i.remove();

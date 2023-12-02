@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 /** A unit of work which is performed on a {@link SurvivalGame}. */
@@ -35,7 +36,6 @@ public interface Task {
      * Perform work on a given {@link SurvivalGame}.
      *
      * @param survivalGame the survival game.
-     * @throws TextMessageException If any error occurs during this task.
      */
-    void execute(SurvivalGame survivalGame) throws TextMessageException;
+    void execute(SurvivalGame survivalGame) throws CommandException;
 }

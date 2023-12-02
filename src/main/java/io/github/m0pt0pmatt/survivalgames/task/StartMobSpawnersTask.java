@@ -32,6 +32,7 @@ import io.github.m0pt0pmatt.survivalgames.data.MobSpawnArea;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.mobspawn.ActiveMobSpawnRepository;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
@@ -43,7 +44,7 @@ public class StartMobSpawnersTask implements Task {
     private StartMobSpawnersTask() {}
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         String worldName =
                 getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);

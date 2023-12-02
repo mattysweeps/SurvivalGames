@@ -70,7 +70,7 @@ public class RootCommand extends ParentCommand {
     }
 
     private RootCommand() {
-        super("ssg");
+        super(null,"ssg");
     }
 
     @Override

@@ -28,6 +28,7 @@ package io.github.m0pt0pmatt.survivalgames.task;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
@@ -44,7 +45,7 @@ public class ClearEntitiesTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         String worldName =
                 getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD_NAME);

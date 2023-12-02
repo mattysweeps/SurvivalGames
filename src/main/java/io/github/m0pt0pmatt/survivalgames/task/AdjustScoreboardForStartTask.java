@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
 
@@ -39,7 +40,7 @@ public class AdjustScoreboardForStartTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         ScoreboardRepository.get(survivalGame)
                 .flatMap(s -> s.getObjective("ssg-" + survivalGame.getName()))
                 .ifPresent(o -> o.setDisplayName(Text.of("Remaining Players")));

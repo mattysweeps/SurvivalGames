@@ -33,6 +33,7 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.Random;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.carrier.Chest;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
@@ -44,7 +45,7 @@ public class FillChestsTask implements Task {
     private static final Random RANDOM = new Random();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
 
         String worldName =
                 getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);

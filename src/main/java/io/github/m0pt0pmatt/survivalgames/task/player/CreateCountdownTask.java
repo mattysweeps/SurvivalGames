@@ -32,6 +32,7 @@ import io.github.m0pt0pmatt.survivalgames.event.*;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGameRunningState;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -72,7 +73,7 @@ public class CreateCountdownTask extends PlayerAndSpectatorTask {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         int countDown =
                 getOrThrow(
                         survivalGame.getConfig().getCountdownSeconds(),

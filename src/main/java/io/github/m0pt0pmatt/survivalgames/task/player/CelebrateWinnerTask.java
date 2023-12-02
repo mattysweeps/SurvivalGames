@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.TextMessageException;
@@ -37,7 +38,7 @@ public class CelebrateWinnerTask extends PlayerTask {
     private static final Text WINNER_MESSAGE = Text.of("Congratulations! You're the winner!");
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         player.sendMessage(WINNER_MESSAGE);
     }
 

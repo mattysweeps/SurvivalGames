@@ -32,6 +32,7 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldBorder;
@@ -42,7 +43,7 @@ public class CreateWorldBorderTask implements Task {
     private static final Task INSTANCE = new CreateWorldBorderTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
 
         String worldName =
                 getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);

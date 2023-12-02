@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
@@ -50,7 +51,7 @@ public class SpawnSpectatorsTask extends SpectatorTask {
     private Vector3d centerVector;
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         String worldName =
                 getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
@@ -76,7 +77,7 @@ public class SpawnSpectatorsTask extends SpectatorTask {
     }
 
     @Override
-    protected void before(SurvivalGame survivalGame) throws TextMessageException {
+    protected void before(SurvivalGame survivalGame) throws CommandException {
         spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
         centerVector =
                 getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);

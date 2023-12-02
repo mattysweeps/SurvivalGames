@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scoreboard.Score;
 import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
@@ -48,7 +49,7 @@ public class UpdateScoreBoardTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         deadPlayer
                 .getScoreboard()
                 .getObjective(DisplaySlots.SIDEBAR)

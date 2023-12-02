@@ -30,6 +30,7 @@ import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 
 import io.github.m0pt0pmatt.survivalgames.thread.ProgressBuilder;
 import io.github.m0pt0pmatt.survivalgames.thread.ResetBlocksProgressable;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.util.TextMessageException;
 
@@ -46,7 +47,7 @@ public class RestoreBlocksTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         ProgressBuilder.builder(MessageChannel.TO_CONSOLE, SurvivalGamesPlugin.SYNC_EXECUTOR, SurvivalGamesPlugin.ASYNC_EXECUTOR)
                 .runAsync(new ResetBlocksProgressable(survivalGame), "Resetting Blocks", Duration.of(5, ChronoUnit.MINUTES))
                 .start();

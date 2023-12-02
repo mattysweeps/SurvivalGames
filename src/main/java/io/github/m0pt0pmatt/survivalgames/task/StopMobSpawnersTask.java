@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.mobspawn.ActiveMobSpawnRepository;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 /** Stops the mob spawners. */
@@ -37,7 +38,7 @@ public class StopMobSpawnersTask implements Task {
     private StopMobSpawnersTask() {}
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         survivalGame.getActiveMobSpawners().forEach(ActiveMobSpawnRepository::stop);
     }
 

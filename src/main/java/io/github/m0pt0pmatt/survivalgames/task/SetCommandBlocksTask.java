@@ -29,6 +29,7 @@ import io.github.m0pt0pmatt.survivalgames.Util;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.CommandBlock;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
@@ -41,7 +42,7 @@ public class SetCommandBlocksTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         String worldName = Util.getOrThrow(survivalGame.getConfig().getWorldName(), "world-name");
         World world = Util.getOrThrow(Sponge.getServer().getWorld(worldName), "world");
 

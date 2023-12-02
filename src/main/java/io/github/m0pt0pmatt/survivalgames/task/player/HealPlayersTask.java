@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
@@ -36,7 +37,7 @@ public class HealPlayersTask extends PlayerTask {
     private static final AbstractPlayerTask INSTANCE = new HealPlayersTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         player.offer(Keys.HEALTH, 20.0);
         player.offer(Keys.EXHAUSTION, 0.0);
         player.offer(Keys.FOOD_LEVEL, 20);

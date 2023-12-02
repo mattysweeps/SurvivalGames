@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.task.player;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import io.github.m0pt0pmatt.survivalgames.scoreboard.ScoreboardRepository;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.util.TextMessageException;
@@ -37,7 +38,7 @@ public class ClearScoreBoardTask extends PlayerTask {
     private static final AbstractPlayerTask INSTANCE = new ClearScoreBoardTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         player.setScoreboard(Scoreboard.builder().build());
     }
 
@@ -46,7 +47,7 @@ public class ClearScoreBoardTask extends PlayerTask {
     }
 
     @Override
-    protected void after(SurvivalGame survivalGame) throws TextMessageException {
+    protected void after(SurvivalGame survivalGame) throws CommandException {
         ScoreboardRepository.remove(survivalGame);
     }
 }

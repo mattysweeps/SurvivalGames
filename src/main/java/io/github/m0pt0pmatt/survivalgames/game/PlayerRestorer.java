@@ -97,11 +97,9 @@ public final class PlayerRestorer {
 
     private void restoreInventory(Inventory inventory, List<ItemStack> items) {
         inventory.clear();
-
         Iterator<ItemStack> ii = items.iterator();
         Iterator<Inventory> si = inventory.slots().iterator();
-
-        for(;ii.hasNext();) {
+        while (ii.hasNext() && si.hasNext()) {
             ItemStack item = ii.next();
             Inventory slot = si.next();
             if (item != null) {

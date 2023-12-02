@@ -45,13 +45,7 @@ public abstract class ParentCommand extends BaseCommand {
     private Text chooseChildMessage;
     private List<SurvivalGamesCommand> children = new ArrayList<>();
 
-    ParentCommand(String name) {
-        this(null, name);
-    }
-
-    protected ParentCommand(
-            SurvivalGamesCommand parentCommand,
-            String name) {
+    protected ParentCommand(SurvivalGamesCommand parentCommand, String name) {
         super(parentCommand, name, GenericArguments.none());
     }
 

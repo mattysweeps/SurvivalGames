@@ -27,6 +27,7 @@ package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 /** Resets the WorldBorder to a very long distance. */
@@ -35,7 +36,7 @@ public class ClearWorldBorderTask implements Task {
     private static final Task INSTANCE = new ClearWorldBorderTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         survivalGame
                 .getConfig()
                 .getWorldName()

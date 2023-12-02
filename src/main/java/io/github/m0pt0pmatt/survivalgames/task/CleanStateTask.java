@@ -26,6 +26,7 @@
 package io.github.m0pt0pmatt.survivalgames.task;
 
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 public class CleanStateTask implements Task {
@@ -37,7 +38,7 @@ public class CleanStateTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         survivalGame.getPlayerSnapshots().clear();
         survivalGame.clearPlayerUUIDs();
         survivalGame.clearSpectatorUUIDs();

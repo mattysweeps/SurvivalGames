@@ -30,6 +30,7 @@ import com.flowpowered.math.vector.Vector3i;
 import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.gamemode.GameModes;
@@ -51,36 +52,30 @@ public class SpawnPlayersTask extends PlayerTask {
     private Vector3d centerVector;
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
-        String worldName =
-                getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
+        String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
         World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
 
         if (!spawnPoints.isEmpty()) {
             Vector3i spawnPoint = spawnPoints.remove(0).toInt();
 
-            spawnPlayer(survivalGame,
-                    player,
-                    world,
+            spawnPlayer(player, world,
                     new Vector3d(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ()),
                     new Vector3d(centerVector.getX(), centerVector.getY(), centerVector.getZ()));
         }
     }
 
-    private static void spawnPlayer(SurvivalGame survivalGame,
-            Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
-
+    private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 0, 0.5)));
         player.lookAt(centerVector);
         player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
     }
 
     @Override
-    protected void before(SurvivalGame survivalGame) throws TextMessageException {
+    protected void before(SurvivalGame survivalGame) throws CommandException {
         spawnPoints = new ArrayList<>(survivalGame.getConfig().getSpawnPoints());
         Collections.shuffle(spawnPoints);
-        centerVector =
-                getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
+        centerVector = getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
     }
 
     public static AbstractPlayerTask getInstance() {

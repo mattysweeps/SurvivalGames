@@ -29,6 +29,7 @@ import com.flowpowered.math.vector.Vector3d;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.Optional;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.TextMessageException;
 
@@ -38,7 +39,7 @@ public class ExitPlayerTask extends PlayerTask {
     private static final AbstractPlayerTask INSTANCE = new ExitPlayerTask();
 
     @Override
-    public void execute(SurvivalGame survivalGame, Player player) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame, Player player) throws CommandException {
         Optional<String> exitWorldName = survivalGame.getConfig().getExitWorldName();
         Optional<Vector3d> exitVector = survivalGame.getConfig().getExitVector();
         if (exitWorldName.isPresent() && exitVector.isPresent()) {

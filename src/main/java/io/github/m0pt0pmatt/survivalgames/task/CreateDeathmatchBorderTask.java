@@ -71,21 +71,16 @@ public class CreateDeathmatchBorderTask implements Task {
         }
 
         if (xMin != null) {
-            String worldName =
-                    getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
+            String worldName = getOrThrow(survivalGame.getConfig().getWorldName(), CommandKeys.WORLD_NAME);
             World world = getOrThrow(Sponge.getServer().getWorld(worldName), CommandKeys.WORLD);
             WorldBorder worldBorder = world.getWorldBorder();
 
-            double diameter =
-                    Double.max(
-                            abs(xMax - xMin),
-                            abs(zMax - zMin));
-
+            double diameter = Double.max(abs(xMax - xMin), abs(zMax - zMin));
             double xMiddle = xMin + (diameter / 2);
             double zMiddle = zMin + (diameter / 2);
 
             worldBorder.setCenter(xMiddle, zMiddle);
-            worldBorder.setDiameter(Double.max(abs(xMax - xMin), abs(zMax - zMin)) + 5);
+            worldBorder.setDiameter(diameter + 5);
             worldBorder.setWarningDistance(5);
             worldBorder.setDamageThreshold(0);
         }

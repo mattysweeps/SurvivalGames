@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.BlockChangeFlags;
 import org.spongepowered.api.world.World;
@@ -57,7 +58,7 @@ public class CreateCageSnapshotsTask implements Task {
                     .build();
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
 
         setBlocks(survivalGame, BlockTypes.BARRIER);
 

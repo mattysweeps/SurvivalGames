@@ -28,6 +28,8 @@ package io.github.m0pt0pmatt.survivalgames.task;
 import io.github.m0pt0pmatt.survivalgames.SurvivalGamesPlugin;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import java.util.concurrent.TimeUnit;
+
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.util.TextMessageException;
 
 /** A Task which is delayed before it is executed. */
@@ -48,7 +50,7 @@ public class DelayedTask implements Task {
     }
 
     @Override
-    public void execute(SurvivalGame survivalGame) throws TextMessageException {
+    public void execute(SurvivalGame survivalGame) throws CommandException {
         SurvivalGamesPlugin.SYNC_EXECUTOR.schedule(
                 () -> {
                     try {
