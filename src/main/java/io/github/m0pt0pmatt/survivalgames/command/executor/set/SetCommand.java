@@ -47,6 +47,7 @@ public class SetCommand extends ParentCommand {
                         .add(SetExitWorldNameCommand.getInstance())
                         .add(SetPlayerLimitCommand.getInstance())
                         .add(SetWorldNameCommand.getInstance())
+                        .add(SetGameModeCommand.getInstance())
                         .build());
     }
 

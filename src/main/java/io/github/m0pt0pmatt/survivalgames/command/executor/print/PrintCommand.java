@@ -49,6 +49,7 @@ public class PrintCommand extends ParentCommand {
                         .add(PrintSurvivalGameStateCommand.getInstance())
                         .add(PrintWorldNameCommand.getInstance())
                         .add(PrintEventIntervalsCommand.getInstance())
+                        .add(PrintGameModeCommand.getInstance())
                         .build()
         );
     }

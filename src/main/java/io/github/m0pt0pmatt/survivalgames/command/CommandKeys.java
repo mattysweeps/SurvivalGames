@@ -55,4 +55,6 @@ public class CommandKeys {
     public static final Text INTERVAL_NAME = Text.of("interval-name");
     public static final Text SECONDS_PER_INTERVAL = Text.of("seconds-per-interval");
     public static final Text CENTER_VECTOR = Text.of("center-vector");
+
+    public static final Text GAME_MODE = Text.of("game-mode");
 }

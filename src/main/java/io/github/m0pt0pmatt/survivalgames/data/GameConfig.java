@@ -34,6 +34,8 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.entity.living.player.gamemode.GameMode;
+import org.spongepowered.api.entity.living.player.gamemode.GameModes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,8 @@ public class GameConfig {
 
     private static final int DEFAULT_PLAYER_LIMIT = 4;
     private static final int DEFAULT_COUNTDOWN_SECONDS = 10;
+
+    private static final GameMode DEFAULT_GAME_MODE = GameModes.ADVENTURE;
 
     public static final ObjectMapper<GameConfig> OBJECT_MAPPER;
 
@@ -111,6 +115,9 @@ public class GameConfig {
     @Setting(value = "event-intervals")
     private final Map<String, Integer> eventIntervals = Maps.newHashMap();
 
+    @Setting(value = "game-mode")
+    private GameMode gameMode;
+
     // @Setting(value = "blocks")
     // Do not save blocks yet: this needs to be replaced with a more scalable solution.
     private List<BlockSnapshot> blocks = Lists.newArrayList();
@@ -118,6 +125,7 @@ public class GameConfig {
     public GameConfig() {
         setPlayerLimit(DEFAULT_PLAYER_LIMIT);
         setCountdownSeconds(DEFAULT_COUNTDOWN_SECONDS);
+        setGameMode(DEFAULT_GAME_MODE);
         spawnPoints = new ArrayList<>();
     }
 
@@ -221,5 +229,13 @@ public class GameConfig {
 
     public void setBlocks(List<BlockSnapshot> blocks) {
         this.blocks = blocks;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
     }
 }

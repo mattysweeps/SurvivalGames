@@ -33,8 +33,6 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.gamemode.GameModes;
-import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
@@ -59,16 +57,16 @@ public class SpawnPlayersTask extends PlayerTask {
         if (!spawnPoints.isEmpty()) {
             Vector3i spawnPoint = spawnPoints.remove(0).toInt();
 
-            spawnPlayer(player, world,
+            spawnPlayer(survivalGame, player, world,
                     new Vector3d(spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ()),
                     new Vector3d(centerVector.getX(), centerVector.getY(), centerVector.getZ()));
         }
     }
 
-    private static void spawnPlayer(Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
+    private static void spawnPlayer(SurvivalGame survivalGame, Player player, World world, Vector3d spawnPoint, Vector3d centerVector) {
         player.setLocation(world.getLocation(spawnPoint).add(new Vector3d(0.5, 0, 0.5)));
         player.lookAt(centerVector);
-        player.offer(Keys.GAME_MODE, GameModes.ADVENTURE);
+        player.offer(Keys.GAME_MODE, survivalGame.getConfig().getGameMode());
     }
 
     @Override
