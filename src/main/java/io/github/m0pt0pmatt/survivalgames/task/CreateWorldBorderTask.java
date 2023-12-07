@@ -33,7 +33,6 @@ import io.github.m0pt0pmatt.survivalgames.command.CommandKeys;
 import io.github.m0pt0pmatt.survivalgames.game.SurvivalGame;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.WorldBorder;
 
@@ -52,7 +51,7 @@ public class CreateWorldBorderTask implements Task {
         Vector3d center =
                 getOrThrow(survivalGame.getConfig().getCenterVector(), CommandKeys.CENTER_VECTOR);
 
-        worldBorder.setCenter(center.getX(), center.getZ());
+        worldBorder.setCenter(center.getFloorX() + 0.5, center.getFloorZ() + 0.5); // assume 0.5
 
         Vector3d lesserBoundaryVector =
                 getOrThrow(
@@ -63,15 +62,21 @@ public class CreateWorldBorderTask implements Task {
                         survivalGame.getConfig().getBlockArea().getGreaterBoundary(),
                         CommandKeys.GREATER_BOUNDARY);
 
+        double longestX = Double.max(
+                abs(greaterBoundaryVector.getX() - center.getX()),
+                abs(center.getX() - lesserBoundaryVector.getX())
+        );
+
+        double longestZ = Double.max(
+                abs(greaterBoundaryVector.getZ() - center.getZ()),
+                abs(center.getZ() - lesserBoundaryVector.getZ())
+        );
+
         double diameter =
                 Double.max(
-                        abs(greaterBoundaryVector.getX() - lesserBoundaryVector.getX()),
-                        abs(greaterBoundaryVector.getZ() - lesserBoundaryVector.getZ()));
+                        2 * longestX,
+                        2 * longestZ);
 
-        double xMiddle = lesserBoundaryVector.getX() + (diameter / 2);
-        double zMiddle = lesserBoundaryVector.getZ() + (diameter / 2);
-
-        worldBorder.setCenter(xMiddle, zMiddle);
         worldBorder.setDiameter(diameter);
         worldBorder.setWarningDistance(5);
         worldBorder.setDamageThreshold(0);
