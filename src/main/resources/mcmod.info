@@ -1,0 +1,18 @@
+[
+    {
+        "modid": "survival-games",
+        "name": "Survival Games",
+        "version": "1.3.0",
+        "description": "Survival Games for Sponge.",
+        "url": "https://github.com/mattysweeps/SurvivalGames",
+        "authorList": [
+            "Matthew Broomfield"
+        ],
+        "dependencies": [
+            "spongeapi@7.1.0"
+        ],
+        "requiredMods": [
+            "spongeapi@7.1.0"
+        ]
+    }
+]
